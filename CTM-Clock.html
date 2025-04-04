@@ -263,15 +263,6 @@
 <script>
 // ======== 新增音乐数据模块 ========
 const MUSIC_DATA = {
-    '胆': { 
-        tone: '角音',
-        playlist: [
-            'https://example.com/music/肝胆相照.mp3',
-            'https://example.com/music/木调晨曦.mp3',
-            '胡笳十八拍', // 疏肝利胆[1,6](@ref)
-            '姑苏行'      // 调达气机[8](@ref)
-        ]
-    },
     '肝': { 
         tone: '角音',
         playlist: [
@@ -359,6 +350,15 @@ const MUSIC_DATA = {
             '忆故人',    // 通调水道[4](@ref)
             '阳关三叠'   // 调和三焦[8](@ref)
         ]
+    },
+    '胆': { 
+        tone: '角音',
+        playlist: [
+            '肝胆相照.mp3',
+            '木调晨曦.mp3',
+            '胡笳十八拍', // 疏肝利胆[1,6](@ref)
+            '姑苏行'      // 调达气机[8](@ref)
+        ]
     }
 };
 
@@ -412,7 +412,13 @@ function updateDisplay() {
 
 const CLOCK_SIZE = 800;
 const CLOCK_RADIUS = 400;
-const HOUR_LINKS = Array.from({length: 24}, (_,i) => `hour${i}.html`);
+
+const SHENGXIAO = ['Rat_(zodiac)','Ox_(zodiac)','Tiger_(zodiac)','Rabbit_(zodiac)','Dragon_(zodiac)','Snake_(zodiac)','Horse_(zodiac)','Goat_(zodiac)','Monkey_(zodiac)','Rooster_(zodiac)','Dog_(zodiac)','Pig_(zodiac)'];
+
+const HOUR_LINKS = Array.from({length: 12}, (_, i) => `https://en.wikipedia.org/wiki/${SHENGXIAO[i]}`);
+
+//const HOUR_LINKS = Array.from({length: 24}, (_,i) => `hour${i}.html`);
+console.log(HOUR_LINKS);
 const FANGWEI=['子','癸','丑','艮','寅','甲','卯','乙','辰','巽','巳','丙','午','丁','未','坤','申','庚','酉','辛','戌','乾','亥','壬'];
 const DIZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const ORGAN_DATA = [
@@ -568,7 +574,7 @@ function createDizhiElements() {
         elem.style.left = pos.x + 'px';
         elem.style.top = pos.y + 'px';
         elem.textContent = dz;
-        elem.onclick = () => window.open(HOUR_LINKS[index*2], '_blank');
+        elem.onclick = () => window.open(HOUR_LINKS[index], '_blank');
         clockContainer.appendChild(elem); // 关键修复2：挂载到容器
     });
 }
@@ -762,3 +768,4 @@ init();
 </script>
 </body>
 </html>
+
