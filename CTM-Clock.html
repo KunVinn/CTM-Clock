@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中医时辰钟</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #1a1a1a;
+            font-family: "Microsoft Yahei", Arial, sans-serif;
+        }
+        #clockContainer {
+            position: relative;
+            width: 800px;
+            height: 800px;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        /* 关键修复1：所有动态元素挂载到时钟容器 */
+        .clock-element {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            pointer-events: none;
+        }
+        .clickable {
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.2s;
+        }
+        .clickable:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+        .dizhi {
+            font-size: 16px;
+            width: 40px;
+        }
+        .organ-name {
+            font-size: 20px;
+            font-weight: bold;
+            width: 60px;
+        }
+        .organ-emoji {
+            font-size: 28px;
+        }
+        .hour-number {
+            font-size: 16px;
+        }
+        .hour-fangwei {
+            font-size: 12px;
+        }
+        /* 新增闹钟面板样式 */
+        .alarm-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(40, 40, 40, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            color: #fff;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .alarm-panel input[type="time"] {
+            padding: 5px;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            background: #333;
+            color: white;
+            margin-right: 5px;
+        }
+        .alarm-panel button {
+            padding: 5px 10px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .alarm-panel button:hover {
+            background: #45a049;
+        }
+        #alarmList {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .alarm-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+        .alarm-item.active {
+            background: rgba(76, 175, 80, 0.3);
+        }
+        .alarm-item button {
+            margin-left: 8px;
+            padding: 3px 6px;
+            font-size: 0.8em;
+            background: #e74c3c;
+        }
+        
+        /* 新增动画效果 */
+        @keyframes alarmFlash {
+            0% { background-color: #1a1a1a; }
+            50% { background-color: #4a0000; }
+            100% { background-color: #1a1a1a; }
+        }
+        /* 新增音乐控制面板样式 */
+        .music-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(40,40,40,0.9);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .music-controls button {
+            padding: 5px 10px;
+            margin: 3px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+        #nowPlaying {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #bdc3c7;
+        }
+        /* 新增按钮提示样式 */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin: 0 5px;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 80px;
+            background: #4CAF50;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1001;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -40px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #4CAF50 transparent transparent;
+        }
+		/* 动态提示样式 */
+		.dynamic-tip {
+			position: absolute;
+			bottom: 80px;
+			right: -300px;
+			width: 280px;
+			background: rgba(40,75,99,0.95);
+			border-radius: 12px;
+			padding: 15px;
+			transition: right 0.5s ease;
+			box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+		}
+
+		.dynamic-tip.show {
+			right: 20px;
+		}
+
+		.tip-content h4 {
+			color: #8ab4f8;
+			margin-bottom: 8px;
+			border-left: 3px solid currentColor;
+			padding-left: 8px;
+		}
+
+		.music-info {
+			margin-top: 10px;
+			padding-top: 10px;
+			border-top: 1px solid rgba(255,255,255,0.1);
+			font-size: 0.9em;
+		}
+    </style>
+</head>
+<body>
+     <!-- 音乐控制面板（带提示） -->
+    <div class="music-panel">
+        <div class="music-controls">
+            <div class="tooltip">
+                <button onclick="playPause()">⏯️</button>
+                <span class="tooltiptext">播放/暂停</span>
+            </div>
+            <div class="tooltip">
+                <button onclick="playNext()">⏭️</button>
+                <span class="tooltiptext">下一曲目</span>
+            </div>
+            <div class="tooltip">
+                <select id="playMode">
+                    <option value="loop">顺序播放</option>
+                    <option value="random">随机播放</option>
+                </select>
+                <span class="tooltiptext">播放模式选择</span>
+            </div>
+        </div>
+        <div id="nowPlaying"></div>
+    </div>
+<!-- 在音乐面板添加动态提示容器 -->
+
+<div class="health-panel">
+    <p id="healthTip"></p>
+    <div class="music-info">
+        ♫ 正在播放：<span id="currentTrack"></span>
+    </div>
+</div>
+<!-- 新增闹钟控制面板 -->
+    <div class="alarm-panel">
+        <h3>闹钟提醒</h3>
+        <input type="time" id="alarmTime">
+        <button onclick="addAlarm()">添加</button>
+        <div id="alarmList"></div>
+    </div>
+    <!-- 新增音频元素 -->
+    <audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+	
+<div id="clockContainer">
+    <canvas id="baseCanvas" width="800" height="800"></canvas>
+    <canvas id="handsCanvas" width="800" height="800"></canvas>
+</div>
+
+<script>
+// ======== 新增音乐数据模块 ========
+const MUSIC_DATA = {
+    '胆': { 
+        tone: '角音',
+        playlist: [
+            'https://example.com/music/肝胆相照.mp3',
+            'https://example.com/music/木调晨曦.mp3',
+            '胡笳十八拍', // 疏肝利胆[1,6](@ref)
+            '姑苏行'      // 调达气机[8](@ref)
+        ]
+    },
+    '肝': { 
+        tone: '角音',
+        playlist: [
+            '庄周梦蝶',  // 解郁疏肝[4](@ref)
+            '春江花月夜',// 平复情绪[6](@ref)
+            '紫竹调'     // 养肝名曲[8](@ref)
+        ]
+    },
+    '肺': { 
+        tone: '商音',
+        playlist: [
+            '阳春白雪',  // 润肺降燥[1,4](@ref)
+            '广陵散',    // 清肃呼吸[4](@ref)
+            '黄河大合唱' // 宣肺通窍[8](@ref)
+        ]
+    },
+    '大肠': { 
+        tone: '商音/宫音',
+        playlist: [
+            '潇湘水云',  // 通腑润肠[1,3](@ref)
+            '梅花三弄',  // 代谢调理[1,4](@ref)
+            '十面埋伏'   // 增强蠕动[4](@ref)
+        ]
+    },
+    '胃': { 
+        tone: '宫音/羽音',
+        playlist: [
+            '山居吟',    // 健脾和胃[1,4](@ref)
+            '洞庭秋思',  // 促进运化[4](@ref)
+            '北国之春'   // 开胃助食[6](@ref)
+        ]
+    },
+    '脾': { 
+        tone: '宫音/徵音',
+        playlist: [
+            '高山流水',  // 益气运化[1,4](@ref)
+            '阳春',      // 强健肌理[4](@ref)
+            '花好月圆'   // 调和脾胃[6](@ref)
+        ]
+    },
+    '心': { 
+        tone: '徵音/羽音',
+        playlist: [
+            '1乌夜啼',    // 宁心安神[1,4](@ref)
+            '2雉朝飞',    // 调和阴阳[4](@ref)
+            '3步步高'     // 振奋心神[8](@ref)
+        ]
+    },
+    '小肠': { 
+        tone: '徵音/角音',
+        playlist: [
+            '列子御风',  // 促进吸收[1,4](@ref)
+            '文王操',    // 分化清浊[4](@ref)
+            '渔舟唱晚'   // 助消化曲[8](@ref)
+        ]
+    },
+    '膀胱': { 
+        tone: '羽音/商音',
+        playlist: [
+            '长清',      // 利水排毒[1,4](@ref)
+            '白雪',      // 疏通经络[4](@ref)
+            '平湖秋月'   // 促代谢曲[6](@ref)
+        ]
+    },
+    '肾': { 
+        tone: '羽音/商音',
+        playlist: [
+            '流水',      // 滋补肾精[1,4](@ref)
+            '鹤鸣九皋',  // 强健腰膝[1](@ref)
+            '二泉映月'   // 养肾名曲[8](@ref)
+        ]
+    },
+    '心包': { 
+        tone: '徵音/角音',
+        playlist: [
+            '文王操',    // 宁心定志[4](@ref)
+            '庄周梦蝶',  // 调和情志[4](@ref)
+            '烛影摇红'   // 舒缓心包[6](@ref)
+        ]
+    },
+    '三焦': { 
+        tone: '商音/宫音',
+        playlist: [
+            '平沙落雁',  // 平衡阴阳[1,4](@ref)
+            '忆故人',    // 通调水道[4](@ref)
+            '阳关三叠'   // 调和三焦[8](@ref)
+        ]
+    }
+};
+
+// ======== 音乐播放系统 ========
+let currentOrgan = null;
+let audioPlayer = new Audio();
+let currentTrackIndex = 0;
+
+// 根据时辰选择音乐
+function selectOrganMusic(hour) {
+    const organs = ORGAN_DATA.filter(o => o.hour-1 === hour % 24);
+    if (organs.length > 0) {
+        const organ = organs[0].name;
+        if (MUSIC_DATA[organ] && currentOrgan !== organ) {
+            currentOrgan = organ;
+            currentTrackIndex = 0;
+            loadTrack();
+        }
+    }
+}
+
+function loadTrack() {
+    const playlist = MUSIC_DATA[currentOrgan].playlist;
+    audioPlayer.src = playlist[currentTrackIndex];
+    audioPlayer.play();
+    updateDisplay();
+}
+
+// 控制功能
+function playPause() {
+    audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause();
+    updateDisplay();
+}
+
+function playNext() {
+    const mode = document.getElementById('playMode').value;
+    if (mode === 'random') {
+        currentTrackIndex = Math.floor(Math.random() * MUSIC_DATA[currentOrgan].playlist.length);
+    } else {
+        currentTrackIndex = (currentTrackIndex + 1) % MUSIC_DATA[currentOrgan].playlist.length;
+    }
+    loadTrack();
+}
+
+// 更新显示
+function updateDisplay() {
+    const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone} | 
+                 ${audioPlayer.src.split('/').pop()}`;
+    document.getElementById('nowPlaying').textContent = info;
+}
+
+const CLOCK_SIZE = 800;
+const CLOCK_RADIUS = 400;
+const HOUR_LINKS = Array.from({length: 24}, (_,i) => `hour${i}.html`);
+const FANGWEI=['子','癸','丑','艮','寅','甲','卯','乙','辰','巽','巳','丙','午','丁','未','坤','申','庚','酉','辛','戌','乾','亥','壬'];
+const DIZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const ORGAN_DATA = [
+    { name: '肝', emoji: '🐉', hour: 2, tip: "丑时肝经当令，静卧养血助排毒",musicTips:{tone: '角音',effect: '解郁疏肝，平复情绪',tracks: ['庄周梦蝶', '稻香']}, link: "https://en.wikipedia.org/wiki/Liver_(Chinese_medicine)" },
+    { name: '肺', emoji: '🍃', hour: 4, tip: "寅时肺经主令，深度睡眠护卫气",musicTips:{tone: '商音',effect: '润肺降燥，清肃呼吸',tracks: ['阳春白雪', '广陵散']}, link: "https://en.wikipedia.org/wiki/Lung_(Chinese_medicine)" },
+    { name: '大肠', emoji: '🏛', hour: 6, tip:"卯时大肠经旺，晨起饮水促排毒",musicTips:{tone: '宫音/商音',effect: '通腑润肠，代谢调理',tracks: ['潇湘水云', '十面埋伏']}, link: "https://en.wikipedia.org/wiki/Large_intestine_(Chinese_medicine)" },
+    { name: '胃', emoji: '🍽️', hour: 8, tip: "辰时胃经当值，温热早餐养胃气",musicTips:{tone: '宫音/羽音',effect: '健脾和胃，促进运化',tracks: ['洞庭秋思', '山居吟']}, link: "https://en.wikipedia.org/wiki/Stomach_(Chinese_medicine)" },
+    { name: '脾', emoji: '🍚', hour: 10,tip: "巳时脾经主运，适度活动助吸收",musicTips:{tone: '宫音/徵音',effect: '益气运化，强健肌理',tracks: ['阳春', '高山流水']}, link: "https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)" },
+    { name: '心', emoji: '❤️', hour: 12, tip: "午时心经当令，小憩养神护心阴",musicTips:{tone: '羽音/徵音',effect: '宁心安神，调和阴阳',tracks: ['乌夜啼', '雉朝飞']}, link: "https://en.wikipedia.org/wiki/Heart_(Chinese_medicine)" },
+    { name: '小肠', emoji: '🔗', hour: 14,tip: "未时小肠经旺，营养午餐助吸收",musicTips:{tone: '徵音/角音',effect: '促进吸收，分化清浊',tracks: ['列子御风', '文王操']}, link: "https://en.wikipedia.org/wiki/Small_intestine_(Chinese_medicine)" },
+    { name: '膀胱', emoji: '🚰', hour: 16,tip: "申时膀胱经行，多饮温水促代谢",musicTips:{tone: '羽音/商音',effect: '利水排毒，疏通经络',tracks: ['白雪', '长清']}, link: "https://en.wikipedia.org/wiki/Urinary_bladder_(Chinese_medicine)" },
+    { name: '肾', emoji: '🥜', hour: 18, tip: "少盐饮食护肾气，酉时补肾效果佳",musicTips: {tone: '羽音',effect: '滋补肾气，固本培元',tracks: ['流水', '鹤鸣九皋']}, link: "https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)" },
+    { name: '心包', emoji: '🧘', hour: 20,tip: "戌时心包经主，放松娱乐舒心气",musicTips:{tone: '徵音/角音',effect: '宁心定志，调和情志',tracks: ['文王操', '庄周梦蝶']}, link: "https://en.wikipedia.org/wiki/Pericardium_(Chinese_medicine)" }, 
+    { name: '三焦', emoji: '🔥', hour: 22,tip: "亥时三焦经行，静心入眠通百脉",musicTips:{tone: '商音/宫音',effect: '平衡阴阳，通调水道',tracks: ['平沙落雁', '忆故人']}, link: "https://en.wikipedia.org/wiki/San_Jiao" },
+    { name: '胆', emoji: '🟢', hour: 24,tip:"子时胆经运行，宜深度睡眠促进胆汁分泌",musicTips: {tone: '角音',effect: '疏肝利胆，调和气血',tracks: ['梅花三弄', '潇湘水云']}, link: "https://en.wikipedia.org/wiki/Gallbladder_(Chinese_medicine)" }
+];
+
+// 动态提示控制器
+class DynamicTip {
+    constructor() {
+        this.tipElement = document.getElementById('dynamicTip');
+        this.currentOrganElement = document.getElementById('currentOrgan');
+        this.healthTipElement = document.getElementById('healthTip');
+        this.trackElement = document.getElementById('currentTrack');
+        this.emojiElement = document.querySelector('.organ-emoji');
+    }
+
+    // 更新提示内容[3,4](@ref)
+    update(hour) {
+        const currentHour = new Date().getHours();
+        const organ = ORGAN_DATA.find(o => 
+    currentHour >= o.hour-1 && currentHour < o.hour + 1
+);
+       if (!organ) return;
+
+       this.currentOrganElement.textContent = organ.name;
+       this.healthTipElement.innerHTML = `
+           ${organ.tip}<small>${organ.musicTips.effect}</small>
+       `;
+       this.trackElement.textContent = `${organ.musicTips.tone}-${organ.musicTips.tracks[0]}`;
+       this.emojiElement.textContent = organ.emoji;
+       
+       // 动态样式[6](@ref)
+       this.tipElement.style.background = this.getOrganColor(organ.name);
+       this.tipElement.classList.add('show');
+       setTimeout(() => this.tipElement.classList.remove('show'), 5000);
+//    // 获取当前完整时间
+//    const now = new Date();
+//    const currentHour = now.getHours();
+//    
+//    // 按2小时区间查找器官
+//    const organ = ORGAN_DATA.find(o => 
+//        currentHour >= o.hour-1 && currentHour < o.hour+1
+//    );
+//    
+//    // 更新DOM元素
+//    if(organ) {
+//        document.getElementById('healthTip').textContent = organ.tip;
+//        document.getElementById('currentTrack').textContent = 
+//            `${organ.musicTips.tone}-${organ.musicTips.tracks[0]}`;
+//    }
+}
+
+    // 器官对应颜色[2](@ref)
+    getOrganColor(organ) {
+        const colors = {
+            '肝': '#8bc34a',
+            '心': '#f44336', 
+            '脾': '#ff9800',
+            '肺': '#00bcd4',
+            '肾': '#2196f3'
+        };
+        return `linear-gradient(135deg, ${colors[organ]} 0%, #2c3e50 100%)`;
+    }
+}
+
+// 初始化Canvas
+const baseCanvas = document.getElementById('baseCanvas');
+const handsCanvas = document.getElementById('handsCanvas');
+const baseCtx = baseCanvas.getContext('2d');
+const handsCtx = handsCanvas.getContext('2d');
+const clockContainer = document.getElementById('clockContainer'); // 容器引用
+
+function init() {
+    drawStaticElements();
+    createDizhiElements();
+    createOrganElements();
+    createHourNumbers();
+    createHourFangWei();
+    updateClock();
+}
+
+// 绘制静态元素
+function drawStaticElements() {
+    // 外圈
+    baseCtx.strokeStyle = "#ecf0f1";
+    baseCtx.lineWidth = 4;
+    baseCtx.beginPath();
+//context . arc(x, y, radius, startAngle, endAngle [, anticlockwise ] )
+    baseCtx.arc(CLOCK_RADIUS, CLOCK_RADIUS, CLOCK_RADIUS-110, 0, Math.PI*2);
+    baseCtx.stroke();
+    baseCtx.strokeStyle ="hsl("+ Math.random() * 360 + ",100%,50%)";
+    baseCtx.lineWidth = 1;
+    baseCtx.beginPath();
+    baseCtx.arc(CLOCK_RADIUS, CLOCK_RADIUS, CLOCK_RADIUS-210, 0, Math.PI*2);
+    baseCtx.stroke();
+    baseCtx.strokeStyle ="hsl("+ Math.random() * 360 + ",100%,50%)";
+    baseCtx.lineWidth = 3;
+    baseCtx.beginPath();
+    baseCtx.arc(CLOCK_RADIUS, CLOCK_RADIUS, CLOCK_RADIUS-190, 0, Math.PI*2);
+    baseCtx.stroke();
+
+    // 虚线时辰划分
+    baseCtx.lineWidth = 1;
+    baseCtx.setLineDash([1, 8]);
+    baseCtx.strokeStyle = "rgba(255,255,255,0.5)";
+    for(let i=0; i<12; i++) {
+        const angle = (i * Math.PI/6) - 7*Math.PI/12;
+        baseCtx.beginPath();
+        baseCtx.moveTo(CLOCK_RADIUS, CLOCK_RADIUS);
+        baseCtx.lineTo(
+            CLOCK_RADIUS + (CLOCK_RADIUS-110)*Math.cos(angle),
+            CLOCK_RADIUS + (CLOCK_RADIUS-110)*Math.sin(angle)
+        );
+        baseCtx.stroke();
+    }
+    // 虚线时钟划分
+    baseCtx.lineWidth = .5;
+    baseCtx.setLineDash([5, 5]);
+    baseCtx.strokeStyle = "rgba(255,255,255,0.9)";
+    for(let i=0; i<12; i++) {
+        const angle = (i * Math.PI/6) - 6*Math.PI/12;
+        baseCtx.beginPath();
+        //baseCtx.moveTo(CLOCK_RADIUS, CLOCK_RADIUS);
+        baseCtx.moveTo(CLOCK_RADIUS + (CLOCK_RADIUS-330)*Math.cos(angle), CLOCK_RADIUS+ (CLOCK_RADIUS-330)*Math.sin(angle));
+        baseCtx.lineTo(
+            CLOCK_RADIUS + (CLOCK_RADIUS-230)*Math.cos(angle),
+            CLOCK_RADIUS + (CLOCK_RADIUS-230)*Math.sin(angle)
+        );
+        baseCtx.stroke();
+    }
+    baseCtx.setLineDash([]);
+}
+
+// 创建地支元素
+function createDizhiElements() {
+    DIZHI.forEach((dz, index) => {
+        const angle = (index * Math.PI/6) - Math.PI/2;
+        const pos = getPosition(angle, CLOCK_RADIUS-350);
+       
+        const elem = document.createElement('div');
+        elem.className = 'clock-element dizhi clickable';
+        elem.style.left = pos.x + 'px';
+        elem.style.top = pos.y + 'px';
+        elem.textContent = dz;
+        elem.onclick = () => window.open(HOUR_LINKS[index*2], '_blank');
+        clockContainer.appendChild(elem); // 关键修复2：挂载到容器
+    });
+}
+
+// 创建脏腑元素
+function createOrganElements() {
+    ORGAN_DATA.forEach(organ => {
+        const angle = (organ.hour * Math.PI/12) - 6* Math.PI/12;
+        const pos = getPosition(angle, CLOCK_RADIUS-140);
+
+        const container = document.createElement('div');
+        container.className = 'clock-element clickable';
+        container.style.left = pos.x + 'px';
+        container.style.top = pos.y + 'px';
+        container.dataset.link = organ.link;
+        container.title = `[${organ.hour-1}~${(organ.hour+1)%24}]点： ${organ.tip}`;
+        container.onclick = () => window.open(container.dataset.link, '_blank');//Use the data attribute in the onclick function
+
+        const nameElem = document.createElement('div');
+        nameElem.className = 'organ-name';
+        nameElem.textContent = organ.name;
+
+        const emojiElem = document.createElement('div');
+        emojiElem.className = 'organ-emoji';
+        emojiElem.textContent = organ.emoji;
+
+        container.appendChild(nameElem);
+        container.appendChild(emojiElem);
+        clockContainer.appendChild(container); // 关键修复2：挂载到容器
+    });
+}
+
+// 创建小时数字
+function createHourNumbers() {
+    for(let hour=0; hour<24; hour++){
+        const angle = (hour * Math.PI/12) - 6*Math.PI/12;
+        const pos = getPosition(angle, CLOCK_RADIUS-200);
+       
+        const div = document.createElement('div');
+        div.className = 'clock-element hour-number';
+        div.style.left = pos.x + 'px';
+        div.style.top = pos.y + 'px';
+        div.textContent = hour;
+        clockContainer.appendChild(div); // 关键修复2：挂载到容器
+    }
+}
+
+function createHourFangWei() {
+    for(let hour=0; hour<24; hour++){
+        const angle = (hour * Math.PI/12) - 6*Math.PI/12;
+        const pos = getPosition(angle, CLOCK_RADIUS-220);
+       
+        const div = document.createElement('div');
+        div.className = 'clock-element hour-fangwei';
+        div.style.left = pos.x + 'px';
+        div.style.top = pos.y + 'px';
+        div.textContent = FANGWEI[hour];
+        clockContainer.appendChild(div); 
+    }
+}
+
+// 获取坐标
+function getPosition(angle, radius) {
+    return {
+        x: CLOCK_RADIUS + radius * Math.cos(angle),
+        y: CLOCK_RADIUS + radius * Math.sin(angle)
+    };
+}
+// ======= 新增闹钟功能模块 =======
+class Alarm {
+    constructor(hour, minute) {
+        this.hour = parseInt(hour);
+        this.minute = parseInt(minute);
+        this.active = true;
+        this.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+}
+
+let alarms = [];
+let lastTriggerTime = 0;
+
+// 添加闹钟
+function addAlarm() {
+    const timeInput = document.getElementById('alarmTime');
+    if (!timeInput.value) return;
+
+    const [hour, minute] = timeInput.value.split(':');
+    alarms.push(new Alarm(hour, minute));
+    updateAlarmDisplay();
+    timeInput.value = '';
+}
+
+// 删除闹钟
+function deleteAlarm(id) {
+    alarms = alarms.filter(alarm => alarm.id !== id);
+    updateAlarmDisplay();
+}
+
+// 切换闹钟状态
+function toggleAlarm(id) {
+    const alarm = alarms.find(a => a.id === id);
+    if (alarm) alarm.active = !alarm.active;
+    updateAlarmDisplay();
+}
+
+// 更新显示
+function updateAlarmDisplay() {
+    const list = document.getElementById('alarmList');
+    list.innerHTML = alarms.map(alarm => `
+        <div class="alarm-item ${alarm.active ? 'active' : ''}">
+            <span>${String(alarm.hour).padStart(2, '0')}:${String(alarm.minute).padStart(2, '0')}</span>
+            <button onclick="toggleAlarm('${alarm.id}')">${alarm.active ? '关闭' : '激活'}</button>
+            <button onclick="deleteAlarm('${alarm.id}')">删除</button>
+        </div>
+    `).join('');
+}
+
+// 检查闹钟触发
+function checkAlarms(now) {
+    const currentMinute = now.getHours() * 60 + now.getMinutes();
+    
+    alarms.forEach(alarm => {
+        if (alarm.active && 
+            alarm.hour === now.getHours() &&
+            alarm.minute === now.getMinutes() &&
+            Date.now() - lastTriggerTime > 60000 // 每分钟触发一次
+        ) {
+            triggerAlarm();
+            lastTriggerTime = Date.now();
+        }
+    });
+}
+
+// 触发提醒
+function triggerAlarm() {
+    const sound = document.getElementById('alarmSound');
+    sound.play();
+    document.body.style.animation = 'alarmFlash 0.5s 3';
+}
+
+// 时钟指针功能======= 修改时钟更新函数 =======
+function updateClock() {
+    handsCtx.clearRect(0, 0, CLOCK_SIZE, CLOCK_SIZE);
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    // 每半小时更新提示[1](@ref)
+    if (now.getMinutes() % 30 === 0) {
+        new DynamicTip().update(hour);
+    }
+//     drawHand(hours * 30 + minutes * 0.5, radius * 0.5, 6, "white");
+//     drawHand(minutes * 6, radius * 0.7, 4, "white");
+//     drawHand(seconds * 6, radius * 0.9, 2, "red");
+    drawHand(hours * 15 + minutes * 0.25, 160, 8, "#ecf0f1");  // 时针
+    drawHand(minutes * 6 + seconds * 0.1, 180, 6, "#bdc3c7"); // 分针
+    drawHand(seconds * 6, 240, 4, "#e74c3c");                 // 秒针
+   checkAlarms(now); // 新增闹钟检查
+     // 新增音乐检测（每5分钟检测一次）
+    if (now.getMinutes() % 5 === 0) {
+        selectOrganMusic(hours);
+    }
+
+	requestAnimationFrame(updateClock);
+}
+
+function drawHand(degrees, length, width, color) {
+    const radian = (degrees - 90) * Math.PI / 180;
+//  let radian = (Math.PI / 180) * angle - Math.PI / 2;
+    handsCtx.beginPath();
+    handsCtx.lineWidth = width;
+    handsCtx.strokeStyle = color;
+    handsCtx.lineCap = "round";
+    handsCtx.moveTo(CLOCK_RADIUS, CLOCK_RADIUS);
+    handsCtx.lineTo(
+        CLOCK_RADIUS + length * Math.cos(radian),
+        CLOCK_RADIUS + length * Math.sin(radian)
+    );
+    handsCtx.stroke();
+}
+
+// 初始化
+
+// ======== 初始化音乐播放器 ========
+audioPlayer.addEventListener('ended', () => {
+    playNext(); // 自动播放下一曲
+});
+audioPlayer.volume = 0.5; // 初始音量
+
+init();
+</script>
+</body>
+</html>
