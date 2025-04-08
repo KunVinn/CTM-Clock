@@ -14,11 +14,10 @@
             background: #1a1a1a;
             font-family: "Microsoft Yahei", Arial, sans-serif;
         }
-        #clockContainer {
-            position: relative;
-            width: 800px;
-            height: 800px;
-        }
+		#clockContainer {
+			width: 90vmin; /* 响应式尺寸 */
+			height: 90vmin;
+		}
         canvas {
             position: absolute;
             top: 0;
@@ -145,6 +144,14 @@
             font-size: 0.9em;
             color: #bdc3c7;
         }
+        #currentTrack {
+          color: #bdc3c7;
+          font-size: 14px;
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          white-space: nowrap; /* 防止文字换行 */
+        }
         /* 新增按钮提示样式 */
         .tooltip {
             position: relative;
@@ -237,6 +244,7 @@
         </div>
         <div id="nowPlaying"></div>
     </div>
+
 <!-- 在音乐面板添加动态提示容器 -->
 
 <div class="health-panel">
@@ -245,6 +253,7 @@
         ♫ 正在播放：<span id="currentTrack"></span>
     </div>
 </div>
+
 <!-- 新增闹钟控制面板 -->
     <div class="alarm-panel">
         <h3>闹钟提醒</h3>
@@ -266,149 +275,101 @@ const MUSIC_DATA = {
     '肝': { 
         tone: '角音',
         playlist: [
-            '庄周梦蝶',  // 解郁疏肝[4](@ref)
-            '春江花月夜',// 平复情绪[6](@ref)
-            '紫竹调'     // 养肝名曲[8](@ref)
+            'CTM-Music/春江花月夜.mp3',    // 平复情绪[6](@ref)
+            'CTM-Music/紫竹调.mp3',   // 养肝名曲[8](@ref)
+            'CTM-Music/庄周梦蝶.mp3'  // 解郁疏肝[4](@ref)
         ]
     },
     '肺': { 
         tone: '商音',
         playlist: [
-            '阳春白雪',  // 润肺降燥[1,4](@ref)
-            '广陵散',    // 清肃呼吸[4](@ref)
-            '黄河大合唱' // 宣肺通窍[8](@ref)
+            'CTM-Music/阳春白雪.mp3',  // 润肺降燥[1,4](@ref)
+            'CTM-Music/广陵散.mp3',    // 清肃呼吸[4](@ref)
+            'CTM-Music/黄河大合唱.mp3' // 宣肺通窍[8](@ref)
         ]
     },
     '大肠': { 
         tone: '商音/宫音',
         playlist: [
-            '潇湘水云',  // 通腑润肠[1,3](@ref)
-            '梅花三弄',  // 代谢调理[1,4](@ref)
-            '十面埋伏'   // 增强蠕动[4](@ref)
+            'CTM-Music/潇湘水云.mp3',  // 通腑润肠[1,3](@ref)
+            'CTM-Music/梅花三弄.mp3',  // 代谢调理[1,4](@ref)
+            'CTM-Music/十面埋伏.mp3'   // 增强蠕动[4](@ref)
         ]
     },
     '胃': { 
         tone: '宫音/羽音',
         playlist: [
-            '山居吟',    // 健脾和胃[1,4](@ref)
-            '洞庭秋思',  // 促进运化[4](@ref)
-            '北国之春'   // 开胃助食[6](@ref)
+            'CTM-Music/古琴山居吟.mp3',    // 健脾和胃[1,4](@ref)
+            'CTM-Music/洞庭秋思.mp3',  // 促进运化[4](@ref)
+            'CTM-Music/北国之春.mp3'   // 开胃助食[6](@ref)
         ]
     },
     '脾': { 
         tone: '宫音/徵音',
         playlist: [
-            '高山流水',  // 益气运化[1,4](@ref)
-            '阳春',      // 强健肌理[4](@ref)
-            '花好月圆'   // 调和脾胃[6](@ref)
+            'CTM-Music/高山流水.mp3',  // 益气运化[1,4](@ref)
+            'CTM-Music/阳春.mp3',      // 强健肌理[4](@ref)
+            'CTM-Music/花好月圆.mp3'   // 调和脾胃[6](@ref)
         ]
     },
     '心': { 
         tone: '徵音/羽音',
         playlist: [
-            '1乌夜啼',    // 宁心安神[1,4](@ref)
-            '2雉朝飞',    // 调和阴阳[4](@ref)
-            '3步步高'     // 振奋心神[8](@ref)
+            'CTM-Music/乌夜啼.mp3',    // 宁心安神[1,4](@ref)
+            'CTM-Music/雉朝飞.mp3',    // 调和阴阳[4](@ref)
+            'CTM-Music/步步高.mp3'     // 振奋心神[8](@ref)
         ]
     },
     '小肠': { 
         tone: '徵音/角音',
         playlist: [
-            '列子御风',  // 促进吸收[1,4](@ref)
-            '文王操',    // 分化清浊[4](@ref)
-            '渔舟唱晚'   // 助消化曲[8](@ref)
+            'CTM-Music/列子御风.mp3',  // 促进吸收[1,4](@ref)
+            'CTM-Music/文王操.mp3',    // 分化清浊[4](@ref)
+            'CTM-Music/渔舟唱晚.mp3'   // 助消化曲[8](@ref)
         ]
     },
     '膀胱': { 
         tone: '羽音/商音',
         playlist: [
-            '长清',      // 利水排毒[1,4](@ref)
-            '白雪',      // 疏通经络[4](@ref)
-            '平湖秋月'   // 促代谢曲[6](@ref)
+            'CTM-Music/长清.mp3',      // 利水排毒[1,4](@ref)
+            'CTM-Music/白雪.mp3',      // 疏通经络[4](@ref)
+            'CTM-Music/平湖秋月.mp3'   // 促代谢曲[6](@ref)
         ]
     },
     '肾': { 
         tone: '羽音/商音',
         playlist: [
-            '流水',      // 滋补肾精[1,4](@ref)
-            '鹤鸣九皋',  // 强健腰膝[1](@ref)
-            '二泉映月'   // 养肾名曲[8](@ref)
+            'CTM-Music/流水.mp3',      // 滋补肾精[1,4](@ref)
+            'CTM-Music/鹤鸣九皋.mp3',  // 强健腰膝[1](@ref)
+            'CTM-Music/二泉映月.mp3'   // 养肾名曲[8](@ref)
         ]
     },
     '心包': { 
         tone: '徵音/角音',
         playlist: [
-            '文王操',    // 宁心定志[4](@ref)
-            '庄周梦蝶',  // 调和情志[4](@ref)
-            '烛影摇红'   // 舒缓心包[6](@ref)
+            'CTM-Music/文王操.mp3',    // 宁心定志[4](@ref)
+            'CTM-Music/庄周梦蝶.mp3',  // 调和情志[4](@ref)
+            'CTM-Music/烛影摇红.mp3'   // 舒缓心包[6](@ref)
         ]
     },
     '三焦': { 
         tone: '商音/宫音',
         playlist: [
-            '平沙落雁',  // 平衡阴阳[1,4](@ref)
-            '忆故人',    // 通调水道[4](@ref)
-            '阳关三叠'   // 调和三焦[8](@ref)
+            'CTM-Music/平沙落雁.mp3',  // 平衡阴阳[1,4](@ref)
+            'CTM-Music/忆故人.mp3',    // 通调水道[4](@ref)
+            'CTM-Music/阳关三叠.mp3'   // 调和三焦[8](@ref)
         ]
     },
     '胆': { 
         tone: '角音',
         playlist: [
-            '肝胆相照.mp3',
-            '木调晨曦.mp3',
-            '胡笳十八拍', // 疏肝利胆[1,6](@ref)
-            '姑苏行'      // 调达气机[8](@ref)
+            'CTM-Music/肝胆相照.mp3',
+            'CTM-Music/木调晨曦.mp3',
+            'CTM-Music/胡笳十八拍.mp3', // 疏肝利胆[1,6](@ref)
+            'CTM-Music/姑苏行.mp3'      // 调达气机[8](@ref)
         ]
     }
 };
-
-// ======== 音乐播放系统 ========
-let currentOrgan = null;
-let audioPlayer = new Audio();
-let currentTrackIndex = 0;
-
-// 根据时辰选择音乐
-function selectOrganMusic(hour) {
-    const organs = ORGAN_DATA.filter(o => o.hour-1 === hour % 24);
-    if (organs.length > 0) {
-        const organ = organs[0].name;
-        if (MUSIC_DATA[organ] && currentOrgan !== organ) {
-            currentOrgan = organ;
-            currentTrackIndex = 0;
-            loadTrack();
-        }
-    }
-}
-
-function loadTrack() {
-    const playlist = MUSIC_DATA[currentOrgan].playlist;
-    audioPlayer.src = playlist[currentTrackIndex];
-    audioPlayer.play();
-    updateDisplay();
-}
-
-// 控制功能
-function playPause() {
-    audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause();
-    updateDisplay();
-}
-
-function playNext() {
-    const mode = document.getElementById('playMode').value;
-    if (mode === 'random') {
-        currentTrackIndex = Math.floor(Math.random() * MUSIC_DATA[currentOrgan].playlist.length);
-    } else {
-        currentTrackIndex = (currentTrackIndex + 1) % MUSIC_DATA[currentOrgan].playlist.length;
-    }
-    loadTrack();
-}
-
-// 更新显示
-function updateDisplay() {
-    const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone} | 
-                 ${audioPlayer.src.split('/').pop()}`;
-    document.getElementById('nowPlaying').textContent = info;
-}
 
 const CLOCK_SIZE = 800;
 const CLOCK_RADIUS = 400;
@@ -436,62 +397,118 @@ const ORGAN_DATA = [
     { name: '胆', emoji: '🟢', hour: 24,tip:"子时胆经运行，宜深度睡眠促进胆汁分泌",musicTips: {tone: '角音',effect: '疏肝利胆，调和气血',tracks: ['梅花三弄', '潇湘水云']}, link: "https://en.wikipedia.org/wiki/Gallbladder_(Chinese_medicine)" }
 ];
 
-// 动态提示控制器
-class DynamicTip {
-    constructor() {
-        this.tipElement = document.getElementById('dynamicTip');
-        this.currentOrganElement = document.getElementById('currentOrgan');
-        this.healthTipElement = document.getElementById('healthTip');
-        this.trackElement = document.getElementById('currentTrack');
-        this.emojiElement = document.querySelector('.organ-emoji');
+// ======== 音乐播放系统 ========
+let currentOrgan = null;
+let audioPlayer = new Audio();
+let currentTrackIndex = 0;
+let isMusicPlaying = false;
+
+// 根据时辰选择音乐
+function selectOrganMusic() {
+    const currentHour = new Date().getHours();
+    const organs = ORGAN_DATA.filter(o => 
+        currentHour >= o.hour-1 && currentHour < o.hour+1
+    );
+    
+    if (!isMusicPlaying && organs.length > 0) {
+        const organ = organs[0].name;
+        if (organ !== currentOrgan) {
+            currentOrgan = organ;
+            currentTrackIndex = 0;
+            loadTrack();
+        }
     }
+}
+// 在loadTrack()中添加[7](@ref)
+async function loadTrack() {
+    try {
+        if (!currentOrgan || !MUSIC_DATA[currentOrgan]) {
+            console.warn("Organ music data not found or invalid.");
+            return;
+        }
+        
+        const playlist = MUSIC_DATA[currentOrgan].playlist;
+        if (!playlist || playlist.length === 0) {
+            console.warn("Playlist is empty for the current organ.");
+            return;
+        }
 
-    // 更新提示内容[3,4](@ref)
-    update(hour) {
-        const currentHour = new Date().getHours();
-        const organ = ORGAN_DATA.find(o => 
-    currentHour >= o.hour-1 && currentHour < o.hour + 1
-);
-       if (!organ) return;
-
-       this.currentOrganElement.textContent = organ.name;
-       this.healthTipElement.innerHTML = `
-           ${organ.tip}<small>${organ.musicTips.effect}</small>
-       `;
-       this.trackElement.textContent = `${organ.musicTips.tone}-${organ.musicTips.tracks[0]}`;
-       this.emojiElement.textContent = organ.emoji;
-       
-       // 动态样式[6](@ref)
-       this.tipElement.style.background = this.getOrganColor(organ.name);
-       this.tipElement.classList.add('show');
-       setTimeout(() => this.tipElement.classList.remove('show'), 5000);
-//    // 获取当前完整时间
-//    const now = new Date();
-//    const currentHour = now.getHours();
-//    
-//    // 按2小时区间查找器官
-//    const organ = ORGAN_DATA.find(o => 
-//        currentHour >= o.hour-1 && currentHour < o.hour+1
-//    );
-//    
-//    // 更新DOM元素
-//    if(organ) {
-//        document.getElementById('healthTip').textContent = organ.tip;
-//        document.getElementById('currentTrack').textContent = 
-//            `${organ.musicTips.tone}-${organ.musicTips.tracks[0]}`;
-//    }
+        audioPlayer.src = playlist[currentTrackIndex];
+        await audioPlayer.play();
+        isMusicPlaying = true;
+		updateDisplay();
+    } catch (error) {
+        console.error('音乐播放失败:', error);
+        isMusicPlaying = false;
+        playNext(); // Attempt to play the next track on error
+    }
 }
 
-    // 器官对应颜色[2](@ref)
-    getOrganColor(organ) {
-        const colors = {
-            '肝': '#8bc34a',
-            '心': '#f44336', 
-            '脾': '#ff9800',
-            '肺': '#00bcd4',
-            '肾': '#2196f3'
-        };
-        return `linear-gradient(135deg, ${colors[organ]} 0%, #2c3e50 100%)`;
+
+
+// 控制功能
+function playPause() {
+    if (audioPlayer.paused) {
+        audioPlayer.play().catch(error => {
+            console.error("Error resuming playback:", error);
+        });
+    } else {
+        audioPlayer.pause();
+    }
+    updateDisplay();
+}
+
+
+function playNext() {
+    const mode = document.getElementById('playMode').value;
+    if (mode === 'random') {
+        currentTrackIndex = Math.floor(Math.random() * MUSIC_DATA[currentOrgan].playlist.length);
+    } else {
+        currentTrackIndex = (currentTrackIndex + 1) % MUSIC_DATA[currentOrgan].playlist.length;
+    }
+    loadTrack();
+}
+
+// 更新显示
+function updateDisplay() {
+    const fileName = decodeURIComponent(audioPlayer.src.split('/').pop());
+    const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone}|${fileName}`;
+    //const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone}|${audioPlayer.src.split('/').pop()}`;
+    document.getElementById('nowPlaying').textContent = info;
+  // 使用 setTimeout 确保渲染顺序
+// setTimeout(() => {
+//   const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone} | ${audioPlayer.src.split('/').pop()}`;
+//   document.getElementById('nowPlaying').textContent = info;
+// }, 0);
+//  // 显式转义曲目名称
+// const trackName = organ.musicTips.tracks[0]? organ.musicTips.tracks[0]:'未知曲目';
+// document.getElementById('currentTrack').textContent=`${organ.musicTips.tone} - ${encodeURIComponent(trackName)}`; 
+}
+
+// 动态提示控制器
+class DynamicTip {
+update() {
+        try {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const organ = ORGAN_DATA.find(o => 
+                currentHour >= o.hour-1 && currentHour < o.hour+1
+            );
+            
+            if (organ) {
+			   this.currentOrganElement.textContent = organ.name;
+			   this.healthTipElement.innerHTML = `${organ.tip}<small>${organ.musicTips.effect}</small>`;
+			   this.trackElement.textContent = `${organ.musicTips.tone}-${organ.musicTips.tracks[0]}`;
+			   this.emojiElement.textContent = organ.emoji;
+			   
+			   // 动态样式[6](@ref)
+			   this.tipElement.style.background = this.getOrganColor(organ.name);
+			   this.tipElement.classList.add('show');
+			   setTimeout(() => this.tipElement.classList.remove('show'), 5000);
+            }
+        } catch (error) {
+            console.error('动态提示更新失败:', error);
+        }
     }
 }
 
@@ -503,6 +520,12 @@ const handsCtx = handsCanvas.getContext('2d');
 const clockContainer = document.getElementById('clockContainer'); // 容器引用
 
 function init() {
+   // const dpr = window.devicePixelRatio || 1;
+   // baseCanvas.width = handsCanvas.width = CLOCK_SIZE * dpr;
+   // baseCanvas.height = handsCanvas.height = CLOCK_SIZE * dpr;
+   // baseCtx.scale(dpr, dpr);
+   // handsCtx.scale(dpr, dpr);
+	
     drawStaticElements();
     createDizhiElements();
     createOrganElements();
@@ -553,7 +576,7 @@ function drawStaticElements() {
         const angle = (i * Math.PI/6) - 6*Math.PI/12;
         baseCtx.beginPath();
         //baseCtx.moveTo(CLOCK_RADIUS, CLOCK_RADIUS);
-        baseCtx.moveTo(CLOCK_RADIUS + (CLOCK_RADIUS-330)*Math.cos(angle), CLOCK_RADIUS+ (CLOCK_RADIUS-330)*Math.sin(angle));
+        baseCtx.moveTo(CLOCK_RADIUS+ (CLOCK_RADIUS-330)*Math.cos(angle), CLOCK_RADIUS+ (CLOCK_RADIUS-330)*Math.sin(angle));
         baseCtx.lineTo(
             CLOCK_RADIUS + (CLOCK_RADIUS-230)*Math.cos(angle),
             CLOCK_RADIUS + (CLOCK_RADIUS-230)*Math.sin(angle)
@@ -717,28 +740,29 @@ function triggerAlarm() {
 
 // 时钟指针功能======= 修改时钟更新函数 =======
 function updateClock() {
-    handsCtx.clearRect(0, 0, CLOCK_SIZE, CLOCK_SIZE);
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-    // 每半小时更新提示[1](@ref)
-    if (now.getMinutes() % 30 === 0) {
-        new DynamicTip().update(hour);
-    }
-//     drawHand(hours * 30 + minutes * 0.5, radius * 0.5, 6, "white");
-//     drawHand(minutes * 6, radius * 0.7, 4, "white");
-//     drawHand(seconds * 6, radius * 0.9, 2, "red");
-    drawHand(hours * 15 + minutes * 0.25, 160, 8, "#ecf0f1");  // 时针
-    drawHand(minutes * 6 + seconds * 0.1, 180, 6, "#bdc3c7"); // 分针
-    drawHand(seconds * 6, 240, 4, "#e74c3c");                 // 秒针
-   checkAlarms(now); // 新增闹钟检查
-     // 新增音乐检测（每5分钟检测一次）
-    if (now.getMinutes() % 5 === 0) {
-        selectOrganMusic(hours);
-    }
+    try {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
 
-	requestAnimationFrame(updateClock);
+        // 绘制指针
+        handsCtx.clearRect(0, 0, CLOCK_SIZE, CLOCK_SIZE);
+        drawHand(hours * 15 + minutes * 0.25, 160, 8, "#ecf0f1");
+        drawHand(minutes * 6 + seconds * 0.1, 180, 6, "#bdc3c7"); 
+        drawHand(seconds * 6, 240, 4, "#e74c3c");
+
+        // 每5分钟检查音乐（原逻辑有变量错误）
+        if (now.getMinutes() % 5 === 0) {
+            selectOrganMusic(); // 移除错误参数
+        }
+        
+        checkAlarms(now);
+    } catch (error) {
+        console.error('时钟更新错误:', error);
+    } finally {
+        requestAnimationFrame(updateClock); // 确保循环持续
+    }
 }
 
 function drawHand(degrees, length, width, color) {
@@ -760,7 +784,11 @@ function drawHand(degrees, length, width, color) {
 
 // ======== 初始化音乐播放器 ========
 audioPlayer.addEventListener('ended', () => {
-    playNext(); // 自动播放下一曲
+    try {
+        playNext();
+    } catch (error) {
+        console.error('自动播放失败:', error);
+    }
 });
 audioPlayer.volume = 0.5; // 初始音量
 
@@ -768,4 +796,3 @@ init();
 </script>
 </body>
 </html>
-
