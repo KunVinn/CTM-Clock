@@ -410,7 +410,7 @@ function selectOrganMusic() {
         currentHour >= o.hour-1 && currentHour < o.hour+1
     );
     
-    if (!isMusicPlaying && organs.length > 0) {
+    if ( organs.length > 0) {
         const organ = organs[0].name;
         if (organ !== currentOrgan) {
             currentOrgan = organ;
