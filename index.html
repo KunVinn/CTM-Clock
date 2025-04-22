@@ -243,6 +243,10 @@
             </div>
         <div id="nowPlaying"></div>
         </div>
+    <br>
+    <label for="volumeControl">🔊</label>
+    <input id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.5">
+    <br>
     </div>
 
 <!-- 新增闹钟控制面板 -->
@@ -409,7 +413,6 @@ function selectOrganMusic() {
         }
     }
 }
-// 在loadTrack()中添加[7]
 async function loadTrack() {
     try {
         if (!currentOrgan || !MUSIC_DATA[currentOrgan]) {
@@ -463,16 +466,7 @@ function playNext() {
 function updateDisplay() {
     const fileName = decodeURIComponent(audioPlayer.src.split('/').pop());
     const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone}|${fileName}`;
-    //const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone}|${audioPlayer.src.split('/').pop()}`;
     document.getElementById('nowPlaying').textContent = info;
-  // 使用 setTimeout 确保渲染顺序
-// setTimeout(() => {
-//   const info = `${currentOrgan}经当令 | ${MUSIC_DATA[currentOrgan].tone} | ${audioPlayer.src.split('/').pop()}`;
-//   document.getElementById('nowPlaying').textContent = info;
-// }, 0);
-//  // 显式转义曲目名称
-// const trackName = organ.musicTips.tracks[0]? organ.musicTips.tracks[0]:'未知曲目';
-// document.getElementById('currentTrack').textContent=`${organ.musicTips.tone} - ${encodeURIComponent(trackName)}`; 
 }
 
 // 动态提示控制器
@@ -588,7 +582,7 @@ function createDizhiElements() {
         elem.style.top = pos.y + 'px';
         elem.textContent = dz;
         elem.onclick = () => window.open(HOUR_LINKS[index], '_blank');
-        clockContainer.appendChild(elem); // 关键修复2：挂载到容器
+        clockContainer.appendChild(elem);
     });
 }
 
@@ -616,7 +610,7 @@ function createOrganElements() {
 
         container.appendChild(nameElem);
         container.appendChild(emojiElem);
-        clockContainer.appendChild(container); // 关键修复2：挂载到容器
+        clockContainer.appendChild(container); 
     });
 }
 
@@ -631,7 +625,7 @@ function createHourNumbers() {
         div.style.left = pos.x + 'px';
         div.style.top = pos.y + 'px';
         div.textContent = hour;
-        clockContainer.appendChild(div); // 关键修复2：挂载到容器
+        clockContainer.appendChild(div);
     }
 }
 
@@ -728,7 +722,7 @@ function triggerAlarm() {
     document.body.style.animation = 'alarmFlash 0.5s 3';
 }
 
-// 时钟指针功能======= 修改时钟更新函数 =======
+// 时钟指针功能
 function updateClock() {
     try {
         const now = new Date();
@@ -742,9 +736,9 @@ function updateClock() {
         drawHand(minutes * 6 + seconds * 0.1, 180, 6, "#bdc3c7"); 
         drawHand(seconds * 6, 240, 4, "#e74c3c");
 
-        // 每5分钟检查音乐（原逻辑有变量错误）
+        // 每5分钟检查音乐
         if (now.getMinutes() % 5 === 0) {
-            selectOrganMusic(); // 移除错误参数
+            selectOrganMusic();
         }
         
         checkAlarms(now);
@@ -772,6 +766,7 @@ function drawHand(degrees, length, width, color) {
 
 // 初始化
 
+audioPlayer.volume = 0.5; // 初始音量
 // ======== 初始化音乐播放器 ========
 audioPlayer.addEventListener('ended', () => {
     try {
@@ -780,7 +775,9 @@ audioPlayer.addEventListener('ended', () => {
         console.error('自动播放失败:', error);
     }
 });
-audioPlayer.volume = 0.5; // 初始音量
+volumeControl.addEventListener("input", () => {
+     audioPlayer.volume = volumeControl.value;
+});
 
 init();
 </script>
