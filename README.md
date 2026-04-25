@@ -1,8 +1,8 @@
 # 子午流注 · Zǐ Wǔ Liú Zhù
 
-> **Midnight–Noon Ebb-and-Flow** — a contemplative TCM educational site built around the classical 24-hour organ-meridian clock, with a bilingual knowledge base spanning 五行 Five Elements, 经络 meridians, 舌诊 tongue diagnosis, and the 针灸 acupuncture point system.
+> **Midnight–Noon Ebb-and-Flow** — a contemplative TCM educational site built around the classical 24-hour organ-meridian clock, with a bilingual knowledge base spanning 五行 Five Elements, 经络 meridians, 舌诊 tongue diagnosis, the 针灸 acupuncture point system, and a small directory of consented practitioners.
 
-A static, self-contained, single-deploy website. Drop the folder onto Netlify and it runs. No build step, no database, no user accounts, no external dependencies on Google Fonts or CDNs except where explicitly chosen for music streaming.
+A static, self-contained, single-deploy website. Drop the folder onto Netlify and it runs. No build step, no database, no user accounts, no external CDN dependencies (the cosmological clock and all UI render purely from local SVG and CSS).
 
 ---
 
@@ -15,10 +15,11 @@ A static, self-contained, single-deploy website. Drop the folder onto Netlify an
 5. [The cosmological clock](#the-cosmological-clock)
 6. [Knowledge base](#knowledge-base)
 7. [Optional services](#optional-services)
-8. [Deployment](#deployment)
-9. [Design decisions](#design-decisions)
-10. [Roadmap and ideas](#roadmap-and-ideas)
-11. [Sources and credits](#sources-and-credits)
+8. [Privacy model](#privacy-model)
+9. [Deployment](#deployment)
+10. [Design decisions](#design-decisions)
+11. [Roadmap and ideas](#roadmap-and-ideas)
+12. [Sources and credits](#sources-and-credits)
 
 ---
 
@@ -26,17 +27,17 @@ A static, self-contained, single-deploy website. Drop the folder onto Netlify an
 
 This site is a **teaching companion for Traditional Chinese Medicine** organised around the central insight of 子午流注 — that human qi flows through the twelve organ-meridians on a 24-hour cycle, with each meridian peaking in a specific two-hour window. It blends:
 
-- **A live cosmological clock** showing the active meridian at every moment
+- **A live cosmological clock** showing the active meridian at every moment, with hover-zoom on every label
 - **Reference pages** on the Five Elements, the Twelve Hours, and the meridian/point system
-- **A guided tongue-diagnosis tool** with photo capture, pattern recognition, and acupoint suggestions
+- **A guided tongue-diagnosis tool** with photo capture, pattern recognition, acupoint suggestions, and the option to email the report to a practitioner
+- **A small, opt-in practitioner directory** (Option D hybrid) with full GDPR-compliant consent flow
 - **A bilingual glossary** of ~100 TCM terms cross-linked throughout the site
 - **A meridian-time music player** (五音 five-tone playlists for each organ)
-- **A "send to my practitioner" relay** for sharing self-check reports
 
 Inspired by:
-- **KunVinn/CTM-Clock** — the original cosmological clock with five-tone music
+- **KunVinn/CTM-Clock** — the original cosmological clock with five-tone music and hover-scaling labels
 - **AI-HPC-Research-Team/TCM_knowledge_graph (TCMM)** — the entity taxonomy on the Knowledge Graph page
-- **FWD/福沃德 八卦时钟** — the reference for the 太极 + 八卦 center
+- **FWD/福沃德 八卦时钟** — the visual reference for the 太极 + 八卦 center
 
 ---
 
@@ -52,6 +53,7 @@ After deployment, the URL structure is:
 | `/knowledge` | TCMM-style entity browser |
 | `/tongue` | Guided tongue diagnosis |
 | `/acupuncture` | Meridian map and point system |
+| `/practitioners` | Featured practitioners directory |
 | `/practices` | Daily habit tracker |
 | `/about` | Sources and disclaimer |
 
@@ -65,31 +67,36 @@ tcm-site/
 ├── hours.html                 ← Twelve hour cards
 ├── elements.html              ← Five Elements + 24-category correspondence table
 ├── knowledge.html             ← Knowledge graph entity browser
-├── tongue.html                ← Tongue diagnosis tool
-├── acupuncture.html           ← Meridian + point system
+├── tongue.html                ← Tongue diagnosis tool + share-with-practitioner form
+├── acupuncture.html           ← 9-section meridian + point system reference
+├── practitioners.html         ← Featured-practitioner directory (Option D)
 ├── practices.html             ← Daily practices tracker
 ├── about.html                 ← Credits and disclaimer
 │
 ├── netlify.toml               ← Cache headers + pretty-URL redirects + functions wiring
 ├── EMAIL_RELAY_SETUP.md       ← Step-by-step setup for the optional email relay
+├── PRACTITIONER_CONSENT.md    ← GDPR-compliant consent template practitioners sign before listing
+├── README.md                  ← This file
 │
 ├── netlify/functions/
 │   └── send-report.js         ← Optional: serverless email relay (Resend)
 │
 └── assets/
-    ├── style.css              ← All styling — single ~80 KB sheet
+    ├── style.css              ← All styling — single ~88 KB sheet
     ├── data.js                ← Organs, elements, correspondences, music data
     ├── glossary.js            ← ~100 TCM terms + ~130 aliases
-    ├── clock.js               ← The cosmological clock SVG builder
+    ├── clock.js               ← The cosmological clock SVG builder + hover-zoom labels
     ├── tcm-link.js            ← Auto-decorates [data-term] elements with tooltips
     ├── tcm-script-toggle.js   ← Simplified ↔ Traditional Chinese site-wide toggle
     ├── tcm-music.js           ← Floating music panel + Wake Lock toggle
+    │
+    ├── practitioners.json     ← The featured-practitioner directory data
     │
     ├── CTM-Music/
     │   └── README.txt         ← Filenames for the optional .mp3 audio drop-in
     │
     └── img/
-        └── tongue-guide.svg   ← Alignment overlay for the live camera capture
+        └── tongue-guide.svg   ← Mouth + tongue alignment overlay for camera capture
 ```
 
 ---
@@ -113,7 +120,7 @@ Grid of all twelve organ-meridian cards in chronological order from 子时 (23:0
 
 Five element cards (Wood / Fire / Earth / Metal / Water) plus:
 
-- **The Generation & Control diagram** — pentagonal SVG with green solid arrows for 相生 (Wood → Fire → Earth → Metal → Water → Wood) and red dashed arrows for 相克 (Wood → Earth, Earth → Water, Water → Fire, Fire → Metal, Metal → Wood). Both cycles render with visible arrowheads.
+- **The Generation & Control diagram** — pentagonal SVG with green solid arrows for 相生 (Wood → Fire → Earth → Metal → Water → Wood) and red dashed arrows for 相克 (Wood → Earth, Earth → Water, Water → Fire, Fire → Metal, Metal → Wood). Both cycles render with clearly visible arrowheads.
 - **A 24-category correspondence table** — Season, Climate, Direction, Color, Sound, Taste, Smell, Emotion, Sense Organ, Tissue, Yin Organ, Yang Organ, Phase of Life, Planet, Animal, Grain, Fruit, Vegetable, Domesticated Animal, Number, Tone, Manifestation, Action, Pulse — all five rows × 24 columns sourced from 《素问·宣明五气篇》《素问·阴阳应象大论》《素问·五脏生成篇》
 
 ### Knowledge Graph (`knowledge.html`)
@@ -124,17 +131,18 @@ A TCMM-style entity browser. 20 entity types and the relations between them — 
 
 A complete guided tongue self-check:
 
-- **Photo capture** — file upload OR a live in-browser camera (uses `navigator.mediaDevices.getUserMedia`) with a tongue-alignment overlay
+- **Photo capture** — file upload OR a redesigned in-browser camera modal (uses `navigator.mediaDevices.getUserMedia`) with a full mouth + tongue alignment overlay (lips, teeth, extended tongue, midline crease, with corner brackets in the viewfinder style)
 - **Tongue zone map** — interactive SVG showing which area maps to which organ system (tip = Heart/Lung, edges = Liver/Gallbladder, center = Spleen/Stomach, root = Kidney/Bladder/Intestines)
 - **Three selector grids** — 6 colors × 8 shapes × 7 coatings, each with photographic descriptions
 - **Pattern matching** — selections trigger the 10 classical TCM patterns (qi-deficiency, yang-deficiency, yin-deficiency, blood-deficiency, excess heat, cold, dampness, damp-heat, qi stagnation, blood stasis), ranked by how many of the three signs match
-- **🆕 Acupoint suggestions per pattern** — each pattern shows 3 specific points with method icons (針 acupuncture / 艾 moxibustion / 按 acupressure), location, and clinical rationale
+- **Acupoint suggestions per pattern** — each pattern shows 3 specific points with method icons (針 acupuncture / 艾 moxibustion / 按 acupressure), location, and clinical rationale
 - **Six self-check steps** — guided checklist for taking your own observation
 - **Report generation** — three actions:
   - Print / Save as PDF (uses `window.print()` with `@media print` rules)
   - Download as standalone HTML (~10 KB self-contained file with the photo embedded as base64)
   - Email to practitioner via mailto:
-- **🆕 "Send to my practitioner" relay** (optional) — collects user name, user email, practitioner email, optional note, consent — forwards via Resend
+- **"Send to my practitioner" form** (optional email relay) — collects user name, user email, practitioner email, optional note, and a required consent checkbox
+- **Practitioner picker dropdown** integrated into the share form — automatically populated from the featured directory; users can either pick from the list or type any email manually
 
 ### Acupuncture (`acupuncture.html`) — 9 sections
 
@@ -149,6 +157,15 @@ A comprehensive meridian-and-point reference:
 7. **十二募穴** — verse + detailed 12-row table of front-mu alarm point locations
 8. **十二经脉流注表** — color-coded yin/yang flow table, marks where Stream and Source merge on yin channels (以输代原)
 9. **五腧穴的深层内涵** — 6-card essay using the water/river metaphor, tying back to 子午流注 time-acupuncture
+
+### Practitioners (`practitioners.html`)
+
+A small editorial directory of TCM practitioners who have given explicit written consent (Option D hybrid model — see [Privacy model](#privacy-model)):
+
+- **Public listing** — each practitioner appears as a card with photo, credentials, languages, location, specialties, English + Chinese bio, and a "Send tongue report to this practitioner →" CTA that deep-links to the tongue diagnosis page with the practitioner pre-selected
+- **Empty by default** — the bundled `practitioners.json` contains a single inactive example. As practitioners return signed `PRACTITIONER_CONSENT.md` forms you flip `active: true` and the entry appears
+- **Application call-out** — the page also explains how practitioners can apply to be listed, with a link to the consent template
+- **Auto-hide the picker** — if `practitioners.json` has no active entries, the practitioner-picker dropdown on the tongue page hides itself, falling back gracefully to the manual email entry
 
 ### Daily Practices (`practices.html`)
 
@@ -169,12 +186,24 @@ The 380 px sticky sidebar contains an SVG clock that's the heart of the site. Bu
 | Outer band | 24-hour numerals (00–23) on warm dark wood |
 | Next ring | 24 fangwei directional characters (子癸丑艮…) |
 | Next ring | 12 zodiac emoji (🐀🐂🐅…) |
+| Next ring | 12 earthly branches (子丑寅卯…) |
 | Next ring | 12 organ sectors, each clickable, color-coded by 五行 element |
 | Next ring | 八卦 trigrams (先天 sequence: 坤 top, 乾 bottom, 离 right, 坎 left) |
 | Center | 太极 with white yang-eye pointing up at 24:00, dark yin-eye pointing down at 12:00 |
 | Pivot | 氣 disc in cinnabar |
 
 The hour, minute, and second hands sweep over all of this. The active meridian sector is highlighted. The sidebar's "now" panel below the clock shows the current organ + 时辰 + zodiac + a one-line health tip.
+
+### Hover-zoom on labels
+
+Following the pattern in **KunVinn/CTM-Clock**, every small label on the clock is hover-interactive:
+
+- **80 zoomable elements total**: 24 hour numbers + 24 fangwei + 12 branches + 12 zodiac emoji + 8 trigrams
+- On hover, each text scales **1.6×** with a smooth 0.18s transition
+- Color shifts to bright gold + a soft glow appears
+- A native browser tooltip provides extra context: the corresponding organ-meridian, time range, directional meaning, or trigram interpretation
+
+This makes the densely-packed perimeter actually readable — hover over any tiny character and it pops out 60% larger with an explanation, then snaps back when you move away.
 
 ---
 
@@ -219,7 +248,7 @@ The ☾ button in the topbar uses the modern `navigator.wakeLock.request('screen
 
 ### Email relay (Option B)
 
-Sends the user's tongue self-check report to a TCM practitioner. **No accounts, no database, no storage on the site.** The user types their own name and emails into a form each time — they identify themselves voluntarily.
+Sends the user's tongue self-check report to a TCM practitioner. **No accounts, no database, no storage on the site.** The user types their own name and email into a form each time — they identify themselves voluntarily.
 
 - `netlify/functions/send-report.js` — stateless serverless function (~150 lines)
 - Forwards via **Resend** (free tier: 3000 emails/month)
@@ -229,6 +258,61 @@ Sends the user's tongue self-check report to a TCM practitioner. **No accounts, 
 - If the relay isn't configured, the form gracefully falls back to opening the local mail client via mailto:
 
 See `EMAIL_RELAY_SETUP.md` for the 10-minute setup procedure (Resend signup, domain verification, two environment variables).
+
+### Featured-practitioner directory (Option D)
+
+A small editorial directory of practitioners you personally know and trust. The implementation is data-driven by a single JSON file, with no database, no sign-up flow, no admin panel.
+
+- `assets/practitioners.json` — the source of truth. Each entry is a small object with name, credentials, languages, specialties, location, bio (English + Chinese), email, optional photo URL, optional website, plus consent metadata (`consent_date`, `consent_scope`)
+- An `active: false` flag lets you draft entries without publishing them
+- The `practitioners.html` page renders all `active: true` entries as cards with a "Send tongue report to this practitioner →" CTA
+- That CTA deep-links to `tongue.html?practitioner=<id>` — opening the share form with the practitioner pre-selected and a friendly hint banner
+- The same dropdown appears inside the share modal so users can also pick from there
+
+#### How to add a practitioner
+
+1. Email the prospective practitioner the `PRACTITIONER_CONSENT.md` template
+2. Receive their signed copy back (PDF, photo, or typed email reply per Norwegian e-signature rules)
+3. Save their signed form to a private folder (NOT in the site repo)
+4. Add a new entry to `assets/practitioners.json`, fill in their info, set `"active": true` and `"consent_date": "YYYY-MM-DD"`
+5. Redeploy the site (one drag-and-drop on Netlify)
+
+#### How to handle a withdrawal request
+
+Per GDPR Article 7(3) — withdrawal must be as easy as giving consent.
+
+1. Within 7 days (target: same day) remove the JSON entry, redeploy
+2. Send a confirmation reply to the practitioner
+3. Keep their original consent form in your private archive for 3 years as legal proof of prior consent (or destroy on explicit request)
+
+---
+
+## Privacy model
+
+This site has been deliberately designed to collect, store, and process as little personal data as possible. The privacy stance is its strongest feature.
+
+### What the site stores
+
+- **About visitors:** nothing. Reports, photos, and selections live only in the visitor's own browser tab and are gone when they close it (except for habit-tracker checkboxes saved to that browser's localStorage)
+- **About practitioners (if directory enabled):** only what is in `practitioners.json` — public-facing name, photo, credentials, contact email, bio. Plus the signed consent forms stored privately by the site owner
+
+### What the site does NOT store
+
+- No user accounts, passwords, or sessions
+- No tongue photos on any server (they only ever leave the user's device if the user explicitly sends them via email or via the relay)
+- No analytics, no tracking pixels, no ad networks
+- No reports — even when sent through the relay, they are forwarded once and immediately forgotten
+
+### What about email relay?
+
+When a user opts into the "Send to my practitioner" form, the report transits through Resend (the email provider). Resend keeps standard delivery logs for ~30 days for debugging, then auto-deletes. This is the same as how any email service works — your email provider can see the messages it routes for you.
+
+### GDPR / Norwegian helsedataloven posture
+
+- The site is a **transmission service**, not a **data controller** for visitor data
+- The featured-practitioner directory is the **only personal data the site owner controls**, and it is held under **explicit, written, withdrawable consent** per Article 7
+- The full consent template (`PRACTITIONER_CONSENT.md`) covers Articles 6, 7, 13, 17, and 21 of GDPR — purpose, legal basis, retention, withdrawal rights, right to be forgotten, right to object
+- Health data of identified individuals (a Article 9 special category) is **never stored** on the site
 
 ---
 
@@ -255,6 +339,13 @@ Follow `EMAIL_RELAY_SETUP.md`. About 10 minutes:
 3. Set `RESEND_API_KEY` and `FROM_ADDRESS` in Netlify environment variables
 4. Trigger a redeploy
 
+### To enable the practitioners directory (optional)
+
+1. Reach out to TCM practitioners you personally know and want to feature
+2. Send them `PRACTITIONER_CONSENT.md`
+3. Once they return the signed form, add their entry to `assets/practitioners.json` with `"active": true`
+4. Redeploy
+
 ### To use a custom domain
 
 1. In Netlify: **Domain settings → Add custom domain**
@@ -269,7 +360,7 @@ Follow `EMAIL_RELAY_SETUP.md`. About 10 minutes:
 
 - Zero ongoing cost (Netlify free tier)
 - Zero attack surface — no database, no admin panel, nothing to compromise
-- Zero data-privacy obligation — the site collects nothing
+- Minimal data-privacy obligation — the site collects almost nothing
 - Trivial to fork, modify, self-host
 - Survives indefinitely with no maintenance
 
@@ -282,9 +373,9 @@ Trading "many small files" for "one well-organised sheet" because:
 
 ### Why no framework?
 
-The site has rich interactivity (camera capture, pattern matching, dynamic glossary tooltips, script toggle, music player, wake lock) yet is entirely vanilla JS. No React, no Vue, no Svelte. Reasons:
+The site has rich interactivity (camera capture, pattern matching, dynamic glossary tooltips, script toggle, music player, wake lock, hover-zoom labels, practitioner picker, email relay) yet is entirely vanilla JS. No React, no Vue, no Svelte. Reasons:
 
-- **Total weight under 200 KB** uncompressed including all 8 pages, glossary, music data, the entire SVG clock — vs. typical React landing pages at 500 KB+ minimum
+- **Total weight under 200 KB** uncompressed including all 9 pages, glossary, music data, the entire SVG clock — vs. typical React landing pages at 500 KB+ minimum
 - **No build step** — the source code IS the deployable. Edit the file, refresh the browser
 - **Every line is auditable** by anyone who reads JavaScript
 
@@ -306,6 +397,14 @@ Many TCM concepts have no precise English equivalent — 气, 神, 精 carry mea
 
 子午流注 is the unifying metaphor for everything else on the site. Tongue diagnosis findings, dietary advice, sleep timing, music selection, and acupuncture point suggestions all anchor to "what hour is it, what organ is active, what is the body trying to do right now." The clock made it natural to keep that present at every moment of browsing.
 
+### Why a manual practitioner directory rather than self-service signup?
+
+A self-service signup with email verification, profile editor, and admin moderation queue is a real product — weeks of build, ongoing maintenance, more attack surface, and more legal exposure. A small editorial directory of people the site owner personally knows is the right scale for a teaching site: each entry is vouched-for, there are 3–10 entries not 300, and the consent process happens once per practitioner over email rather than at scale.
+
+### Why no user accounts?
+
+In Norway and the EU, accounts trigger GDPR data-controller obligations. Storing health-related self-observations under a username creates a category of "special category data" under Article 9 — meaning explicit purpose limitation, retention limits, breach notification, subject access rights, ability to delete, etc. None of that complexity is needed for the educational mission. The privacy-preserving design is simpler AND legally cleaner.
+
 ---
 
 ## Roadmap and ideas
@@ -313,8 +412,9 @@ Many TCM concepts have no precise English equivalent — 气, 神, 精 carry mea
 ### Higher-priority (already structurally supported)
 
 - **Drop in the actual `.mp3` files** for the music player. The infrastructure is fully built; it just needs the audio files. The upstream **KunVinn/CTM-Clock** repo lists the same track set used here.
-- **Custom domain + email-relay setup.** ~10 minutes of work for a much better practitioner-sharing experience than mailto:.
-- **Add user-submitted herb library entries.** The Knowledge Graph page currently shows the TCMM taxonomy but is browse-only. A small Markdown file format (`herbs/dang-gui.md` etc.) that auto-loads into the knowledge page would let you grow the library over time without database work.
+- **Set up Resend email relay** (~10 minutes) so the share-with-practitioner flow works end-to-end rather than falling back to mailto:.
+- **Recruit 3–5 practitioners** to populate the directory. Each is a single email exchange + a signed PDF of `PRACTITIONER_CONSENT.md`.
+- **Add a privacy policy page** (`/privacy`) once the site is live with a custom domain, summarising what's in the [Privacy model](#privacy-model) section above for end users.
 
 ### Medium-priority (require some design)
 
@@ -323,6 +423,7 @@ Many TCM concepts have no precise English equivalent — 气, 神, 精 carry mea
 - **Seasonal pages.** 立春 / 立夏 / 立秋 / 立冬 etc. — 24 节气 pages with seasonal eating, sleeping, and qigong recommendations. Auto-highlight the current solar term in the sidebar.
 - **A meridian-tracing trainer.** Interactive SVG body where the user can trace each meridian's path from start to end, with the verses (歌诀) revealing one line at a time as confirmation.
 - **Audio of the verses being read.** Each meridian's 歌诀 spoken aloud (Mandarin pinyin), so memory study can include listening.
+- **Practitioner photos.** The directory schema already supports a `photo` field; right now the bundled example uses a letter-initial placeholder. Real photos make the directory feel much more inviting.
 
 ### Lower-priority / experimental
 
@@ -332,18 +433,21 @@ Many TCM concepts have no precise English equivalent — 气, 神, 精 carry mea
 - **Five-tone music theory page.** Explain why 角音 supports 肝, 商音 supports 肺, etc. — the actual Chinese music theory behind the playlist correspondences. With audio examples of each tone (modal, scale, characteristic).
 - **Multi-practitioner relay.** Currently the share form sends to one practitioner. A "share with up to 3 colleagues" mode would let users get a second opinion easily.
 - **Translation pass.** Add a third language toggle for English ↔ Norwegian (or another local language) for the surface text. The Chinese stays as the canonical reference; the translated layer is just for accessibility.
+- **Sublingual veins reference.** A counterpart to the tongue surface that addresses what shows under the tongue — enlarged or dark sublingual veins are a major sign of blood stasis worth dedicated coverage.
 
 ### Architectural ideas (would change the project shape)
 
-- **Convert to a 静态 generator** (Eleventy, Astro) if the page count grows past ~20. Right now the cost is just typing some HTML; past a threshold a templating system pays off.
+- **Convert to a static-site generator** (Eleventy, Astro) if the page count grows past ~20. Right now the cost is just typing some HTML; past a threshold a templating system pays off.
 - **PWA / offline support.** Add a service worker so the site works fully offline once visited. Especially useful for travelers using the meridian clock and tongue tools without reliable internet.
-- **A small admin dashboard** showing aggregate usage stats — popular pages, popular tongue patterns, which terms get clicked most. This would require some kind of analytics; Plausible (privacy-friendly, EU-hosted) is a natural fit.
+- **Privacy-friendly analytics.** Plausible (EU-hosted, no cookies, GDPR-clean) would give you popular-page stats without compromising the privacy posture. About 1 line of HTML to add.
 
 ### Things to deliberately *not* do
 
 - **Don't add user accounts.** They're a liability under helsedataloven and GDPR. The site's privacy model is its strongest feature.
+- **Don't auto-fill or pre-populate the directory** by scraping practitioner websites. Even if their info is "publicly available" elsewhere, listing them on yours without consent triggers GDPR Article 6 violations. The manual-consent process is the *right* answer, not a temporary inconvenience.
 - **Don't add diagnosis claims.** Everything is "self-observation aiding lifestyle adjustment" or "study reference of classical doctrine." The educational framing is what allows the site to discuss TCM frankly without crossing into regulated medical territory.
 - **Don't add ads or tracking.** It would conflict with the contemplative tone and most analytics scripts hurt site speed.
+- **Don't accept payment for practitioner listings.** The directory is editorial — practitioners you personally know and trust. Paid listings would be advertising under EU law and trigger entirely different regulatory requirements.
 
 ---
 
@@ -360,7 +464,7 @@ Many TCM concepts have no precise English equivalent — 气, 神, 精 carry mea
 
 ### Project inspirations
 
-- **KunVinn/CTM-Clock** (https://github.com/KunVinn/CTM-Clock) — the original cosmological clock with five-tone music; this project is a direct descendant with restructured content and an expanded knowledge base
+- **KunVinn/CTM-Clock** (https://github.com/KunVinn/CTM-Clock) — the original cosmological clock with five-tone music and hover-scaling labels; this project is a direct descendant with restructured content and an expanded knowledge base
 - **AI-HPC-Research-Team/TCM_knowledge_graph** (https://github.com/AI-HPC-Research-Team/TCM_knowledge_graph) — the TCMM taxonomy used on the Knowledge Graph page
 - **FWD/福沃德 八卦时钟** — visual reference for the 太极 + 八卦 + 氣 center
 - **医砭 yibian.hopto.org** — authoritative point-list reference linked from each meridian verse
@@ -375,4 +479,4 @@ The classical TCM content is in the public domain (the texts are millennia old).
 
 ---
 
-*Built in 2026 with Claude as a study companion. Single static deploy on Netlify. ~120 KB total. Nothing is stored on any server about anyone who visits.*
+*Built in 2026 with Claude as a study companion. Single static deploy on Netlify. ~140 KB total. Nothing is stored on any server about anyone who visits.*
