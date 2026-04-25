@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tongue Diagnosis · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="tongue">
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>舌诊</div>
+        <div class="eyebrow">Shé Zhěn · Tongue Diagnosis</div>
+        <h1>What Your Tongue Reveals</h1>
+        <p class="subtitle">In <span data-term="four-examinations">TCM's four examinations</span>, the tongue is one of the most reliable windows into the body's internal state. The <span data-term="heart-tcm">Heart</span> opens to the tongue; every other organ system shows itself there too. Click a zone, pick what you see today, and read what classical TCM associates with that picture.</p>
+      </header>
+
+      <!-- ============================================================
+           PHOTO UPLOAD (optional)
+           ============================================================ -->
+      <section class="photo-section">
+        <h2><span class="cn" data-zh-auto>舌照</span>Upload or Capture Your Tongue Photo <small style="font-family:var(--font-display);font-style:italic;font-weight:400;color:var(--ink-mute);font-size:0.9rem">— optional</small></h2>
+        <p class="desc">Having your own photo to compare against the swatches below makes self-assessment far more accurate.</p>
+
+        <div class="photo-privacy-note">
+          <strong>Your photo stays on your device.</strong> It is never uploaded, sent to any server, or shared with anyone — it lives only in your browser's memory while this page is open. Refresh the page and it's gone.
+        </div>
+
+        <div class="photo-upload-row">
+          <label class="photo-btn primary">
+            <span>📁</span> <span data-zh-s="选择照片" data-zh-t="選擇照片">Choose photo</span>
+            <input type="file" id="photo-file-input" accept="image/*">
+          </label>
+          <button class="photo-btn" type="button" id="open-camera-btn">
+            <span>📷</span> <span data-zh-s="相机" data-zh-t="相機">Camera</span>
+          </button>
+        </div>
+
+        <!-- Live camera modal -->
+        <div class="camera-modal" id="camera-modal" role="dialog" aria-modal="true" aria-labelledby="camera-title">
+          <div class="camera-shell">
+            <button class="camera-close" id="camera-close" type="button" aria-label="Close camera">✕</button>
+            <h3 class="camera-title" id="camera-title" data-zh-s="对准嘴部，伸出舌头" data-zh-t="對準嘴部，伸出舌頭">Frame your mouth in the outline and stick out your tongue</h3>
+            <div class="camera-stage">
+              <video id="camera-video" playsinline autoplay muted></video>
+              <div class="camera-guide" aria-hidden="true">
+                <img src="assets/img/tongue-guide.svg" alt="">
+              </div>
+              <canvas id="camera-canvas" hidden></canvas>
+            </div>
+            <div class="camera-controls">
+              <button class="photo-btn" type="button" id="camera-flip" data-zh-s="切换镜头" data-zh-t="切換鏡頭" title="Switch front/back camera">⇄ Flip</button>
+              <button class="photo-btn primary" type="button" id="camera-shutter" data-zh-s="拍照" data-zh-t="拍照">📸 Capture</button>
+            </div>
+            <div class="camera-hint" id="camera-hint" data-zh-s="把嘴部对准框中的轮廓，伸出舌头使其填入舌形区域。光线充足、不要逆光。" data-zh-t="把嘴部對準框中的輪廓，伸出舌頭使其填入舌形區域。光線充足、不要逆光。">Align your mouth with the outline. Stick the tongue down to fill the tongue shape. Use even lighting; avoid backlight.</div>
+          </div>
+        </div>
+
+        <div class="photo-display" id="photo-display">
+          <button class="photo-clear" id="photo-clear" aria-label="Remove photo" title="Remove photo">✕</button>
+          <div class="photo-frame-guide" id="photo-frame-guide" aria-hidden="true">
+            <img src="assets/img/tongue-guide.svg" alt="">
+          </div>
+          <button class="photo-guide-toggle" id="photo-guide-toggle" type="button"
+                  title="Toggle alignment guide overlay"
+                  data-zh-auto>Show guide</button>
+          <div class="empty-state">
+            <span data-zh-s="使用「上传图片」按钮加载照片，或在手机上点击「使用相机」直接拍摄。" data-zh-t="使用「上傳圖片」按鈕載入照片，或在手機上點擊「使用相機」直接拍攝。">No photo loaded yet. Click "Choose photo" to upload one, or "Take photo" on a phone to capture directly.</span><br><br>
+            <em data-zh-s="最佳拍摄条件：晨起、未刷牙前，自然光下，张嘴自然伸出舌头。" data-zh-t="最佳拍攝條件：晨起、未刷牙前，自然光下，張嘴自然伸出舌頭。">Best photo conditions: morning, before brushing teeth, in natural daylight, mouth fully open with tongue extended naturally.</em><br><br>
+            <em style="color:var(--gold);font-size:0.8rem" data-zh-auto>The dashed outline above is a tongue alignment guide — try to position your tongue to fill it.</em>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           ZONE MAP + INFO
+           ============================================================ -->
+      <div class="tongue-layout">
+        <div class="tongue-canvas">
+          <svg class="tongue-svg" id="tongue-zone-svg" viewBox="0 0 280 360"></svg>
+        </div>
+        <div class="tongue-info">
+          <div class="tongue-info-content" id="zone-info">
+            <h3>Click a zone</h3>
+            <p class="placeholder">Each region of the tongue corresponds to a specific organ system. Click any zone on the diagram to see which organ it reflects and what changes in that area might mean.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           BODY COLOR SELECTOR
+           ============================================================ -->
+      <section class="selector-section">
+        <h2><span class="cn" data-zh-auto>舌色</span>Tongue Body Color · Shé Sè</h2>
+        <p class="desc">The deep, underlying color of the tongue body itself (not the coating) reveals the state of <span data-term="qi">qi</span>, blood, and yin–yang balance. Tap the description that matches your tongue today.</p>
+        <div class="selector-grid" id="color-selector"></div>
+      </section>
+
+      <!-- ============================================================
+           SHAPE SELECTOR
+           ============================================================ -->
+      <section class="selector-section">
+        <h2><span class="cn" data-zh-auto>舌形</span>Tongue Shape · Shé Xíng</h2>
+        <p class="desc">Shape and texture reveal how the body manages fluids, supports digestion, and nourishes tissues.</p>
+        <div class="selector-grid" id="shape-selector"></div>
+      </section>
+
+      <!-- ============================================================
+           COATING SELECTOR
+           ============================================================ -->
+      <section class="selector-section">
+        <h2><span class="cn" data-zh-auto>舌苔</span>Tongue Coating · Shé Tāi</h2>
+        <p class="desc">The coating reflects the state of <span data-term="stomach-tcm">Stomach</span> qi and the depth of any pathogenic factor. A normal coating is thin, white, and slightly moist.</p>
+        <div class="selector-grid" id="coating-selector"></div>
+      </section>
+
+      <!-- ============================================================
+           DIAGNOSIS OUTPUT
+           ============================================================ -->
+      <section class="diagnosis-output">
+        <h2><span class="cn" data-zh-auto>综合判断</span>Pattern Match</h2>
+        <p class="desc">Possible TCM patterns based on what you've selected. The more signs that match, the higher the pattern appears.</p>
+
+        <div class="diagnosis-current" id="diagnosis-current"></div>
+        <ul class="pattern-list" id="pattern-list"></ul>
+      </section>
+
+      <!-- ============================================================
+           HOW TO CHECK YOUR TONGUE
+           ============================================================ -->
+      <section class="selector-section">
+        <h2><span class="cn" data-zh-auto>自检</span>How to Check Your Own Tongue</h2>
+        <p class="desc">A simple morning routine — about 30 seconds.</p>
+        <div class="self-check-steps">
+          <div class="self-check-step">
+            <div class="num">1</div>
+            <h4>Best time</h4>
+            <p>First thing in the morning, before brushing teeth, eating, or drinking. Stand near natural daylight if possible.</p>
+          </div>
+          <div class="self-check-step">
+            <div class="num">2</div>
+            <h4>Stick out gently</h4>
+            <p>Open the mouth and extend the tongue naturally. Don't strain or push it forward forcefully — that can change its color and shape.</p>
+          </div>
+          <div class="self-check-step">
+            <div class="num">3</div>
+            <h4>Hold briefly</h4>
+            <p>Show your tongue for only 10–15 seconds at a time. Holding it out longer can make it look redder than it actually is.</p>
+          </div>
+          <div class="self-check-step">
+            <div class="num">4</div>
+            <h4>Look at four things</h4>
+            <p>Body <em>color</em>, body <em>shape & size</em>, the <em>coating</em> (color, thickness, moisture), and any <em>cracks, marks, or spots</em>.</p>
+          </div>
+          <div class="self-check-step">
+            <div class="num">5</div>
+            <h4>Note location</h4>
+            <p>Use the zone map above to see which area shows the change — front, sides, center, or back.</p>
+          </div>
+          <div class="self-check-step">
+            <div class="num">6</div>
+            <h4>Watch the pattern</h4>
+            <p>A single morning's tongue means little. Track changes over a week or two — that's where the real signal is.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           REPORT GENERATION ACTIONS
+           ============================================================ -->
+      <section class="report-actions">
+        <button class="photo-btn primary" id="generate-report-btn">
+          <span>📋</span> Generate my self-check report
+        </button>
+      </section>
+
+      <!-- ============================================================
+           REPORT MODAL (hidden until report is generated)
+           ============================================================ -->
+      <div class="report-modal" id="report-modal" role="dialog" aria-labelledby="report-title" aria-modal="true">
+        <div class="report-content">
+          <button class="report-close" id="report-close" aria-label="Close">✕</button>
+          <div class="report-doc" id="report-doc"><!-- populated --></div>
+          <div class="report-modal-actions">
+            <button class="photo-btn" id="report-print">
+              <span>🖨</span> Print / Save as PDF
+            </button>
+            <button class="photo-btn" id="report-download">
+              <span>⬇</span> Download as HTML
+            </button>
+            <button class="photo-btn" id="report-mailto">
+              <span>✉</span> Open in my email app
+            </button>
+            <button class="photo-btn primary" id="report-share">
+              <span>📤</span> Send to my practitioner
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SHARE-WITH-PRACTITIONER FORM (uses serverless email relay)
+           User identifies themselves voluntarily; nothing is stored
+           on the site — the report is forwarded once and never seen again.
+           ============================================================ -->
+      <div class="share-modal" id="share-modal" role="dialog" aria-labelledby="share-title" aria-modal="true">
+        <div class="share-content">
+          <button class="report-close" id="share-close" aria-label="Close">✕</button>
+          <h2 class="share-title" id="share-title">
+            <span class="cn" data-zh-auto>转发给医师</span>
+            Send to my TCM Practitioner
+          </h2>
+          <p class="share-blurb">
+            Fill in the form below to email your self-check report directly to a TCM
+            practitioner of your choice. The site does not store anything — the report
+            is forwarded once and immediately forgotten. You'll be CC'd so you have a
+            copy. The practitioner can simply hit Reply to write back to you.
+          </p>
+
+          <form id="share-form" class="share-form">
+            <label class="share-field">
+              <span class="share-label">Your name</span>
+              <input type="text" id="share-name" required maxlength="80" autocomplete="name" placeholder="Your full name">
+            </label>
+            <label class="share-field">
+              <span class="share-label">Your email <small>(you'll be CC'd)</small></span>
+              <input type="email" id="share-user-email" required maxlength="120" autocomplete="email" placeholder="you@example.com">
+            </label>
+            <div class="share-field">
+              <span class="share-label">Practitioner</span>
+              <div class="share-prac-picker">
+                <select id="share-prac-select" aria-label="Choose a featured practitioner">
+                  <option value="">— Loading featured practitioners… —</option>
+                </select>
+                <div class="share-prac-divider">or enter manually</div>
+                <input type="email" id="share-prac-email" required maxlength="120" placeholder="practitioner@clinic.com" aria-label="Practitioner's email address">
+              </div>
+            </div>
+            <label class="share-field">
+              <span class="share-label">Optional note <small>(main concern, recent symptoms, etc.)</small></span>
+              <textarea id="share-note" rows="3" maxlength="800" placeholder="e.g. Trouble sleeping for the past 3 weeks, waking around 2 AM..."></textarea>
+            </label>
+            <label class="share-field share-consent">
+              <input type="checkbox" id="share-consent" required>
+              <span>I understand this is a self-observation, not a diagnosis, and I am voluntarily sharing it with the practitioner I named above.</span>
+            </label>
+            <div class="share-actions">
+              <button type="button" class="photo-btn" id="share-cancel">Cancel</button>
+              <button type="submit" class="photo-btn primary" id="share-submit">
+                <span class="share-submit-label">Send report</span>
+                <span class="share-submit-spinner" hidden>…</span>
+              </button>
+            </div>
+            <p class="share-status" id="share-status" hidden></p>
+          </form>
+        </div>
+      </div>
+
+      <div class="disclaimer-box" style="margin-top:2.5rem">
+        <p><strong>Educational use only.</strong> Tongue diagnosis is an aid to self-awareness and lifestyle adjustment, not a substitute for medical assessment. If you notice a sudden, dramatic change in your tongue's appearance, or your symptoms persist or worsen, please consult a qualified <span data-term="tongue-diagnosis">TCM practitioner</span> or healthcare professional.</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+<script>
+/* ============================================================
+   TONGUE DIAGNOSIS · DATA
+   Sources: Maciocia "Tongue Diagnosis in Chinese Medicine";
+            standard TCM teaching texts.
+   ============================================================ */
+
+const TONGUE_ZONES = [
+  {
+    key: 'tip',
+    cn: '舌尖', en: 'Tip',
+    organ: 'Heart · Lung',
+    organCn: '心 · 肺',
+    organTerm: 'heart-tcm',
+    desc: 'The very front of the tongue reflects the upper burner — the Heart and Lung. A red, dotted, or sore tip often points to Heart fire (often from anxiety, stress, insomnia) or Lung heat.',
+    coords: { cx: 140, cy: 290, rx: 80, ry: 35 },
+    labelXY: [140, 290]
+  },
+  {
+    key: 'front',
+    cn: '舌前', en: 'Front-Center',
+    organ: 'Lung',
+    organCn: '肺',
+    organTerm: 'lung-tcm',
+    desc: 'Just behind the tip is the Lung area. A coating change here may relate to respiration, the chest, or the immune surface ("wei qi").',
+    coords: { cx: 140, cy: 240, rx: 60, ry: 25 },
+    labelXY: [140, 240]
+  },
+  {
+    key: 'center',
+    cn: '舌中', en: 'Center',
+    organ: 'Spleen · Stomach',
+    organCn: '脾 · 胃',
+    organTerm: 'spleen-tcm',
+    desc: 'The middle of the tongue is the Spleen-Stomach territory. Cracks here are very common and usually indicate Stomach yin deficiency. A thick coat in the center suggests undigested damp or food stagnation.',
+    coords: { cx: 140, cy: 180, rx: 55, ry: 28 },
+    labelXY: [140, 180]
+  },
+  {
+    key: 'sides',
+    cn: '舌边', en: 'Sides',
+    organ: 'Liver · Gallbladder',
+    organCn: '肝 · 胆',
+    organTerm: 'liver-tcm',
+    desc: 'The sides reflect the Liver and Gallbladder. Redness, swelling, or purple discoloration on the sides commonly indicates Liver qi stagnation, Liver heat, or Liver blood stasis.',
+    coords: { type: 'sides' },
+    labelXY: [62, 200]
+  },
+  {
+    key: 'root',
+    cn: '舌根', en: 'Root (Back)',
+    organ: 'Kidney · Bladder · Intestines',
+    organCn: '肾 · 膀胱 · 肠',
+    organTerm: 'kidney-tcm',
+    desc: 'The back/root reflects the Kidneys, Bladder, and Intestines. A thick coat at the root often indicates damp or heat in the lower burner; a peeled root suggests Kidney yin deficiency.',
+    coords: { cx: 140, cy: 110, rx: 60, ry: 30 },
+    labelXY: [140, 110]
+  }
+];
+
+const TONGUE_COLORS = [
+  {
+    key: 'pink',
+    cn: '淡红', en: 'Pale-Red / Pink',
+    swatch: '#e8a094',
+    meaning: 'A normal, healthy tongue body — well-balanced qi, blood, yin and yang.',
+    patterns: []
+  },
+  {
+    key: 'pale',
+    cn: '淡白', en: 'Pale',
+    swatch: '#eecdc1',
+    meaning: 'Lacking the rosy hue of normal tongue. Indicates qi or blood deficiency, or yang deficiency (especially when wet/swollen).',
+    patterns: ['qi-deficiency', 'blood-deficiency', 'yang-deficiency']
+  },
+  {
+    key: 'red',
+    cn: '红', en: 'Red',
+    swatch: '#cc3a2c',
+    meaning: 'Brighter than normal — indicates heat. The brighter the red, the stronger the heat. With dryness/cracks: yin-deficient empty heat.',
+    patterns: ['heat-excess', 'yin-deficiency']
+  },
+  {
+    key: 'crimson',
+    cn: '绛', en: 'Crimson / Scarlet',
+    swatch: '#a01a18',
+    meaning: 'A deep, dark red. Indicates extreme heat that has entered the blood layer (yíng/xuè aspect) — a serious sign.',
+    patterns: ['heat-excess']
+  },
+  {
+    key: 'purple',
+    cn: '紫', en: 'Purple / Dusky',
+    swatch: '#6e3a55',
+    meaning: 'Stagnation of qi or blood. Reddish-purple = heat-related stasis. Bluish-purple = cold-related stasis.',
+    patterns: ['blood-stasis', 'qi-stagnation']
+  },
+  {
+    key: 'blue-purple',
+    cn: '青紫', en: 'Bluish-Purple',
+    swatch: '#3e4467',
+    meaning: 'Pronounced cold and blood stasis. Often seen with chronic poor circulation or severe internal cold.',
+    patterns: ['blood-stasis', 'yang-deficiency']
+  }
+];
+
+const TONGUE_SHAPES = [
+  {
+    key: 'normal',
+    cn: '正常', en: 'Normal',
+    meaning: 'Supple, neither swollen nor thin; smooth edges; good motility.',
+    patterns: []
+  },
+  {
+    key: 'swollen',
+    cn: '胖大', en: 'Swollen / Enlarged',
+    meaning: 'Larger than the mouth seems to allow. Often indicates qi or yang deficiency leading to fluid retention (dampness).',
+    patterns: ['yang-deficiency', 'damp']
+  },
+  {
+    key: 'thin',
+    cn: '瘦薄', en: 'Thin',
+    meaning: 'Smaller, more shrunken than normal. Indicates blood or yin deficiency — depleted substance.',
+    patterns: ['blood-deficiency', 'yin-deficiency']
+  },
+  {
+    key: 'tooth-marked',
+    cn: '齿痕', en: 'Scalloped / Tooth-marked',
+    meaning: 'Indentations along the sides where the teeth press. A classic sign of Spleen qi deficiency, often with dampness.',
+    patterns: ['qi-deficiency', 'damp']
+  },
+  {
+    key: 'cracked',
+    cn: '裂纹', en: 'Cracked / Fissured',
+    meaning: 'Cracks running along the tongue. Long, deep cracks usually indicate yin deficiency or heat damage to fluids.',
+    patterns: ['yin-deficiency', 'heat-excess']
+  },
+  {
+    key: 'stiff',
+    cn: '强硬', en: 'Stiff',
+    meaning: 'Reduced motility, hard to extend or move. Can indicate internal wind, severe heat, or phlegm obstruction.',
+    patterns: ['heat-excess']
+  },
+  {
+    key: 'flaccid',
+    cn: '痿软', en: 'Flaccid / Limp',
+    meaning: 'Weak, lacking tone. Indicates extreme deficiency of qi, blood, or yin — body fluids no longer nourish the tongue.',
+    patterns: ['qi-deficiency', 'yin-deficiency']
+  },
+  {
+    key: 'red-dots',
+    cn: '红点 / 芒刺', en: 'Red Spots / Prickles',
+    meaning: 'Raised red dots, often on the tip or sides. Indicate heat in the corresponding organ system. On the tip: Heart fire.',
+    patterns: ['heat-excess']
+  }
+];
+
+const TONGUE_COATINGS = [
+  {
+    key: 'thin-white',
+    cn: '薄白苔', en: 'Thin White (normal)',
+    swatch: '#f5ede0',
+    meaning: 'Clear, thin, slightly moist white coating. Normal — Stomach qi is healthy.',
+    patterns: []
+  },
+  {
+    key: 'thick-white',
+    cn: '厚白苔', en: 'Thick White',
+    swatch: '#dad0bc',
+    meaning: 'A heavy white film. Indicates cold or dampness in the body — often in the digestive system.',
+    patterns: ['cold', 'damp']
+  },
+  {
+    key: 'yellow',
+    cn: '黄苔', en: 'Yellow',
+    swatch: '#c9a64b',
+    meaning: 'Indicates interior heat. Pale yellow = mild heat; deep yellow or burnt = severe heat or fire.',
+    patterns: ['heat-excess', 'damp-heat']
+  },
+  {
+    key: 'greasy',
+    cn: '腻苔', en: 'Greasy / Sticky',
+    swatch: '#bca576',
+    meaning: 'A thick, oily film hard to scrape off. A clear sign of dampness or phlegm. With yellow: damp-heat. With white: damp-cold.',
+    patterns: ['damp', 'damp-heat']
+  },
+  {
+    key: 'dry',
+    cn: '燥苔', en: 'Dry',
+    swatch: '#d8c69d',
+    meaning: 'Lacks normal moisture, looks parched or sandy. Body fluids are damaged — usually by heat or yin deficiency.',
+    patterns: ['heat-excess', 'yin-deficiency']
+  },
+  {
+    key: 'peeled',
+    cn: '剥苔 / 无苔', en: 'Peeled / No Coating',
+    swatch: '#3a2818',
+    meaning: 'Areas (or all) of the tongue have lost their coating, looking like a polished mirror. Indicates Stomach or Kidney yin deficiency.',
+    patterns: ['yin-deficiency']
+  },
+  {
+    key: 'gray-black',
+    cn: '灰黑苔', en: 'Gray / Black',
+    swatch: '#3c3a36',
+    meaning: 'Severe pattern. Wet & black: extreme cold. Dry & black: extreme heat scorching fluids. May also be from drugs (e.g. antibiotics).',
+    patterns: ['heat-excess', 'cold']
+  }
+];
+
+/* TCM patterns referenced by the selectors above */
+const TONGUE_PATTERNS = {
+  'qi-deficiency': {
+    cn: '气虚', en: 'Qi Deficiency', termKey: 'qi-deficiency',
+    symptoms: 'Fatigue, shortness of breath, weak voice, low immunity, frequent sighing, reluctance to speak.',
+    advice: 'Strengthen Spleen and Lung qi: warm cooked breakfasts (congee, oats), gentle activity (qigong, walking), early sleep. Avoid raw cold foods, overwork, skipping meals.',
+    acupoints: [
+      { cn: '足三里', py: 'Zú Sān Lǐ', code: 'ST36', method: 'moxibustion', loc: 'Below the kneecap, four fingers down, one finger lateral to the shinbone', why: 'Master point for tonifying qi and strengthening the Spleen-Stomach' },
+      { cn: '气海', py: 'Qì Hǎi', code: 'CV6', method: 'moxibustion', loc: 'Lower abdomen, 1.5 cùn (about two finger-widths) below the navel', why: 'The "Sea of Qi" — gathers and replenishes qi throughout the body' },
+      { cn: '关元', py: 'Guān Yuán', code: 'CV4', method: 'moxibustion', loc: '3 cùn (about four finger-widths) below the navel on the midline', why: 'Tonifies original qi and yang, foundational restorative point' }
+    ]
+  },
+  'yang-deficiency': {
+    cn: '阳虚', en: 'Yang Deficiency', termKey: 'yang-deficiency',
+    symptoms: 'Cold hands & feet, low back ache, frequent urination, low libido, lethargy, prefer warm drinks, pale puffy face.',
+    advice: 'Warm and tonify: ginger tea, lamb stew, walnuts, black sesame, cinnamon. Keep the lower back warm. Avoid iced drinks, raw salads, late nights.',
+    acupoints: [
+      { cn: '命门', py: 'Mìng Mén', code: 'GV4', method: 'moxibustion', loc: 'On the lower back, between the spinous processes of L2 and L3 (level with the navel)', why: 'The "Gate of Life" — kindles kidney yang and warms the body core' },
+      { cn: '关元', py: 'Guān Yuán', code: 'CV4', method: 'moxibustion', loc: '3 cùn below the navel on the midline', why: 'Powerful yang-tonifier; classical "indirect moxa on ginger" point for cold-deficiency' },
+      { cn: '神阙', py: 'Shén Què', code: 'CV8', method: 'moxibustion', loc: 'The center of the navel', why: 'Salt-and-ginger moxa on the navel warms interior and lifts yang (never needled)' }
+    ]
+  },
+  'yin-deficiency': {
+    cn: '阴虚', en: 'Yin Deficiency', termKey: 'yin-deficiency',
+    symptoms: 'Night sweats, hot palms & soles, dry mouth, insomnia (waking 1–3 AM), restlessness, low-grade afternoon heat.',
+    advice: 'Nourish yin: pears, lily bulb, black sesame, eggs, tofu. Sleep before 23:00. Avoid coffee, alcohol, spicy foods, overwork, late-night screens.',
+    acupoints: [
+      { cn: '三阴交', py: 'Sān Yīn Jiāo', code: 'SP6', method: 'acupuncture', loc: 'Inner leg, 3 cùn above the inner ankle bone, just behind the tibia', why: 'Crossing point of three yin meridians (Spleen, Liver, Kidney) — nourishes yin and blood' },
+      { cn: '太溪', py: 'Tài Xī', code: 'KI3', method: 'acupuncture', loc: 'In the depression between the inner ankle bone and the Achilles tendon', why: 'Source point of the Kidney channel — replenishes kidney yin and essence' },
+      { cn: '照海', py: 'Zhào Hǎi', code: 'KI6', method: 'acupuncture', loc: 'Below the inner ankle bone, in the depression', why: 'Cools yin-deficiency heat, calms the spirit, classically used for night insomnia' }
+    ]
+  },
+  'blood-deficiency': {
+    cn: '血虚', en: 'Blood Deficiency', termKey: 'blood-deficiency',
+    symptoms: 'Pale complexion, dizziness, blurred vision, brittle nails, scant or pale menstruation, easily anxious, poor sleep.',
+    advice: 'Build blood: red dates, goji, beetroot, dark leafy greens, properly cooked red meat or beans. Get adequate sleep. Avoid excessive screen time (which "uses blood" through the eyes).',
+    acupoints: [
+      { cn: '血海', py: 'Xuè Hǎi', code: 'SP10', method: 'acupuncture', loc: 'On the inner thigh, 2 cùn above the upper border of the kneecap', why: '"Sea of Blood" — moves and nourishes blood, classical point for menstrual blood issues' },
+      { cn: '足三里', py: 'Zú Sān Lǐ', code: 'ST36', method: 'moxibustion', loc: 'Four fingers below the kneecap, one finger lateral to the shinbone', why: 'Spleen makes blood; ST36 strengthens the Spleen-Stomach\'s ability to generate blood' },
+      { cn: '膈俞', py: 'Gé Shù', code: 'BL17', method: 'acupuncture', loc: 'Back, level with the lower edge of the shoulder blade, 1.5 cùn lateral to the spine (T7)', why: 'Influential point for blood — used in all blood disorders' }
+    ]
+  },
+  'heat-excess': {
+    cn: '实热', en: 'Excess Heat',
+    symptoms: 'Red face, thirst for cold drinks, irritability, constipation, dark scanty urine, mouth ulcers, strong body odor.',
+    advice: 'Cool and clear: cucumber, watermelon, mung beans, chrysanthemum tea, leafy greens. Avoid spicy food, alcohol, fried foods, excess red meat.',
+    acupoints: [
+      { cn: '合谷', py: 'Hé Gǔ', code: 'LI4', method: 'acupuncture', loc: 'Back of the hand, in the web between thumb and index finger', why: 'Master point for clearing heat from the head and face; relieves fever and heat-toxin (avoid in pregnancy)' },
+      { cn: '曲池', py: 'Qū Chí', code: 'LI11', method: 'acupuncture', loc: 'At the outer end of the elbow crease when the elbow is bent', why: 'Powerful heat-clearer for skin, fever, and digestive heat' },
+      { cn: '大椎', py: 'Dà Zhuī', code: 'GV14', method: 'acupuncture', loc: 'On the back midline, in the depression below C7 (the most prominent vertebra at the base of the neck)', why: '"Meeting of all yang channels" — releases excess heat from the body' }
+    ]
+  },
+  'cold': {
+    cn: '寒证', en: 'Cold Pattern',
+    symptoms: 'Aversion to cold, prefer warmth, pale appearance, watery stools, clear copious urine, abdominal cramps relieved by warmth.',
+    advice: 'Warm interior: ginger, cinnamon, cooked grains, soups & stews. Keep abdomen and feet warm. Avoid raw cold foods, swimming in cold water, walking barefoot on cold floors.',
+    acupoints: [
+      { cn: '中脘', py: 'Zhōng Wǎn', code: 'CV12', method: 'moxibustion', loc: 'On the midline, halfway between the lower edge of the breastbone and the navel', why: 'Warms the middle burner — the classic point for cold cramping in the stomach' },
+      { cn: '神阙', py: 'Shén Què', code: 'CV8', method: 'moxibustion', loc: 'The center of the navel', why: 'Salt-moxa on the navel warms interior cold (never needle this point)' },
+      { cn: '足三里', py: 'Zú Sān Lǐ', code: 'ST36', method: 'moxibustion', loc: 'Four fingers below the kneecap, one finger lateral to the shinbone', why: 'Strengthens Spleen-Stomach to dispel internal cold' }
+    ]
+  },
+  'damp': {
+    cn: '湿', en: 'Dampness',
+    symptoms: 'Heaviness, sluggishness, foggy head, bloating, loose or sticky stools, edema, excess phlegm, slow weight loss.',
+    advice: 'Resolve damp: barley, mung beans, adzuki beans, ginger, light cooked vegetables. Move daily — gentle walking helps move qi. Avoid dairy, sugar, fried foods, excess raw cold foods.',
+    acupoints: [
+      { cn: '阴陵泉', py: 'Yīn Líng Quán', code: 'SP9', method: 'acupuncture', loc: 'On the inner shin, in the depression below and behind the head of the tibia', why: 'Master point for resolving dampness — promotes the Spleen\'s transformation of fluids' },
+      { cn: '丰隆', py: 'Fēng Lóng', code: 'ST40', method: 'acupuncture', loc: 'On the outer shin, halfway between the kneecap and the outer ankle, two finger-widths lateral to the shin crest', why: 'The classical "phlegm-resolving" point for damp-phlegm' },
+      { cn: '足三里', py: 'Zú Sān Lǐ', code: 'ST36', method: 'massage', loc: 'Four fingers below the kneecap, one finger lateral to the shinbone', why: 'Strengthens Spleen so it can transport fluids properly — gentle daily massage helps' }
+    ]
+  },
+  'damp-heat': {
+    cn: '湿热', en: 'Damp-Heat', termKey: 'damp-heat',
+    symptoms: 'Heaviness with heat: bitter mouth, foul breath, yellow discharge, sticky perspiration, irritability, dark scanty urine.',
+    advice: 'Clear damp-heat: green tea, mung beans, dandelion, lotus leaf, plenty of plain water. Avoid alcohol, greasy foods, sugar, dairy, spicy hot foods.',
+    acupoints: [
+      { cn: '阴陵泉', py: 'Yīn Líng Quán', code: 'SP9', method: 'acupuncture', loc: 'Inner shin, depression below and behind the head of the tibia', why: 'Drains dampness through urination — primary damp-heat point in the lower body' },
+      { cn: '曲池', py: 'Qū Chí', code: 'LI11', method: 'acupuncture', loc: 'Outer end of the elbow crease when the elbow is bent', why: 'Clears the heat aspect of damp-heat, especially skin and digestive damp-heat' },
+      { cn: '太冲', py: 'Tài Chōng', code: 'LV3', method: 'acupuncture', loc: 'On the top of the foot, in the V where the 1st and 2nd metatarsal bones meet', why: 'Soothes Liver-Gallbladder damp-heat (yellow tongue, bitter mouth)' }
+    ]
+  },
+  'qi-stagnation': {
+    cn: '气滞', en: 'Qi Stagnation', termKey: 'qi-stagnation',
+    symptoms: 'Distension and pressure (chest, sides, abdomen), irritability, mood swings, sighing, irregular cycles, symptoms worse with stress.',
+    advice: 'Move qi: regular movement, breathing exercises, time outdoors, citrus peel tea, mint, rose tea. Address the stress, not just the symptom. Avoid suppression of feelings.',
+    acupoints: [
+      { cn: '太冲', py: 'Tài Chōng', code: 'LV3', method: 'acupuncture', loc: 'Top of the foot, in the V where the 1st and 2nd metatarsal bones meet', why: 'Source point of the Liver — the foremost point for moving stagnant Liver qi' },
+      { cn: '合谷', py: 'Hé Gǔ', code: 'LI4', method: 'massage', loc: 'Back of the hand, in the web between thumb and index finger', why: 'Combined with LV3 forms the "Four Gates" — opens qi flow throughout the body (avoid in pregnancy)' },
+      { cn: '膻中', py: 'Dàn Zhōng', code: 'CV17', method: 'massage', loc: 'On the breastbone midline, level with the nipples', why: 'Influential point for qi — releases chest oppression and emotional bottling' }
+    ]
+  },
+  'blood-stasis': {
+    cn: '血瘀', en: 'Blood Stasis', termKey: 'blood-stasis',
+    symptoms: 'Sharp fixed pains, dark or clotted menstruation, dark spots/veins under the tongue, rough complexion, varicose veins.',
+    advice: 'Move blood: gentle aerobic activity, turmeric, saffron, hawthorn berry, vinegar. Stay well-hydrated. Avoid prolonged sitting and cold environments.',
+    acupoints: [
+      { cn: '血海', py: 'Xuè Hǎi', code: 'SP10', method: 'acupuncture', loc: 'Inner thigh, 2 cùn above the upper border of the kneecap', why: '"Sea of Blood" — invigorates and moves blood, especially for menstrual stasis' },
+      { cn: '膈俞', py: 'Gé Shù', code: 'BL17', method: 'acupuncture', loc: 'Back, level with the lower edge of the shoulder blade, 1.5 cùn lateral to the spine (T7)', why: 'Influential point for blood — for any blood-stasis pattern' },
+      { cn: '三阴交', py: 'Sān Yīn Jiāo', code: 'SP6', method: 'acupuncture', loc: 'Inner leg, 3 cùn above the inner ankle bone, just behind the tibia', why: 'Crosses three yin channels — effective for blood-stasis in the lower abdomen and pelvis' }
+    ]
+  }
+};
+
+/* ============================================================
+   BUILD ZONE MAP SVG
+   Tongue: pointing downward (tip at bottom, root at top).
+   ============================================================ */
+
+(function buildZoneMap() {
+  const svg = document.getElementById('tongue-zone-svg');
+  const NS = 'http://www.w3.org/2000/svg';
+
+  // Define gradient for tongue body
+  const defs = document.createElementNS(NS, 'defs');
+  defs.innerHTML = `
+    <radialGradient id="tongueGrad" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#cd7864" stop-opacity="0.9"/>
+      <stop offset="80%" stop-color="#8e3a30" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#5a221a" stop-opacity="1"/>
+    </radialGradient>
+    <radialGradient id="tongueShine" cx="50%" cy="35%" r="40%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  `;
+  svg.appendChild(defs);
+
+  // Tongue body shape (an oval with a slightly pointed tip downward)
+  const tonguePath = document.createElementNS(NS, 'path');
+  tonguePath.setAttribute('d', `
+    M 140 50
+    C 60 50, 30 110, 35 200
+    C 40 290, 90 340, 140 340
+    C 190 340, 240 290, 245 200
+    C 250 110, 220 50, 140 50
+    Z
+  `);
+  tonguePath.setAttribute('fill', 'url(#tongueGrad)');
+  tonguePath.setAttribute('stroke', 'var(--cinnabar-deep, #7a2515)');
+  tonguePath.setAttribute('stroke-width', '1');
+  svg.appendChild(tonguePath);
+
+  // Center crease
+  const crease = document.createElementNS(NS, 'line');
+  crease.setAttribute('x1', '140'); crease.setAttribute('y1', '70');
+  crease.setAttribute('x2', '140'); crease.setAttribute('y2', '320');
+  crease.setAttribute('stroke', 'rgba(0,0,0,0.18)');
+  crease.setAttribute('stroke-width', '1');
+  crease.setAttribute('stroke-dasharray', '2,3');
+  svg.appendChild(crease);
+
+  // Highlight overlay
+  const shine = document.createElementNS(NS, 'path');
+  shine.setAttribute('d', `
+    M 140 50
+    C 60 50, 30 110, 35 200
+    C 40 290, 90 340, 140 340
+    C 190 340, 240 290, 245 200
+    C 250 110, 220 50, 140 50
+    Z
+  `);
+  shine.setAttribute('fill', 'url(#tongueShine)');
+  shine.setAttribute('pointer-events', 'none');
+  svg.appendChild(shine);
+
+  // Zones
+  TONGUE_ZONES.forEach(z => {
+    let shape;
+    if (z.coords.type === 'sides') {
+      // Two crescent shapes for left and right sides
+      shape = document.createElementNS(NS, 'path');
+      shape.setAttribute('d', `
+        M 35 200 C 35 130 50 90 75 65 L 75 80 C 55 105 50 150 50 200 C 50 250 60 290 80 315 L 75 330 C 50 305 35 270 35 200 Z
+        M 245 200 C 245 130 230 90 205 65 L 205 80 C 225 105 230 150 230 200 C 230 250 220 290 200 315 L 205 330 C 230 305 245 270 245 200 Z
+      `);
+    } else {
+      shape = document.createElementNS(NS, 'ellipse');
+      shape.setAttribute('cx', z.coords.cx);
+      shape.setAttribute('cy', z.coords.cy);
+      shape.setAttribute('rx', z.coords.rx);
+      shape.setAttribute('ry', z.coords.ry);
+    }
+    shape.setAttribute('class', 'tongue-zone');
+    shape.dataset.zone = z.key;
+    shape.addEventListener('click', () => selectZone(z.key));
+    svg.appendChild(shape);
+
+    // Label
+    const lbl = document.createElementNS(NS, 'text');
+    lbl.setAttribute('x', z.labelXY[0]);
+    lbl.setAttribute('y', z.labelXY[1] - 6);
+    lbl.setAttribute('class', 'tongue-zone-label');
+    lbl.textContent = z.cn;
+    svg.appendChild(lbl);
+
+    const lblEn = document.createElementNS(NS, 'text');
+    lblEn.setAttribute('x', z.labelXY[0]);
+    lblEn.setAttribute('y', z.labelXY[1] + 8);
+    lblEn.setAttribute('class', 'tongue-zone-label-en');
+    lblEn.textContent = z.en;
+    svg.appendChild(lblEn);
+  });
+})();
+
+function selectZone(key) {
+  document.querySelectorAll('.tongue-zone').forEach(z =>
+    z.classList.toggle('active', z.dataset.zone === key));
+  const z = TONGUE_ZONES.find(x => x.key === key);
+  if (!z) return;
+  document.getElementById('zone-info').innerHTML = `
+    <h3><span class="cn" data-zh-auto>${z.cn}</span>${z.en}</h3>
+    <p style="font-family:var(--font-ui);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem">
+      Reflects: <span data-term="${z.organTerm}" style="color:var(--ink);font-family:var(--font-han);font-size:0.95rem;letter-spacing:normal;text-transform:none;font-weight:600">${z.organCn} · ${z.organ}</span>
+    </p>
+    <p>${z.desc}</p>
+  `;
+}
+
+/* ============================================================
+   BUILD SELECTORS (color, shape, coating)
+   ============================================================ */
+
+const state = { color: null, shape: null, coating: null };
+
+function buildSelector(items, containerId, kind, hasSwatch) {
+  const wrap = document.getElementById(containerId);
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'selector-card';
+    card.dataset.key = item.key;
+    let swatchHTML = '';
+    if (hasSwatch) {
+      swatchHTML = `<span class="selector-swatch" style="background:${item.swatch}"></span>`;
+    }
+    card.innerHTML = `
+      <div class="selector-card-title">${swatchHTML}<span data-zh-auto>${item.cn}</span> <span class="en">${item.en}</span></div>
+      <div class="selector-card-meaning">${item.meaning}</div>
+    `;
+    card.addEventListener('click', () => {
+      // Toggle: clicking an active card deselects it
+      if (state[kind] === item.key) {
+        state[kind] = null;
+        card.classList.remove('active');
+      } else {
+        state[kind] = item.key;
+        wrap.querySelectorAll('.selector-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      }
+      updateDiagnosis();
+    });
+    wrap.appendChild(card);
+  });
+}
+
+buildSelector(TONGUE_COLORS,   'color-selector',   'color',   true);
+buildSelector(TONGUE_SHAPES,   'shape-selector',   'shape',   false);
+buildSelector(TONGUE_COATINGS, 'coating-selector', 'coating', true);
+
+/* ============================================================
+   SCORE PATTERNS BY HOW MANY OF THE USER'S SELECTIONS MATCH
+   ============================================================ */
+
+function findItem(arr, key) { return arr.find(x => x.key === key); }
+
+function updateDiagnosis() {
+  const colorItem   = state.color   ? findItem(TONGUE_COLORS,   state.color)   : null;
+  const shapeItem   = state.shape   ? findItem(TONGUE_SHAPES,   state.shape)   : null;
+  const coatingItem = state.coating ? findItem(TONGUE_COATINGS, state.coating) : null;
+
+  // "Current picks" row
+  const cur = document.getElementById('diagnosis-current');
+  cur.innerHTML = `
+    <div class="pick">
+      <div class="lbl">Color · <span data-zh-auto>舌色</span></div>
+      <div class="val ${colorItem ? '' : 'empty'}">${colorItem ? `<span data-zh-auto>${colorItem.cn}</span> <span class="en">${colorItem.en}</span>` : '— not selected —'}</div>
+    </div>
+    <div class="pick">
+      <div class="lbl">Shape · <span data-zh-auto>舌形</span></div>
+      <div class="val ${shapeItem ? '' : 'empty'}">${shapeItem ? `<span data-zh-auto>${shapeItem.cn}</span> <span class="en">${shapeItem.en}</span>` : '— not selected —'}</div>
+    </div>
+    <div class="pick">
+      <div class="lbl">Coating · <span data-zh-auto>舌苔</span></div>
+      <div class="val ${coatingItem ? '' : 'empty'}">${coatingItem ? `<span data-zh-auto>${coatingItem.cn}</span> <span class="en">${coatingItem.en}</span>` : '— not selected —'}</div>
+    </div>
+  `;
+
+  // Score patterns
+  const counts = {};
+  [colorItem, shapeItem, coatingItem].forEach(it => {
+    if (!it) return;
+    (it.patterns || []).forEach(p => {
+      counts[p] = (counts[p] || 0) + 1;
+    });
+  });
+
+  const ranked = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([key, score]) => ({ key, score, info: TONGUE_PATTERNS[key] }))
+    .filter(x => x.info);
+
+  const list = document.getElementById('pattern-list');
+  if (ranked.length === 0) {
+    list.innerHTML = `<li class="pattern-empty">${
+      (colorItem || shapeItem || coatingItem)
+        ? "Your selections suggest a balanced picture — no specific pattern of imbalance stands out."
+        : "Pick a tongue color, shape, or coating above to see possible TCM patterns."
+    }</li>`;
+    return;
+  }
+
+  list.innerHTML = ranked.map(({ key, score, info }) => {
+    const matches = score === 3 ? 'all three signs match'
+                  : score === 2 ? 'two of three signs match'
+                  : 'one sign matches';
+    const termAttr = info.termKey ? `data-term="${info.termKey}"` : '';
+
+    // Render acupoints, grouped by recommended method.
+    const methodIcon = { acupuncture: '針', moxibustion: '艾', massage: '按' };
+    const methodLabel = {
+      acupuncture: 'Acupuncture · 针刺',
+      moxibustion: 'Moxibustion · 艾灸',
+      massage:     'Acupressure · 按摩'
+    };
+    let acuHTML = '';
+    if (info.acupoints && info.acupoints.length) {
+      acuHTML = `
+        <div class="pat-acupoints">
+          <strong style="color:var(--cinnabar-bright)">穴位 Acupoint suggestions:</strong>
+          <ul class="acupoint-list">
+            ${info.acupoints.map(p => `
+              <li class="acupoint">
+                <div class="acupoint-head">
+                  <span class="acupoint-method method-${p.method}" title="${methodLabel[p.method]}">${methodIcon[p.method] || '·'}</span>
+                  <span class="acupoint-cn" data-zh-auto>${p.cn}</span>
+                  <span class="acupoint-py">${p.py}</span>
+                  <span class="acupoint-code">${p.code}</span>
+                </div>
+                <div class="acupoint-loc"><em>Location:</em> ${p.loc}</div>
+                <div class="acupoint-why"><em>Why:</em> ${p.why}</div>
+              </li>
+            `).join('')}
+          </ul>
+          <p class="acupoint-disclaimer">
+            <strong>Important:</strong> Acupuncture should only be performed by a licensed practitioner.
+            Moxibustion (艾灸) can be self-applied with care — keep moxa stick about 3 cm from the skin
+            until comfortable warmth is felt; never burn the skin. Acupressure (firm circular pressure
+            for 1–2 minutes per point) is the safest self-care option.
+          </p>
+        </div>
+      `;
+    }
+
+    return `
+      <li>
+        <div class="pat-title">
+          <span class="cn" data-zh-auto>${info.cn}</span>
+          <span ${termAttr}>${info.en}</span>
+          <span style="float:right;font-family:var(--font-ui);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink-mute)">${matches}</span>
+        </div>
+        <div class="pat-symptoms"><strong style="color:var(--ink)">Common symptoms:</strong> ${info.symptoms}</div>
+        <div class="pat-advice"><strong style="color:var(--gold)">Lifestyle support:</strong> ${info.advice}</div>
+        ${acuHTML}
+      </li>
+    `;
+  }).join('');
+}
+
+updateDiagnosis();
+
+/* ============================================================
+   PHOTO UPLOAD (browser-only, never uploaded anywhere)
+   ============================================================ */
+
+const photoDisplay = document.getElementById('photo-display');
+const photoClear   = document.getElementById('photo-clear');
+let currentPhotoDataURL = null;  // base64 data URL, used for embedding in reports
+
+function loadPhoto(file) {
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    alert('Please choose an image file.');
+    return;
+  }
+  // Read as data URL so the photo can be embedded in the report later
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentPhotoDataURL = e.target.result;
+    renderPhoto();
+  };
+  reader.onerror = () => {
+    alert('Could not read that image. Please try a different file.');
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderPhoto() {
+  // Clear any old <img> elements (keep the empty-state and clear button)
+  const existingImg = photoDisplay.querySelector('img');
+  if (existingImg) existingImg.remove();
+
+  if (currentPhotoDataURL) {
+    const img = document.createElement('img');
+    img.src = currentPhotoDataURL;
+    img.alt = 'Your tongue photo';
+    photoDisplay.insertBefore(img, photoClear);
+    photoDisplay.classList.add('has-photo');
+  } else {
+    photoDisplay.classList.remove('has-photo');
+  }
+}
+
+document.getElementById('photo-file-input').addEventListener('change', (e) => {
+  loadPhoto(e.target.files[0]);
+});
+
+/* ============================================================
+   LIVE CAMERA via getUserMedia (works on PC webcam AND phone camera)
+   Falls back to a hidden file-input with capture="environment" if
+   getUserMedia is unavailable (older browsers, insecure http://).
+   ============================================================ */
+
+const cameraModal   = document.getElementById('camera-modal');
+const cameraVideo   = document.getElementById('camera-video');
+const cameraCanvas  = document.getElementById('camera-canvas');
+const cameraHint    = document.getElementById('camera-hint');
+const openCameraBtn = document.getElementById('open-camera-btn');
+const cameraShutter = document.getElementById('camera-shutter');
+const cameraFlip    = document.getElementById('camera-flip');
+const cameraClose   = document.getElementById('camera-close');
+
+let cameraStream = null;
+let cameraFacing = 'environment';  // start with rear camera on phones; ignored on desktop
+
+function hasGetUserMedia() {
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+}
+
+async function startCamera(facingMode) {
+  // Stop any existing stream first
+  stopCamera();
+  cameraHint.classList.remove('error');
+  cameraHint.textContent = (window.tcmScript && window.tcmScript.get() === 't')
+    ? '若瀏覽器詢問，請允許使用相機權限。'
+    : '若浏览器询问，请允许使用相机权限。';
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: facingMode }, width: { ideal: 1280 }, height: { ideal: 1280 } },
+      audio: false
+    });
+    cameraVideo.srcObject = cameraStream;
+    await cameraVideo.play();
+  } catch (err) {
+    console.warn('Camera failed:', err);
+    cameraHint.classList.add('error');
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      cameraHint.textContent = 'Camera access was denied. Please allow camera permission and try again, or use Choose photo to upload an image.';
+    } else if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') {
+      cameraHint.textContent = 'No camera was found on this device. Please use Choose photo to upload an image instead.';
+    } else {
+      cameraHint.textContent = 'Could not open the camera (' + (err.message || err.name) + '). Please use Choose photo instead.';
+    }
+  }
+}
+
+function stopCamera() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+  if (cameraVideo) {
+    cameraVideo.srcObject = null;
+  }
+}
+
+function openCameraModal() {
+  if (!hasGetUserMedia()) {
+    // Fallback: trigger a hidden file input with capture="environment"
+    // so phones still go straight to the camera, and desktops fall back gracefully.
+    const fallback = document.createElement('input');
+    fallback.type = 'file';
+    fallback.accept = 'image/*';
+    fallback.capture = 'environment';
+    fallback.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+    });
+    fallback.click();
+    return;
+  }
+  cameraModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  startCamera(cameraFacing);
+}
+
+function closeCameraModal() {
+  stopCamera();
+  cameraModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function captureFrame() {
+  if (!cameraVideo.videoWidth) return;
+  const w = cameraVideo.videoWidth;
+  const h = cameraVideo.videoHeight;
+  cameraCanvas.width = w;
+  cameraCanvas.height = h;
+  const ctx = cameraCanvas.getContext('2d');
+  ctx.drawImage(cameraVideo, 0, 0, w, h);
+  // Convert to JPEG data URL (smaller than PNG)
+  currentPhotoDataURL = cameraCanvas.toDataURL('image/jpeg', 0.92);
+  renderPhoto();
+  closeCameraModal();
+}
+
+openCameraBtn.addEventListener('click', openCameraModal);
+cameraClose.addEventListener('click', closeCameraModal);
+cameraModal.addEventListener('click', (e) => {
+  if (e.target === cameraModal) closeCameraModal();
+});
+cameraShutter.addEventListener('click', captureFrame);
+cameraFlip.addEventListener('click', () => {
+  cameraFacing = (cameraFacing === 'environment') ? 'user' : 'environment';
+  startCamera(cameraFacing);
+});
+
+// ESC closes the camera modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && cameraModal.classList.contains('open')) {
+    closeCameraModal();
+  }
+});
+photoClear.addEventListener('click', () => {
+  currentPhotoDataURL = null;
+  renderPhoto();
+  document.getElementById('photo-file-input').value = '';
+});
+
+// Toggle the alignment guide on/off when a photo is loaded
+const guideToggle = document.getElementById('photo-guide-toggle');
+guideToggle.addEventListener('click', () => {
+  const on = photoDisplay.classList.toggle('guide-on');
+  // Update label
+  const labels = on
+    ? { s: '隐藏对齐网格', t: '隱藏對齊網格', en: 'Hide guide' }
+    : { s: '显示对齐网格', t: '顯示對齊網格', en: 'Show guide' };
+  guideToggle.dataset.zhS = labels.s;
+  guideToggle.dataset.zhT = labels.t;
+  guideToggle.textContent = labels.en;
+  // Re-apply current script so the right variant shows
+  if (window.tcmScript) window.tcmScript.set(window.tcmScript.get());
+});
+
+/* ============================================================
+   REPORT GENERATION
+   ============================================================ */
+
+function buildReportHTML() {
+  const colorItem   = state.color   ? findItem(TONGUE_COLORS,   state.color)   : null;
+  const shapeItem   = state.shape   ? findItem(TONGUE_SHAPES,   state.shape)   : null;
+  const coatingItem = state.coating ? findItem(TONGUE_COATINGS, state.coating) : null;
+
+  const counts = {};
+  [colorItem, shapeItem, coatingItem].forEach(it => {
+    if (!it) return;
+    (it.patterns || []).forEach(p => { counts[p] = (counts[p] || 0) + 1; });
+  });
+  const ranked = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([key, score]) => ({ key, score, info: TONGUE_PATTERNS[key] }))
+    .filter(x => x.info);
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+
+  function pickCell(label, item) {
+    if (!item) return `<div class="doc-pick"><div class="lbl">${label}</div><div class="val" style="color:#888;font-style:italic;font-weight:400">— not selected —</div></div>`;
+    return `<div class="doc-pick"><div class="lbl">${label}</div><div class="val"><span data-zh-auto>${item.cn}</span> <span class="en">${item.en}</span></div></div>`;
+  }
+
+  let patternsHTML = '';
+  if (ranked.length === 0) {
+    if (colorItem || shapeItem || coatingItem) {
+      patternsHTML = '<p style="font-style:italic;color:#888">Your selections suggest a balanced picture — no specific pattern of imbalance stands out.</p>';
+    } else {
+      patternsHTML = '<p style="font-style:italic;color:#888">No selections were made.</p>';
+    }
+  } else {
+    patternsHTML = ranked.map(({ score, info }) => {
+      const matches = score === 3 ? 'all three signs match'
+                    : score === 2 ? 'two of three signs match'
+                    : 'one sign matches';
+      const methodLabel = {
+        acupuncture: '针 Acupuncture',
+        moxibustion: '艾 Moxibustion',
+        massage:     '按 Acupressure'
+      };
+      let acuHTML = '';
+      if (info.acupoints && info.acupoints.length) {
+        acuHTML = `
+          <div class="doc-acupoints">
+            <strong style="color:#b8362a">穴位 Acupoint suggestions:</strong>
+            <ul>
+              ${info.acupoints.map(p => `
+                <li>
+                  <span class="acu-cn">${p.cn}</span>
+                  <span class="acu-py">${p.py}</span>
+                  <span class="acu-code">${p.code}</span>
+                  <span class="acu-method">${methodLabel[p.method] || ''}</span>
+                  <div class="acu-loc"><em>Location:</em> ${p.loc}</div>
+                  <div class="acu-why"><em>Why:</em> ${p.why}</div>
+                </li>
+              `).join('')}
+            </ul>
+          </div>`;
+      }
+      return `
+        <div class="doc-pattern">
+          <div class="name">
+            <span class="cn" data-zh-auto>${info.cn}</span>${info.en}
+            <span style="float:right;font-family:Inter,sans-serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;font-weight:400">${matches}</span>
+          </div>
+          <div class="sym"><strong style="color:#222">Common symptoms:</strong> ${info.symptoms}</div>
+          <div class="adv"><strong>Lifestyle support:</strong> ${info.advice}</div>
+          ${acuHTML}
+        </div>`;
+    }).join('');
+  }
+
+  const photoHTML = currentPhotoDataURL
+    ? `<h2><span class="cn" data-zh-auto>舌照</span>My tongue photo</h2>
+       <div class="doc-photo"><img src="${currentPhotoDataURL}" alt="Tongue photo"></div>`
+    : '';
+
+  return `
+    <div class="doc-header">
+      <div class="doc-mark">舌诊报告</div>
+      <div class="doc-eyebrow">Shé Zhěn · Tongue Self-Check Report</div>
+      <h1>Personal Tongue Observation</h1>
+      <div class="doc-meta">${dateStr} · ${timeStr}</div>
+    </div>
+
+    ${photoHTML}
+
+    <h2><span class="cn" data-zh-auto>观察</span>What I observed</h2>
+    <div class="doc-grid">
+      ${pickCell('Tongue body color · 舌色', colorItem)}
+      ${pickCell('Tongue shape · 舌形',     shapeItem)}
+      ${pickCell('Tongue coating · 舌苔',   coatingItem)}
+    </div>
+
+    <h2><span class="cn" data-zh-auto>可能的体质模式</span>Patterns that may apply</h2>
+    ${patternsHTML}
+
+    <div class="doc-disclaimer">
+      <strong>Educational only — not a medical diagnosis.</strong>
+      This self-check report is generated from a personal visual observation guided by traditional Chinese medicine reference material. It is not a clinical diagnosis, does not replace professional medical or TCM evaluation, and should not be used to start or change any treatment. If you are experiencing persistent or worrying symptoms, please consult a qualified TCM practitioner or healthcare professional.
+    </div>
+
+    <div class="doc-footer">
+      Generated by 子午流注 — The TCM Day · Living in Rhythm with the Twelve Hours
+    </div>
+  `;
+}
+
+const reportModal = document.getElementById('report-modal');
+const reportDoc   = document.getElementById('report-doc');
+
+document.getElementById('generate-report-btn').addEventListener('click', () => {
+  reportDoc.innerHTML = buildReportHTML();
+  reportModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+document.getElementById('report-close').addEventListener('click', closeReport);
+reportModal.addEventListener('click', (e) => { if (e.target === reportModal) closeReport(); });
+function closeReport() {
+  reportModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('report-print').addEventListener('click', () => { window.print(); });
+
+function buildStandaloneHTML() {
+  // Build the report fragment, then bake the active script into the static HTML
+  // so the downloaded file shows the user's preferred script (s/t) directly.
+  let reportInner = buildReportHTML();
+  if (window.tcmScript) {
+    const dir = window.tcmScript.get();
+    // Strip data-zh-auto attributes and convert the wrapped Chinese in-place
+    const tmp = document.createElement('div');
+    tmp.innerHTML = reportInner;
+    tmp.querySelectorAll('[data-zh-auto]').forEach(el => {
+      el.textContent = window.tcmScript.convert(el.textContent, dir);
+      el.removeAttribute('data-zh-auto');
+    });
+    reportInner = tmp.innerHTML;
+  }
+  const inlineCSS = `
+    body { font-family: 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', serif;
+           background: #faf6ec; color: #222; margin: 0; padding: 2rem; line-height: 1.6; }
+    .report-doc { max-width: 760px; margin: 0 auto; background: #fffbf2;
+                  padding: 2.5rem; border: 1px solid #d4c8a8; box-shadow: 0 4px 18px rgba(0,0,0,0.08); }
+    .doc-header { text-align: center; padding-bottom: 1.5rem; border-bottom: 2px solid #b8362a; margin-bottom: 1.5rem; }
+    .doc-mark { font-family: 'Songti SC', serif; font-weight: 900; font-size: 1.6rem; color: #b8362a; letter-spacing: 0.4rem; }
+    .doc-eyebrow { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: #8a6420; margin: 0.3rem 0; }
+    h1 { font-style: italic; font-weight: 500; font-size: 1.6rem; margin: 0.4rem 0; color: #222; }
+    .doc-meta { font-size: 0.7rem; letter-spacing: 0.15em; color: #888; text-transform: uppercase; }
+    h2 { font-style: italic; font-size: 1.2rem; margin: 1.4rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid #ddd; color: #222; }
+    h2 .cn { font-family: 'Songti SC', serif; font-style: normal; font-weight: 600; color: #b8362a; margin-right: 0.4rem; }
+    .doc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.6rem; margin: 0.5rem 0; }
+    .doc-pick { background: #f5edd9; border: 1px solid #d4c8a8; padding: 0.7rem 0.9rem; border-radius: 2px; }
+    .doc-pick .lbl { font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: #888; margin-bottom: 0.3rem; }
+    .doc-pick .val { font-family: 'Songti SC', serif; font-weight: 600; color: #222; }
+    .doc-pick .val .en { font-style: italic; font-weight: 400; color: #555; margin-left: 0.3rem; font-size: 0.85rem; }
+    .doc-photo { text-align: center; margin: 1rem 0; }
+    .doc-photo img { max-width: 240px; max-height: 240px; border: 1px solid #d4c8a8; }
+    .doc-pattern { background: #f5edd9; border: 1px solid #d4c8a8; border-left: 3px solid #b8362a; padding: 0.9rem 1rem; margin-bottom: 0.6rem; border-radius: 2px; }
+    .doc-pattern .name { font-style: italic; font-size: 1.05rem; color: #8a6420; margin-bottom: 0.3rem; }
+    .doc-pattern .name .cn { font-family: 'Songti SC', serif; font-style: normal; font-weight: 600; color: #b8362a; margin-right: 0.4rem; }
+    .doc-pattern .sym { font-size: 0.9rem; color: #444; margin-bottom: 0.3rem; }
+    .doc-pattern .adv { font-size: 0.9rem; color: #555; font-style: italic; }
+    .doc-disclaimer { margin-top: 2rem; padding: 1rem 1.2rem; background: #fef0ee; border: 1px solid #b8362a; border-left-width: 3px; font-style: italic; font-size: 0.85rem; color: #444; }
+    .doc-disclaimer strong { color: #b8362a; font-style: normal; }
+    .doc-footer { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.65rem; letter-spacing: 0.15em; color: #888; text-transform: uppercase; }
+    @media print { body { background: white; padding: 0; } .report-doc { border: none; box-shadow: none; padding: 1rem; } }
+  `;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Tongue Self-Check Report</title>
+<style>${inlineCSS}</style>
+</head>
+<body>
+<div class="report-doc">${reportInner}</div>
+</body>
+</html>`;
+}
+
+document.getElementById('report-download').addEventListener('click', () => {
+  const html = buildStandaloneHTML();
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const stamp = new Date().toISOString().slice(0, 10);
+  a.download = `tongue-self-check-${stamp}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+function buildPlainTextSummary() {
+  const colorItem   = state.color   ? findItem(TONGUE_COLORS,   state.color)   : null;
+  const shapeItem   = state.shape   ? findItem(TONGUE_SHAPES,   state.shape)   : null;
+  const coatingItem = state.coating ? findItem(TONGUE_COATINGS, state.coating) : null;
+  const counts = {};
+  [colorItem, shapeItem, coatingItem].forEach(it => {
+    if (!it) return;
+    (it.patterns || []).forEach(p => { counts[p] = (counts[p] || 0) + 1; });
+  });
+  const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1])
+    .map(([key]) => TONGUE_PATTERNS[key]).filter(Boolean);
+  const now = new Date();
+  // Convert Chinese to active script for the email body
+  const conv = (s) => (window.tcmScript ? window.tcmScript.convert(s, window.tcmScript.get()) : s);
+  const lines = [
+    'Tongue Self-Check Report',
+    '========================',
+    '',
+    `Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`,
+    '',
+    'What I observed:',
+    '----------------',
+    `  Tongue body color (${conv('舌色')}):   ${colorItem   ? conv(colorItem.cn)   + ' (' + colorItem.en   + ')' : 'not selected'}`,
+    `  Tongue shape       (${conv('舌形')}):   ${shapeItem   ? conv(shapeItem.cn)   + ' (' + shapeItem.en   + ')' : 'not selected'}`,
+    `  Tongue coating     (${conv('舌苔')}):   ${coatingItem ? conv(coatingItem.cn) + ' (' + coatingItem.en + ')' : 'not selected'}`,
+    ''
+  ];
+  if (ranked.length) {
+    lines.push('Patterns that may apply:');
+    lines.push('------------------------');
+    ranked.forEach(p => {
+      lines.push(`  • ${conv(p.cn)} (${p.en})`);
+      lines.push(`    Symptoms: ${p.symptoms}`);
+      lines.push(`    Lifestyle: ${p.advice}`);
+      lines.push('');
+    });
+  }
+  lines.push('---');
+  lines.push('Note: This is an educational self-observation, not a medical diagnosis.');
+  lines.push('Generated by 子午流注 — The TCM Day.');
+  return lines.join('\n');
+}
+
+document.getElementById('report-mailto').addEventListener('click', () => {
+  const subject = encodeURIComponent('My Tongue Self-Check Report');
+  const body = encodeURIComponent(
+    "Hello,\n\nI ran a tongue self-check today and would like to share the observations with you below.\n" +
+    "(This is a personal note, not a clinical diagnosis.)\n\n" +
+    buildPlainTextSummary() +
+    "\n\nThanks for taking a look."
+  );
+  if (currentPhotoDataURL) {
+    if (!confirm("Your photo can't be attached automatically through mailto:. " +
+                 "After your email opens, you can drag-and-drop the photo from this page if needed. " +
+                 "Continue?")) {
+      return;
+    }
+  }
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+});
+
+/* ============================================================
+   SHARE WITH PRACTITIONER (server relay)
+   Sends the report to the user's chosen practitioner via the
+   /.netlify/functions/send-report endpoint. Falls back gracefully
+   if the relay is not configured (offers the mailto: route instead).
+   ============================================================ */
+
+const shareModal = document.getElementById('share-modal');
+const shareForm  = document.getElementById('share-form');
+const shareStatus = document.getElementById('share-status');
+const shareSubmitBtn = document.getElementById('share-submit');
+const shareSelect    = document.getElementById('share-prac-select');
+const shareEmailInput = document.getElementById('share-prac-email');
+
+/* ---------- Practitioner directory (Option D, hybrid) ----------
+   Load the JSON list of consented practitioners and populate the
+   dropdown. When the user picks one, auto-fill the email field below.
+   They can still type a different email manually if they prefer. */
+let PRACTITIONERS = [];
+async function loadPractitioners() {
+  try {
+    const resp = await fetch('assets/practitioners.json', { cache: 'no-cache' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const all = await resp.json();
+    PRACTITIONERS = all.filter(p => p.active);
+  } catch (err) {
+    console.warn('Could not load practitioners:', err);
+    PRACTITIONERS = [];
+  }
+  renderPractitionerSelect();
+}
+
+function renderPractitionerSelect() {
+  if (PRACTITIONERS.length === 0) {
+    // Hide the picker entirely if no featured practitioners exist
+    const picker = shareSelect.closest('.share-prac-picker');
+    if (picker) {
+      shareSelect.style.display = 'none';
+      const divider = picker.querySelector('.share-prac-divider');
+      if (divider) divider.style.display = 'none';
+      // Update label to drop the "or enter manually" framing
+      const labelSpan = picker.parentElement.querySelector('.share-label');
+      if (labelSpan) labelSpan.textContent = "Practitioner's email";
+    }
+    return;
+  }
+
+  shareSelect.innerHTML = `
+    <option value="">— Pick a featured practitioner —</option>
+    ${PRACTITIONERS.map(p => {
+      const label = `${p.name}${p.location ? ' · ' + p.location : ''}`;
+      return `<option value="${p.email}" data-id="${p.id}">${label}</option>`;
+    }).join('')}
+  `;
+}
+
+shareSelect.addEventListener('change', () => {
+  const value = shareSelect.value;
+  if (value) {
+    shareEmailInput.value = value;
+  }
+});
+
+// Initialise on page load (it's async but we don't need to wait)
+loadPractitioners();
+
+// If user arrived with ?practitioner=<id>, scroll to the report-actions
+// area and add a friendly hint so they know they should generate the report.
+(function handleArrivalFromDirectory() {
+  const params = new URLSearchParams(window.location.search);
+  const presetId = params.get('practitioner');
+  if (!presetId) return;
+
+  // Wait until the DOM is ready and the picker has loaded
+  const showHint = () => {
+    const reportActions = document.querySelector('.report-actions');
+    if (!reportActions) return;
+    // Insert a one-time hint banner above the action button
+    if (document.getElementById('arrival-hint')) return;
+    const hint = document.createElement('div');
+    hint.id = 'arrival-hint';
+    hint.className = 'arrival-hint';
+    hint.innerHTML = `
+      <p>
+        <strong>Sending to a featured practitioner.</strong>
+        Pick a tongue color, shape, and coating above (and optionally take or upload
+        a photo), then generate your report and click <em>"Send to my practitioner"</em>
+        — the picker will be pre-filled for you.
+      </p>
+      <button class="arrival-hint-close" aria-label="Dismiss">✕</button>
+    `;
+    reportActions.parentElement.insertBefore(hint, reportActions);
+    hint.querySelector('.arrival-hint-close').addEventListener('click', () => hint.remove());
+    reportActions.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showHint);
+  } else {
+    showHint();
+  }
+})();
+
+document.getElementById('report-share').addEventListener('click', () => {
+  shareStatus.hidden = true;
+  shareStatus.className = 'share-status';
+  shareStatus.textContent = '';
+  shareModal.classList.add('open');
+
+  // Honor ?practitioner=<id> URL parameter — pre-select that practitioner
+  // when the share modal opens (so links from practitioners.html work).
+  const params = new URLSearchParams(window.location.search);
+  const presetId = params.get('practitioner');
+  if (presetId && PRACTITIONERS.length) {
+    const match = PRACTITIONERS.find(p => p.id === presetId);
+    if (match) {
+      shareSelect.value = match.email;
+      shareEmailInput.value = match.email;
+    }
+  }
+});
+document.getElementById('share-close').addEventListener('click', closeShare);
+document.getElementById('share-cancel').addEventListener('click', closeShare);
+shareModal.addEventListener('click', (e) => { if (e.target === shareModal) closeShare(); });
+function closeShare() {
+  shareModal.classList.remove('open');
+}
+
+shareForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const userName     = document.getElementById('share-name').value.trim();
+  const userEmail    = document.getElementById('share-user-email').value.trim();
+  const pracEmail    = document.getElementById('share-prac-email').value.trim();
+  const note         = document.getElementById('share-note').value.trim();
+  const consented    = document.getElementById('share-consent').checked;
+
+  if (!userName || !userEmail || !pracEmail) {
+    showShareStatus('Please fill in your name, your email, and the practitioner\'s email.', 'error');
+    return;
+  }
+  if (!consented) {
+    showShareStatus('Please tick the consent checkbox before sending.', 'error');
+    return;
+  }
+  if (userEmail.toLowerCase() === pracEmail.toLowerCase()) {
+    showShareStatus('Your email and the practitioner\'s email look the same. Please double-check.', 'error');
+    return;
+  }
+
+  // Build the payload — send the rich HTML report so the practitioner sees
+  // the same document the user would download/print, not a plain-text version.
+  const reportHtml = buildStandaloneHTML();
+
+  setSubmitting(true);
+  showShareStatus('Sending…', 'info');
+
+  try {
+    const resp = await fetch('/.netlify/functions/send-report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userName,
+        userEmail,
+        practitionerEmail: pracEmail,
+        userNote: note,
+        reportHtml,
+        photoDataUrl: currentPhotoDataURL || null,
+        subject: `Tongue Self-Check Report — ${userName}`
+      })
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (resp.ok && data.ok) {
+      showShareStatus(
+        '✓ Sent successfully. Your practitioner has the report, and you have a copy in your inbox.',
+        'success'
+      );
+      // Clear the form after success
+      shareForm.reset();
+    } else if (resp.status === 500 && /not configured/i.test(data.error || '')) {
+      // Site owner hasn't set up the relay — fall back to mailto
+      showShareStatus(
+        'The site\'s email relay is not configured. Falling back to opening your email app instead.',
+        'info'
+      );
+      setTimeout(() => {
+        document.getElementById('report-mailto').click();
+        closeShare();
+      }, 1500);
+    } else {
+      const detail = data.error || `HTTP ${resp.status}`;
+      showShareStatus(`Could not send: ${detail}. You can use "Open in my email app" instead.`, 'error');
+    }
+  } catch (err) {
+    console.error('Share send failed:', err);
+    showShareStatus(
+      'Network error — please try again, or use "Open in my email app" instead.',
+      'error'
+    );
+  } finally {
+    setSubmitting(false);
+  }
+});
+
+function setSubmitting(on) {
+  shareSubmitBtn.disabled = on;
+  shareSubmitBtn.querySelector('.share-submit-label').hidden = on;
+  shareSubmitBtn.querySelector('.share-submit-spinner').hidden = !on;
+}
+function showShareStatus(msg, kind) {
+  shareStatus.hidden = false;
+  shareStatus.textContent = msg;
+  shareStatus.className = `share-status share-status-${kind}`;
+}
+</script>
+
+</body>
+</html>

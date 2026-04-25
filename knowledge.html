@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge Graph · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="kg">
+
+<div class="app">
+  <!-- Sidebar (populated by clock.js) -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>知识图谱</div>
+        <div class="eyebrow">Zhī Shí Tú Pǔ · TCM Knowledge Graph</div>
+        <h1>Entities and Relations</h1>
+        <p class="subtitle">A modern TCM knowledge graph integrates millions of records from herbal databases, prescription compendiums, and biomedical sources. Below is a curated, browsable subset organised by the same entity types used in research-grade graphs.</p>
+      </header>
+
+      <div class="kg-intro">
+        <p>The <strong><span data-term="tcmm">TCMM</span></strong> graph (released by the AI-HPC research team) integrates six TCM and biomedical databases into a unified knowledge structure. Its taxonomy is the foundation for the entity browser below.</p>
+        <div class="kg-stats">
+          <div class="kg-stat"><div class="num">20</div><div class="lbl">Entity Types</div></div>
+          <div class="kg-stat"><div class="num">46</div><div class="lbl">Relation Types</div></div>
+          <div class="kg-stat"><div class="num">3.4M+</div><div class="lbl">Records</div></div>
+          <div class="kg-stat"><div class="num">6</div><div class="lbl">Source DBs</div></div>
+        </div>
+      </div>
+
+      <div class="entity-section">
+        <h3><span class="cn" data-zh-auto>性</span>Property — Pharmacological nature</h3>
+        <p class="desc">The thermal/energetic nature a substance imparts: hot, warm, neutral, cool, cold.</p>
+        <div class="entity-cloud" id="entity-properties"></div>
+      </div>
+
+      <div class="entity-section">
+        <h3><span class="cn" data-zh-auto>味</span>Flavour — The five tastes</h3>
+        <p class="desc">Each flavour acts on a specific organ system and produces a characteristic effect.</p>
+        <div class="entity-cloud" id="entity-flavours"></div>
+      </div>
+
+      <div class="entity-section">
+        <h3><span class="cn" data-zh-auto>归经</span>Tropism — Channel-tropism</h3>
+        <p class="desc">Which of the twelve meridians a substance preferentially enters and acts upon.</p>
+        <div class="entity-cloud" id="entity-tropism"></div>
+      </div>
+
+      <div class="entity-section">
+        <h3><span class="cn" data-zh-auto>本草</span>Medicinal Materials — Curated by hour</h3>
+        <p class="desc">Herbs supportive to each meridian during its peak window. Educational reference only.</p>
+        <div class="kg-grid" id="entity-herbs"></div>
+      </div>
+
+      <div class="entity-section">
+        <h3><span class="cn" data-zh-auto>证候</span>Common Syndromes — Per meridian</h3>
+        <p class="desc">Patterns of imbalance traditionally associated with each organ system.</p>
+        <div class="kg-grid" id="entity-syndromes"></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const propSet = new Set(), flavSet = new Set(), tropSet = new Set();
+  ORGANS.forEach(o => {
+    o.kg.properties.forEach(x => propSet.add(x));
+    o.kg.flavours.forEach(x => flavSet.add(x));
+    o.kg.tropism.forEach(x => tropSet.add(x));
+  });
+
+  const propEl = document.getElementById('entity-properties');
+  [...propSet].sort().forEach(p => {
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.textContent = p;
+    propEl.appendChild(tag);
+  });
+
+  const flavEl = document.getElementById('entity-flavours');
+  const flavMap = { '酸':'wood', '苦':'fire', '甘':'earth', '辛':'metal', '咸':'water', '淡':'earth' };
+  [...flavSet].sort().forEach(f => {
+    const cn = f.split(' ')[0];
+    const tag = document.createElement('span');
+    tag.className = 'tag ' + (flavMap[cn] || '');
+    tag.textContent = f;
+    flavEl.appendChild(tag);
+  });
+
+  const tropEl = document.getElementById('entity-tropism');
+  [...tropSet].sort().forEach(t => {
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.textContent = t;
+    tropEl.appendChild(tag);
+  });
+
+  const herbsEl = document.getElementById('entity-herbs');
+  ORGANS.forEach(o => {
+    const card = document.createElement('a');
+    card.className = 'kg-card';
+    card.href = `index.html?hour=${ORGANS.indexOf(o)}`;
+    card.style.textDecoration = 'none';
+    card.innerHTML = `
+      <div class="kg-label">${o.cn} ${o.organ} · ${String(o.start).padStart(2,'0')}:00</div>
+      <ul class="kg-list">${o.kg.herbs.map(h => `<li><strong data-term="${h.cn}" data-zh-auto>${h.cn}</strong> <span class="small">${h.py} · ${h.en}</span></li>`).join('')}</ul>`;
+    herbsEl.appendChild(card);
+  });
+
+  const sydEl = document.getElementById('entity-syndromes');
+  ORGANS.forEach(o => {
+    const card = document.createElement('a');
+    card.className = 'kg-card';
+    card.href = `index.html?hour=${ORGANS.indexOf(o)}`;
+    card.style.textDecoration = 'none';
+    card.innerHTML = `
+      <div class="kg-label">${o.cn} ${o.organ}</div>
+      <div class="kg-value" style="margin-bottom:0.5rem">${o.kg.syndrome}</div>
+      <div class="kg-label" style="font-size:0.5rem">Symptoms</div>
+      <ul class="kg-list">${o.kg.tcmSymptoms.map(s => `<li>${s}</li>`).join('')}</ul>`;
+    sydEl.appendChild(card);
+  });
+});
+</script>
+</body>
+</html>

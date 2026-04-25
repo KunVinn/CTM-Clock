@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="about">
+
+<div class="app">
+  <!-- Sidebar (populated by clock.js) -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>关于</div>
+        <div class="eyebrow">Guān Yú · About</div>
+        <h1>About this site</h1>
+      </header>
+
+      <div class="about-prose">
+        <p>This is an educational tool for exploring <strong><span data-term="ziwu-liuzhu">子午流注</span></strong> (zǐ wǔ liú zhù) — the Traditional Chinese Medicine framework that maps the flow of <span data-term="qi">qi</span> through the twelve organ <span data-term="meridian">meridians</span> across a single day. The clock at the left of the screen tracks your local time and highlights the meridian currently at its peak.</p>
+
+        <h2><span class="cn" data-zh-auto>来源</span>Sources</h2>
+        <p>The cosmological dial design — the multi-ring layout combining 24-hour numbers, 24 directional terms (二十四方位), 12 Earthly Branches (地支), 12 zodiac animals (生肖), and the 12 organ sectors with their five-tone musical correspondences (五音) — is inspired by <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener">KunVinn/CTM-Clock</a>.</p>
+        <p>The Knowledge Graph section follows the entity taxonomy of <a data-term-skip="1" href="https://github.com/AI-HPC-Research-Team/TCM_knowledge_graph" target="_blank" rel="noopener">TCMM</a>, a research-grade TCM knowledge graph integrating six databases (CPMCP, TCMBANK, SymMap, TCMID, PharMeBINet, PrimeKG) into a unified resource of over three million records. Their published categories — Property (性), Flavour (味), Tropism (归经), Medicinal Material, Prescription, Syndrome (证候), TCM Symptom, Disease, Ingredient, Target/Gene, Pathway, and others — form the structural backbone of this site's knowledge browser.</p>
+
+        <h2><span class="cn" data-zh-auto>五音</span>The Five-Tone Music System</h2>
+        <p>Each organ in TCM is associated with one of the five pentatonic tones (角、徵、宫、商、羽). Specific traditional Chinese pieces — guqin classics, ancient melodies, and folk songs — are believed to harmonise the corresponding meridian. Track names listed for each hour are drawn from the CTM-Clock playlist; you can find recordings on most music streaming services.</p>
+
+        <h2><span class="cn" data-zh-auto>使用</span>How to use it</h2>
+        <p>The clock updates in real time. As each two-hour window arrives, the <em>Today</em> page automatically refreshes to show that meridian's full guidance — what's happening, practices that nourish, what to avoid, supportive herbs, and the recommended music.</p>
+        <p>Browse <em>Twelve Hours</em> for a complete overview, study the <em>Five Elements</em> with their generation and control cycles, explore the <em>Knowledge Graph</em> for deeper TCM concepts, and use <em>Daily Practices</em> to commit to one small habit per hour-window.</p>
+
+        <h2><span class="cn" data-zh-auto>技术</span>Site structure</h2>
+        <p>This is a static site built with plain HTML, CSS, and JavaScript — no build step, no dependencies. Each of the six pages shares the same sidebar (clock + now-strip) and the same data file (<code>assets/data.js</code>), so adding new content is a matter of editing one place. Drop the entire folder onto any web host (GitHub Pages, Netlify, Cloudflare Pages, even a USB stick) and it works.</p>
+
+        <div class="disclaimer-box">
+          <p><strong>Educational use only.</strong> This site supports healthy daily habits and is not medical advice or diagnosis. The information presented reflects traditional TCM theory and lifestyle practice. For health concerns, please consult a qualified TCM practitioner or healthcare professional.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+
+</body>
+</html>

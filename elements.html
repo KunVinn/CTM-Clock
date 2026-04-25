@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Five Elements · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="elements">
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>五行</div>
+        <div class="eyebrow">Wǔ Xíng · The Five Phases</div>
+        <h1>Wood, Fire, Earth, Metal, Water</h1>
+        <p class="subtitle">In <span data-term="wuxing">TCM</span>, every organ, season, taste, emotion, and color belongs to one of five interrelated phases. They flow into each other (<span data-term="sheng-cycle">生 generation</span>) and balance each other (<span data-term="ke-cycle">克 control</span>).</p>
+      </header>
+
+      <div class="elements-grid">
+        <div class="element-card" data-el="wood">
+          <div class="element-symbol">木</div>
+          <div class="element-name"><span data-term="wood">Wood · Mù</span></div>
+          <div class="element-organs">肝 · 胆</div>
+          <div class="element-traits">Liver · Gallbladder<br>Spring · Sour · Anger<br>Green · Wind</div>
+        </div>
+        <div class="element-card" data-el="fire">
+          <div class="element-symbol">火</div>
+          <div class="element-name"><span data-term="fire">Fire · Huǒ</span></div>
+          <div class="element-organs">心 · 小肠 · 心包 · 三焦</div>
+          <div class="element-traits">Heart · Sm. Intestine<br>Pericardium · Triple Burner<br>Summer · Bitter · Joy<br>Red · Heat</div>
+        </div>
+        <div class="element-card" data-el="earth">
+          <div class="element-symbol">土</div>
+          <div class="element-name"><span data-term="earth">Earth · Tǔ</span></div>
+          <div class="element-organs">脾 · 胃</div>
+          <div class="element-traits">Spleen · Stomach<br>Late Summer · Sweet · Worry<br>Yellow · Damp</div>
+        </div>
+        <div class="element-card" data-el="metal">
+          <div class="element-symbol">金</div>
+          <div class="element-name"><span data-term="metal">Metal · Jīn</span></div>
+          <div class="element-organs">肺 · 大肠</div>
+          <div class="element-traits">Lung · Lg. Intestine<br>Autumn · Pungent · Grief<br>White · Dryness</div>
+        </div>
+        <div class="element-card" data-el="water">
+          <div class="element-symbol">水</div>
+          <div class="element-name"><span data-term="water">Water · Shuǐ</span></div>
+          <div class="element-organs">肾 · 膀胱</div>
+          <div class="element-traits">Kidney · Bladder<br>Winter · Salty · Fear<br>Black/Blue · Cold</div>
+        </div>
+      </div>
+
+      <div class="cycles-section">
+        <h3>The Generation & Control Cycles</h3>
+        <p class="label">相生 Shēng · 相克 Kè</p>
+        <svg class="cycle-svg" id="cycle-svg" viewBox="-220 -220 440 440"></svg>
+        <div class="cycle-legend">
+          <span><span class="swatch gen"></span>Generation (相生) — each phase nourishes the next</span>
+          <span><span class="swatch con"></span>Control (相克) — each phase restrains another</span>
+        </div>
+      </div>
+
+      <!-- ========== CORRESPONDENCES ========== -->
+      <section class="corr-section">
+        <header class="page-head" style="border-bottom:none;margin-bottom:1rem">
+          <div class="cn-mark" style="font-size:1.7rem" data-zh-auto>五行配属</div>
+          <div class="eyebrow">Wǔ Xíng Pèi Shǔ · Comprehensive Correspondences</div>
+          <h1 style="font-size:1.8rem">All Things Under the Five Phases</h1>
+          <p class="subtitle">Every category in the body, mind, and natural world is mapped onto the five elements. Filter by group below — or scroll the full table to see how Heart relates to Joy, Bitter taste, the Red color, Summer, the South, and the tongue, all at once.</p>
+        </header>
+
+        <div class="corr-tabs" id="corr-tabs"><!-- populated by JS --></div>
+        <div class="corr-table-wrap">
+          <table class="corr-table" id="corr-table"><!-- populated by JS --></table>
+        </div>
+
+        <div class="corr-source-note">
+          Sources: <span class="cn" data-zh-auto>《黄帝内经·素问》</span>, primarily the chapters <span class="cn" data-zh-auto>阴阳应象大论</span> (On the Correspondence of Yin and Yang to All Things), <span class="cn" data-zh-auto>宣明五气篇</span> (On the Manifestation of the Five Qi), and <span class="cn" data-zh-auto>五脏生成篇</span> (On the Generation of the Five Yīn Organs). Modern arrangement following standard TCM doctrine.
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+<script>
+/* ======= Build the Five-Element cycle diagram ======= */
+document.addEventListener('DOMContentLoaded', () => {
+  const csvg = document.getElementById('cycle-svg');
+  const NS = 'http://www.w3.org/2000/svg';
+  const elements = [
+    { cn: '木', en: 'Wood',  color: 'var(--el-wood)' },
+    { cn: '火', en: 'Fire',  color: 'var(--el-fire)' },
+    { cn: '土', en: 'Earth', color: 'var(--el-earth)' },
+    { cn: '金', en: 'Metal', color: 'var(--el-metal)' },
+    { cn: '水', en: 'Water', color: 'var(--el-water)' }
+  ];
+  const R = 160;
+  const positions = elements.map((_, i) => {
+    const a = (i * 72 - 90) * Math.PI / 180;
+    return [R * Math.cos(a), R * Math.sin(a)];
+  });
+
+  const defs = document.createElementNS(NS, 'defs');
+  // Two arrowhead marker styles — use explicit hex colors (CSS vars in marker
+  // definitions are unreliable across browsers) and a slightly larger size
+  // so the dashed control arrows have visible heads.
+  for (const [id, color, size] of [
+        ['arrow-gen', '#6b9676', 6],   // jade green for 相生 generation
+        ['arrow-con', '#c43c2a', 7]    // cinnabar red for 相克 control (slightly bigger to stand out on dashes)
+      ]) {
+    const m = document.createElementNS(NS, 'marker');
+    m.setAttribute('id', id);
+    m.setAttribute('viewBox', '0 0 10 10');
+    m.setAttribute('refX', '9');
+    m.setAttribute('refY', '5');
+    m.setAttribute('markerWidth', size);
+    m.setAttribute('markerHeight', size);
+    m.setAttribute('orient', 'auto');
+    m.setAttribute('markerUnits', 'strokeWidth');
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M 0 0 L 10 5 L 0 10 L 2 5 Z');  // chevron-style head, sharper
+    p.setAttribute('fill', color);
+    m.appendChild(p);
+    defs.appendChild(m);
+  }
+  csvg.appendChild(defs);
+
+  function drawArrow(from, to, color, dashed, marker) {
+    const [x1, y1] = from, [x2, y2] = to;
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    const ux = dx / len, uy = dy / len;
+    const off = 32;
+    const line = document.createElementNS(NS, 'line');
+    line.setAttribute('x1', x1 + ux * off);
+    line.setAttribute('y1', y1 + uy * off);
+    line.setAttribute('x2', x2 - ux * off);
+    line.setAttribute('y2', y2 - uy * off);
+    line.setAttribute('stroke', color);
+    line.setAttribute('stroke-width', dashed ? '1.5' : '2');
+    if (dashed) line.setAttribute('stroke-dasharray', '5,4');
+    line.setAttribute('opacity', dashed ? '0.7' : '1');
+    line.setAttribute('marker-end', `url(#${marker})`);
+    csvg.appendChild(line);
+  }
+
+  for (let i = 0; i < 5; i++) drawArrow(positions[i], positions[(i + 1) % 5], 'var(--jade)', false, 'arrow-gen');
+  for (let i = 0; i < 5; i++) drawArrow(positions[i], positions[(i + 2) % 5], 'var(--cinnabar)', true, 'arrow-con');
+
+  elements.forEach((el, i) => {
+    const [x, y] = positions[i];
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y);
+    c.setAttribute('r', 36);
+    c.setAttribute('fill', 'var(--bg-card)');
+    c.setAttribute('stroke', el.color);
+    c.setAttribute('stroke-width', '2');
+    csvg.appendChild(c);
+    const t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y - 4);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('dominant-baseline', 'central');
+    t.setAttribute('font-family', "'Songti SC', 'STSong', 'SimSun', serif");
+    t.setAttribute('font-weight', '900');
+    t.setAttribute('font-size', '26');
+    t.setAttribute('fill', el.color);
+    t.textContent = el.cn;
+    csvg.appendChild(t);
+    const t2 = document.createElementNS(NS, 'text');
+    t2.setAttribute('x', x); t2.setAttribute('y', y + 17);
+    t2.setAttribute('text-anchor', 'middle');
+    t2.setAttribute('dominant-baseline', 'central');
+    t2.setAttribute('font-family', "'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', Times, serif");
+    t2.setAttribute('font-style', 'italic');
+    t2.setAttribute('font-size', '12');
+    t2.setAttribute('fill', 'var(--ink-soft)');
+    t2.textContent = el.en;
+    csvg.appendChild(t2);
+  });
+});
+
+/* ======= Build the Correspondences table ======= */
+document.addEventListener('DOMContentLoaded', () => {
+  const tabsEl = document.getElementById('corr-tabs');
+  const tableEl = document.getElementById('corr-table');
+
+  // Build tabs: All + each group
+  const groupKeys = ['all', ...Object.keys(GROUP_LABELS)];
+  let activeGroup = 'all';
+
+  function renderTabs() {
+    tabsEl.innerHTML = '';
+    groupKeys.forEach(key => {
+      const btn = document.createElement('button');
+      btn.className = 'corr-tab' + (key === activeGroup ? ' active' : '');
+      if (key === 'all') {
+        btn.innerHTML = `<span class="cn" data-zh-auto>全部</span> All`;
+      } else {
+        const lbl = GROUP_LABELS[key];
+        btn.innerHTML = `<span class="cn" data-zh-auto>${lbl.cn}</span> ${lbl.en}`;
+      }
+      btn.addEventListener('click', () => {
+        activeGroup = key;
+        renderTabs();
+        renderTable();
+      });
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  function cellHTML(el, val) {
+    if (!val) return `<span class="en" style="color:var(--ink-mute)">—</span>`;
+    let html = '';
+    if (val.cn) html += `<span class="cn" data-zh-auto>${val.cn}</span>`;
+    if (val.en) html += `<span class="en">${val.en}</span>`;
+    if (val.desc) html += `<span class="desc">${val.desc}</span>`;
+    if (val.source) html += `<span class="source">${val.source}</span>`;
+    if (val.note) html += `<span class="desc">${val.note}</span>`;
+    return html;
+  }
+
+  function renderTable() {
+    // Header row
+    let html = `<thead><tr>
+      <th></th>
+      ${FIVE_ELEMENTS.map(e => `
+        <th class="col-element" data-el="${e.key}">
+          ${e.cn}
+          <span class="col-element-en">${e.en} · ${e.pinyin}</span>
+        </th>`).join('')}
+    </tr></thead><tbody>`;
+
+    // Group rows
+    let lastGroup = null;
+    CORRESPONDENCE_CATEGORIES.forEach(cat => {
+      if (activeGroup !== 'all' && cat.group !== activeGroup) return;
+      // Insert group header when group changes (only when showing all)
+      if (activeGroup === 'all' && cat.group !== lastGroup) {
+        const lbl = GROUP_LABELS[cat.group];
+        html += `<tr class="group-header"><td colspan="6">
+          <span class="cn" data-zh-auto>${lbl.cn}</span>${lbl.en}
+        </td></tr>`;
+        lastGroup = cat.group;
+      }
+      html += `<tr>
+        <td class="corr-row-label">
+          <span class="cn" data-zh-auto>${cat.cn}</span>
+          <span class="en">${cat.en}</span>
+        </td>
+        ${FIVE_ELEMENTS.map(e => `
+          <td class="corr-cell" data-el="${e.key}">${cellHTML(e, e[cat.key])}</td>
+        `).join('')}
+      </tr>`;
+    });
+
+    html += '</tbody>';
+    tableEl.innerHTML = html;
+  }
+
+  renderTabs();
+  renderTable();
+});
+</script>
+
+</body>
+</html>

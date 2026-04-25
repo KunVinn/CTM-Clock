@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Practices · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="tracker">
+
+<div class="app">
+  <!-- Sidebar (populated by clock.js) -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>日修</div>
+        <div class="eyebrow">Rì Xiū · Daily Cultivation</div>
+        <h1>Today's Twelve Practices</h1>
+        <p class="subtitle">A small, gentle commitment in each two-hour window. Tap to mark complete. Resets when you choose to start fresh.</p>
+      </header>
+
+      <div class="tracker-card">
+        <div class="tracker-grid" id="tracker-grid"></div>
+        <p class="tracker-progress" id="tracker-progress">—</p>
+        <button class="tracker-reset" id="tracker-reset">Reset Today</button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const memState = {};
+  const grid = document.getElementById('tracker-grid');
+  const progress = document.getElementById('tracker-progress');
+  const todayStr = new Date().toDateString();
+
+  function render() {
+    grid.innerHTML = '';
+    ORGANS.forEach((o, i) => {
+      const item = document.createElement('div');
+      item.className = 'habit-item' + (memState[i] ? ' checked' : '');
+      item.innerHTML = `
+        <div class="habit-time">
+          <span>${String(o.start).padStart(2,'0')}:00 ${o.cn}<span class="hour-tag">${o.branch}时</span></span>
+          <span class="habit-check">${memState[i] ? '✓' : '○'}</span>
+        </div>
+        <div class="habit-text">${o.habit}</div>`;
+      item.addEventListener('click', () => { memState[i] = !memState[i]; render(); });
+      grid.appendChild(item);
+    });
+    const done = Object.values(memState).filter(Boolean).length;
+    progress.innerHTML = `<strong>${done} / 12</strong> practices honored today · <em>${todayStr}</em>`;
+  }
+
+  document.getElementById('tracker-reset').addEventListener('click', () => {
+    for (const k in memState) delete memState[k];
+    render();
+  });
+  render();
+});
+</script>
+</body>
+</html>

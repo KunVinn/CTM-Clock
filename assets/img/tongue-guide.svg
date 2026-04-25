@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" preserveAspectRatio="xMidYMid meet">
+  <!--
+    Mouth + tongue alignment guide — full lower face / mouth / extended tongue.
+    The user brings their lips and chin into the outline and sticks out the
+    tongue to align it inside the tongue shape. Corner brackets give the
+    visual feel of a camera viewfinder.
+  -->
+  <defs>
+    <style>
+      .guide-stroke    { fill: none; stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+      .guide-faint     { fill: none; stroke: rgba(255, 255, 255, 0.55); stroke-width: 1; }
+      .guide-teeth     { fill: rgba(255, 245, 230, 0.20); stroke: rgba(255, 255, 255, 0.55); stroke-width: 0.9; }
+      .guide-mouth     { fill: rgba(120, 70, 60, 0.22); stroke: rgba(255, 255, 255, 0.45); stroke-width: 0.8; }
+      .guide-bracket   { fill: none; stroke: rgba(212, 175, 122, 0.95); stroke-width: 2.2; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- Upper lip — gentle bow with philtrum dip -->
+  <path class="guide-stroke" d="
+    M 70 145
+    Q 110 100, 155 112
+    Q 180 119, 198 132
+    L 200 145
+    L 202 132
+    Q 220 119, 245 112
+    Q 290 100, 330 145
+  "/>
+
+  <!-- Philtrum tiny V at center of upper lip -->
+  <path class="guide-faint" d="M 193 132 L 200 145 L 207 132"/>
+
+  <!-- Six upper teeth — front incisors and small lateral teeth -->
+  <g class="guide-teeth">
+    <rect x="118" y="148" width="26" height="36" rx="3"/>
+    <rect x="147" y="146" width="30" height="40" rx="3"/>
+    <rect x="180" y="144" width="36" height="42" rx="3"/>
+    <rect x="219" y="144" width="36" height="42" rx="3"/>
+    <rect x="258" y="146" width="30" height="40" rx="3"/>
+    <rect x="291" y="148" width="26" height="36" rx="3"/>
+  </g>
+
+  <!-- Dark inner-mouth space behind the teeth and around the tongue root -->
+  <path class="guide-mouth" d="
+    M 85 192
+    Q 95 215, 135 228
+    L 175 224
+    Q 200 230, 225 224
+    L 265 228
+    Q 305 215, 315 192
+    L 313 188
+    L 290 192
+    L 110 192
+    L 87 188
+    Z
+  "/>
+
+  <!-- The TONGUE — wide at the root, narrowing to a round tip. Centered. -->
+  <path class="guide-stroke" d="
+    M 148 215
+    Q 132 255, 130 318
+    Q 130 380, 165 412
+    Q 195 434, 200 434
+    Q 205 434, 235 412
+    Q 270 380, 270 318
+    Q 268 255, 252 215
+  "/>
+
+  <!-- Tongue midline crease -->
+  <line class="guide-faint" x1="200" y1="220" x2="200" y2="425"/>
+
+  <!-- Lower lip — short curves on either side of the protruding tongue -->
+  <path class="guide-stroke" d="
+    M 78 230
+    Q 100 252, 138 252
+  "/>
+  <path class="guide-stroke" d="
+    M 262 252
+    Q 300 252, 322 230
+  "/>
+
+  <!-- Four corner brackets — viewfinder feel -->
+  <g class="guide-bracket">
+    <path d="M 22 56 L 22 22 L 56 22"/>          <!-- top-left -->
+    <path d="M 344 22 L 378 22 L 378 56"/>       <!-- top-right -->
+    <path d="M 22 424 L 22 458 L 56 458"/>       <!-- bottom-left -->
+    <path d="M 344 458 L 378 458 L 378 424"/>    <!-- bottom-right -->
+  </g>
+</svg>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医师 · TCM Practitioners · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="practitioners">
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn active" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>医师</div>
+        <div class="eyebrow">Yī Shī · Featured TCM Practitioners</div>
+        <h1>A small directory of practitioners we trust</h1>
+        <p class="subtitle">
+          This page lists a small number of TCM practitioners who have given
+          their explicit written consent to be listed here. They are people
+          we know personally and can vouch for the quality of their training.
+          When you use the <span data-term="tongue-diagnosis">tongue diagnosis</span>
+          tool, you can either pick someone from this list or enter your own
+          practitioner's email manually.
+        </p>
+      </header>
+
+      <!-- ============================================================
+           THE DIRECTORY
+           ============================================================ -->
+      <section class="practitioners-section">
+        <div class="practitioners-grid" id="practitioners-grid">
+          <p class="practitioners-loading">Loading practitioners…</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           FOR PRACTITIONERS — APPLICATION INFO
+           ============================================================ -->
+      <section class="practitioners-section">
+        <div class="prac-apply-card">
+          <h2>
+            <span class="cn" data-zh-auto>申请加入</span>
+            <span class="prac-apply-en">For TCM practitioners — to apply to be listed</span>
+          </h2>
+          <p>
+            If you are a credentialed TCM practitioner and would like to be
+            listed here so users can send you their self-check reports directly,
+            please email the site owner at the address below with:
+          </p>
+          <ul class="prac-apply-list">
+            <li>Your full name (and optionally Chinese name)</li>
+            <li>Your professional credentials and the jurisdiction(s) where you are licensed</li>
+            <li>Languages you practice in</li>
+            <li>Your practice location</li>
+            <li>A short bio (~80 words) — feel free to include both English and Chinese</li>
+            <li>The email address users should send their report to</li>
+            <li>Optionally: a clinic website and a professional photo</li>
+          </ul>
+          <p>
+            We will reply with a short consent form
+            (<a href="PRACTITIONER_CONSENT.md" target="_blank" rel="noopener" style="color:var(--gold-bright)">PRACTITIONER_CONSENT.md</a>)
+            that explains exactly what will be published and how to withdraw at
+            any time. Once you've returned the signed consent, your listing
+            usually appears within 7 days.
+          </p>
+          <p class="prac-apply-note">
+            Listing is <strong>free</strong>. We do not accept payment in exchange
+            for a listing — this is an editorial directory of practitioners we
+            personally vouch for, not an advertising platform.
+          </p>
+          <p class="prac-apply-contact">
+            <strong>Contact:</strong> <a href="mailto:practitioners@your-domain.example" style="color:var(--cinnabar-bright)">practitioners@your-domain.example</a>
+            <em style="display:block;margin-top:0.4rem;font-size:0.78rem;color:var(--ink-mute)">— site owner: please update this email address before deploying</em>
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           DISCLAIMER
+           ============================================================ -->
+      <div class="disclaimer-box" style="margin-top:2.5rem">
+        <strong>About this directory.</strong> The site is an educational
+        signpost only. The listed practitioners are independent professionals;
+        the site owner is not their employer, agent, or clinical supervisor,
+        and makes no claims about specific treatment outcomes.
+        <span data-term="tongue-diagnosis">Tongue self-observation</span> is
+        an aid to self-awareness, not a diagnosis. If you have a serious or
+        persistent health concern, please consult a qualified healthcare
+        professional in person.
+      </div>
+    </div>
+  </main>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+
+<script>
+/* ============================================================
+   Render the practitioners directory.
+   Loads from assets/practitioners.json — entries with active:false
+   are silently skipped.
+   ============================================================ */
+
+(async function () {
+  const grid = document.getElementById('practitioners-grid');
+  let practitioners = [];
+  try {
+    const resp = await fetch('assets/practitioners.json', { cache: 'no-cache' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    practitioners = await resp.json();
+  } catch (err) {
+    console.warn('Could not load practitioners list:', err);
+    grid.innerHTML = `<p class="practitioners-empty">Could not load the practitioner directory just now.</p>`;
+    return;
+  }
+
+  const active = practitioners.filter(p => p.active);
+
+  if (active.length === 0) {
+    grid.innerHTML = `
+      <div class="practitioners-empty-state">
+        <p>
+          <strong>The directory is currently empty.</strong>
+          When practitioners have completed the consent process they will be
+          listed here. In the meantime, please use the manual-entry option in
+          the <a href="tongue.html" style="color:var(--gold-bright)">tongue diagnosis</a>
+          form to send your report to a practitioner you already know.
+        </p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = active.map(p => {
+    const photoBlock = p.photo
+      ? `<div class="prac-photo"><img src="${p.photo}" alt=""></div>`
+      : `<div class="prac-photo prac-photo-placeholder">${(p.name || '?').slice(0,1)}</div>`;
+
+    const websiteLink = p.website
+      ? `<a href="${p.website}" target="_blank" rel="noopener" class="prac-link">${p.website.replace(/^https?:\/\//, '')}</a>`
+      : '';
+
+    const langs = (p.languages || []).map(l => `<span class="prac-tag">${l}</span>`).join('');
+    const specs = (p.specialties || []).map(s => `<span class="prac-tag prac-tag-spec">${s}</span>`).join('');
+
+    return `
+      <article class="prac-card" data-prac-id="${p.id}">
+        ${photoBlock}
+        <div class="prac-body">
+          <div class="prac-name-row">
+            <h3 class="prac-name">${p.name || ''}</h3>
+            ${p.name_cn ? `<span class="prac-name-cn cn" data-zh-auto>${p.name_cn}</span>` : ''}
+          </div>
+          ${p.credentials ? `<p class="prac-credentials">${p.credentials}</p>` : ''}
+          ${p.location ? `<p class="prac-location">📍 ${p.location}</p>` : ''}
+          ${langs ? `<div class="prac-tags">${langs}</div>` : ''}
+          ${specs ? `<div class="prac-tags">${specs}</div>` : ''}
+          <div class="prac-bio">
+            ${p.bio_en ? `<p>${p.bio_en}</p>` : ''}
+            ${p.bio_zh ? `<p class="cn" data-zh-auto>${p.bio_zh}</p>` : ''}
+          </div>
+          <div class="prac-actions">
+            <a href="tongue.html?practitioner=${encodeURIComponent(p.id)}" class="prac-btn prac-btn-primary">
+              Send tongue report to this practitioner →
+            </a>
+            ${websiteLink}
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+})();
+</script>
+
+</body>
+</html>

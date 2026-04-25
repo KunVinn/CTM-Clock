@@ -1,4 +1,56 @@
+# Netlify configuration
+# Drop this in the root of the tcm-site folder before deploying.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# HTML pages: never cache (so content updates appear immediately)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Static assets: cache aggressively (versions change with content hash if you ever add a build step)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Pretty URLs: serve /hours instead of /hours.html
 [[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
+  from = "/today"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/hours"
+  to = "/hours.html"
+  status = 200
+[[redirects]]
+  from = "/elements"
+  to = "/elements.html"
+  status = 200
+[[redirects]]
+  from = "/knowledge"
+  to = "/knowledge.html"
+  status = 200
+[[redirects]]
+  from = "/practices"
+  to = "/practices.html"
+  status = 200
+[[redirects]]
+  from = "/tongue"
+  to = "/tongue.html"
+  status = 200
+[[redirects]]
+  from = "/acupuncture"
+  to = "/acupuncture.html"
+  status = 200
+[[redirects]]
+  from = "/practitioners"
+  to = "/practitioners.html"
+  status = 200
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200

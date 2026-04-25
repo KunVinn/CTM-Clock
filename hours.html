@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Twelve Hours · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="hours">
+
+<div class="app">
+  <!-- Sidebar (populated by clock.js) -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>十二时辰</div>
+        <div class="eyebrow">Shí Èr Shí Chén · The Twelve Two-Hour Periods</div>
+        <h1>The Body's Daily Cycle</h1>
+        <p class="subtitle">Each two-hour window is governed by a different organ meridian, an <span data-term="dizhi">Earthly Branch (地支)</span>, a <span data-term="shengxiao">zodiac animal</span>, and a movement of <span data-term="qi">qi</span>. Click any hour to read its full story.</p>
+      </header>
+      <div class="hours-grid" id="hours-grid"></div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('hours-grid');
+  const nowIdx = getCurrentIdx();
+  ORGANS.forEach((o, i) => {
+    const card = document.createElement('a');
+    card.className = 'hour-card' + (i === nowIdx ? ' is-now' : '');
+    card.dataset.el = o.element;
+    card.href = `index.html?hour=${i}`;
+    card.innerHTML = `
+      <div class="hour-card-time">${String(o.start).padStart(2,'0')}:00 — ${String(o.end).padStart(2,'0')}:00</div>
+      <div class="hour-card-organ">${o.cn} <span class="en">${o.organ}</span></div>
+      <div class="hour-card-meta">${o.chineseHour} · ${o.zodiacEmoji} ${o.zodiacEn} · ${o.element.toUpperCase()}</div>
+      <div class="hour-card-meaning">"${o.meaning}"</div>`;
+    grid.appendChild(card);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "example-1-DELETE-ME",
+    "name": "Dr. Example Practitioner",
+    "name_cn": "示例医师",
+    "credentials": "MD-TCM, Lic. Acupuncturist (Oslo)",
+    "languages": ["English", "Norsk", "中文"],
+    "location": "Oslo, Norway",
+    "specialties": ["Internal medicine", "Tongue & pulse diagnosis", "Women's health"],
+    "bio_en": "This is a placeholder entry to show you the data structure. Replace with practitioners who have returned signed consent. See PRACTITIONER_CONSENT.md.",
+    "bio_zh": "此条目为占位示例，仅供展示数据结构。请将其替换为已签署同意书的医师信息。详见 PRACTITIONER_CONSENT.md。",
+    "email": "example@example.com",
+    "website": "https://example.com",
+    "photo": null,
+    "consent_date": "2026-01-01",
+    "consent_scope": "Listing on tcm-site practitioner directory; email contact form",
+    "active": false
+  }
+]

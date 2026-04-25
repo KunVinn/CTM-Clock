@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>针灸经络 · Acupuncture & Meridians · 子午流注</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="acupuncture">
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <nav>
+        <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
+        <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
+        <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
+        <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
+        <a class="menu-btn active" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
+        <a class="menu-btn" data-page="practitioners" href="practitioners.html"><span class="cn" data-zh-auto>医师</span> Practitioners</a>
+        <a class="menu-btn" data-page="tracker" href="practices.html"><span class="cn" data-zh-auto>日修</span> Daily Practices</a>
+        <a class="menu-btn" data-page="about" href="about.html"><span class="cn" data-zh-auto>关于</span> About</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <header class="page-head">
+        <div class="cn-mark" data-zh-auto>针灸经络</div>
+        <div class="eyebrow">Zhēn Jiǔ Jīng Luò · Acupuncture & Meridians</div>
+        <h1>The Meridian Map of the Body</h1>
+        <p class="subtitle">A study reference of the classical <span data-term="jinglu">channels</span> and their points — built from the traditional memory verses (<em>歌诀</em>) that students of <span data-term="acupuncture">acupuncture</span> have memorised for centuries. Each verse below links to the authoritative point list at <a href="https://yibian.hopto.org/" target="_blank" rel="noopener" style="color:var(--gold-bright)">医砭 yibian.hopto.org</a>.</p>
+      </header>
+
+      <!-- ============================================================
+           QUICK REFERENCE — 八总穴 & 五输穴 highlights
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>八总穴歌</span><span class="acu-en">Eight Master Points · clinical mnemonic</span></h2>
+        <div class="acu-verse">
+          <span data-zh-s="肚腹三里留" data-zh-t="肚腹三里留">For abdomen — Stomach 36 (足三里)</span><br>
+          <span data-zh-s="腰背委中求" data-zh-t="腰背委中求">For low back — Bladder 40 (委中)</span><br>
+          <span data-zh-s="头项寻列缺" data-zh-t="頭項尋列缺">For head and neck — Lung 7 (列缺)</span><br>
+          <span data-zh-s="面口合谷收" data-zh-t="面口合谷收">For face and mouth — <span data-term="li4">Large Intestine 4 (合谷)</span></span><br>
+          <span data-zh-s="心胸取内关" data-zh-t="心胸取內關">For heart and chest — Pericardium 6 (内关)</span><br>
+          <span data-zh-s="小腹三阴谋" data-zh-t="小腹三陰謀">For lower abdomen — <span data-term="sp6">Spleen 6 (三阴交)</span></span><br>
+          <span data-zh-s="酸痛阿是穴" data-zh-t="酸痛阿是穴">For sore points — <span data-term="ashi-points">ashi (tender) points</span></span><br>
+          <span data-zh-s="急救刺水沟" data-zh-t="急救刺水溝">For emergencies — Governor Vessel 26 (水沟)</span>
+        </div>
+        <p class="acu-source">Classical mnemonic. The first four lines are the famous "<em>四总穴</em>" — the four most-used points in all of acupuncture, said to cover most everyday complaints.</p>
+      </section>
+
+      <!-- ============================================================
+           THE FIVE-SHU SYSTEM (五输穴)
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>五输穴</span><span class="acu-en"><span data-term="wu-shu-points">Five-Shu Points</span> — the river-flow of qi</span></h2>
+        <p>On every one of the twelve main meridians, the five points distal to the elbow or knee map the metaphor of a flowing stream:</p>
+        <table class="wushu-table">
+          <thead>
+            <tr>
+              <th>Point</th><th>Where qi…</th><th>Yin/Yang element</th><th>Classical use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span data-term="jing-well">井 Well (Jǐng)</span></td><td>issues forth</td><td>Wood / Metal</td><td><em data-zh-s="心下满" data-zh-t="心下滿">Epigastric fullness</em>; emergency revival</td></tr>
+            <tr><td><span data-term="ying-spring">荥 Spring (Yíng)</span></td><td>glides</td><td>Fire / Water</td><td><em data-zh-s="身热" data-zh-t="身熱">Febrile diseases</em>, heat patterns</td></tr>
+            <tr><td><span data-term="shu-stream">输 Stream (Shū)</span></td><td>pours</td><td>Earth / Wood</td><td><em data-zh-s="体重节痛" data-zh-t="體重節痛">Heaviness, joint pain</em>; on yin channels also serves as <span data-term="yuan-source">source point</span></td></tr>
+            <tr><td><span data-term="jing-river">经 River (Jīng)</span></td><td>moves through</td><td>Metal / Fire</td><td><em data-zh-s="喘咳寒热" data-zh-t="喘咳寒熱">Wheezing, cough, alternating chills/fever</em></td></tr>
+            <tr><td><span data-term="he-sea">合 Sea (Hé)</span></td><td>enters the deep</td><td>Water / Earth</td><td><em data-zh-s="逆气而泄" data-zh-t="逆氣而泄">Counterflow qi & diarrhea</em>; preferred for fu-organ disorders</td></tr>
+          </tbody>
+        </table>
+        <p class="acu-source">From <em>《灵枢·九针十二原》</em>: <span class="cn" data-zh-auto>所出为井，所溜为荥，所注为输，所行为经，所入为合</span>.</p>
+      </section>
+
+      <!-- ============================================================
+           SPECIAL POINT CATEGORIES
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>特定穴</span><span class="acu-en">Special Point Categories</span></h2>
+        <p>Beyond the five-shu, classical TCM groups certain points by clinical function:</p>
+        <div class="acu-cat-grid">
+          <div class="acu-cat">
+            <h3><span data-term="yuan-source">原穴 Source (12)</span></h3>
+            <p>Where each organ's original qi (元气) surfaces. Used to diagnose and treat the deepest disorders of the parent organ.</p>
+            <p class="acu-cat-classical"><em data-zh-s="五脏有疾，当取之十二原" data-zh-t="五臟有疾，當取之十二原">"For diseases of the five viscera, draw on the twelve source points." — 《灵枢》</em></p>
+          </div>
+          <div class="acu-cat">
+            <h3><span data-term="luo-connecting">络穴 Connecting (15)</span></h3>
+            <p>Bridge a yin-yang meridian pair. Used in <em>原络配穴</em>: pair the source point of the diseased channel with the connecting point of its paired channel.</p>
+          </div>
+          <div class="acu-cat">
+            <h3><span data-term="mu-front">募穴 Front-Mu (12)</span></h3>
+            <p>On the chest and abdomen, where each organ's qi gathers. Tender on palpation when the corresponding organ is in distress.</p>
+          </div>
+          <div class="acu-cat">
+            <h3><span data-term="shu-back">背俞穴 Back-Shu (12)</span></h3>
+            <p>On the inner Bladder line of the upper-back. Each pairs with a Front-Mu point: the famous <em data-zh-s="俞募配穴" data-zh-t="俞募配穴">俞募配穴</em> couplet.</p>
+          </div>
+          <div class="acu-cat">
+            <h3><span data-term="xi-cleft">郄穴 Cleft (16)</span></h3>
+            <p>Where qi and blood gather deeply. Especially used for acute pain and emergency conditions of the channel.</p>
+          </div>
+          <div class="acu-cat">
+            <h3><span data-term="xia-he-lower">下合穴 Lower-Uniting (6)</span></h3>
+            <p>For each yang organ. <em data-zh-s="合治六腑" data-zh-t="合治六腑">"He points govern the six fu organs"</em> — the points of choice for stomach, intestine, gallbladder and bladder disorders.</p>
+          </div>
+          <div class="acu-cat">
+            <h3><span data-term="eight-meeting">八会穴 Eight Influential</span></h3>
+            <p>Each gathers the qi of one substance class: 脏 zang, 腑 fu, 气 qi, 血 blood, 筋 tendon, 脉 vessel, 骨 bone, 髓 marrow.</p>
+          </div>
+          <div class="acu-cat">
+            <h3><span data-term="eight-confluence">八脉交会穴 Eight Confluence</span></h3>
+            <p>Where the <span data-term="eight-extraordinary">eight extraordinary vessels</span> meet the main channels. Used in classical pairs (公孙-内关, 后溪-申脉, 临泣-外关, 列缺-照海).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           THE TWELVE MAIN MERIDIANS
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>十二经络歌诀</span><span class="acu-en"><span data-term="twelve-meridians">Twelve Main Meridians</span> — point verses</span></h2>
+        <p class="acu-flow">The flow direction of qi follows a strict order: <em data-zh-s="手三阴从胸走手，手三阳从手到头，足三阳从头走足，足三阴从足到胸" data-zh-t="手三陰從胸走手，手三陽從手到頭，足三陽從頭走足，足三陰從足到胸">arm-yin from chest to hand, arm-yang from hand to head, leg-yang from head to foot, leg-yin from foot to chest</em> — completing the great daily circulation traced by the <span data-term="ziwu-liuzhu">子午流注</span> clock at left.</p>
+
+        <div class="meridian-grid" id="meridian-grid">
+          <!-- populated by JS — verses + yibian links -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           THE EIGHT EXTRAORDINARY VESSELS
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>奇经八脉</span><span class="acu-en"><span data-term="eight-extraordinary">Eight Extraordinary Vessels</span></span></h2>
+        <p>Eight reservoir vessels that regulate and overflow into the twelve main meridians.</p>
+        <div class="meridian-grid">
+          <article class="meridian-card">
+            <header><span class="meridian-name"><span class="cn" data-zh-auto>督脉</span> <span data-term="du-mai">Governor Vessel · Dū Mài</span></span><a class="yibian-link" href="https://yibian.hopto.org/shu/?sid=6944" target="_blank" rel="noopener">29 points →</a></header>
+            <p class="meridian-desc">Sea of Yang Channels. Up the back midline, perineum to upper lip. Governs all yang qi.</p>
+          </article>
+          <article class="meridian-card">
+            <header><span class="meridian-name"><span class="cn" data-zh-auto>任脉</span> <span data-term="ren-mai">Conception Vessel · Rèn Mài</span></span><a class="yibian-link" href="https://yibian.hopto.org/shu/?sid=6943" target="_blank" rel="noopener">24 points →</a></header>
+            <p class="meridian-desc">Sea of Yin Channels. Up the front midline, perineum to lower lip. Central to gynecology and fertility.</p>
+          </article>
+          <article class="meridian-card">
+            <header><span class="meridian-name"><span class="cn" data-zh-auto>冲脉</span> Chōng Mài</span></header>
+            <p class="meridian-desc">Sea of the Twelve Channels. Rises with the Kidney channel. Controls blood and ancestral qi.</p>
+          </article>
+          <article class="meridian-card">
+            <header><span class="meridian-name"><span class="cn" data-zh-auto>带脉</span> Dài Mài</span></header>
+            <p class="meridian-desc">"Belt Vessel." Wraps the waist horizontally, binding all vertical channels.</p>
+          </article>
+          <article class="meridian-card">
+            <header><span class="meridian-name"><span class="cn" data-zh-auto>阳维脉 / 阴维脉</span> Yáng/Yīn Wéi Mài</span></header>
+            <p class="meridian-desc">Yang and Yin Linking Vessels. Connect all yang or yin channels respectively. Yang Wei diseases bring chills/fever (exterior); Yin Wei diseases bring heart pain (interior).</p>
+          </article>
+          <article class="meridian-card">
+            <header><span class="meridian-name"><span class="cn" data-zh-auto>阳跷脉 / 阴跷脉</span> Yáng/Yīn Qiāo Mài</span></header>
+            <p class="meridian-desc">Yang and Yin Heel Vessels. Govern eye opening/closing and lower-limb motion. Imbalance shows as insomnia or somnolence.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           XI-CLEFT POINTS — 十六郄穴歌
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>十六郄穴歌</span><span class="acu-en">Sixteen <span data-term="xi-cleft">Cleft Points</span> — for acute & painful conditions</span></h2>
+        <div class="acu-verse">
+          <span data-zh-auto>郗义即孔隙，本属气血集。</span><br>
+          <span data-zh-auto>肺向孔最取，大肠温溜别；</span><br>
+          <span data-zh-auto>胃经是梁丘，脾属地机穴。</span><br>
+          <span data-zh-auto>心则取阴郄，小肠养老列；</span><br>
+          <span data-zh-auto>膀胱金门守，肾向水泉施。</span><br>
+          <span data-zh-auto>心包郄门刺，三焦会宗持；</span><br>
+          <span data-zh-auto>胆郗在外丘，肝经中都是。</span><br>
+          <span data-zh-auto>阳跷跗阳走，阴跷交信期；</span><br>
+          <span data-zh-auto>阳维阳交穴，阴维筑宾知。</span>
+        </div>
+        <table class="wushu-table">
+          <thead><tr><th>Channel</th><th>Cleft Point (郄穴)</th><th>Channel</th><th>Cleft Point</th></tr></thead>
+          <tbody>
+            <tr><td>Lung 肺</td><td>孔最 LU6</td><td>Large Intestine 大肠</td><td>温溜 LI7</td></tr>
+            <tr><td>Stomach 胃</td><td>梁丘 ST34</td><td>Spleen 脾</td><td>地机 SP8</td></tr>
+            <tr><td>Heart 心</td><td>阴郄 HT6</td><td>Small Intestine 小肠</td><td>养老 SI6</td></tr>
+            <tr><td>Bladder 膀胱</td><td>金门 BL63</td><td>Kidney 肾</td><td>水泉 KI5</td></tr>
+            <tr><td>Pericardium 心包</td><td>郄门 PC4</td><td>Triple Burner 三焦</td><td>会宗 TE7</td></tr>
+            <tr><td>Gallbladder 胆</td><td>外丘 GB36</td><td>Liver 肝</td><td>中都 LV6</td></tr>
+            <tr><td>Yang Qiao 阳跷</td><td>跗阳 BL59</td><td>Yin Qiao 阴跷</td><td>交信 KI8</td></tr>
+            <tr><td>Yang Wei 阳维</td><td>阳交 GB35</td><td>Yin Wei 阴维</td><td>筑宾 KI9</td></tr>
+          </tbody>
+        </table>
+        <p class="acu-source">Cleft (郄) means "deep gathering" — these are points where qi and blood concentrate. They are the points of choice for <strong>acute pain</strong> and emergency conditions of the corresponding channel.</p>
+      </section>
+
+      <!-- ============================================================
+           FRONT-MU POINTS — 十二募穴
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>十二募穴</span><span class="acu-en">Twelve <span data-term="mu-front">Front-Mu Points</span> — alarm points on chest and abdomen</span></h2>
+        <div class="acu-verse">
+          <span data-zh-auto>肺募中府心巨阙，肝募期门胆日月；</span><br>
+          <span data-zh-auto>脾募章门肾京门，胃募中脘大肠天枢；</span><br>
+          <span data-zh-auto>小肠关元三焦石门，心包膻中膀胱中极。</span>
+        </div>
+        <table class="wushu-table">
+          <thead><tr><th>Organ</th><th>Front-Mu</th><th>Location</th></tr></thead>
+          <tbody>
+            <tr><td>Lung · 肺</td><td><span data-zh-auto>中府</span> Zhōng Fǔ (LU1)</td><td>Upper chest, 6 cùn lateral to midline, 1st intercostal space</td></tr>
+            <tr><td>Heart · 心</td><td><span data-zh-auto>巨阙</span> Jù Què (CV14)</td><td>Upper abdomen midline, 6 cùn above the navel</td></tr>
+            <tr><td>Liver · 肝</td><td><span data-zh-auto>期门</span> Qī Mén (LV14)</td><td>6th intercostal space, 4 cùn lateral to midline (directly below the nipple)</td></tr>
+            <tr><td>Gallbladder · 胆</td><td><span data-zh-auto>日月</span> Rì Yuè (GB24)</td><td>7th intercostal space, 4 cùn lateral to midline</td></tr>
+            <tr><td>Spleen · 脾</td><td><span data-zh-auto>章门</span> Zhāng Mén (LV13)</td><td>Side abdomen, below the free end of the 11th rib</td></tr>
+            <tr><td>Stomach · 胃</td><td><span data-term="cv12">中脘 Zhōng Wǎn (CV12)</span></td><td>Upper abdomen midline, 4 cùn above the navel</td></tr>
+            <tr><td>Large Intestine · 大肠</td><td><span data-zh-auto>天枢</span> Tiān Shū (ST25)</td><td>Lateral to the navel, 2 cùn either side</td></tr>
+            <tr><td>Small Intestine · 小肠</td><td><span data-term="cv4">关元 Guān Yuán (CV4)</span></td><td>Lower abdomen midline, 3 cùn below the navel</td></tr>
+            <tr><td>Triple Burner · 三焦</td><td><span data-zh-auto>石门</span> Shí Mén (CV5)</td><td>Lower abdomen midline, 2 cùn below the navel</td></tr>
+            <tr><td>Bladder · 膀胱</td><td><span data-zh-auto>中极</span> Zhōng Jí (CV3)</td><td>Lower abdomen midline, 4 cùn below the navel</td></tr>
+            <tr><td>Pericardium · 心包</td><td><span data-term="cv17">膻中 Dàn Zhōng (CV17)</span></td><td>Mid-sternum, level with the nipples (men) or 4th intercostal (women)</td></tr>
+            <tr><td>Kidney · 肾</td><td><span data-zh-auto>京门</span> Jīng Mén (GB25)</td><td>Side waist, below the free end of the 12th rib</td></tr>
+          </tbody>
+        </table>
+        <p class="acu-source">Front-Mu points become <strong>tender on palpation</strong> when their associated organ is in distress. They are classically paired with the corresponding <span data-term="shu-back">back-shu point</span> on the Bladder line — the famous "<em>俞募配穴</em>" couplet — to treat the organ from both front and back simultaneously.</p>
+      </section>
+
+      <!-- ============================================================
+           FIVE-SHU FLOW TABLE — 十二经脉流注表
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>十二经脉流注表</span><span class="acu-en">Twelve-Channel Five-Shu Flow Table</span></h2>
+        <p>Every channel has its own series of <span data-term="wu-shu-points">five-shu points</span> arranged distal-to-proximal (fingertip/toe → elbow/knee). On <strong>yin channels the Stream point doubles as the Source</strong> (以输代原); on yang channels the Source is a separate point that follows the Stream.</p>
+        <div class="liuzhu-table-wrap">
+          <table class="liuzhu-table">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>井 Well</th><th>荥 Spring</th><th>输 Stream</th><th>原 Source</th><th>经 River</th><th>合 Sea</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-yin"><td>手太阴肺</td><td>少商</td><td>鱼际</td><td colspan="2"><span data-term="wu-shu-points">太渊</span> ⇆</td><td>经渠</td><td>尺泽</td></tr>
+              <tr class="row-yang"><td>手阳明大肠</td><td>商阳</td><td>二间</td><td>三间</td><td><span data-term="li4">合谷</span></td><td>阳溪</td><td><span data-term="li11">曲池</span></td></tr>
+              <tr class="row-yang"><td>足阳明胃</td><td>厉兑</td><td>内庭</td><td>陷谷</td><td>冲阳</td><td>解溪</td><td><span data-term="st36">足三里</span></td></tr>
+              <tr class="row-yin"><td>足太阴脾</td><td>隐白</td><td>大都</td><td colspan="2">太白 ⇆</td><td>商丘</td><td><span data-term="sp9">阴陵泉</span></td></tr>
+              <tr class="row-yin"><td>手少阴心</td><td>少冲</td><td>少府</td><td colspan="2">神门 ⇆</td><td>灵道</td><td>少海</td></tr>
+              <tr class="row-yang"><td>手太阳小肠</td><td>少泽</td><td>前谷</td><td>后溪</td><td>腕骨</td><td>阳谷</td><td>小海</td></tr>
+              <tr class="row-yang"><td>足太阳膀胱</td><td>至阴</td><td>足通谷</td><td>束骨</td><td>京骨</td><td>昆仑</td><td>委中</td></tr>
+              <tr class="row-yin"><td>足少阴肾</td><td>涌泉</td><td>然谷</td><td colspan="2"><span data-term="ki3">太溪</span> ⇆</td><td>复溜</td><td>阴谷</td></tr>
+              <tr class="row-yin"><td>手厥阴心包</td><td>中冲</td><td>劳宫</td><td colspan="2">大陵 ⇆</td><td>间使</td><td>曲泽</td></tr>
+              <tr class="row-yang"><td>手少阳三焦</td><td>关冲</td><td>液门</td><td>中渚</td><td>阳池</td><td>支沟</td><td>天井</td></tr>
+              <tr class="row-yang"><td>足少阳胆</td><td>足窍阴</td><td>侠溪</td><td>足临泣</td><td>丘墟</td><td>阳辅</td><td>阳陵泉</td></tr>
+              <tr class="row-yin"><td>足厥阴肝</td><td>大敦</td><td>行间</td><td colspan="2"><span data-term="lv3">太冲</span> ⇆</td><td>中封</td><td>曲泉</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="acu-source">⇆ marks where the Stream point and the Source point are the same on yin channels (以输代原).</p>
+      </section>
+
+      <!-- ============================================================
+           DEEP MEANING ESSAY — 五腧穴的深层内涵
+           ============================================================ -->
+      <section class="acu-section">
+        <h2><span class="cn" data-zh-auto>五腧穴的深层内涵</span><span class="acu-en">The Five-Shu System — deeper meaning</span></h2>
+        <p>The metaphor running through the five-shu naming is <strong>water itself</strong>. Qi flows through the limbs the way a stream flows from the mountain to the sea — and this isn't ornamental poetry. The <em>quality</em> of qi at each station differs, and so do the clinical uses:</p>
+
+        <div class="five-shu-grid">
+          <div class="five-shu-card">
+            <h3>井 Well · the source-spring</h3>
+            <p class="five-shu-where">"<em>所出为井</em>" — where qi <em>issues forth</em>. At the fingertips and toes.</p>
+            <p>Qi here is <strong>shallow but vital</strong> — like the first drops of an Alpine spring. Used for <strong>急救 emergency revival</strong> (loss of consciousness, stroke onset), and for <em data-zh-auto>心下满</em> (epigastric fullness, chest oppression). The shallow depth is exactly why these points respond to a single drop of pricking — they reset the channel from its origin.</p>
+          </div>
+
+          <div class="five-shu-card">
+            <h3>荥 Spring · gliding water</h3>
+            <p class="five-shu-where">"<em>所溜为荥</em>" — where qi <em>glides</em>. The second point.</p>
+            <p>Qi has begun to flow but is still close to the surface. Classical use: <em data-zh-auto>身热</em> — <strong>heat patterns and febrile conditions</strong>. The water-imagery is apt: a Spring point is where you would dip your hand to <em>cool</em> the channel.</p>
+          </div>
+
+          <div class="five-shu-card">
+            <h3>输 Stream · pouring confluence</h3>
+            <p class="five-shu-where">"<em>所注为输</em>" — where qi <em>pours</em>. Third point. On yin channels, also serves as <span data-term="yuan-source">原 Source</span>.</p>
+            <p>Classical use: <em data-zh-auto>体重节痛</em> — <strong>heaviness of the body, joint pain, dampness</strong>. This is where qi gathers volume and so where stagnation first slows it down. On yin meridians, the Stream <em>is</em> the Source — this is why <span data-term="ki3">太溪 KI3</span>, <span data-term="lv3">太冲 LV3</span>, etc. carry double duty.</p>
+          </div>
+
+          <div class="five-shu-card">
+            <h3>经 River · running channel</h3>
+            <p class="five-shu-where">"<em>所行为经</em>" — where qi <em>moves through</em>. Fourth point.</p>
+            <p>Qi has volume and direction now. Classical use: <em data-zh-auto>喘咳寒热</em> — <strong>wheezing, cough, alternating chills and fever</strong>. This is the level of the qi that interfaces with the wei-defensive layer; River points address half-exterior, half-interior pathology.</p>
+          </div>
+
+          <div class="five-shu-card">
+            <h3>合 Sea · the deep estuary</h3>
+            <p class="five-shu-where">"<em>所入为合</em>" — where qi <em>enters</em> the deep body. Fifth point, near elbow or knee.</p>
+            <p>Classical use: <em data-zh-auto>逆气而泄</em> — <strong>counterflow qi and diarrhea</strong>; the preferred level for <span data-term="xia-he-lower">六腑 fu-organ</span> disorders ("<em>合治六腑</em>" — 《灵枢》). When qi reaches the Sea it has joined the larger trunk circulation; treatment here addresses systemic patterns rather than channel-specific signs.</p>
+          </div>
+
+          <div class="five-shu-card">
+            <h3>原 Source · the original-qi outlet</h3>
+            <p class="five-shu-where">Twelve points; on yang channels separate from the Stream.</p>
+            <p>From <em>《灵枢·九针十二原》</em>: "<em data-zh-auto>五脏有疾，当取之十二原。十二原者，五脏之所以禀三百六十五节之气味者也</em>" — for diseases of the five viscera, draw upon the twelve source points; they are how the five viscera receive the qi of all 365 joints. The Source is the deepest expression of the channel — the point at which to read <em>and</em> repair the original qi (元气) of the parent organ.</p>
+          </div>
+        </div>
+
+        <p class="acu-source" style="margin-top:1rem">This system is also the <strong>foundation of <span data-term="ziwu-liuzhu">子午流注 time-acupuncture</span></strong>. The 纳甲 method selects different five-shu points to needle at different hours of the day — and the choice depends not only on the active meridian (which the clock at left tracks) but on which level of the river-flow analogy is dominant at that moment.</p>
+      </section>
+
+      <!-- ============================================================
+           SAFETY DISCLAIMER
+           ============================================================ -->
+      <div class="disclaimer-box" style="margin-top:2.5rem">
+        <strong>Safety reminder.</strong> The information on this page is presented as a study reference of classical TCM doctrine and is not a substitute for clinical training. Acupuncture must only be performed by a licensed practitioner. Moxibustion (艾灸) requires care to avoid burns. Acupressure (steady firm pressure with finger or thumb for 1–2 minutes per point) is the safest self-application of this knowledge — it can be tried gently for everyday discomfort but is not a treatment for serious conditions. <strong>Avoid all of these techniques in pregnancy without specific professional guidance.</strong>
+      </div>
+    </div>
+  </main>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/glossary.js"></script>
+<script src="assets/clock.js"></script>
+<script src="assets/tcm-script-toggle.js"></script>
+<script src="assets/tcm-music.js"></script>
+<script src="assets/tcm-link.js"></script>
+
+<script>
+/* ============================================================
+   Build the meridian grid — 12 main channels with point-list
+   verses (歌诀) and links to yibian.hopto.org for the canonical
+   point sequence on each channel.
+   ============================================================ */
+
+const MERIDIAN_VERSES = [
+  {
+    cn: '手太阴肺经', en: 'Lung · Tài Yīn',
+    flow: 'arm-yin · 寅时 03–05', count: 11,
+    url: 'https://yibian.hopto.org/shu/?sid=6968',
+    verse: [
+      '手太阴肺十一穴，',
+      '中府云门天府诀，',
+      '侠白尺泽孔最存，',
+      '列缺经渠太渊涉，',
+      '鱼际拇指白肉际，',
+      '抵指少商如韭叶。'
+    ]
+  },
+  {
+    cn: '手阳明大肠经', en: 'Large Intestine · Yáng Míng',
+    flow: 'arm-yang · 卯时 05–07', count: 20,
+    url: 'https://yibian.hopto.org/shu/?sid=6967',
+    verse: [
+      '二十大肠起商阳，',
+      '二间三间合谷藏，',
+      '阳溪偏历温溜济，',
+      '下廉上廉三里长，',
+      '曲池肘髎五里近，',
+      '臂臑肩髃巨骨当，',
+      '天鼎扶突禾髎接，',
+      '鼻旁五分迎香列。'
+    ]
+  },
+  {
+    cn: '足阳明胃经', en: 'Stomach · Yáng Míng',
+    flow: 'leg-yang · 辰时 07–09', count: 45,
+    url: 'https://yibian.hopto.org/shu/?sid=6961',
+    verse: [
+      '四十五穴足阳明，',
+      '承泣四白巨髎经，',
+      '地仓大迎下颊车，',
+      '下关头维对人迎，',
+      '水突气舍连缺盆，',
+      '气户库房屋翳寻，',
+      '膺窗乳中下乳根，',
+      '不容承满与梁门，',
+      '关门太乙滑肉门，',
+      '天枢外陵大巨存，',
+      '水道归来气冲刺，',
+      '髀关伏兔走阴市，',
+      '梁丘犊鼻足三里，',
+      '上巨虚连条口行，',
+      '下巨虚下有丰隆，',
+      '解溪冲阳陷谷同，',
+      '内庭厉兑阳明穴，',
+      '大趾次趾之端终。'
+    ]
+  },
+  {
+    cn: '足太阴脾经', en: 'Spleen · Tài Yīn',
+    flow: 'leg-yin · 巳时 09–11', count: 21,
+    url: 'https://yibian.hopto.org/shu/?sid=6962',
+    verse: [
+      '二十一穴脾中州，',
+      '隐白在足大趾头，',
+      '大都太白公孙盛，',
+      '商丘直上三阴交，',
+      '漏谷地机阴陵泉，',
+      '血海箕门冲门前，',
+      '府舍腹结大横上，',
+      '腹哀食窦天溪候，',
+      '胸乡周容大包上，',
+      '从足经腹向胸走。'
+    ]
+  },
+  {
+    cn: '手少阴心经', en: 'Heart · Shào Yīn',
+    flow: 'arm-yin · 午时 11–13', count: 9,
+    url: 'https://yibian.hopto.org/shu/?sid=6970',
+    verse: [
+      '九穴心经手少阴，',
+      '极泉青灵少海深，',
+      '灵道通里阴郄邃，',
+      '神门少府少冲寻。'
+    ]
+  },
+  {
+    cn: '手太阳小肠经', en: 'Small Intestine · Tài Yáng',
+    flow: 'arm-yang · 未时 13–15', count: 19,
+    url: 'https://yibian.hopto.org/shu/?sid=6969',
+    verse: [
+      '手太阳经小肠穴，',
+      '少泽先行小指末，',
+      '前谷后溪腕骨间，',
+      '阳谷须同养老列，',
+      '支正小海上肩贞，',
+      '臑俞天宗秉风和，',
+      '曲垣肩外复肩中，',
+      '天窗寻刺上天容，',
+      '此经穴数一十九，',
+      '还有颧髎入听宫。'
+    ]
+  },
+  {
+    cn: '足太阳膀胱经', en: 'Bladder · Tài Yáng',
+    flow: 'leg-yang · 申时 15–17', count: 67,
+    url: 'https://yibian.hopto.org/shu/?sid=6963',
+    verse: [
+      '六十七穴足太阳，',
+      '睛明目内红肉藏，',
+      '攒竹眉冲与曲差，',
+      '五处一五上承光，',
+      '通天络却下玉枕，',
+      '天柱发际大筋上，',
+      '大杼风门肺厥阴，',
+      '心俞督俞膈俞当，',
+      '肝胆脾胃具挨次，',
+      '三焦肾俞海大肠，',
+      '关元小肠到膀胱，',
+      '中膂百环寸半量，',
+      '上次中下四髎穴，',
+      '一空一空骶孔藏，',
+      '会阳尾骨外边取，',
+      '附分脊背第二行，',
+      '魄户膏肓神堂遇，',
+      '譩譆膈关魂门详，',
+      '阳纲意舍胃仓随，',
+      '肓门志室至胞肓，',
+      '二十一椎秩边是，',
+      '承扶臀股纹中央，',
+      '殷门浮郄委阳至，',
+      '委中合阳承筋量，',
+      '承山飞扬跗阳继，',
+      '昆仑仆参申脉堂，',
+      '金门京骨束骨跟，',
+      '通谷至阴小趾旁。'
+    ]
+  },
+  {
+    cn: '足少阴肾经', en: 'Kidney · Shào Yīn',
+    flow: 'leg-yin · 酉时 17–19', count: 27,
+    url: 'https://yibian.hopto.org/shu/?sid=6964',
+    verse: [
+      '少阴肾经二十七，',
+      '涌泉然谷与太溪，',
+      '大钟水泉与照海，',
+      '复溜交信筑宾派，',
+      '阴谷膝内辅骨后，',
+      '以上从足至膝求，',
+      '横骨大赫连气穴，',
+      '四满中注肓俞脐，',
+      '商曲石关阴都密，',
+      '通谷幽门一寸取，',
+      '步廊神封膺灵墟，',
+      '神藏彧中俞府毕。'
+    ]
+  },
+  {
+    cn: '手厥阴心包经', en: 'Pericardium · Jué Yīn',
+    flow: 'arm-yin · 戌时 19–21', count: 9,
+    url: 'https://yibian.hopto.org/shu/?sid=6972',
+    verse: [
+      '心包九穴天池近，',
+      '天泉曲泽郄门认，',
+      '间使内关输大陵，',
+      '劳宫中冲中指尽。'
+    ]
+  },
+  {
+    cn: '手少阳三焦经', en: 'Triple Burner · Shào Yáng',
+    flow: 'arm-yang · 亥时 21–23', count: 23,
+    url: 'https://yibian.hopto.org/shu/?sid=6971',
+    verse: [
+      '少阳三焦二十三，',
+      '关冲液门中渚间，',
+      '阳池外关支沟正，',
+      '会宗三阳四渎长，',
+      '天井清泠渊消泺，',
+      '臑会肩髎天髎堂，',
+      '天牖翳风瘈脉青，',
+      '颅息角孙耳门当，',
+      '和髎耳前发际边，',
+      '丝竹空在眉外藏。'
+    ]
+  },
+  {
+    cn: '足少阳胆经', en: 'Gallbladder · Shào Yáng',
+    flow: 'leg-yang · 子时 23–01', count: 44,
+    url: 'https://yibian.hopto.org/shu/?sid=6965',
+    verse: [
+      '足少阳起瞳子髎，',
+      '四十四穴君记牢，',
+      '听会上关颔厌集，',
+      '悬颅悬厘曲鬓分，',
+      '率谷天冲浮白次，',
+      '窍阴完骨本神交，',
+      '阳白临泣目窗开，',
+      '正营承灵脑空怀，',
+      '风池肩井与渊腋，',
+      '辄筋日月京门结，',
+      '带脉五枢维道连，',
+      '居髎环跳风市间，',
+      '中渎阳关阳陵泉，',
+      '阳交外丘光明宜，',
+      '阳辅悬钟丘墟外，',
+      '临泣地五会侠溪，',
+      '四趾外端足窍阴，',
+      '胆经经穴仔细扪。'
+    ]
+  },
+  {
+    cn: '足厥阴肝经', en: 'Liver · Jué Yīn',
+    flow: 'leg-yin · 丑时 01–03', count: 14,
+    url: 'https://yibian.hopto.org/shu/?sid=6966',
+    verse: [
+      '足厥阴经一十四，',
+      '大敦行间太冲是，',
+      '中封蠡沟伴中都，',
+      '膝关曲泉阴包次，',
+      '五里阴廉上急脉，',
+      '章门过后期门至。'
+    ]
+  }
+];
+
+const grid = document.getElementById('meridian-grid');
+grid.innerHTML = MERIDIAN_VERSES.map(m => `
+  <article class="meridian-card">
+    <header>
+      <span class="meridian-name"><span class="cn" data-zh-auto>${m.cn}</span> ${m.en}</span>
+      <a class="yibian-link" href="${m.url}" target="_blank" rel="noopener">${m.count} points →</a>
+    </header>
+    <p class="meridian-flow">${m.flow}</p>
+    <pre class="meridian-verse" data-zh-auto>${m.verse.join('\n')}</pre>
+  </article>
+`).join('');
+</script>
+
+</body>
+</html>
