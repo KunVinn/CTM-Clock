@@ -2066,13 +2066,11 @@ a:hover { color: var(--gold-bright); }
   background: rgba(196, 60, 42, 0.22);
 }
 
+/* File inputs that are explicitly triggered by their button's JS click
+   handler. Visually hidden but kept in the layout flow so they remain
+   interactive on every mobile browser. */
+.photo-hidden-input,
 .photo-btn input[type="file"] {
-  /* iOS Safari and several Android WebViews fail to open the file
-     picker when a labelled <input type="file"> is `display: none`.
-     Use the screen-reader-only pattern instead — input stays in flow
-     and remains interactive, just visually invisible. This is what
-     finally makes both 'Choose photo' and 'Camera' open the picker
-     reliably across mobile browsers. */
   position: absolute;
   width: 1px;
   height: 1px;

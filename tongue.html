@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426v">
+<link rel="stylesheet" href="assets/style.css?v=20260426w">
 </head>
 <body data-page="tongue">
 
@@ -49,22 +49,23 @@
         </div>
 
         <div class="photo-upload-row">
-          <label class="photo-btn primary">
+          <!-- Two real <input type=file> elements — visually hidden via the
+               .photo-hidden-input rule. Each button below explicitly
+               triggers its input via input.click() in JS. The label-
+               wrapping pattern was unreliable on the user's mobile
+               browser; explicit JS click on a sibling input works
+               universally. value='' is reset on every click so picking
+               the same file twice or pressing Cancel doesn't brick the
+               button (the classic 'works once' file-input bug). -->
+          <input type="file" id="photo-file-input" accept="image/*" class="photo-hidden-input">
+          <input type="file" id="camera-direct-input" accept="image/*" capture="environment" class="photo-hidden-input">
+
+          <button type="button" class="photo-btn primary" id="open-photo-btn">
             <span>📁</span> <span data-zh-s="选择照片" data-zh-t="選擇照片">Choose photo</span>
-            <input type="file" id="photo-file-input" accept="image/*">
-          </label>
-          <!-- Camera button: a real <label> wrapping a real <input> with the
-               native `capture` attribute. On mobile (iOS Safari, Android
-               Chrome, Samsung Internet, Firefox) tapping this opens the
-               OS camera directly — no JS required, no getUserMedia quirks.
-               On desktop it opens a file picker (which on most modern
-               browsers also offers 'use webcam' if a webcam is present).
-               This replaces the previous JS-driven openCameraModal flow,
-               which kept failing on different mobile browsers. -->
-          <label class="photo-btn" id="open-camera-btn">
+          </button>
+          <button type="button" class="photo-btn" id="open-camera-btn">
             <span>📷</span> <span data-zh-s="相机" data-zh-t="相機">Camera</span>
-            <input type="file" id="camera-direct-input" accept="image/*" capture="environment">
-          </label>
+          </button>
         </div>
 
         <!-- Live camera modal -->
@@ -398,12 +399,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426v"></script>
-<script src="assets/glossary.js?v=20260426v"></script>
-<script src="assets/clock.js?v=20260426v"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426v"></script>
-<script src="assets/tcm-music.js?v=20260426v"></script>
-<script src="assets/tcm-link.js?v=20260426v"></script>
+<script src="assets/data.js?v=20260426w"></script>
+<script src="assets/glossary.js?v=20260426w"></script>
+<script src="assets/clock.js?v=20260426w"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426w"></script>
+<script src="assets/tcm-music.js?v=20260426w"></script>
+<script src="assets/tcm-link.js?v=20260426w"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1183,18 +1184,36 @@ function hideAutoSuggestion() {
   if (banner) banner.hidden = true;
 }
 
-document.getElementById('photo-file-input').addEventListener('change', (e) => {
-  loadPhoto(e.target.files[0]);
-});
-
-// Native camera path: a real <input type=file capture=environment>
-// inside the Camera <label>. Browser opens the OS camera on tap.
+// Photo / Camera flow: explicit button-click → input.click() pattern.
+// value='' is reset on each click so picking the same file twice or
+// pressing Cancel doesn't lock the button (the classic 'works once'
+// file-input bug). Change handlers also reset value as a safety pass.
+const photoFileInput   = document.getElementById('photo-file-input');
 const cameraDirectInput = document.getElementById('camera-direct-input');
-if (cameraDirectInput) {
-  cameraDirectInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+const openPhotoBtn      = document.getElementById('open-photo-btn');
+const openCameraBtnEl   = document.getElementById('open-camera-btn');
+
+if (openPhotoBtn && photoFileInput) {
+  openPhotoBtn.addEventListener('click', () => {
+    photoFileInput.value = '';
+    photoFileInput.click();
   });
 }
+if (openCameraBtnEl && cameraDirectInput) {
+  openCameraBtnEl.addEventListener('click', () => {
+    cameraDirectInput.value = '';
+    cameraDirectInput.click();
+  });
+}
+
+photoFileInput.addEventListener('change', (e) => {
+  if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+  e.target.value = '';
+});
+cameraDirectInput.addEventListener('change', (e) => {
+  if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+  e.target.value = '';
+});
 
 /* ============================================================
    LIVE CAMERA via getUserMedia (works on PC webcam AND phone camera)
