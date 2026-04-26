@@ -31,11 +31,11 @@ const SIDEBAR_HTML = `
   <div class="zoom-control" title="How much clock labels enlarge when you hover over them">
     <div class="zoom-control-label">
       <span>Hover zoom · 悬停放大</span>
-      <span class="zoom-control-value" id="zoom-value">160%</span>
+      <span class="zoom-control-value" id="zoom-value">125%</span>
     </div>
     <div class="zoom-control-row">
-      <input type="range" id="zoom-range" min="100" max="300" step="10" value="160" aria-label="Clock label hover zoom">
-      <button type="button" class="zoom-control-reset" id="zoom-reset" title="Reset to default 160%">Reset</button>
+      <input type="range" id="zoom-range" min="100" max="300" step="5" value="125" aria-label="Clock label hover zoom">
+      <button type="button" class="zoom-control-reset" id="zoom-reset" title="Reset to default 125%">Reset</button>
     </div>
   </div>
   <div class="sidebar-credit">
@@ -55,7 +55,7 @@ function readStoredZoom() {
     const v = parseFloat(localStorage.getItem(ZOOM_STORE_KEY));
     if (!isNaN(v) && v >= 1 && v <= 3) return v;
   } catch (_) {}
-  return 1.6;
+  return 1.25;   // default 125% — gentle, readable, not overwhelming
 }
 function applyZoom(scale) {
   document.documentElement.style.setProperty('--clock-zoom-scale', String(scale));
@@ -79,7 +79,7 @@ function initZoomControl() {
 
   sync(Math.round(initial * 100));
   range.addEventListener('input', () => sync(parseInt(range.value, 10)));
-  reset.addEventListener('click', () => sync(160));
+  reset.addEventListener('click', () => sync(125));
 }
 
 // Inject sidebar + mobile toggle + overlay
@@ -394,9 +394,18 @@ function buildClock() {
     svg.appendChild(zodiacLabel);
 
     const [cx, cy] = polar(R_LABEL_CN, a);
-    svg.appendChild(makeText(cx, cy, o.cn, 'label-organ-cn label-cn'));
+    const cnOrgan = makeText(cx, cy, o.cn, 'label-organ-cn label-cn clock-zoom');
+    const cnOrganTitle = document.createElementNS(NS, 'title');
+    cnOrganTitle.textContent = `${o.cn}经 · ${o.organ}`;
+    cnOrgan.appendChild(cnOrganTitle);
+    svg.appendChild(cnOrgan);
+
     const [ex, ey] = polar(R_LABEL_EN, a);
-    svg.appendChild(makeText(ex, ey, o.organ, 'label-organ-en'));
+    const enOrgan = makeText(ex, ey, o.organ, 'label-organ-en clock-zoom');
+    const enOrganTitle = document.createElementNS(NS, 'title');
+    enOrganTitle.textContent = `${o.organ} · ${o.cn}`;
+    enOrgan.appendChild(enOrganTitle);
+    svg.appendChild(enOrgan);
   });
 
   // Sector dividers

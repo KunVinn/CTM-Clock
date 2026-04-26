@@ -3974,9 +3974,9 @@ a:hover { color: var(--gold-bright); }
 }
 .clock-zoom:hover,
 .clock-zoom:focus {
-  /* Default 1.6×; overridable per-user via the sidebar slider, which sets
-     --clock-zoom-scale on :root and persists to localStorage. */
-  transform: scale(var(--clock-zoom-scale, 1.6));
+  /* Default 1.25×; overridable per-user via the sidebar slider, which
+     sets --clock-zoom-scale on :root and persists to localStorage. */
+  transform: scale(var(--clock-zoom-scale, 1.25));
   fill: var(--gold-bright) !important;
   opacity: 1 !important;
   filter: drop-shadow(0 0 6px rgba(212, 175, 122, 0.6));
