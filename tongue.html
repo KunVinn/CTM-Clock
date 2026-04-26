@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426ah">
+<link rel="stylesheet" href="assets/style.css?v=20260426ai">
 </head>
 <body data-page="tongue">
 
@@ -453,12 +453,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426ah"></script>
-<script src="assets/glossary.js?v=20260426ah"></script>
-<script src="assets/clock.js?v=20260426ah"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426ah"></script>
-<script src="assets/tcm-music.js?v=20260426ah"></script>
-<script src="assets/tcm-link.js?v=20260426ah"></script>
+<script src="assets/data.js?v=20260426ai"></script>
+<script src="assets/glossary.js?v=20260426ai"></script>
+<script src="assets/clock.js?v=20260426ai"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426ai"></script>
+<script src="assets/tcm-music.js?v=20260426ai"></script>
+<script src="assets/tcm-link.js?v=20260426ai"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1258,21 +1258,34 @@ if (cameraDirectInput) {
   });
 }
 
-// Desktop with a webcam: intercept the Camera <label> click and open
-// the in-page video modal with the alignment guide instead of just
-// triggering the file picker. On mobile / touch / no-webcam, the
-// default <label>+<input capture=environment> behaviour proceeds.
-(function wireDesktopCameraModal() {
+// Camera-button routing per device:
+//   - Android (and other touch+capture-friendly browsers): native
+//     <input capture=environment> opens the OS camera directly.
+//   - Desktop with a webcam: in-page video modal (alignment guide).
+//   - iOS Safari: in-page video modal (Safari's getUserMedia is
+//     reliable, and the modal avoids the chooser-with-Camera-option
+//     dialog that confuses some users).
+// If the modal route fails (no getUserMedia, permission denied), the
+// underlying <label>+<input> remains as a transparent fallback —
+// since openCameraModal opens the modal but the input still exists
+// and can be tapped if all else fails.
+(function wireCameraButton() {
   const camLabel = document.getElementById('open-camera-btn');
   if (!camLabel) return;
-  const isTouch = ('ontouchstart' in window) ||
-                  (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-  const hasWebcam = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-  if (isTouch || !hasWebcam) return;
+
+  const ua = navigator.userAgent || '';
+  const isAndroid  = /Android/i.test(ua);
+  const isIOS      = /iPad|iPhone|iPod/.test(navigator.platform) ||
+                     (ua.includes('Mac') && navigator.maxTouchPoints > 0);
+  const hasWebcam  = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+
+  // Android path: do nothing — let the native input+capture fire.
+  if (isAndroid) return;
+  // No webcam available → also let the native flow handle it.
+  if (!hasWebcam) return;
+
+  // Desktop or iOS → hijack the click and open the in-page modal.
   camLabel.addEventListener('click', (e) => {
-    // The label is what receives the user's click — preventDefault here
-    // stops the wrapped <input> from firing. The picker is replaced by
-    // the in-page video stream + alignment guide.
     e.preventDefault();
     if (typeof openCameraModal === 'function') openCameraModal();
   });
