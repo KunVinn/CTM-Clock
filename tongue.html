@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426x">
+<link rel="stylesheet" href="assets/style.css?v=20260426y">
 </head>
 <body data-page="tongue">
 
@@ -49,21 +49,10 @@
         </div>
 
         <div class="photo-upload-row">
-          <!-- Two real <input type=file> elements — visually hidden via the
-               .photo-hidden-input rule. Each button below explicitly
-               triggers its input via input.click() in JS. The label-
-               wrapping pattern was unreliable on the user's mobile
-               browser; explicit JS click on a sibling input works
-               universally. value='' is reset on every click so picking
-               the same file twice or pressing Cancel doesn't brick the
-               button (the classic 'works once' file-input bug). -->
-          <input type="file" id="photo-file-input" accept="image/*" class="photo-hidden-input">
-          <!-- camera input: capture attr present on Android, omitted on
-               iOS Safari (which silently rejects clicks on inputs with
-               capture set). The button's JS handler sets/removes the
-               attribute at runtime based on a UA sniff for iOS. -->
-          <input type="file" id="camera-direct-input" accept="image/*" class="photo-hidden-input">
-
+          <!-- No static file inputs — JS builds a fresh <input type=file>
+               on every button click, fires it, and removes it after change.
+               This bypasses 'sticky value' / 'works once' bugs that mobile
+               browsers exhibit when reusing a single static input. -->
           <button type="button" class="photo-btn primary" id="open-photo-btn">
             <span>📁</span> <span data-zh-s="选择照片" data-zh-t="選擇照片">Choose photo</span>
           </button>
@@ -403,12 +392,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426x"></script>
-<script src="assets/glossary.js?v=20260426x"></script>
-<script src="assets/clock.js?v=20260426x"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426x"></script>
-<script src="assets/tcm-music.js?v=20260426x"></script>
-<script src="assets/tcm-link.js?v=20260426x"></script>
+<script src="assets/data.js?v=20260426y"></script>
+<script src="assets/glossary.js?v=20260426y"></script>
+<script src="assets/clock.js?v=20260426y"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426y"></script>
+<script src="assets/tcm-music.js?v=20260426y"></script>
+<script src="assets/tcm-link.js?v=20260426y"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1188,43 +1177,45 @@ function hideAutoSuggestion() {
   if (banner) banner.hidden = true;
 }
 
-// Photo / Camera flow: explicit button-click → input.click() pattern.
-// value='' is reset on each click so picking the same file twice or
-// pressing Cancel doesn't lock the button (the classic 'works once'
-// file-input bug). Change handlers also reset value as a safety pass.
-const photoFileInput   = document.getElementById('photo-file-input');
-const cameraDirectInput = document.getElementById('camera-direct-input');
-const openPhotoBtn      = document.getElementById('open-photo-btn');
-const openCameraBtnEl   = document.getElementById('open-camera-btn');
+// Photo / Camera flow: every click builds a brand-new <input type=file>,
+// fires it, and removes it after change. This is the only pattern that
+// proved reliable across the user's mobile browser — reusing a static
+// input gave 'works once then dead' behaviour, and iOS Safari refused
+// to fire programmatic .click() on inputs that already had a value or
+// the capture attribute set up-front.
+const openPhotoBtn    = document.getElementById('open-photo-btn');
+const openCameraBtnEl = document.getElementById('open-camera-btn');
 
-if (openPhotoBtn && photoFileInput) {
-  openPhotoBtn.addEventListener('click', () => {
-    photoFileInput.value = '';
-    photoFileInput.click();
+const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) ||
+              (navigator.userAgent.includes('Mac') && navigator.maxTouchPoints > 0);
+
+function pickFile(useCamera) {
+  // Clean up any leftover dynamic input from a prior call.
+  document.querySelectorAll('input[data-tcm-picker]').forEach(n => n.remove());
+
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.setAttribute('accept', 'image/*');
+  input.dataset.tcmPicker = '1';
+  // For Camera, set capture only on Android (iOS Safari silently fails
+  // when capture is present on a programmatically-clicked input).
+  if (useCamera && !isIOS) {
+    input.setAttribute('capture', 'environment');
+  }
+  // Off-screen but in-flow — some Android WebViews ignore clicks on
+  // inputs that aren't attached to the DOM.
+  input.style.cssText =
+    'position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+  input.addEventListener('change', () => {
+    if (input.files && input.files[0]) loadPhoto(input.files[0]);
+    if (input.parentNode) input.parentNode.removeChild(input);
   });
-}
-if (openCameraBtnEl && cameraDirectInput) {
-  // iOS Safari silently rejects clicks on file inputs that carry the
-  // capture attribute; Android Chrome / Samsung Internet need it to
-  // open the camera directly. Set it conditionally per device.
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) ||
-                (navigator.userAgent.includes('Mac') && navigator.maxTouchPoints > 0);
-  openCameraBtnEl.addEventListener('click', () => {
-    cameraDirectInput.value = '';
-    if (isIOS) cameraDirectInput.removeAttribute('capture');
-    else       cameraDirectInput.setAttribute('capture', 'environment');
-    cameraDirectInput.click();
-  });
+  document.body.appendChild(input);
+  input.click();
 }
 
-photoFileInput.addEventListener('change', (e) => {
-  if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
-  e.target.value = '';
-});
-cameraDirectInput.addEventListener('change', (e) => {
-  if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
-  e.target.value = '';
-});
+if (openPhotoBtn)    openPhotoBtn.addEventListener('click',    () => pickFile(false));
+if (openCameraBtnEl) openCameraBtnEl.addEventListener('click', () => pickFile(true));
 
 /* ============================================================
    LIVE CAMERA via getUserMedia (works on PC webcam AND phone camera)
@@ -1400,7 +1391,8 @@ document.addEventListener('keydown', (e) => {
 photoClear.addEventListener('click', () => {
   currentPhotoDataURL = null;
   renderPhoto();
-  document.getElementById('photo-file-input').value = '';
+  // No static file input to reset any more — pickFile() builds a fresh
+  // <input> on every click and removes it after change.
 });
 
 /* ============================================================
