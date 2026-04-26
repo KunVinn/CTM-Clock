@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426ai">
+<link rel="stylesheet" href="assets/style.css?v=20260426aj">
 </head>
 <body data-page="tongue">
 
@@ -108,12 +108,18 @@
           </label>
           <label class="photo-btn" id="open-camera-btn">
             <span>📷</span> <span data-zh-s="相机" data-zh-t="相機">Camera</span>
-            <!-- capture='environment' opens the OS camera directly on
-                 mobile (Android Chrome, Samsung, Firefox) and surfaces
-                 the camera as the default option in the chooser on iOS,
-                 keeping this distinct from the plain Choose Photo flow. -->
             <input type="file" accept="image/*" capture="environment" id="camera-direct-input" onclick="this.value=null">
           </label>
+        </div>
+
+        <!-- Plain visible file input as a guaranteed-working fallback.
+             If the styled buttons above fail on a particular mobile
+             browser (in-app webviews, unusual permissions, etc.) the
+             user can always upload via this picker. -->
+        <div class="photo-fallback-row">
+          <small data-zh-s="若上方按钮在您的浏览器中无效，可使用此处的原生选择器：" data-zh-t="若上方按鈕在您的瀏覽器中無效，可使用此處的原生選擇器：">If the buttons above don't open the picker on your browser, use this native picker:</small>
+          <input type="file" accept="image/*" id="photo-fallback-input" onclick="this.value=null"
+                 style="display:block;margin-top:0.4rem">
         </div>
 
         <!-- Live camera modal -->
@@ -453,12 +459,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426ai"></script>
-<script src="assets/glossary.js?v=20260426ai"></script>
-<script src="assets/clock.js?v=20260426ai"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426ai"></script>
-<script src="assets/tcm-music.js?v=20260426ai"></script>
-<script src="assets/tcm-link.js?v=20260426ai"></script>
+<script src="assets/data.js?v=20260426aj"></script>
+<script src="assets/glossary.js?v=20260426aj"></script>
+<script src="assets/clock.js?v=20260426aj"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426aj"></script>
+<script src="assets/tcm-music.js?v=20260426aj"></script>
+<script src="assets/tcm-link.js?v=20260426aj"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1254,6 +1260,15 @@ if (photoFileInput) {
 }
 if (cameraDirectInput) {
   cameraDirectInput.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+  });
+}
+
+// Fallback visible <input> — guaranteed to work even if the styled
+// labels misbehave. Same loadPhoto pipeline.
+const photoFallbackInput = document.getElementById('photo-fallback-input');
+if (photoFallbackInput) {
+  photoFallbackInput.addEventListener('change', (e) => {
     if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
   });
 }

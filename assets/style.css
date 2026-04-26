@@ -2070,8 +2070,23 @@ a:hover { color: var(--gold-bright); }
   display: flex;
   gap: 0.7rem;
   flex-wrap: wrap;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
   position: relative;
+}
+.photo-fallback-row {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px dashed var(--line);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--ink-mute);
+  font-size: 0.74rem;
+  font-style: italic;
+}
+.photo-fallback-row input[type="file"] {
+  font-style: normal;
+  color: var(--ink-soft);
+  font-family: inherit;
 }
 
 /* Meridian-tongue connection table — sits in the page-head, lists the
