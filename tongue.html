@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426ab">
+<link rel="stylesheet" href="assets/style.css?v=20260426ac">
 </head>
 <body data-page="tongue">
 
@@ -95,11 +95,17 @@
 
         <div class="photo-display" id="photo-display">
           <button class="photo-clear" id="photo-clear" aria-label="Remove photo" title="Remove photo">✕</button>
+          <!-- Alignment outline shown BEFORE a photo is loaded (camera prep) -->
           <div class="photo-frame-guide" id="photo-frame-guide" aria-hidden="true">
             <img src="assets/img/tongue-guide.svg" alt="">
           </div>
+          <!-- Zone-correspondence map shown on top of an uploaded photo when
+               Show Guide is toggled. Built by JS from TONGUE_ZONES so labels
+               stay in sync with the rest of the page's data. -->
+          <svg class="photo-zone-overlay" id="photo-zone-overlay" viewBox="0 0 280 360"
+               preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
           <button class="photo-guide-toggle" id="photo-guide-toggle" type="button"
-                  title="Toggle alignment guide overlay"
+                  title="Toggle the TCM zone-organ map overlay on your photo"
                   data-zh-auto>Show guide</button>
           <div class="empty-state">
             <span data-zh-s="使用「上传图片」按钮加载照片，或在手机上点击「使用相机」直接拍摄。" data-zh-t="使用「上傳圖片」按鈕載入照片，或在手機上點擊「使用相機」直接拍攝。">No photo loaded yet. Click "Choose photo" to upload one, or "Take photo" on a phone to capture directly.</span><br><br>
@@ -399,12 +405,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426ab"></script>
-<script src="assets/glossary.js?v=20260426ab"></script>
-<script src="assets/clock.js?v=20260426ab"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426ab"></script>
-<script src="assets/tcm-music.js?v=20260426ab"></script>
-<script src="assets/tcm-link.js?v=20260426ab"></script>
+<script src="assets/data.js?v=20260426ac"></script>
+<script src="assets/glossary.js?v=20260426ac"></script>
+<script src="assets/clock.js?v=20260426ac"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426ac"></script>
+<script src="assets/tcm-music.js?v=20260426ac"></script>
+<script src="assets/tcm-link.js?v=20260426ac"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1571,16 +1577,77 @@ geminiAnalyze.addEventListener('click', async () => {
 const guideToggle = document.getElementById('photo-guide-toggle');
 guideToggle.addEventListener('click', () => {
   const on = photoDisplay.classList.toggle('guide-on');
-  // Update label
+  // Update label — clearer copy: with a photo loaded, the toggle reveals
+  // the TCM zone-organ map; without, the alignment outline.
   const labels = on
-    ? { s: '隐藏对齐网格', t: '隱藏對齊網格', en: 'Hide guide' }
-    : { s: '显示对齐网格', t: '顯示對齊網格', en: 'Show guide' };
+    ? { s: '隐藏脏腑分区图', t: '隱藏臟腑分區圖', en: 'Hide zone map' }
+    : { s: '显示脏腑分区图', t: '顯示臟腑分區圖', en: 'Show zone map' };
   guideToggle.dataset.zhS = labels.s;
   guideToggle.dataset.zhT = labels.t;
   guideToggle.textContent = labels.en;
-  // Re-apply current script so the right variant shows
   if (window.tcmScript) window.tcmScript.set(window.tcmScript.get());
 });
+
+/* ============================================================
+   PHOTO-ZONE-OVERLAY · TCM zone-organ map drawn over the user's
+   uploaded photo when 'Show zone map' is toggled. Reuses the same
+   TONGUE_ZONES data the abstract diagram is built from.
+   ============================================================ */
+(function buildPhotoZoneOverlay() {
+  const overlay = document.getElementById('photo-zone-overlay');
+  if (!overlay) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  // Tongue body silhouette so the zones sit visibly on top of the photo
+  // even where the user's tongue might be poorly framed.
+  const body = document.createElementNS(NS, 'path');
+  body.setAttribute('d',
+    'M 140 60 ' +
+    'C 90 60, 50 110, 50 200 ' +
+    'C 50 280, 80 330, 140 330 ' +
+    'C 200 330, 230 280, 230 200 ' +
+    'C 230 110, 190 60, 140 60 Z'
+  );
+  body.setAttribute('class', 'photo-zone-body');
+  overlay.appendChild(body);
+
+  TONGUE_ZONES.forEach(z => {
+    let shape;
+    if (z.coords.type === 'sides') {
+      shape = document.createElementNS(NS, 'path');
+      shape.setAttribute('d',
+        'M 35 200 C 35 130 50 90 75 65 L 75 80 C 55 105 50 150 50 200 ' +
+        'C 50 250 60 290 80 315 L 75 330 C 50 305 35 270 35 200 Z ' +
+        'M 245 200 C 245 130 230 90 205 65 L 205 80 C 225 105 230 150 230 200 ' +
+        'C 230 250 220 290 200 315 L 205 330 C 230 305 245 270 245 200 Z'
+      );
+    } else {
+      shape = document.createElementNS(NS, 'ellipse');
+      shape.setAttribute('cx', z.coords.cx);
+      shape.setAttribute('cy', z.coords.cy);
+      shape.setAttribute('rx', z.coords.rx);
+      shape.setAttribute('ry', z.coords.ry);
+    }
+    shape.setAttribute('class', 'photo-zone-region');
+    shape.dataset.zone = z.key;
+    overlay.appendChild(shape);
+
+    // Chinese label (organ correspondence) — large, bright, with a halo
+    // so it remains legible on any tongue colour.
+    const lblCn = document.createElementNS(NS, 'text');
+    lblCn.setAttribute('x', z.labelXY[0]);
+    lblCn.setAttribute('y', z.labelXY[1] - 4);
+    lblCn.setAttribute('class', 'photo-zone-label-cn');
+    lblCn.textContent = z.organCn;
+    overlay.appendChild(lblCn);
+
+    const lblEn = document.createElementNS(NS, 'text');
+    lblEn.setAttribute('x', z.labelXY[0]);
+    lblEn.setAttribute('y', z.labelXY[1] + 12);
+    lblEn.setAttribute('class', 'photo-zone-label-en');
+    lblEn.textContent = z.organ;
+    overlay.appendChild(lblEn);
+  });
+})();
 
 /* ============================================================
    REPORT GENERATION

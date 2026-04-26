@@ -2529,14 +2529,64 @@ a:hover { color: var(--gold-bright); }
   border-color: var(--gold);
   color: var(--gold-bright);
 }
-.photo-display.guide-on .photo-frame-guide {
-  /* Override the 'has-photo opacity:0' rule so the alignment guide is
-     clearly visible when the user toggles it on top of their photo. */
+.photo-display.guide-on:not(.has-photo) .photo-frame-guide {
+  /* Without a photo: alignment outline at full opacity for camera prep. */
   opacity: 1 !important;
 }
-.photo-display.guide-on .photo-frame-guide img {
+.photo-display.guide-on:not(.has-photo) .photo-frame-guide img {
   opacity: 0.85;
   filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.7));
+}
+
+/* TCM zone-organ map — drawn over the user's uploaded photo when
+   Show zone map is toggled. Hidden by default; shown only when both
+   .has-photo and .guide-on are present. */
+.photo-zone-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+  display: none;
+}
+.photo-display.has-photo.guide-on .photo-zone-overlay { display: block; }
+
+/* Tongue body silhouette behind the zones — translucent dark wash so
+   the labels read clearly even on a dark photo. */
+.photo-zone-body {
+  fill: rgba(0, 0, 0, 0.30);
+  stroke: rgba(255, 214, 110, 0.65);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 3;
+}
+.photo-zone-region {
+  fill: rgba(232, 90, 72, 0.18);
+  stroke: rgba(232, 90, 72, 0.85);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 2;
+}
+.photo-zone-label-cn {
+  font-family: var(--font-han, 'Microsoft Yahei'), serif;
+  font-weight: 700;
+  font-size: 16px;
+  fill: #ffd66e;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.85);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.photo-zone-label-en {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 9px;
+  fill: rgba(255, 255, 255, 0.95);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.85);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
 }
 /* Visual feedback on the toggle itself so the user can see whether the
    guide is currently on. */
