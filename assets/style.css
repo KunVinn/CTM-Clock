@@ -380,6 +380,42 @@ a:hover { color: var(--gold-bright); }
   font-size: 1rem;
   letter-spacing: 0;
 }
+.cn-translate-banner.with-input {
+  flex-direction: column;
+  align-items: stretch;
+  padding-left: 1.7rem;
+  padding-right: 0.8rem;
+}
+.cn-translate-banner .cn-translate-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.cn-translate-banner .cn-translate-row input {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 0.35rem 0.5rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--ink);
+  font-family: var(--font-ui, monospace);
+  font-size: 0.78rem;
+}
+.cn-translate-banner .cn-translate-row input:focus {
+  outline: 1px solid var(--gold);
+}
+.cn-translate-banner .cn-translate-help {
+  font-size: 0.74rem;
+  color: var(--gold);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.cn-translate-banner .cn-translate-help:hover { color: var(--gold-bright); }
+@media (max-width: 480px) {
+  .cn-translate-banner.with-input { font-size: 0.78rem; }
+}
 
 /* Right-side action buttons (wake lock, script toggle) — always visible,
    never scroll out of view */

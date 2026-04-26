@@ -399,10 +399,12 @@
 
     const key = getGeminiKey();
     if (!key) {
+      // No key yet — surface an inline input so the user can paste their
+      // free Gemini key right here without navigating to the Tongue page.
       showTranslateBanner(
-        '部分内容仍为英文。在「舌诊」页保存免费的 Gemini API 密钥后即可自动翻译整页。 / Some content is still English. Save a free Gemini API key on the Tongue page to auto-translate this page.',
+        '需要 Gemini 密钥才能将本页全部翻译为中文：',
         false,
-        { closable: true }
+        { askForKey: true, closable: true }
       );
       return;
     }
@@ -465,8 +467,60 @@
       document.body.appendChild(banner);
     }
     banner.innerHTML = '';
-    banner.appendChild(document.createTextNode(msg));
     banner.classList.toggle('loading', !!loading);
+    banner.classList.toggle('with-input', !!(opts && opts.askForKey));
+
+    const text = document.createElement('span');
+    text.className = 'cn-translate-msg';
+    text.textContent = msg;
+    banner.appendChild(text);
+
+    // Inline Gemini-key prompt so the user can enable 中 auto-translation
+    // from anywhere on the site, no detour to the Tongue page required.
+    if (opts && opts.askForKey) {
+      const row = document.createElement('div');
+      row.className = 'cn-translate-row';
+
+      const input = document.createElement('input');
+      input.type = 'password';
+      input.placeholder = 'AIza…';
+      input.autocomplete = 'off';
+      input.spellcheck = false;
+      input.id = 'cn-translate-key-input';
+
+      const saveBtn = document.createElement('button');
+      saveBtn.type = 'button';
+      saveBtn.textContent = '保存并翻译';
+
+      const help = document.createElement('a');
+      help.href = 'https://aistudio.google.com/apikey';
+      help.target = '_blank';
+      help.rel = 'noopener';
+      help.textContent = '获取免费密钥 ↗';
+      help.className = 'cn-translate-help';
+
+      const submit = () => {
+        const v = (input.value || '').trim();
+        if (!v) { input.focus(); return; }
+        try { localStorage.setItem(GEMINI_KEY_STORE, v); } catch (_) {}
+        input.value = '';
+        // Translate now using the current 中-mode variant
+        if (getCurrent() === 'c') {
+          showTranslateBanner('正在用 Gemini 翻译此页…', true);
+          fetchMissingTranslations(getCnVariant());
+        } else {
+          hideTranslateBanner();
+        }
+      };
+      saveBtn.addEventListener('click', submit);
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+
+      row.appendChild(input);
+      row.appendChild(saveBtn);
+      row.appendChild(help);
+      banner.appendChild(row);
+    }
+
     if (opts && opts.closable) {
       const x = document.createElement('button');
       x.type = 'button';
