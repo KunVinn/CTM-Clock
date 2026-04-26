@@ -594,9 +594,9 @@ const ORGANS = [
       '剧烈运动或激烈辩论',
       '晚间咖啡因或大量饮水'
     ],
-    tone: '商音 / 宫音', toneEn: 'Shāng / Gōng',
-    musicEffect: '平衡阴阳，通调水道 · balances yin-yang, regulates the waterways',
-    tracks: ['平沙落雁', '忆故人', '阳关三叠'],
+    tone: '徵音 / 角音', toneEn: 'Zhǐ / Jué',
+    musicEffect: '通调水道，安神宁心 · regulates the waterways, calms the heart-spirit',
+    tracks: ['文王操', '庄周梦蝶', '烛影摇红'],
     habit: 'Dim the lights · screens off · in bed by 22:30',
     habitCn: '调暗灯光 · 闭屏 · 22:30 前入卧',
     kg: {
@@ -859,7 +859,7 @@ const MUSIC_DATA = {
   '膀胱': { tone: '羽音/商音', tracks: ['长清.mp3',     '白雪.mp3',       '平湖秋月.mp3'] },
   '肾':   { tone: '羽音',      tracks: ['流水.mp3',     '鹤鸣九皋.mp3',   '二泉映月.mp3'] },
   '心包': { tone: '徵音/角音', tracks: ['文王操.mp3',   '庄周梦蝶.mp3',   '烛影摇红.mp3'] },
-  '三焦': { tone: '商音/宫音', tracks: ['平沙落雁.mp3', '忆故人.mp3',     '阳关三叠.mp3'] },
+  '三焦': { tone: '徵音/角音', tracks: ['文王操.mp3',   '庄周梦蝶.mp3',   '烛影摇红.mp3'] },
   '胆':   { tone: '角音',      tracks: ['肝胆相照.mp3', '木调晨曦.mp3',   '胡笳十八拍.mp3', '姑苏行.mp3'] }
 };
 

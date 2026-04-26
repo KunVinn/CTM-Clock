@@ -132,7 +132,11 @@
     }
   }
 
-  // Watch for hour-change → switch playlist
+  // Watch for hour-change → switch playlist. Two paths:
+  //   1. The clock dispatches 'hourchange' on document the instant the
+  //      active organ index changes — preferred, instant response.
+  //   2. A 60s poll covers the case where the music page was loaded
+  //      before clock.js / before any hourchange has fired yet.
   function checkOrganChange() {
     const name = getCurrentOrganName();
     if (name && name !== currentOrganName) {
@@ -266,7 +270,11 @@
       else                  updateNowPlaying('—');
     }
 
-    // Re-check organ change once a minute
+    // Listen to the clock's hourchange event so playlist switches the
+    // instant the 时辰 transitions — no 60s lag.
+    document.addEventListener('hourchange', () => checkOrganChange());
+    // Safety net poll, one per minute, in case hourchange wasn't
+    // dispatched (e.g. clock.js loaded later than tcm-music.js).
     setInterval(checkOrganChange, 60000);
 
     // Best-effort save just before the page unloads.
