@@ -3971,6 +3971,11 @@ a:hover { color: var(--gold-bright); }
   transform-box: fill-box;
   transform-origin: center;
   transition: transform 0.18s ease-out, fill 0.18s ease-out, opacity 0.18s ease-out;
+  /* Override the pointer-events:none that several base label classes
+     (.label-cn, .label-zodiac, .label-hour, .label-organ-en, .bagua-
+     trigram, etc.) set for layout reasons — without this, the :hover
+     and :focus rules below never fire and the zoom does nothing. */
+  pointer-events: auto;
 }
 .clock-zoom:hover,
 .clock-zoom:focus {
