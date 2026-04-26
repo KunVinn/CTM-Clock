@@ -61,9 +61,81 @@ function injectSidebarScaffold() {
 // Highlight active menu item based on body[data-page]
 function highlightActiveMenu() {
   const page = document.body.dataset.page;
+  let active = null;
   document.querySelectorAll('.menu-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.page === page);
+    const isActive = btn.dataset.page === page;
+    btn.classList.toggle('active', isActive);
+    if (isActive) active = btn;
   });
+  // Center the active item inside the topbar nav so it remains visible
+  // after a page transition (otherwise scrollLeft resets to 0 and the
+  // active item can be off-screen on the right).
+  if (active) {
+    const nav = active.closest('nav');
+    if (nav) {
+      // Wait one frame so layout (and font loading) has settled.
+      requestAnimationFrame(() => {
+        const target = active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2;
+        nav.scrollLeft = Math.max(0, target);
+        updateTopbarOverflowState(nav);
+      });
+    }
+  }
+}
+
+// Toggle .has-overflow-left / .has-overflow-right on the parent .topbar so
+// CSS can show edge-fade chevrons when there is more content to scroll to.
+function updateTopbarOverflowState(nav) {
+  const bar = nav.closest('.topbar');
+  if (!bar) return;
+  const max = nav.scrollWidth - nav.clientWidth;
+  bar.classList.toggle('has-overflow-left',  nav.scrollLeft > 4);
+  bar.classList.toggle('has-overflow-right', nav.scrollLeft < max - 4);
+}
+
+// Wire up overflow-state updates and a horizontal-swipe gesture that
+// navigates between pages in menu order. The swipe is intentionally
+// conservative (must be primarily horizontal, fast, and outside any
+// element that does its own horizontal scrolling).
+function initTopbarBehaviour() {
+  const nav = document.querySelector('.topbar nav');
+  if (nav) {
+    updateTopbarOverflowState(nav);
+    nav.addEventListener('scroll', () => updateTopbarOverflowState(nav), { passive: true });
+    window.addEventListener('resize', () => updateTopbarOverflowState(nav));
+  }
+
+  let sx = 0, sy = 0, st = 0, tracking = false;
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { tracking = false; return; }
+    const t = e.touches[0];
+    // Ignore swipes that begin inside something that scrolls horizontally
+    // on its own, or inside the sidebar drawer.
+    if (e.target.closest('.topbar nav, .sidebar, .clock-wrap, .corr-tabs, [data-no-swipe]')) {
+      tracking = false; return;
+    }
+    sx = t.clientX; sy = t.clientY; st = Date.now(); tracking = true;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (!tracking || e.changedTouches.length !== 1) return;
+    tracking = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx;
+    const dy = t.clientY - sy;
+    const dt = Date.now() - st;
+    // Thresholds: clearly horizontal, fast enough, far enough.
+    if (Math.abs(dx) < 80 || Math.abs(dy) > 60 || dt > 600) return;
+    navigateMenu(dx < 0 ? 1 : -1);
+  }, { passive: true });
+}
+
+function navigateMenu(delta) {
+  const buttons = Array.from(document.querySelectorAll('.menu-btn'));
+  const idx = buttons.findIndex(b => b.classList.contains('active'));
+  if (idx < 0) return;
+  const next = buttons[idx + delta];
+  if (next && next.href) window.location.href = next.href;
 }
 
 /* ===================== CLOCK SVG BUILDER ===================== */
@@ -518,6 +590,7 @@ function updateClock() {
 document.addEventListener('DOMContentLoaded', () => {
   injectSidebarScaffold();
   highlightActiveMenu();
+  initTopbarBehaviour();
   buildClock();
   updateClock();
   setInterval(updateClock, 1000);
