@@ -3978,6 +3978,17 @@ html[data-script="e"] .label-organ-en {
   fill: var(--gold-bright);
 }
 
+/* Bilingual sibling-paragraph pattern: pages may include both
+   .subtitle-en (English, default) and .subtitle-cn (authentic Chinese
+   from a classical source). Show only one based on the active mode.
+   Same idea applies to any element pair with .lang-en-only / .lang-cn-only. */
+.subtitle-cn,
+.lang-cn-only { display: none; }
+html[data-script="c"] .subtitle-en,
+html[data-script="c"] .lang-en-only { display: none; }
+html[data-script="c"] .subtitle-cn,
+html[data-script="c"] .lang-cn-only { display: block; }
+
 /* ============================================================
    CHINESE-ONLY MODE (data-script="c") — hides bare English text
    in known bilingual containers. The variant (简 vs 繁) is the
@@ -3992,7 +4003,8 @@ html[data-script="c"] .eyebrow,
 html[data-script="c"] .now-strip-organ .label,
 html[data-script="c"] .now-strip-time small,
 html[data-script="c"] .pinyin,
-html[data-script="c"] .sidebar-eyebrow {
+html[data-script="c"] .sidebar-eyebrow,
+html[data-script="c"] .acu-en {
   display: none !important;
 }
 
