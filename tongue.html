@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426ae">
+<link rel="stylesheet" href="assets/style.css?v=20260426af">
 </head>
 <body data-page="tongue">
 
@@ -61,7 +61,11 @@
           </label>
           <label class="photo-btn" id="open-camera-btn">
             <span>📷</span> <span data-zh-s="相机" data-zh-t="相機">Camera</span>
-            <input type="file" accept="image/*" id="camera-direct-input" onclick="this.value=null">
+            <!-- capture='environment' opens the OS camera directly on
+                 mobile (Android Chrome, Samsung, Firefox) and surfaces
+                 the camera as the default option in the chooser on iOS,
+                 keeping this distinct from the plain Choose Photo flow. -->
+            <input type="file" accept="image/*" capture="environment" id="camera-direct-input" onclick="this.value=null">
           </label>
         </div>
 
@@ -402,12 +406,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426ae"></script>
-<script src="assets/glossary.js?v=20260426ae"></script>
-<script src="assets/clock.js?v=20260426ae"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426ae"></script>
-<script src="assets/tcm-music.js?v=20260426ae"></script>
-<script src="assets/tcm-link.js?v=20260426ae"></script>
+<script src="assets/data.js?v=20260426af"></script>
+<script src="assets/glossary.js?v=20260426af"></script>
+<script src="assets/clock.js?v=20260426af"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426af"></script>
+<script src="assets/tcm-music.js?v=20260426af"></script>
+<script src="assets/tcm-link.js?v=20260426af"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1190,19 +1194,11 @@ function hideAutoSuggestion() {
 // Photo / Camera flow: pure native pattern — <label> wraps <input>, the
 // browser handles the picker activation on tap. The HTML inputs already
 // carry `onclick='this.value=null'` so picking the same file twice (or
-// cancelling) doesn't lock the button.
-//
-// We attach `change` handlers in JS to forward the file into loadPhoto(),
-// and we set the camera input's `capture` attribute at runtime (only on
-// Android — iOS Safari is happier without it).
+// cancelling) doesn't lock the button. The Camera input also carries
+// `capture='environment'` directly in HTML so it always opens the camera
+// (not the gallery) — keeping it visibly distinct from Choose Photo.
 const photoFileInput    = document.getElementById('photo-file-input');
 const cameraDirectInput = document.getElementById('camera-direct-input');
-
-const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) ||
-              (navigator.userAgent.includes('Mac') && navigator.maxTouchPoints > 0);
-if (cameraDirectInput && !isIOS) {
-  cameraDirectInput.setAttribute('capture', 'environment');
-}
 
 if (photoFileInput) {
   photoFileInput.addEventListener('change', (e) => {
