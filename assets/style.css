@@ -2074,6 +2074,52 @@ a:hover { color: var(--gold-bright); }
   position: relative;
 }
 
+/* Meridian-tongue connection table — sits in the page-head, lists the
+   nine classical channel/divergence/sinew connections from《灵枢》. */
+.meridian-tongue-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8rem 0 0.6rem;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.meridian-tongue-table th,
+.meridian-tongue-table td {
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.meridian-tongue-table tr:last-child td { border-bottom: none; }
+.meridian-tongue-table thead th {
+  background: rgba(212, 169, 106, 0.10);
+  color: var(--gold-bright, #e6c082);
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.meridian-tongue-table td:first-child {
+  font-family: var(--font-han, 'Microsoft Yahei');
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.meridian-tongue-table td em {
+  font-family: var(--font-han, 'Microsoft Yahei');
+  font-style: normal;
+  font-weight: 600;
+  color: var(--cinnabar-bright, #e85a48);
+}
+@media (max-width: 600px) {
+  .meridian-tongue-table { font-size: 0.78rem; }
+  .meridian-tongue-table th,
+  .meridian-tongue-table td { padding: 0.4rem 0.5rem; }
+}
+
 .photo-btn {
   background: var(--bg);
   border: 1px solid var(--line);

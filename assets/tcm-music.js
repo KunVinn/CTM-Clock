@@ -16,6 +16,40 @@
   let mode = 'loop';            // 'loop' or 'shuffle'
   let userPaused = true;        // start paused — autoplay would be blocked anyway
 
+  // ---------- Cross-page state persistence ----------
+  // Audio elements don't survive page navigation, but we can record
+  // exactly where the user was (organ, track, position, paused?, mode,
+  // volume, panel collapsed?) and restore it when the next page builds
+  // the panel. The next page's first paint will be a fresh <audio>, but
+  // it'll resume on the same track at the same position, and if it was
+  // playing it'll auto-resume (allowed by autoplay policies because the
+  // user just performed a navigation gesture).
+  const MUSIC_STATE_KEY = 'tcm-music-state-v1';
+  let _saveTimer = null;
+  function saveState() {
+    if (_saveTimer) return;     // debounce — coalesce rapid currentTime updates
+    _saveTimer = setTimeout(() => {
+      _saveTimer = null;
+      try {
+        const panel = document.getElementById('music-panel');
+        localStorage.setItem(MUSIC_STATE_KEY, JSON.stringify({
+          organ:       currentOrganName,
+          trackIdx:    trackIdx,
+          mode:        mode,
+          currentTime: audio ? audio.currentTime : 0,
+          paused:      !audio || audio.paused,
+          volume:      audio ? audio.volume : 0.5,
+          collapsed:   panel ? panel.classList.contains('collapsed') : true,
+          ts:          Date.now()
+        }));
+      } catch (_) {}
+    }, 250);
+  }
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(MUSIC_STATE_KEY) || 'null'); }
+    catch (_) { return null; }
+  }
+
   function getCurrentOrganName() {
     if (typeof getCurrentIdx !== 'function' || typeof ORGANS === 'undefined') return null;
     const idx = getCurrentIdx();
@@ -49,6 +83,7 @@
       ? musicTrackUrl(filename)
       : ('assets/CTM-Music/' + filename);
     updateNowPlaying(filename.replace(/\.mp3$/, ''));
+    saveState();
   }
 
   function playPause() {
@@ -161,29 +196,97 @@
       console.warn('Track failed to load — skipping:', audio.src);
       next();
     });
-    audio.addEventListener('play',  updateButtonStates);
-    audio.addEventListener('pause', updateButtonStates);
+    audio.addEventListener('play',  () => { updateButtonStates(); saveState(); });
+    audio.addEventListener('pause', () => { updateButtonStates(); saveState(); });
+    audio.addEventListener('volumechange', saveState);
+    audio.addEventListener('timeupdate', saveState);   // debounced inside saveState
 
     document.getElementById('music-toggle').addEventListener('click', () => {
       panel.classList.toggle('collapsed');
+      saveState();
     });
     document.getElementById('music-prev').addEventListener('click', prev);
     document.getElementById('music-play').addEventListener('click', playPause);
     document.getElementById('music-next').addEventListener('click', next);
     document.getElementById('music-mode').addEventListener('change', (e) => {
       mode = e.target.value;
+      saveState();
     });
 
-    // Initialise display
-    ensureCurrentOrgan();
-    if (currentOrganName) {
-      updateNowPlaying('Press play to start');
+    // Restore persisted state from a previous page if present, otherwise
+    // pick the current hour's organ as the default.
+    const saved = loadState();
+    if (saved) {
+      // Restore mode + collapsed first so the UI matches before any audio
+      if (saved.mode === 'shuffle' || saved.mode === 'loop') {
+        mode = saved.mode;
+        const sel = document.getElementById('music-mode');
+        if (sel) sel.value = mode;
+      }
+      if (saved.collapsed === false) panel.classList.remove('collapsed');
+      if (typeof saved.volume === 'number') audio.volume = saved.volume;
+
+      currentOrganName = saved.organ || getCurrentOrganName();
+      trackIdx         = (typeof saved.trackIdx === 'number') ? saved.trackIdx : 0;
+
+      const playlist = currentPlaylist();
+      if (playlist.length) {
+        loadTrack();
+        // Seek to the last position once the metadata is ready
+        const seek = () => {
+          if (typeof saved.currentTime === 'number' && isFinite(saved.currentTime)) {
+            try { audio.currentTime = saved.currentTime; } catch (_) {}
+          }
+          audio.removeEventListener('loadedmetadata', seek);
+        };
+        audio.addEventListener('loadedmetadata', seek);
+        // If the user was playing on the previous page, attempt to resume.
+        // Browsers usually allow this because the navigation itself counts
+        // as a recent user gesture.
+        if (saved.paused === false) {
+          audio.play().then(() => {
+            userPaused = false;
+            updateButtonStates();
+          }).catch(() => {
+            // Autoplay blocked — leave paused with the panel showing where
+            // the user was, and they can hit play to resume.
+            userPaused = true;
+            updateButtonStates();
+          });
+        } else {
+          userPaused = true;
+        }
+      } else {
+        updateNowPlaying('—');
+      }
     } else {
-      updateNowPlaying('—');
+      // No prior state — initialise from the current hour
+      ensureCurrentOrgan();
+      if (currentOrganName) updateNowPlaying('Press play to start');
+      else                  updateNowPlaying('—');
     }
 
     // Re-check organ change once a minute
     setInterval(checkOrganChange, 60000);
+
+    // Best-effort save just before the page unloads.
+    window.addEventListener('pagehide', () => {
+      // Force-flush any debounced save now.
+      if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
+      try {
+        const p = document.getElementById('music-panel');
+        localStorage.setItem(MUSIC_STATE_KEY, JSON.stringify({
+          organ:       currentOrganName,
+          trackIdx:    trackIdx,
+          mode:        mode,
+          currentTime: audio ? audio.currentTime : 0,
+          paused:      !audio || audio.paused,
+          volume:      audio ? audio.volume : 0.5,
+          collapsed:   p ? p.classList.contains('collapsed') : true,
+          ts:          Date.now()
+        }));
+      } catch (_) {}
+    });
   }
 
   // ---------- Wake Lock (keep screen awake) ----------
