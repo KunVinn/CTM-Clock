@@ -1195,17 +1195,15 @@ function stopCamera() {
 }
 
 function openCameraModal() {
-  if (!hasGetUserMedia()) {
-    // Fallback: trigger a hidden file input with capture="environment"
-    // so phones still go straight to the camera, and desktops fall back gracefully.
-    const fallback = document.createElement('input');
-    fallback.type = 'file';
-    fallback.accept = 'image/*';
-    fallback.capture = 'environment';
-    fallback.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
-    });
-    fallback.click();
+  // On touchscreen devices the OS native camera UI is far more reliable
+  // than an in-page <video> stream — iOS Safari in particular has a
+  // long history of quirks around getUserMedia (permissions UX, autoplay
+  // timing, address-bar layout shifts). Skip the modal and hand off to
+  // the system camera directly. Desktops with a mouse still get the
+  // in-page guide overlay so they can frame the tongue inside the SVG.
+  const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  if (isTouch || !hasGetUserMedia()) {
+    openSystemCamera();
     return;
   }
   cameraModal.classList.add('open');

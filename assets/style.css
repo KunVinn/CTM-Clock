@@ -1159,8 +1159,11 @@ a:hover { color: var(--gold-bright); }
 @media (max-width: 1100px) {
   :root { --sidebar-w: 320px; }
   .main-content { padding: 2rem 1.8rem 3rem; }
-  .label-organ-en { display: none; }
-  .label-fangwei { display: none; }
+  /* Keep all clock labels visible on mobile; just shrink them so they
+     fit the narrower clock without overlap. The hover-zoom slider lets
+     users enlarge any label they want to read. */
+  .label-organ-en { font-size: 9px; }
+  .label-fangwei  { font-size: 11px; }
 }
 
 @media (max-width: 820px) {
@@ -1188,9 +1191,12 @@ a:hover { color: var(--gold-bright); }
   .page-head .cn-mark { font-size: 1.7rem; }
 }
 @media (max-width: 500px) {
-  .label-zodiac { display: none; }
+  .label-zodiac   { font-size: 14px; }
   .label-organ-cn { font-size: 17px; }
-  .label-branch { font-size: 13px; }
+  .label-organ-en { font-size: 8px; }
+  .label-fangwei  { font-size: 10px; }
+  .label-branch   { font-size: 13px; }
+  .label-hour     { font-size: 10px; }
 }
 
 

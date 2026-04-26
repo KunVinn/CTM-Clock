@@ -116,19 +116,23 @@ function highlightActiveMenu() {
     if (isActive) active = btn;
   });
   // Center the active item inside the topbar nav so it remains visible
-  // after a page transition (otherwise scrollLeft resets to 0 and the
-  // active item can be off-screen on the right). Mobile Safari shifts
-  // layout twice — once on initial paint, again when the address bar
-  // collapses on first scroll — so we re-run after fonts.ready and load.
+  // after a page transition. Direct nav.scrollLeft with bounding-rect math
+  // is more reliable on iOS Safari than scrollIntoView, which has spotty
+  // support for inline:'center' on overflow strips. Run multiple times to
+  // cover layout shifts (font load, address-bar collapse, image decode).
   if (active) {
     const scrollActive = () => {
       const nav = active.closest('nav');
       if (!nav) return;
-      try {
-        active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'auto' });
-      } catch (e) {
-        nav.scrollLeft = Math.max(0, active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2);
-      }
+      const navRect    = nav.getBoundingClientRect();
+      const activeRect = active.getBoundingClientRect();
+      if (!navRect.width || !activeRect.width) return;  // not laid out yet
+      const target = nav.scrollLeft
+                   + (activeRect.left - navRect.left)
+                   - (navRect.width - activeRect.width) / 2;
+      const maxLeft = Math.max(0, nav.scrollWidth - nav.clientWidth);
+      const clamped = Math.max(0, Math.min(target, maxLeft));
+      if (Math.abs(nav.scrollLeft - clamped) > 1) nav.scrollLeft = clamped;
       updateTopbarOverflowState(nav);
     };
     requestAnimationFrame(scrollActive);
@@ -136,8 +140,11 @@ function highlightActiveMenu() {
       document.fonts.ready.then(() => requestAnimationFrame(scrollActive));
     }
     window.addEventListener('load', () => requestAnimationFrame(scrollActive), { once: true });
-    // One last safety pass after iOS address-bar settles.
-    setTimeout(scrollActive, 350);
+    // Safety passes — iOS Safari address-bar collapse fires at unpredictable
+    // points after page load. Cheap to call; idempotent if already centred.
+    setTimeout(scrollActive, 100);
+    setTimeout(scrollActive, 500);
+    setTimeout(scrollActive, 1200);
   }
 }
 
