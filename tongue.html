@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426n">
+<link rel="stylesheet" href="assets/style.css?v=20260426o">
 </head>
 <body data-page="tongue">
 
@@ -31,16 +31,18 @@
       <header class="page-head">
         <div class="cn-mark" data-zh-auto>舌诊</div>
         <div class="eyebrow">Shé Zhěn · Tongue Diagnosis</div>
-        <h1>What Your Tongue Reveals</h1>
-        <p class="subtitle">In <span data-term="four-examinations">TCM's four examinations</span>, the tongue is one of the most reliable windows into the body's internal state. The <span data-term="heart-tcm">Heart</span> opens to the tongue; every other organ system shows itself there too. Click a zone, pick what you see today, and read what classical TCM associates with that picture.</p>
+        <h1 data-zh-s="舌之所示" data-zh-t="舌之所示">What Your Tongue Reveals</h1>
+        <p class="subtitle subtitle-en">In <span data-term="four-examinations">TCM's four examinations</span>, the tongue is one of the most reliable windows into the body's internal state. The <span data-term="heart-tcm">Heart</span> opens to the tongue; every other organ system shows itself there too. Click a zone, pick what you see today, and read what classical TCM associates with that picture.</p>
+        <p class="subtitle subtitle-cn"><span data-zh-auto>中医</span><span data-term="four-examinations">四诊</span><span data-zh-auto>之中，舌诊为窥察脏腑内象之最可靠门户。</span><span data-term="heart-tcm">心</span><span data-zh-auto>开窍于舌，他脏之象亦皆见于斯。点击舌面分区，择今日所见之色形苔，可阅传统中医对此象之解。</span></p>
       </header>
 
       <!-- ============================================================
            PHOTO UPLOAD (optional)
            ============================================================ -->
       <section class="photo-section">
-        <h2><span class="cn" data-zh-auto>舌照</span>Upload or Capture Your Tongue Photo <small style="font-family:var(--font-display);font-style:italic;font-weight:400;color:var(--ink-mute);font-size:0.9rem">— optional</small></h2>
-        <p class="desc">Having your own photo to compare against the swatches below makes self-assessment far more accurate.</p>
+        <h2><span class="cn" data-zh-auto>舌照</span><span class="acu-en">Upload or Capture Your Tongue Photo <small style="font-family:var(--font-display);font-style:italic;font-weight:400;color:var(--ink-mute);font-size:0.9rem">— optional</small></span></h2>
+        <p class="desc lang-en-only">Having your own photo to compare against the swatches below makes self-assessment far more accurate.</p>
+        <p class="desc lang-cn-only" data-zh-auto>拍下自己之舌照，对比下方色板，自察更为准确。</p>
 
         <div class="photo-privacy-note">
           <strong>Your photo stays on your device.</strong> It is never uploaded, sent to any server, or shared with anyone — it lives only in your browser's memory while this page is open. Refresh the page and it's gone.
@@ -106,8 +108,10 @@
         </div>
         <div class="tongue-info">
           <div class="tongue-info-content" id="zone-info">
-            <h3>Click a zone</h3>
-            <p class="placeholder">Each region of the tongue corresponds to a specific organ system. Click any zone on the diagram to see which organ it reflects and what changes in that area might mean.</p>
+            <h3 class="lang-en-only">Click a zone</h3>
+            <h3 class="lang-cn-only" data-zh-auto>点击分区</h3>
+            <p class="placeholder lang-en-only">Each region of the tongue corresponds to a specific organ system. Click any zone on the diagram to see which organ it reflects and what changes in that area might mean.</p>
+            <p class="placeholder lang-cn-only" data-zh-auto>舌面之每一区皆对应一脏腑。点击图中任一区，可见其所映之脏腑，与此处变化所示之意。</p>
           </div>
         </div>
       </div>
@@ -116,8 +120,9 @@
            BODY COLOR SELECTOR
            ============================================================ -->
       <section class="selector-section">
-        <h2><span class="cn" data-zh-auto>舌色</span>Tongue Body Color · Shé Sè</h2>
-        <p class="desc">The deep, underlying color of the tongue body itself (not the coating) reveals the state of <span data-term="qi">qi</span>, blood, and yin–yang balance. Tap the description that matches your tongue today.</p>
+        <h2><span class="cn" data-zh-auto>舌色</span><span class="acu-en">Tongue Body Color · Shé Sè</span></h2>
+        <p class="desc lang-en-only">The deep, underlying color of the tongue body itself (not the coating) reveals the state of <span data-term="qi">qi</span>, blood, and yin–yang balance. Tap the description that matches your tongue today.</p>
+        <p class="desc lang-cn-only"><span data-zh-auto>舌体之底色（非舌苔）反映</span><span data-term="qi">气</span><span data-zh-auto>、血、阴阳之盛衰。点击下方相符之色，即得其象。</span></p>
         <div class="selector-grid" id="color-selector"></div>
       </section>
 
@@ -125,8 +130,9 @@
            SHAPE SELECTOR
            ============================================================ -->
       <section class="selector-section">
-        <h2><span class="cn" data-zh-auto>舌形</span>Tongue Shape · Shé Xíng</h2>
-        <p class="desc">Shape and texture reveal how the body manages fluids, supports digestion, and nourishes tissues.</p>
+        <h2><span class="cn" data-zh-auto>舌形</span><span class="acu-en">Tongue Shape · Shé Xíng</span></h2>
+        <p class="desc lang-en-only">Shape and texture reveal how the body manages fluids, supports digestion, and nourishes tissues.</p>
+        <p class="desc lang-cn-only" data-zh-auto>舌形与舌质显示身之水液、消化与濡养之机。</p>
         <div class="selector-grid" id="shape-selector"></div>
       </section>
 
@@ -134,8 +140,9 @@
            COATING SELECTOR
            ============================================================ -->
       <section class="selector-section">
-        <h2><span class="cn" data-zh-auto>舌苔</span>Tongue Coating · Shé Tāi</h2>
-        <p class="desc">The coating reflects the state of <span data-term="stomach-tcm">Stomach</span> qi and the depth of any pathogenic factor. A normal coating is thin, white, and slightly moist.</p>
+        <h2><span class="cn" data-zh-auto>舌苔</span><span class="acu-en">Tongue Coating · Shé Tāi</span></h2>
+        <p class="desc lang-en-only">The coating reflects the state of <span data-term="stomach-tcm">Stomach</span> qi and the depth of any pathogenic factor. A normal coating is thin, white, and slightly moist.</p>
+        <p class="desc lang-cn-only"><span data-zh-auto>舌苔反映</span><span data-term="stomach-tcm">胃</span><span data-zh-auto>气之盛衰与邪气深浅。正常之苔，薄白而微润。</span></p>
         <div class="selector-grid" id="coating-selector"></div>
       </section>
 
@@ -179,8 +186,9 @@
            DIAGNOSIS OUTPUT
            ============================================================ -->
       <section class="diagnosis-output">
-        <h2><span class="cn" data-zh-auto>综合判断</span>Pattern Match</h2>
-        <p class="desc">Possible TCM patterns based on what you've selected. The more signs that match, the higher the pattern appears.</p>
+        <h2><span class="cn" data-zh-auto>综合判断</span><span class="acu-en">Pattern Match</span></h2>
+        <p class="desc lang-en-only">Possible TCM patterns based on what you've selected. The more signs that match, the higher the pattern appears.</p>
+        <p class="desc lang-cn-only" data-zh-auto>依所选之色、形、苔，列出可能之中医证型。所合之征越多，证型排序越前。</p>
 
         <div class="diagnosis-current" id="diagnosis-current"></div>
         <ul class="pattern-list" id="pattern-list"></ul>
@@ -190,38 +198,45 @@
            HOW TO CHECK YOUR TONGUE
            ============================================================ -->
       <section class="selector-section">
-        <h2><span class="cn" data-zh-auto>自检</span>How to Check Your Own Tongue</h2>
-        <p class="desc">A simple morning routine — about 30 seconds.</p>
+        <h2><span class="cn" data-zh-auto>自检</span><span class="acu-en">How to Check Your Own Tongue</span></h2>
+        <p class="desc lang-en-only">A simple morning routine — about 30 seconds.</p>
+        <p class="desc lang-cn-only" data-zh-auto>晨起一简短之察舌法，约三十秒。</p>
         <div class="self-check-steps">
           <div class="self-check-step">
             <div class="num">1</div>
-            <h4>Best time</h4>
-            <p>First thing in the morning, before brushing teeth, eating, or drinking. Stand near natural daylight if possible.</p>
+            <h4 class="lang-en-only">Best time</h4><h4 class="lang-cn-only" data-zh-auto>最佳时辰</h4>
+            <p class="lang-en-only">First thing in the morning, before brushing teeth, eating, or drinking. Stand near natural daylight if possible.</p>
+            <p class="lang-cn-only" data-zh-auto>晨起即察，未刷牙、未进饮食之前。如可，立于自然光下。</p>
           </div>
           <div class="self-check-step">
             <div class="num">2</div>
-            <h4>Stick out gently</h4>
-            <p>Open the mouth and extend the tongue naturally. Don't strain or push it forward forcefully — that can change its color and shape.</p>
+            <h4 class="lang-en-only">Stick out gently</h4><h4 class="lang-cn-only" data-zh-auto>舒舌轻伸</h4>
+            <p class="lang-en-only">Open the mouth and extend the tongue naturally. Don't strain or push it forward forcefully — that can change its color and shape.</p>
+            <p class="lang-cn-only" data-zh-auto>张口自然伸舌，勿强用力——强力则色形俱变。</p>
           </div>
           <div class="self-check-step">
             <div class="num">3</div>
-            <h4>Hold briefly</h4>
-            <p>Show your tongue for only 10–15 seconds at a time. Holding it out longer can make it look redder than it actually is.</p>
+            <h4 class="lang-en-only">Hold briefly</h4><h4 class="lang-cn-only" data-zh-auto>不可久伸</h4>
+            <p class="lang-en-only">Show your tongue for only 10–15 seconds at a time. Holding it out longer can make it look redder than it actually is.</p>
+            <p class="lang-cn-only" data-zh-auto>每次伸舌仅 10–15 秒。久伸则舌色显红，非其本色。</p>
           </div>
           <div class="self-check-step">
             <div class="num">4</div>
-            <h4>Look at four things</h4>
-            <p>Body <em>color</em>, body <em>shape & size</em>, the <em>coating</em> (color, thickness, moisture), and any <em>cracks, marks, or spots</em>.</p>
+            <h4 class="lang-en-only">Look at four things</h4><h4 class="lang-cn-only" data-zh-auto>察其四要</h4>
+            <p class="lang-en-only">Body <em>color</em>, body <em>shape & size</em>, the <em>coating</em> (color, thickness, moisture), and any <em>cracks, marks, or spots</em>.</p>
+            <p class="lang-cn-only"><span data-zh-auto>舌之</span><em data-zh-auto>色</em><span data-zh-auto>、舌之</span><em data-zh-auto>形与大小</em><span data-zh-auto>、</span><em data-zh-auto>苔</em><span data-zh-auto>（色、厚薄、润燥）、与</span><em data-zh-auto>裂纹、齿痕或斑点</em><span data-zh-auto>。</span></p>
           </div>
           <div class="self-check-step">
             <div class="num">5</div>
-            <h4>Note location</h4>
-            <p>Use the zone map above to see which area shows the change — front, sides, center, or back.</p>
+            <h4 class="lang-en-only">Note location</h4><h4 class="lang-cn-only" data-zh-auto>记其所在</h4>
+            <p class="lang-en-only">Use the zone map above to see which area shows the change — front, sides, center, or back.</p>
+            <p class="lang-cn-only" data-zh-auto>对照上方分区图，察变化所在——舌尖、舌边、舌中或舌根。</p>
           </div>
           <div class="self-check-step">
             <div class="num">6</div>
-            <h4>Watch the pattern</h4>
-            <p>A single morning's tongue means little. Track changes over a week or two — that's where the real signal is.</p>
+            <h4 class="lang-en-only">Watch the pattern</h4><h4 class="lang-cn-only" data-zh-auto>观其变化</h4>
+            <p class="lang-en-only">A single morning's tongue means little. Track changes over a week or two — that's where the real signal is.</p>
+            <p class="lang-cn-only" data-zh-auto>一日之舌象意义甚微。当观一两周之变化——其中方有真正之信息。</p>
           </div>
         </div>
       </section>
@@ -325,20 +340,23 @@
         </div>
       </div>
 
-      <div class="disclaimer-box" style="margin-top:2.5rem">
+      <div class="disclaimer-box lang-en-only" style="margin-top:2.5rem">
         <p><strong>Educational use only.</strong> Tongue diagnosis is an aid to self-awareness and lifestyle adjustment, not a substitute for medical assessment. If you notice a sudden, dramatic change in your tongue's appearance, or your symptoms persist or worsen, please consult a qualified <span data-term="tongue-diagnosis">TCM practitioner</span> or healthcare professional.</p>
+      </div>
+      <div class="disclaimer-box lang-cn-only" style="margin-top:2.5rem">
+        <p><strong data-zh-auto>仅作教育用途。</strong><span data-zh-auto>舌诊为增进自我觉察与调节生活方式之助，非临床医学评估之替代。如舌象骤变、症状持续或加重，请咨询合格之</span><span data-term="tongue-diagnosis">中医师</span><span data-zh-auto>或专业医务人员。</span></p>
       </div>
 
     </div>
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426n"></script>
-<script src="assets/glossary.js?v=20260426n"></script>
-<script src="assets/clock.js?v=20260426n"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426n"></script>
-<script src="assets/tcm-music.js?v=20260426n"></script>
-<script src="assets/tcm-link.js?v=20260426n"></script>
+<script src="assets/data.js?v=20260426o"></script>
+<script src="assets/glossary.js?v=20260426o"></script>
+<script src="assets/clock.js?v=20260426o"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426o"></script>
+<script src="assets/tcm-music.js?v=20260426o"></script>
+<script src="assets/tcm-link.js?v=20260426o"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
