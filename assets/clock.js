@@ -731,4 +731,136 @@ document.addEventListener('DOMContentLoaded', () => {
   buildClock();
   updateClock();
   setInterval(updateClock, 1000);
+  initSPANav();
 });
+
+/* ============================================================
+   SPA-style navigation
+   --------------------
+   Menu clicks normally trigger a full page reload, which destroys the
+   <audio> element and stops the music. To keep playback continuous
+   across menu navigation, we intercept menu-btn clicks (and topbar-
+   select changes), fetch the destination page, and swap ONLY the
+   .main-content region — leaving the sidebar, topbar, music panel,
+   and <audio> element untouched.
+
+   We also patch document.addEventListener so DOMContentLoaded
+   listeners added by the new page's inline scripts (after the real
+   event has long since fired) still execute on the next microtask.
+   That makes existing per-page init code work unchanged.
+   ============================================================ */
+function initSPANav() {
+  if (window.__tcmSPAReady) return;
+  window.__tcmSPAReady = true;
+
+  // 1. Patch DOMContentLoaded so handlers added during a SPA load run.
+  let domLoaded = (document.readyState !== 'loading');
+  document.addEventListener('DOMContentLoaded', () => { domLoaded = true; }, { once: true });
+  const origAddListener = document.addEventListener.bind(document);
+  document.addEventListener = function (type, listener, options) {
+    if (type === 'DOMContentLoaded' && domLoaded) {
+      Promise.resolve().then(() => {
+        try { listener(new Event('DOMContentLoaded')); } catch (e) { console.warn(e); }
+      });
+      return;
+    }
+    return origAddListener(type, listener, options);
+  };
+
+  // 2. Click intercept on menu links (delegated, survives content swap).
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest && e.target.closest('a.menu-btn');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href.indexOf('http') === 0 || href.indexOf('#') === 0) return;
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;  // open-in-new-tab
+    e.preventDefault();
+    spaNavigate(href);
+  }, true);  // capture phase so we beat any other handler
+
+  // 3. Topbar dropdown — change event also triggers SPA nav.
+  document.addEventListener('change', (e) => {
+    if (e.target && e.target.classList && e.target.classList.contains('topbar-select')) {
+      const href = e.target.value;
+      if (href && href !== location.pathname.split('/').pop()) {
+        spaNavigate(href);
+      }
+    }
+  }, true);
+
+  // 4. Browser back/forward.
+  window.addEventListener('popstate', () => {
+    spaNavigate(location.pathname + location.search, { skipPush: true });
+  });
+}
+
+let _spaInFlight = null;
+async function spaNavigate(href, opts) {
+  opts = opts || {};
+  if (_spaInFlight) return;       // ignore taps while a fetch is mid-flight
+  _spaInFlight = href;
+  try {
+    const resp = await fetch(href, { credentials: 'same-origin' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const html = await resp.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+
+    // Update <title> and body data-page so the rest of the site reacts.
+    if (doc.title) document.title = doc.title;
+    const newPage = doc.body.getAttribute('data-page');
+    if (newPage) document.body.setAttribute('data-page', newPage);
+
+    // Swap .main-content. Keep sidebar, topbar, music panel, audio intact.
+    const newMain = doc.querySelector('.main-content');
+    const oldMain = document.querySelector('.main-content');
+    if (newMain && oldMain) {
+      oldMain.replaceWith(newMain);
+    }
+
+    // Update URL (unless this is a popstate-triggered nav).
+    if (!opts.skipPush) {
+      history.pushState({}, '', href);
+    }
+
+    // Re-execute any inline <script> elements that came in with the new
+    // content. document.createElement+appendChild is the canonical way
+    // to make injected script content actually run.
+    const scripts = newMain ? newMain.querySelectorAll('script') : [];
+    scripts.forEach(oldScript => {
+      const s = document.createElement('script');
+      for (const a of oldScript.attributes) s.setAttribute(a.name, a.value);
+      if (oldScript.src) {
+        // External script — only re-attach if not already loaded.
+        if (!document.querySelector('script[src="' + oldScript.src + '"]')) {
+          document.head.appendChild(s);
+        }
+      } else {
+        s.textContent = oldScript.textContent;
+        document.head.appendChild(s);
+        // Remove after execution to keep the head tidy.
+        s.parentNode.removeChild(s);
+      }
+    });
+
+    // Re-run cross-cutting initialisers that watch the menu state.
+    if (typeof highlightActiveMenu === 'function') highlightActiveMenu();
+
+    // Force the script-toggle to re-apply current variant to new content
+    // (the MutationObserver in tcm-script-toggle should also catch new
+    // [data-zh-*] elements, but this is a belt-and-braces nudge).
+    if (window.tcmScript) window.tcmScript.set(window.tcmScript.get());
+
+    // Decorate any new [data-term] tooltips. Same belt-and-braces note.
+    if (window.tcmLink && typeof window.tcmLink.decorate === 'function') {
+      window.tcmLink.decorate();
+    }
+
+    window.scrollTo(0, 0);
+  } catch (err) {
+    // Anything goes wrong → fall back to a real navigation.
+    console.warn('SPA nav failed; falling back to full reload:', err);
+    window.location.href = href;
+  } finally {
+    _spaInFlight = null;
+  }
+}
