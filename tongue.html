@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426z">
+<link rel="stylesheet" href="assets/style.css?v=20260426aa">
 </head>
 <body data-page="tongue">
 
@@ -49,12 +49,6 @@
         </div>
 
         <div class="photo-upload-row">
-          <!-- Simplest most-portable pattern: real <label> wrapping a real
-               <input type=file>. The browser triggers the input on label
-               tap with no JS involved. The inline `onclick='this.value=null'`
-               attribute resets the input on EVERY tap (runs synchronously
-               inside the user gesture), so picking the same file twice or
-               cancelling and retrying both work — no 'works once' state. -->
           <label class="photo-btn primary" id="open-photo-btn">
             <span>📁</span> <span data-zh-s="选择照片" data-zh-t="選擇照片">Choose photo</span>
             <input type="file" accept="image/*" id="photo-file-input" onclick="this.value=null">
@@ -63,6 +57,15 @@
             <span>📷</span> <span data-zh-s="相机" data-zh-t="相機">Camera</span>
             <input type="file" accept="image/*" id="camera-direct-input" onclick="this.value=null">
           </label>
+        </div>
+
+        <!-- FALLBACK: a plain visible file input. If the styled buttons
+             above fail on a particular browser, the user can still pick
+             a photo here. No JS, no labels, no hidden tricks — pure HTML. -->
+        <div class="photo-fallback-row">
+          <small class="photo-fallback-label" data-zh-s="如上方按钮无效，可使用此处的浏览器原生选择器：" data-zh-t="如上方按鈕無效，可使用此處的瀏覽器原生選擇器：">If the buttons above don't work, use the browser-native picker here:</small><br>
+          <input type="file" accept="image/*" id="photo-fallback-input" onclick="this.value=null"
+                 style="margin-top:0.4rem;color:var(--ink-soft);font-family:inherit">
         </div>
 
         <!-- Live camera modal -->
@@ -396,12 +399,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426z"></script>
-<script src="assets/glossary.js?v=20260426z"></script>
-<script src="assets/clock.js?v=20260426z"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426z"></script>
-<script src="assets/tcm-music.js?v=20260426z"></script>
-<script src="assets/tcm-link.js?v=20260426z"></script>
+<script src="assets/data.js?v=20260426aa"></script>
+<script src="assets/glossary.js?v=20260426aa"></script>
+<script src="assets/clock.js?v=20260426aa"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426aa"></script>
+<script src="assets/tcm-music.js?v=20260426aa"></script>
+<script src="assets/tcm-link.js?v=20260426aa"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1205,6 +1208,15 @@ if (photoFileInput) {
 }
 if (cameraDirectInput) {
   cameraDirectInput.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+  });
+}
+
+// Browser-native fallback file input — same change handler, separate
+// element so it works even if the styled labels misbehave on some browser.
+const photoFallbackInput = document.getElementById('photo-fallback-input');
+if (photoFallbackInput) {
+  photoFallbackInput.addEventListener('change', (e) => {
     if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
   });
 }
