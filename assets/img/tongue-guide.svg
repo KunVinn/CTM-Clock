@@ -7,12 +7,23 @@
     visual feel of a camera viewfinder.
   -->
   <defs>
+    <!-- Strong cinnabar / gold strokes with outer glow so the guide
+         remains obviously visible on any tongue-photo background colour. -->
+    <filter id="guide-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.4" result="blur"/>
+      <feFlood flood-color="#000" flood-opacity="0.85" result="dark"/>
+      <feComposite in="dark" in2="blur" operator="in" result="halo"/>
+      <feMerge>
+        <feMergeNode in="halo"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
     <style>
-      .guide-stroke    { fill: none; stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-      .guide-faint     { fill: none; stroke: rgba(255, 255, 255, 0.55); stroke-width: 1; }
-      .guide-teeth     { fill: rgba(255, 245, 230, 0.20); stroke: rgba(255, 255, 255, 0.55); stroke-width: 0.9; }
-      .guide-mouth     { fill: rgba(120, 70, 60, 0.22); stroke: rgba(255, 255, 255, 0.45); stroke-width: 0.8; }
-      .guide-bracket   { fill: none; stroke: rgba(212, 175, 122, 0.95); stroke-width: 2.2; stroke-linecap: round; }
+      .guide-stroke    { fill: none; stroke: #ffd66e; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; filter: url(#guide-glow); }
+      .guide-faint     { fill: none; stroke: rgba(255, 230, 130, 0.85); stroke-width: 1.2; filter: url(#guide-glow); }
+      .guide-teeth     { fill: rgba(255, 245, 230, 0.30); stroke: #ffd66e; stroke-width: 1.2; filter: url(#guide-glow); }
+      .guide-mouth     { fill: rgba(40, 0, 0, 0.45); stroke: #ffd66e; stroke-width: 1.2; filter: url(#guide-glow); }
+      .guide-bracket   { fill: none; stroke: #e85a48; stroke-width: 3.4; stroke-linecap: round; filter: url(#guide-glow); }
     </style>
   </defs>
 
