@@ -232,15 +232,23 @@
     // [data-script="c"] CSS rule can hide it cleanly. Idempotent.
     wrapEnglishSiblings();
 
-    // Auto-translate body content when entering Chinese-only mode, and
-    // restore it on the way out. The translator wraps each translatable
-    // text node in a <span data-zh-trans="<original>"> so toggling can
-    // round-trip.
+    // Apply authored Chinese for body content when entering Chinese-only
+    // mode, and restore it on the way out. The translator wraps each
+    // translatable text node in a <span data-zh-trans="<original>"> so
+    // toggling can round-trip.
+    //
+    // We DO NOT auto-call Gemini any more: TCM theory has canonical
+    // Chinese terminology, and machine back-translation from English risks
+    // producing inauthentic phrasing. Translation is opt-in via a banner
+    // button so the user explicitly accepts when they want a Gemini fill.
     if (dir === 'c') {
-      // Apply any cached translations *immediately* (synchronous), then
-      // fetch missing pieces asynchronously via Gemini if the key exists.
-      autoApplyChineseFromCache(displayDir);
-      scheduleAutoTranslateFetch(displayDir);
+      const stillMissing = autoApplyChineseFromCache(displayDir)
+                              .filter(s => s.textContent === s.dataset.zhTrans);
+      if (stillMissing.length > 0) {
+        showOptInTranslateBanner(stillMissing.length, displayDir);
+      } else {
+        hideTranslateBanner();
+      }
     } else {
       restoreEnglishFromTranslations();
       hideTranslateBanner();
@@ -390,6 +398,83 @@
     // Defer slightly so the synchronous cache-application paint finishes first.
     if (translatePending) clearTimeout(translatePending);
     translatePending = setTimeout(() => fetchMissingTranslations(variant), 80);
+  }
+
+  // Banner shown automatically on entering 中 mode when some bare English
+  // text remains. Translation is offered as an explicit opt-in so the
+  // user knows TCM-source content is being machine-translated, not the
+  // canonical Chinese. Two routes: tap the button to invoke Gemini for
+  // this page, or dismiss to leave the English visible as-is.
+  function showOptInTranslateBanner(missingCount, variant) {
+    const key = getGeminiKey();
+    let banner = document.getElementById('cn-translate-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'cn-translate-banner';
+      banner.className = 'cn-translate-banner';
+      document.body.appendChild(banner);
+    }
+    banner.innerHTML = '';
+    banner.classList.remove('loading');
+    banner.classList.add('with-input');
+
+    const text = document.createElement('span');
+    text.className = 'cn-translate-msg';
+    text.textContent = '本页有 ' + missingCount + ' 段英文段落（多为说明性散文，非 TCM 经典原文）。如需机器翻译，可调用 Gemini：';
+    banner.appendChild(text);
+
+    const row = document.createElement('div');
+    row.className = 'cn-translate-row';
+
+    if (!key) {
+      const input = document.createElement('input');
+      input.type = 'password';
+      input.placeholder = 'AIza…';
+      input.autocomplete = 'off';
+      input.spellcheck = false;
+      const help = document.createElement('a');
+      help.href = 'https://aistudio.google.com/apikey';
+      help.target = '_blank';
+      help.rel = 'noopener';
+      help.textContent = '获取免费密钥 ↗';
+      help.className = 'cn-translate-help';
+      const saveBtn = document.createElement('button');
+      saveBtn.type = 'button';
+      saveBtn.textContent = '保存并翻译';
+      const submit = () => {
+        const v = (input.value || '').trim();
+        if (!v) { input.focus(); return; }
+        try { localStorage.setItem(GEMINI_KEY_STORE, v); } catch (_) {}
+        input.value = '';
+        showTranslateBanner('正在用 Gemini 翻译此页…', true);
+        fetchMissingTranslations(variant);
+      };
+      saveBtn.addEventListener('click', submit);
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+      row.appendChild(input);
+      row.appendChild(saveBtn);
+      row.appendChild(help);
+    } else {
+      const goBtn = document.createElement('button');
+      goBtn.type = 'button';
+      goBtn.textContent = '用 Gemini 翻译本页';
+      goBtn.addEventListener('click', () => {
+        showTranslateBanner('正在用 Gemini 翻译此页…', true);
+        fetchMissingTranslations(variant);
+      });
+      row.appendChild(goBtn);
+    }
+    banner.appendChild(row);
+
+    const x = document.createElement('button');
+    x.type = 'button';
+    x.className = 'cn-translate-close';
+    x.setAttribute('aria-label', 'Dismiss');
+    x.textContent = '✕';
+    x.addEventListener('click', hideTranslateBanner);
+    banner.appendChild(x);
+
+    banner.style.display = '';
   }
 
   async function fetchMissingTranslations(variant) {
