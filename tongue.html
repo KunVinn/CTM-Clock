@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426ak">
+<link rel="stylesheet" href="assets/style.css?v=20260426al">
 </head>
 <body data-page="tongue">
 
@@ -463,12 +463,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426ak"></script>
-<script src="assets/glossary.js?v=20260426ak"></script>
-<script src="assets/clock.js?v=20260426ak"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426ak"></script>
-<script src="assets/tcm-music.js?v=20260426ak"></script>
-<script src="assets/tcm-link.js?v=20260426ak"></script>
+<script src="assets/data.js?v=20260426al"></script>
+<script src="assets/glossary.js?v=20260426al"></script>
+<script src="assets/clock.js?v=20260426al"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426al"></script>
+<script src="assets/tcm-music.js?v=20260426al"></script>
+<script src="assets/tcm-link.js?v=20260426al"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1257,25 +1257,22 @@ function hideAutoSuggestion() {
 const photoFileInput    = document.getElementById('photo-file-input');
 const cameraDirectInput = document.getElementById('camera-direct-input');
 
-if (photoFileInput) {
-  photoFileInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+// Process a picked file and ALWAYS reset the input afterwards (deferred
+// past the current event chain) so the same file can be picked again.
+// Some Firefox builds (including Huawei's variant) do not run the inline
+// onclick='this.value=null' on synthetic label-triggered clicks, so the
+// reset HAS to happen here — otherwise the second click sees a stuck
+// value and the file picker silently does nothing.
+function bindFilePicker(input) {
+  if (!input) return;
+  input.addEventListener('change', () => {
+    if (input.files && input.files[0]) loadPhoto(input.files[0]);
+    setTimeout(() => { try { input.value = ''; } catch (_) {} }, 100);
   });
 }
-if (cameraDirectInput) {
-  cameraDirectInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
-  });
-}
-
-// Fallback visible <input> — guaranteed to work even if the styled
-// labels misbehave. Same loadPhoto pipeline.
-const photoFallbackInput = document.getElementById('photo-fallback-input');
-if (photoFallbackInput) {
-  photoFallbackInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
-  });
-}
+bindFilePicker(photoFileInput);
+bindFilePicker(cameraDirectInput);
+bindFilePicker(document.getElementById('photo-fallback-input'));
 
 // Camera-button routing per device:
 //   - Android (and other touch+capture-friendly browsers): native
