@@ -3893,6 +3893,28 @@ html[data-script="e"] .label-organ-en {
 html[data-script="e"] .sidebar-mark { display: none; }
 
 /* ============================================================
+   CHINESE-ONLY MODE (data-script="c") — hides bare English text
+   in known bilingual containers. The variant (简 vs 繁) is the
+   user's last 简/繁 selection, applied via the existing data-zh-*
+   conversion path. Body paragraphs that have no Chinese sibling
+   in the markup remain English (graceful degradation).
+   ============================================================ */
+html[data-script="c"] .en-only,
+html[data-script="c"] .organ-en,
+html[data-script="c"] .label-organ-en,
+html[data-script="c"] .eyebrow,
+html[data-script="c"] .now-strip-organ .label,
+html[data-script="c"] .now-strip-time small,
+html[data-script="c"] .pinyin,
+html[data-script="c"] .sidebar-eyebrow {
+  display: none !important;
+}
+
+/* Pull the .cn span back to the natural left when its English sibling
+   has been hidden, so the menu doesn't look indented. */
+html[data-script="c"] .menu-btn { gap: 0; }
+
+/* ============================================================
    SIDEBAR · USER ZOOM CONTROL
    Slider that sets --clock-zoom-scale on :root, persisted in
    localStorage. Sits unobtrusively at the bottom of the sidebar.

@@ -18,8 +18,9 @@
    ============================================================ */
 
 (function () {
-  const STORAGE_KEY = 'tcm-script';
-  const DEFAULT_SCRIPT = 's';
+  const STORAGE_KEY     = 'tcm-script';      // 's' | 't' | 'e' | 'c'
+  const VARIANT_KEY     = 'tcm-script-cn';   // 's' | 't' — used only in 'c' mode
+  const DEFAULT_SCRIPT  = 's';
 
   // Lightweight character-level mapping for the most common
   // Simplified ↔ Traditional differences seen on this site.
@@ -137,6 +138,17 @@
 
   function setCurrent(v) {
     try { localStorage.setItem(STORAGE_KEY, v); } catch (e) {}
+    // Whenever the user explicitly picks 's' or 't', remember it so that
+    // 'c' (Chinese-only) mode knows which variant to display.
+    if (v === 's' || v === 't') {
+      try { localStorage.setItem(VARIANT_KEY, v); } catch (e) {}
+    }
+  }
+  function getCnVariant() {
+    try {
+      const v = localStorage.getItem(VARIANT_KEY);
+      return (v === 't') ? 't' : 's';
+    } catch (e) { return 's'; }
   }
 
   // Apply char-level mapping to a string. Greedy multi-char first.
@@ -157,9 +169,37 @@
   let observer = null;
   let applying = false;  // re-entry guard
 
+  // Wrap bare English text inside common bilingual containers so a
+  // CSS rule can hide it in 'c' (Chinese-only) mode. Idempotent — every
+  // wrapped node is marked with data-en-wrapped="1".
+  function wrapEnglishSiblings() {
+    const containers = document.querySelectorAll(
+      '.menu-btn, .corr-tab, .selector-card-title, .now-strip-organ .name'
+    );
+    containers.forEach(container => {
+      Array.from(container.childNodes).forEach(node => {
+        if (node.nodeType !== 3) return;                     // text nodes only
+        const text = node.nodeValue;
+        if (!text || !text.trim()) return;
+        if (node.parentElement && node.parentElement.dataset.enWrapped) return;
+        const span = document.createElement('span');
+        span.className = 'en-only';
+        span.dataset.enWrapped = '1';
+        span.textContent = text;
+        node.parentNode.replaceChild(span, node);
+      });
+    });
+  }
+
   function applyScript(dir) {
     if (applying) return;
     applying = true;
+
+    // Resolve the *display* variant for elements that store data-zh-s/t.
+    // 'c' (Chinese-only) reuses the user's last 简/繁 preference.
+    const cnVariant = getCnVariant();          // 's' | 't'
+    const displayDir = (dir === 'c') ? cnVariant : dir;
+
     // 1. Explicit data-zh-s / data-zh-t markers — highest priority
     document.querySelectorAll('[data-zh-s], [data-zh-t]').forEach(el => {
       const s = el.dataset.zhS;
@@ -169,37 +209,44 @@
       if (!el.dataset.zhE) el.dataset.zhE = el.textContent.trim();
       if (dir === 'e') {
         el.textContent = el.dataset.zhE || s || t || '';
-      } else if (dir === 't' && t) el.textContent = t;
-      else if (dir === 's' && s) el.textContent = s;
+      } else if (displayDir === 't' && t) el.textContent = t;
+      else if (displayDir === 's' && s) el.textContent = s;
       else if (s) el.textContent = s;
       else if (t) el.textContent = t;
     });
 
     // 2. Auto-convert any element marked with data-zh-auto.
     //    We snapshot the original text on first run so toggling is reversible.
-    //    'e' mode: convert to simplified for the snapshot fallback (visually
-    //    the element is hidden anyway via the [data-script="e"] CSS rule, so
-    //    the textContent stays valid CN for screen readers / SEO).
     document.querySelectorAll('[data-zh-auto]').forEach(el => {
       if (!el.dataset.zhOriginal) {
         el.dataset.zhOriginal = el.textContent;
       }
       const original = el.dataset.zhOriginal;
-      el.textContent = convertString(original, dir === 'e' ? 's' : dir);
+      // For 'e' mode the element is CSS-hidden anyway — textContent kept as
+      // simplified CN so it stays valid for screen readers / copy-paste.
+      const conv = (dir === 'e') ? 's' : displayDir;
+      el.textContent = convertString(original, conv);
     });
+
+    // Wrap bare English text in known bilingual containers so the
+    // [data-script="c"] CSS rule can hide it cleanly. Idempotent.
+    wrapEnglishSiblings();
 
     // Track on <html> for any CSS that wants to react
     document.documentElement.dataset.script = dir;
 
     // Update toggle button label if present. Button shows the CURRENT mode;
-    // the cycle order is s → t → e → s.
+    // the cycle order is s → t → e → c → s.
     const btn = document.getElementById('script-toggle');
     if (btn) {
-      const labels = { s: '简', t: '繁', e: 'EN' };
+      const labels = { s: '简', t: '繁', e: 'EN', c: '中' };
       const titles = {
-        s: '当前: 简体 · 点击切换为繁體',
-        t: '當前: 繁體 · 點擊切換為 EN',
-        e: 'Current: English · Click to switch to 简体'
+        s: '当前: 简体双语 · 点击切换为繁體',
+        t: '當前: 繁體雙語 · 點擊切換為 EN',
+        e: 'Current: English-only · Click to switch to Chinese-only',
+        c: cnVariant === 't'
+            ? '當前: 純繁體 · 點擊回到簡體雙語'
+            : '当前: 纯简体 · 点击回到简体双语'
       };
       btn.textContent = labels[dir] || '?';
       btn.setAttribute('aria-label', titles[dir] || '');
@@ -210,8 +257,11 @@
 
   function toggle() {
     const curr = getCurrent();
-    // Cycle order: 简 → 繁 → EN → 简
-    const next = curr === 's' ? 't' : curr === 't' ? 'e' : 's';
+    // Cycle order: 简 → 繁 → EN → 中 → 简
+    const next = curr === 's' ? 't'
+              : curr === 't' ? 'e'
+              : curr === 'e' ? 'c'
+              : 's';
     setCurrent(next);
     applyScript(next);
   }
