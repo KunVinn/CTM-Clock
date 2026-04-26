@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426o">
+<link rel="stylesheet" href="assets/style.css?v=20260426p">
 </head>
 <body data-page="tongue">
 
@@ -147,39 +147,77 @@
       </section>
 
       <!-- ============================================================
-           OPTIONAL: AI-ASSISTED ANALYSIS (Google Gemini, free tier)
-           Off by default. Requires the user to bring their own API key.
+           SECOND-OPINION OPTIONS — TCM practitioner OR optional AI.
+           The practitioner route is presented FIRST and as the primary
+           recommendation; AI is an optional secondary opinion.
            ============================================================ -->
       <section class="ai-section" id="ai-section">
-        <h2><span class="cn" data-zh-auto>人工智能</span>AI-Assisted Analysis · Optional</h2>
-        <p class="desc">
-          Send your tongue photo to <strong>Google Gemini</strong> for a structured second opinion on
-          body color, coating, shape, and likely TCM patterns. <strong>This breaks the &ldquo;photo never
-          leaves your device&rdquo; promise above</strong> — the photo is sent to Google's servers under
-          your own API key.
-        </p>
-        <details class="ai-disclosure">
-          <summary>How to get a free Gemini API key (one-time setup)</summary>
-          <ol>
-            <li>Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with a Google account.</li>
-            <li>Click <em>Create API key</em> → copy the key.</li>
-            <li>Paste it below and click <em>Save</em>. The key is stored only in your browser's localStorage.</li>
-            <li>Free tier: ~1500 requests/day on <code>gemini-2.0-flash</code> at no charge.</li>
-          </ol>
-        </details>
+        <h2><span class="cn" data-zh-auto>第二意见</span><span class="acu-en">Get a Second Opinion</span></h2>
 
-        <div class="ai-key-row">
-          <label for="gemini-key">Gemini API key:</label>
-          <input type="password" id="gemini-key" placeholder="AIza…" autocomplete="off">
-          <button type="button" class="photo-btn" id="gemini-save">Save key</button>
-          <button type="button" class="photo-btn" id="gemini-forget" hidden>Forget key</button>
+        <!-- ROUTE 1: Real TCM practitioner (recommended) -->
+        <div class="opinion-route opinion-route-primary">
+          <h3><span class="cn" data-zh-auto>请教中医师</span><span class="acu-en">Consult a TCM practitioner · recommended</span></h3>
+          <p class="desc lang-en-only">
+            Tongue diagnosis is one part of the classical <span data-term="four-examinations">four examinations</span>; a trained
+            practitioner integrates it with pulse, history, and observation in a way no AI can replicate.
+            For anything you intend to act on clinically, this is the right path.
+          </p>
+          <p class="desc lang-cn-only"><span data-zh-auto>舌诊为传统</span><span data-term="four-examinations">四诊</span><span data-zh-auto>之一；合于脉、问、望，方得整体之象——此非人工智能所能替也。凡欲据以调治者，请循此路。</span></p>
+          <div class="opinion-actions">
+            <a href="practitioners.html" class="photo-btn primary opinion-btn">
+              <span class="lang-en-only">👨‍⚕️ Browse trusted practitioners →</span>
+              <span class="lang-cn-only" data-zh-auto>👨‍⚕️ 查阅可信医师名录 →</span>
+            </a>
+            <button type="button" class="photo-btn" id="opinion-share-btn">
+              <span class="lang-en-only">📤 Send my report to a practitioner</span>
+              <span class="lang-cn-only" data-zh-auto>📤 将报告转发给医师</span>
+            </button>
+          </div>
         </div>
 
-        <button type="button" class="photo-btn primary" id="gemini-analyze" disabled>
-          🤖 <span data-zh-s="智能分析" data-zh-t="智能分析">Analyze with AI</span>
-        </button>
-        <div class="ai-status" id="ai-status"></div>
-        <div class="ai-output" id="ai-output" hidden></div>
+        <!-- ROUTE 2: Optional AI analysis -->
+        <div class="opinion-route opinion-route-secondary">
+          <h3><span class="cn" data-zh-auto>人工智能初判</span><span class="acu-en">Optional · AI first-pass screening</span></h3>
+          <p class="desc lang-en-only">
+            Send your tongue photo to <strong>Google Gemini</strong> for a structured first-pass on
+            body color, coating, shape, and likely TCM patterns — useful as a starting point before
+            consulting a practitioner. <strong>This breaks the &ldquo;photo never leaves your device&rdquo;
+            promise above</strong> — the photo is sent to Google's servers under your own API key.
+          </p>
+          <p class="desc lang-cn-only"><span data-zh-auto>可将舌照送</span><strong data-zh-auto>Google Gemini</strong><span data-zh-auto>，得舌色、舌苔、舌形与可能证型之初判结果——可作为请教中医师之先期参考。</span><strong data-zh-auto>此举将打破上文「舌照不离本机」之承诺</strong><span data-zh-auto>——舌照将以您自有之 API 密钥送至 Google 服务器。</span></p>
+          <details class="ai-disclosure">
+            <summary class="lang-en-only">How to get a free Gemini API key (one-time setup)</summary>
+            <summary class="lang-cn-only" data-zh-auto>如何获取免费 Gemini 密钥（一次设定即可）</summary>
+            <ol class="lang-en-only">
+              <li>Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with a Google account.</li>
+              <li>Click <em>Create API key</em> → copy the key.</li>
+              <li>Paste it below and click <em>Save</em>. The key is stored only in your browser's localStorage.</li>
+              <li>Free tier: ~1500 requests/day on <code>gemini-2.0-flash</code> at no charge.</li>
+            </ol>
+            <ol class="lang-cn-only">
+              <li><span data-zh-auto>开启 </span><a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a><span data-zh-auto>，以 Google 账户登录。</span></li>
+              <li><span data-zh-auto>点击 </span><em data-zh-auto>Create API key</em><span data-zh-auto>，复制密钥。</span></li>
+              <li><span data-zh-auto>粘贴于下方并点</span><em data-zh-auto>保存</em><span data-zh-auto>。密钥仅存于本浏览器之 localStorage。</span></li>
+              <li><span data-zh-auto>免费额度：</span><code>gemini-2.0-flash</code><span data-zh-auto>每日约 1500 次，无须付费。</span></li>
+            </ol>
+          </details>
+
+          <div class="ai-key-row">
+            <label for="gemini-key">
+              <span class="lang-en-only">Gemini API key:</span>
+              <span class="lang-cn-only" data-zh-auto>Gemini 密钥：</span>
+            </label>
+            <input type="password" id="gemini-key" placeholder="AIza…" autocomplete="off">
+            <button type="button" class="photo-btn" id="gemini-save" data-zh-s="保存密钥" data-zh-t="保存密鑰">Save key</button>
+            <button type="button" class="photo-btn" id="gemini-forget" hidden data-zh-s="清除密钥" data-zh-t="清除密鑰">Forget key</button>
+          </div>
+
+          <button type="button" class="photo-btn primary" id="gemini-analyze" disabled>
+            🤖 <span data-zh-s="智能分析" data-zh-t="智能分析">Analyze with AI</span>
+          </button>
+          <div class="ai-status" id="ai-status"></div>
+          <div class="ai-output" id="ai-output" hidden></div>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -351,12 +389,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426o"></script>
-<script src="assets/glossary.js?v=20260426o"></script>
-<script src="assets/clock.js?v=20260426o"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426o"></script>
-<script src="assets/tcm-music.js?v=20260426o"></script>
-<script src="assets/tcm-link.js?v=20260426o"></script>
+<script src="assets/data.js?v=20260426p"></script>
+<script src="assets/glossary.js?v=20260426p"></script>
+<script src="assets/clock.js?v=20260426p"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426p"></script>
+<script src="assets/tcm-music.js?v=20260426p"></script>
+<script src="assets/tcm-link.js?v=20260426p"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -423,6 +461,7 @@ const TONGUE_COLORS = [
     cn: '淡红', en: 'Pale-Red / Pink',
     swatch: '#e8a094',
     meaning: 'A normal, healthy tongue body — well-balanced qi, blood, yin and yang.',
+    meaningCn: '正常健康之舌——气血阴阳俱平。',
     patterns: []
   },
   {
@@ -430,6 +469,7 @@ const TONGUE_COLORS = [
     cn: '淡白', en: 'Pale',
     swatch: '#eecdc1',
     meaning: 'Lacking the rosy hue of normal tongue. Indicates qi or blood deficiency, or yang deficiency (especially when wet/swollen).',
+    meaningCn: '舌色淡而少红润。主气虚、血虚或阳虚（尤胖嫩湿润者）。',
     patterns: ['qi-deficiency', 'blood-deficiency', 'yang-deficiency']
   },
   {
@@ -437,6 +477,7 @@ const TONGUE_COLORS = [
     cn: '红', en: 'Red',
     swatch: '#cc3a2c',
     meaning: 'Brighter than normal — indicates heat. The brighter the red, the stronger the heat. With dryness/cracks: yin-deficient empty heat.',
+    meaningCn: '舌色较常人为红——主热。色愈红则热愈甚。兼干燥裂纹者属阴虚虚热。',
     patterns: ['heat-excess', 'yin-deficiency']
   },
   {
@@ -444,6 +485,7 @@ const TONGUE_COLORS = [
     cn: '绛', en: 'Crimson / Scarlet',
     swatch: '#a01a18',
     meaning: 'A deep, dark red. Indicates extreme heat that has entered the blood layer (yíng/xuè aspect) — a serious sign.',
+    meaningCn: '深暗之红色。主热入营血——病势已重。',
     patterns: ['heat-excess']
   },
   {
@@ -451,6 +493,7 @@ const TONGUE_COLORS = [
     cn: '紫', en: 'Purple / Dusky',
     swatch: '#6e3a55',
     meaning: 'Stagnation of qi or blood. Reddish-purple = heat-related stasis. Bluish-purple = cold-related stasis.',
+    meaningCn: '气滞或血瘀之象。偏红紫者属热瘀，偏青紫者属寒瘀。',
     patterns: ['blood-stasis', 'qi-stagnation']
   },
   {
@@ -458,6 +501,7 @@ const TONGUE_COLORS = [
     cn: '青紫', en: 'Bluish-Purple',
     swatch: '#3e4467',
     meaning: 'Pronounced cold and blood stasis. Often seen with chronic poor circulation or severe internal cold.',
+    meaningCn: '寒甚血瘀。多见于久病气血不畅或重寒在里之人。',
     patterns: ['blood-stasis', 'yang-deficiency']
   }
 ];
@@ -467,48 +511,56 @@ const TONGUE_SHAPES = [
     key: 'normal',
     cn: '正常', en: 'Normal',
     meaning: 'Supple, neither swollen nor thin; smooth edges; good motility.',
+    meaningCn: '舌体柔润，不胖不瘦；边缘光整；伸缩自如。',
     patterns: []
   },
   {
     key: 'swollen',
     cn: '胖大', en: 'Swollen / Enlarged',
     meaning: 'Larger than the mouth seems to allow. Often indicates qi or yang deficiency leading to fluid retention (dampness).',
+    meaningCn: '舌体胖大充盈口腔。多主气虚或阳虚水停（生湿）。',
     patterns: ['yang-deficiency', 'damp']
   },
   {
     key: 'thin',
     cn: '瘦薄', en: 'Thin',
     meaning: 'Smaller, more shrunken than normal. Indicates blood or yin deficiency — depleted substance.',
+    meaningCn: '舌体瘦薄缩小。主血虚或阴虚——津血不足。',
     patterns: ['blood-deficiency', 'yin-deficiency']
   },
   {
     key: 'tooth-marked',
     cn: '齿痕', en: 'Scalloped / Tooth-marked',
     meaning: 'Indentations along the sides where the teeth press. A classic sign of Spleen qi deficiency, often with dampness.',
+    meaningCn: '舌边见齿印。脾气虚之典型征象，多兼湿。',
     patterns: ['qi-deficiency', 'damp']
   },
   {
     key: 'cracked',
     cn: '裂纹', en: 'Cracked / Fissured',
     meaning: 'Cracks running along the tongue. Long, deep cracks usually indicate yin deficiency or heat damage to fluids.',
+    meaningCn: '舌面裂纹纵横。长而深之裂多主阴虚或热伤津液。',
     patterns: ['yin-deficiency', 'heat-excess']
   },
   {
     key: 'stiff',
     cn: '强硬', en: 'Stiff',
     meaning: 'Reduced motility, hard to extend or move. Can indicate internal wind, severe heat, or phlegm obstruction.',
+    meaningCn: '舌强难伸，活动不利。主内风、热极或痰阻经络。',
     patterns: ['heat-excess']
   },
   {
     key: 'flaccid',
     cn: '痿软', en: 'Flaccid / Limp',
     meaning: 'Weak, lacking tone. Indicates extreme deficiency of qi, blood, or yin — body fluids no longer nourish the tongue.',
+    meaningCn: '舌软无力。主气、血、阴极虚——津液不足以养舌。',
     patterns: ['qi-deficiency', 'yin-deficiency']
   },
   {
     key: 'red-dots',
     cn: '红点 / 芒刺', en: 'Red Spots / Prickles',
     meaning: 'Raised red dots, often on the tip or sides. Indicate heat in the corresponding organ system. On the tip: Heart fire.',
+    meaningCn: '舌面起红点或芒刺，多见于舌尖、舌边。主对应脏腑有热。舌尖红点为心火上炎。',
     patterns: ['heat-excess']
   }
 ];
@@ -519,6 +571,7 @@ const TONGUE_COATINGS = [
     cn: '薄白苔', en: 'Thin White (normal)',
     swatch: '#f5ede0',
     meaning: 'Clear, thin, slightly moist white coating. Normal — Stomach qi is healthy.',
+    meaningCn: '薄白微润之苔。属正常——胃气和顺。',
     patterns: []
   },
   {
@@ -526,6 +579,7 @@ const TONGUE_COATINGS = [
     cn: '厚白苔', en: 'Thick White',
     swatch: '#dad0bc',
     meaning: 'A heavy white film. Indicates cold or dampness in the body — often in the digestive system.',
+    meaningCn: '苔厚而白。主寒或湿——多在脾胃。',
     patterns: ['cold', 'damp']
   },
   {
@@ -533,6 +587,7 @@ const TONGUE_COATINGS = [
     cn: '黄苔', en: 'Yellow',
     swatch: '#c9a64b',
     meaning: 'Indicates interior heat. Pale yellow = mild heat; deep yellow or burnt = severe heat or fire.',
+    meaningCn: '主里热。淡黄为微热，深黄或焦黄为重热或火盛。',
     patterns: ['heat-excess', 'damp-heat']
   },
   {
@@ -540,6 +595,7 @@ const TONGUE_COATINGS = [
     cn: '腻苔', en: 'Greasy / Sticky',
     swatch: '#bca576',
     meaning: 'A thick, oily film hard to scrape off. A clear sign of dampness or phlegm. With yellow: damp-heat. With white: damp-cold.',
+    meaningCn: '苔厚腻油润，难以刮除。湿邪或痰浊之明征。兼黄者为湿热，兼白者为寒湿。',
     patterns: ['damp', 'damp-heat']
   },
   {
@@ -547,6 +603,7 @@ const TONGUE_COATINGS = [
     cn: '燥苔', en: 'Dry',
     swatch: '#d8c69d',
     meaning: 'Lacks normal moisture, looks parched or sandy. Body fluids are damaged — usually by heat or yin deficiency.',
+    meaningCn: '苔燥少津，似砂似纸。津液已伤——多属热或阴虚。',
     patterns: ['heat-excess', 'yin-deficiency']
   },
   {
@@ -554,6 +611,7 @@ const TONGUE_COATINGS = [
     cn: '剥苔 / 无苔', en: 'Peeled / No Coating',
     swatch: '#3a2818',
     meaning: 'Areas (or all) of the tongue have lost their coating, looking like a polished mirror. Indicates Stomach or Kidney yin deficiency.',
+    meaningCn: '部分或全舌苔剥脱，光如镜面（俗称镜面舌）。主胃阴或肾阴虚。',
     patterns: ['yin-deficiency']
   },
   {
@@ -561,6 +619,7 @@ const TONGUE_COATINGS = [
     cn: '灰黑苔', en: 'Gray / Black',
     swatch: '#3c3a36',
     meaning: 'Severe pattern. Wet & black: extreme cold. Dry & black: extreme heat scorching fluids. May also be from drugs (e.g. antibiotics).',
+    meaningCn: '病势深重。润而黑者为极寒，燥而黑者为极热伤津。亦可见于久服抗生素之类。',
     patterns: ['heat-excess', 'cold']
   }
 ];
@@ -801,8 +860,9 @@ function buildSelector(items, containerId, kind, hasSwatch) {
       swatchHTML = `<span class="selector-swatch" style="background:${item.swatch}"></span>`;
     }
     card.innerHTML = `
-      <div class="selector-card-title">${swatchHTML}<span data-zh-auto>${item.cn}</span> <span class="en">${item.en}</span></div>
-      <div class="selector-card-meaning">${item.meaning}</div>
+      <div class="selector-card-title">${swatchHTML}<span data-zh-auto>${item.cn}</span> <span class="en lang-en-only">${item.en}</span></div>
+      <div class="selector-card-meaning lang-en-only">${item.meaning}</div>
+      <div class="selector-card-meaning lang-cn-only" data-zh-auto>${item.meaningCn || item.meaning}</div>
     `;
     card.addEventListener('click', () => {
       // Toggle: clicking an active card deselects it
@@ -1838,6 +1898,16 @@ loadPractitioners();
     showHint();
   }
 })();
+
+// New top-of-page 'Send my report to a practitioner' button just opens
+// the same share modal that the report-share button uses.
+const opinionShareBtn = document.getElementById('opinion-share-btn');
+if (opinionShareBtn) {
+  opinionShareBtn.addEventListener('click', () => {
+    document.getElementById('report-share').click();
+    document.getElementById('share-modal').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+}
 
 document.getElementById('report-share').addEventListener('click', () => {
   shareStatus.hidden = true;
