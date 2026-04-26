@@ -3820,7 +3820,9 @@ a:hover { color: var(--gold-bright); }
 }
 .clock-zoom:hover,
 .clock-zoom:focus {
-  transform: scale(1.6);
+  /* Default 1.6×; overridable per-user via the sidebar slider, which sets
+     --clock-zoom-scale on :root and persists to localStorage. */
+  transform: scale(var(--clock-zoom-scale, 1.6));
   fill: var(--gold-bright) !important;
   opacity: 1 !important;
   filter: drop-shadow(0 0 6px rgba(212, 175, 122, 0.6));
@@ -3847,3 +3849,129 @@ a:hover { color: var(--gold-bright); }
 .label-branch.clock-zoom:focus {
   fill: var(--gold-bright) !important;
 }
+
+/* ============================================================
+   SIDEBAR · USER ZOOM CONTROL
+   Slider that sets --clock-zoom-scale on :root, persisted in
+   localStorage. Sits unobtrusively at the bottom of the sidebar.
+   ============================================================ */
+.zoom-control {
+  margin: 0.6rem 0 0.4rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.zoom-control-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.zoom-control-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.zoom-control-value {
+  font-family: var(--font-han, 'Microsoft Yahei');
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  color: var(--gold-bright, #e6c082);
+  text-transform: none;
+}
+.zoom-control input[type="range"] {
+  flex: 1;
+  accent-color: var(--gold, #c8a250);
+  height: 4px;
+}
+.zoom-control-reset {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-mute);
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.zoom-control-reset:hover { border-color: var(--gold); color: var(--gold-bright); }
+
+/* ============================================================
+   SAVED PRACTITIONER CHIPS (share form)
+   ============================================================ */
+.saved-prac-row {
+  margin: 0.4rem 0 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.saved-prac-row.empty { display: none; }
+.saved-prac-label {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-right: 0.2rem;
+}
+.saved-prac-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(212, 169, 106, 0.10);
+  border: 1px solid rgba(212, 169, 106, 0.40);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--ink);
+  cursor: pointer;
+  max-width: 100%;
+}
+.saved-prac-chip:hover { background: rgba(212, 169, 106, 0.20); border-color: var(--gold); }
+.saved-prac-chip-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 18em; }
+.saved-prac-chip-x {
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0 0.15rem;
+  border-radius: 50%;
+  color: var(--ink-mute);
+}
+.saved-prac-chip-x:hover { color: var(--cinnabar-bright, #e85a48); }
+
+.share-remember-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.share-remember-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+.share-remember-row .forget-link {
+  margin-left: auto;
+  font-size: 0.74rem;
+  color: var(--cinnabar-bright, #e85a48);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.share-remember-row .forget-link:hover { text-decoration-style: solid; }

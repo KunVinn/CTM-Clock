@@ -28,11 +28,59 @@ const SIDEBAR_HTML = `
       <span id="now-track">—</span>
     </div>
   </a>
+  <div class="zoom-control" title="How much clock labels enlarge when you hover over them">
+    <div class="zoom-control-label">
+      <span>Hover zoom · 悬停放大</span>
+      <span class="zoom-control-value" id="zoom-value">160%</span>
+    </div>
+    <div class="zoom-control-row">
+      <input type="range" id="zoom-range" min="100" max="300" step="10" value="160" aria-label="Clock label hover zoom">
+      <button type="button" class="zoom-control-reset" id="zoom-reset" title="Reset to default 160%">Reset</button>
+    </div>
+  </div>
   <div class="sidebar-credit">
     Inspired by <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener">CTM-Clock</a><br>
     Knowledge taxonomy: <a href="https://github.com/AI-HPC-Research-Team/TCM_knowledge_graph" target="_blank" rel="noopener">TCMM</a>
   </div>
 `;
+
+/* ===================== USER ZOOM CONTROL ===================== */
+// User-tunable scale for hover-zoom of clock perimeter labels.
+// Default 1.6× (160%) matches the original hard-coded value; the user can
+// pick anything from 100% (off) to 300%, persisted per-browser.
+const ZOOM_STORE_KEY = 'tcm-clock-zoom-scale-v1';
+
+function readStoredZoom() {
+  try {
+    const v = parseFloat(localStorage.getItem(ZOOM_STORE_KEY));
+    if (!isNaN(v) && v >= 1 && v <= 3) return v;
+  } catch (_) {}
+  return 1.6;
+}
+function applyZoom(scale) {
+  document.documentElement.style.setProperty('--clock-zoom-scale', String(scale));
+}
+function initZoomControl() {
+  const initial = readStoredZoom();
+  applyZoom(initial);
+
+  const range = document.getElementById('zoom-range');
+  const value = document.getElementById('zoom-value');
+  const reset = document.getElementById('zoom-reset');
+  if (!range || !value || !reset) return;
+
+  const sync = (pct) => {
+    value.textContent = `${pct}%`;
+    range.value = String(pct);
+    const scale = pct / 100;
+    applyZoom(scale);
+    try { localStorage.setItem(ZOOM_STORE_KEY, String(scale)); } catch (_) {}
+  };
+
+  sync(Math.round(initial * 100));
+  range.addEventListener('input', () => sync(parseInt(range.value, 10)));
+  reset.addEventListener('click', () => sync(160));
+}
 
 // Inject sidebar + mobile toggle + overlay
 function injectSidebarScaffold() {
@@ -599,6 +647,7 @@ function updateClock() {
 /* ===================== INIT ===================== */
 document.addEventListener('DOMContentLoaded', () => {
   injectSidebarScaffold();
+  initZoomControl();
   highlightActiveMenu();
   initTopbarBehaviour();
   buildClock();

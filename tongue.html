@@ -294,8 +294,16 @@
                   <option value="">— Loading featured practitioners… —</option>
                 </select>
                 <div class="share-prac-divider">or enter manually</div>
+                <div class="saved-prac-row empty" id="saved-prac-chips" aria-label="Saved practitioners">
+                  <span class="saved-prac-label">Saved · 已保存</span>
+                </div>
                 <input type="email" id="share-prac-email" required maxlength="120" placeholder="practitioner@clinic.com" aria-label="Practitioner's email address">
               </div>
+            </div>
+            <div class="share-remember-row">
+              <label><input type="checkbox" id="share-remember-self" checked> Remember my contact info on this device</label>
+              <label><input type="checkbox" id="share-remember-prac"> Remember this practitioner</label>
+              <button type="button" class="forget-link" id="share-forget" hidden>Forget saved info</button>
             </div>
             <label class="share-field">
               <span class="share-label">Optional note <small>(main concern, recent symptoms, etc.)</small></span>
@@ -1906,6 +1914,148 @@ function showShareStatus(msg, kind) {
   shareStatus.textContent = msg;
   shareStatus.className = `share-status share-status-${kind}`;
 }
+
+/* ============================================================
+   SAVED CONTACTS · localStorage memory for the share form
+   - tcm-share-self-v1   : { name, email }
+   - tcm-share-pracs-v1  : array of { email, lastUsed }
+   Self info auto-fills the form; saved practitioners appear as
+   clickable chips above the practitioner email input. Both are
+   gated by opt-out checkboxes inside the form.
+   ============================================================ */
+
+const SHARE_SELF_KEY  = 'tcm-share-self-v1';
+const SHARE_PRACS_KEY = 'tcm-share-pracs-v1';
+
+const savedChipsRow      = document.getElementById('saved-prac-chips');
+const rememberSelfChk    = document.getElementById('share-remember-self');
+const rememberPracChk    = document.getElementById('share-remember-prac');
+const forgetSavedBtn     = document.getElementById('share-forget');
+const shareNameInput     = document.getElementById('share-name');
+const shareUserEmailInput= document.getElementById('share-user-email');
+
+function loadSelf() {
+  try { return JSON.parse(localStorage.getItem(SHARE_SELF_KEY) || 'null'); } catch (_) { return null; }
+}
+function saveSelf(obj) {
+  try { localStorage.setItem(SHARE_SELF_KEY, JSON.stringify(obj)); } catch (_) {}
+}
+function loadSavedPracs() {
+  try {
+    const arr = JSON.parse(localStorage.getItem(SHARE_PRACS_KEY) || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch (_) { return []; }
+}
+function persistSavedPracs(list) {
+  try { localStorage.setItem(SHARE_PRACS_KEY, JSON.stringify(list)); } catch (_) {}
+}
+function rememberPractitioner(email) {
+  const norm = email.trim().toLowerCase();
+  if (!norm) return;
+  let list = loadSavedPracs().filter(p => p.email !== norm);
+  list.unshift({ email: norm, lastUsed: Date.now() });
+  if (list.length > 8) list = list.slice(0, 8);
+  persistSavedPracs(list);
+}
+function removeSavedPractitioner(email) {
+  const list = loadSavedPracs().filter(p => p.email !== email);
+  persistSavedPracs(list);
+  renderSavedPracChips();
+}
+
+function renderSavedPracChips() {
+  const list = loadSavedPracs();
+  // Drop everything except the leading <span class="saved-prac-label"> child
+  Array.from(savedChipsRow.children).forEach(ch => {
+    if (!ch.classList.contains('saved-prac-label')) ch.remove();
+  });
+  if (list.length === 0) {
+    savedChipsRow.classList.add('empty');
+    return;
+  }
+  savedChipsRow.classList.remove('empty');
+  list.forEach(p => {
+    const chip = document.createElement('span');
+    chip.className = 'saved-prac-chip';
+    chip.title = 'Click to use this practitioner';
+    chip.innerHTML = `<span class="saved-prac-chip-text"></span><span class="saved-prac-chip-x" title="Forget this practitioner" aria-label="Forget">✕</span>`;
+    chip.querySelector('.saved-prac-chip-text').textContent = p.email;
+    chip.addEventListener('click', (e) => {
+      if (e.target.classList.contains('saved-prac-chip-x')) {
+        removeSavedPractitioner(p.email);
+      } else {
+        shareEmailInput.value = p.email;
+        rememberPracChk.checked = true;
+      }
+    });
+    savedChipsRow.appendChild(chip);
+  });
+}
+
+function refreshForgetLinkVisibility() {
+  const has = !!loadSelf() || loadSavedPracs().length > 0;
+  forgetSavedBtn.hidden = !has;
+}
+
+forgetSavedBtn.addEventListener('click', () => {
+  if (!confirm('Forget your saved name, email, and saved practitioner emails on this device?')) return;
+  try {
+    localStorage.removeItem(SHARE_SELF_KEY);
+    localStorage.removeItem(SHARE_PRACS_KEY);
+  } catch (_) {}
+  shareNameInput.value = '';
+  shareUserEmailInput.value = '';
+  renderSavedPracChips();
+  refreshForgetLinkVisibility();
+  showShareStatus('Saved info removed from this browser.', 'info');
+});
+
+// Pre-fill the form whenever the share modal is opened.
+const _origOpenShare = document.getElementById('report-share');
+if (_origOpenShare) {
+  _origOpenShare.addEventListener('click', () => {
+    const self = loadSelf();
+    if (self) {
+      if (!shareNameInput.value)      shareNameInput.value      = self.name  || '';
+      if (!shareUserEmailInput.value) shareUserEmailInput.value = self.email || '';
+      rememberSelfChk.checked = true;
+    }
+    renderSavedPracChips();
+    refreshForgetLinkVisibility();
+  });
+}
+
+// After a successful send, persist whatever the user opted into.
+// Wrap the existing showShareStatus so the save fires exactly when
+// the main submit handler reports success — no polling, no races.
+const _origShowShareStatus = showShareStatus;
+showShareStatus = function (msg, kind) {
+  _origShowShareStatus(msg, kind);
+  if (kind !== 'success') return;
+  if (rememberSelfChk.checked) {
+    saveSelf({
+      name:  shareNameInput.value.trim(),
+      email: shareUserEmailInput.value.trim()
+    });
+  }
+  if (rememberPracChk.checked) {
+    rememberPractitioner(shareEmailInput.value);
+  }
+  refreshForgetLinkVisibility();
+  renderSavedPracChips();
+};
+
+// Initial render in case the modal markup is visible without a click
+// (defensive — currently the modal is hidden until a click).
+renderSavedPracChips();
+refreshForgetLinkVisibility();
+// Pre-fill on first paint so even unopened-modal autofill plugins work.
+(function prefillOnLoad() {
+  const self = loadSelf();
+  if (!self) return;
+  if (!shareNameInput.value)      shareNameInput.value      = self.name  || '';
+  if (!shareUserEmailInput.value) shareUserEmailInput.value = self.email || '';
+})();
 </script>
 
 </body>
