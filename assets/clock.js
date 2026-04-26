@@ -196,6 +196,40 @@ function initTopbarBehaviour() {
     updateTopbarOverflowState(nav);
     nav.addEventListener('scroll', () => updateTopbarOverflowState(nav), { passive: true });
     window.addEventListener('resize', () => updateTopbarOverflowState(nav));
+
+    // Inject a parallel <select> dropdown for tablet/phone sizes. CSS
+    // shows the dropdown and hides the scrolling nav strip below 700px.
+    // Selecting an option navigates to that page. Reading menu items
+    // straight from the existing nav so the dropdown stays in sync if
+    // pages are added/removed later.
+    if (bar && !bar.querySelector('.topbar-select')) {
+      const select = document.createElement('select');
+      select.className = 'topbar-select';
+      select.setAttribute('aria-label', 'Pages · 页面');
+      const buttons = nav.querySelectorAll('.menu-btn');
+      buttons.forEach(btn => {
+        const opt = document.createElement('option');
+        opt.value = btn.getAttribute('href') || '';
+        // Keep both Chinese and English in the option label so it works
+        // in any script mode without needing data-zh-* attributes.
+        const cnEl = btn.querySelector('.cn');
+        const cnTxt = cnEl ? cnEl.textContent.trim() : '';
+        // The English label is the bare text node after the .cn span.
+        const enTxt = (btn.textContent || '').replace(cnTxt, '').trim();
+        opt.textContent = cnTxt && enTxt ? `${cnTxt}  ·  ${enTxt}` : (cnTxt || enTxt);
+        opt.dataset.page = btn.dataset.page || '';
+        if (btn.classList.contains('active')) opt.selected = true;
+        select.appendChild(opt);
+      });
+      select.addEventListener('change', () => {
+        const href = select.value;
+        if (href) window.location.href = href;
+      });
+      // Place the select between the left arrow and the nav so the
+      // arrows still appear if a desktop user drags the window narrow
+      // enough to hit the dropdown breakpoint.
+      bar.insertBefore(select, nav);
+    }
   }
 
   let sx = 0, sy = 0, st = 0, tracking = false;

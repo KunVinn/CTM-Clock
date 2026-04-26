@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426w">
+<link rel="stylesheet" href="assets/style.css?v=20260426x">
 </head>
 <body data-page="tongue">
 
@@ -58,7 +58,11 @@
                the same file twice or pressing Cancel doesn't brick the
                button (the classic 'works once' file-input bug). -->
           <input type="file" id="photo-file-input" accept="image/*" class="photo-hidden-input">
-          <input type="file" id="camera-direct-input" accept="image/*" capture="environment" class="photo-hidden-input">
+          <!-- camera input: capture attr present on Android, omitted on
+               iOS Safari (which silently rejects clicks on inputs with
+               capture set). The button's JS handler sets/removes the
+               attribute at runtime based on a UA sniff for iOS. -->
+          <input type="file" id="camera-direct-input" accept="image/*" class="photo-hidden-input">
 
           <button type="button" class="photo-btn primary" id="open-photo-btn">
             <span>📁</span> <span data-zh-s="选择照片" data-zh-t="選擇照片">Choose photo</span>
@@ -399,12 +403,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426w"></script>
-<script src="assets/glossary.js?v=20260426w"></script>
-<script src="assets/clock.js?v=20260426w"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426w"></script>
-<script src="assets/tcm-music.js?v=20260426w"></script>
-<script src="assets/tcm-link.js?v=20260426w"></script>
+<script src="assets/data.js?v=20260426x"></script>
+<script src="assets/glossary.js?v=20260426x"></script>
+<script src="assets/clock.js?v=20260426x"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426x"></script>
+<script src="assets/tcm-music.js?v=20260426x"></script>
+<script src="assets/tcm-link.js?v=20260426x"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1200,8 +1204,15 @@ if (openPhotoBtn && photoFileInput) {
   });
 }
 if (openCameraBtnEl && cameraDirectInput) {
+  // iOS Safari silently rejects clicks on file inputs that carry the
+  // capture attribute; Android Chrome / Samsung Internet need it to
+  // open the camera directly. Set it conditionally per device.
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) ||
+                (navigator.userAgent.includes('Mac') && navigator.maxTouchPoints > 0);
   openCameraBtnEl.addEventListener('click', () => {
     cameraDirectInput.value = '';
+    if (isIOS) cameraDirectInput.removeAttribute('capture');
+    else       cameraDirectInput.setAttribute('capture', 'environment');
     cameraDirectInput.click();
   });
 }

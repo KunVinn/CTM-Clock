@@ -326,6 +326,44 @@ a:hover { color: var(--gold-bright); }
   .nav-arrow { width: 28px; font-size: 0.7rem; }
 }
 
+/* Dropdown menu (tablet/phone) — replaces the horizontal scrolling nav
+   below 700px. Hidden on desktop; shown instead of the nav strip on
+   small screens so users get a single tap to any page. */
+.topbar-select {
+  display: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--gold-bright, #e6c082);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.45rem 1.6rem 0.45rem 0.7rem;
+  font-family: var(--font-han, 'Microsoft Yahei'), var(--font-ui);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  /* Native dropdown arrow keeps the affordance obvious; mute the gradient
+     that some browsers add behind the chevron so it sits clean in our bar. */
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%),
+                    linear-gradient(135deg, var(--gold) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 50%, calc(100% - 8px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+.topbar-select option {
+  background: var(--bg, #1a1208);
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .topbar > nav { display: none; }
+  .topbar-select { display: block; }
+  /* Scroll arrows aren't needed when the menu is a dropdown */
+  .topbar .nav-arrow { display: none !important; }
+}
+
 /* Inline status banner used by the auto-translation flow. Floats above
    the topbar with a soft gold glow while translating; collapses cleanly. */
 .cn-translate-banner {
