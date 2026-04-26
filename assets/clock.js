@@ -69,17 +69,27 @@ function highlightActiveMenu() {
   });
   // Center the active item inside the topbar nav so it remains visible
   // after a page transition (otherwise scrollLeft resets to 0 and the
-  // active item can be off-screen on the right).
+  // active item can be off-screen on the right). Mobile Safari shifts
+  // layout twice — once on initial paint, again when the address bar
+  // collapses on first scroll — so we re-run after fonts.ready and load.
   if (active) {
-    const nav = active.closest('nav');
-    if (nav) {
-      // Wait one frame so layout (and font loading) has settled.
-      requestAnimationFrame(() => {
-        const target = active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2;
-        nav.scrollLeft = Math.max(0, target);
-        updateTopbarOverflowState(nav);
-      });
+    const scrollActive = () => {
+      const nav = active.closest('nav');
+      if (!nav) return;
+      try {
+        active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'auto' });
+      } catch (e) {
+        nav.scrollLeft = Math.max(0, active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2);
+      }
+      updateTopbarOverflowState(nav);
+    };
+    requestAnimationFrame(scrollActive);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(scrollActive));
     }
+    window.addEventListener('load', () => requestAnimationFrame(scrollActive), { once: true });
+    // One last safety pass after iOS address-bar settles.
+    setTimeout(scrollActive, 350);
   }
 }
 

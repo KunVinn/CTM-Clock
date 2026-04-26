@@ -2499,6 +2499,137 @@ a:hover { color: var(--gold-bright); }
   }
 }
 
+/* ============================================================
+   AUTO-ANALYSIS BANNER (browser-side colour heuristic)
+   ============================================================ */
+.auto-analysis-banner {
+  margin: 0.6rem 0 0.8rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(212, 169, 106, 0.10);
+  border: 1px solid rgba(212, 169, 106, 0.35);
+  border-radius: 4px;
+  color: var(--ink);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.auto-analysis-banner[hidden] { display: none; }
+.auto-analysis-banner strong { color: var(--gold-bright, #e6c082); }
+
+/* ============================================================
+   AI-ASSISTED ANALYSIS SECTION
+   ============================================================ */
+.ai-section {
+  margin-top: 2rem;
+  padding: 1.4rem 1.4rem 1.6rem;
+  background: rgba(120, 30, 20, 0.06);
+  border: 1px dashed rgba(204, 58, 44, 0.45);
+  border-radius: 4px;
+}
+.ai-section h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  margin: 0 0 0.5rem;
+  color: var(--cinnabar-bright, #e85a48);
+}
+.ai-section h2 .cn {
+  font-family: var(--font-han);
+  font-style: normal;
+  margin-right: 0.5rem;
+  color: var(--gold);
+}
+.ai-section .desc {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  margin: 0 0 0.9rem;
+}
+.ai-disclosure {
+  margin: 0.5rem 0 1rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+.ai-disclosure summary {
+  cursor: pointer;
+  color: var(--gold);
+  padding: 0.3rem 0;
+}
+.ai-disclosure ol {
+  margin: 0.4rem 0 0 1.2rem;
+  padding: 0;
+  line-height: 1.6;
+}
+.ai-disclosure code {
+  background: rgba(255,255,255,0.06);
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+}
+.ai-key-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.82rem;
+}
+.ai-key-row label { color: var(--ink-soft); }
+.ai-key-row input {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 0.45rem 0.6rem;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--ink);
+  font-family: var(--font-ui, monospace);
+  font-size: 0.82rem;
+}
+.ai-key-row input:focus { outline: 1px solid var(--gold); }
+.ai-status {
+  min-height: 1.2em;
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+  font-style: italic;
+}
+.ai-output {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+.ai-result-row {
+  margin-bottom: 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+.ai-result-row strong { color: var(--gold-bright, #e6c082); margin-right: 0.4rem; }
+.ai-result-row em { color: var(--ink-mute); font-style: normal; }
+.ai-note {
+  margin-top: 0.2rem;
+  color: var(--ink-mute);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+.ai-result-row .tag {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  margin: 0.1rem 0.25rem 0.1rem 0;
+  background: rgba(212, 169, 106, 0.12);
+  border: 1px solid rgba(212, 169, 106, 0.35);
+  border-radius: 2px;
+  font-size: 0.78rem;
+  color: var(--ink);
+}
+.ai-confidence { font-size: 0.78rem; color: var(--ink-mute); }
+.ai-disclaim   { font-size: 0.74rem; color: var(--ink-mute); font-style: italic; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--line); }
+
+@media (max-width: 600px) {
+  .ai-section { padding: 1rem; }
+  .ai-key-row { flex-direction: column; align-items: stretch; }
+  .ai-key-row label { font-weight: 600; }
+}
+
 
 /* ============================================================
    FLOATING MUSIC PANEL

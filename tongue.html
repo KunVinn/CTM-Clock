@@ -71,9 +71,14 @@
             <div class="camera-controls">
               <button class="photo-btn" type="button" id="camera-flip" data-zh-s="切换镜头" data-zh-t="切換鏡頭" title="Switch front/back camera">⇄ Flip</button>
               <button class="photo-btn primary" type="button" id="camera-shutter" data-zh-s="拍照" data-zh-t="拍照">📸 Capture</button>
+              <button class="photo-btn" type="button" id="camera-fallback-btn" hidden data-zh-s="使用系统相机" data-zh-t="使用系統相機">📷 Use device camera</button>
             </div>
             <div class="camera-hint" id="camera-hint" data-zh-s="把嘴部对准框中的轮廓，伸出舌头使其填入舌形区域。光线充足、不要逆光。" data-zh-t="把嘴部對準框中的輪廓，伸出舌頭使其填入舌形區域。光線充足、不要逆光。">Align your mouth with the outline. Stick the tongue down to fill the tongue shape. Use even lighting; avoid backlight.</div>
           </div>
+        </div>
+
+        <div class="auto-analysis-banner" id="auto-analysis-banner" hidden>
+          <span>💡 <span id="auto-analysis-text"></span></span>
         </div>
 
         <div class="photo-display" id="photo-display">
@@ -132,6 +137,42 @@
         <h2><span class="cn" data-zh-auto>舌苔</span>Tongue Coating · Shé Tāi</h2>
         <p class="desc">The coating reflects the state of <span data-term="stomach-tcm">Stomach</span> qi and the depth of any pathogenic factor. A normal coating is thin, white, and slightly moist.</p>
         <div class="selector-grid" id="coating-selector"></div>
+      </section>
+
+      <!-- ============================================================
+           OPTIONAL: AI-ASSISTED ANALYSIS (Google Gemini, free tier)
+           Off by default. Requires the user to bring their own API key.
+           ============================================================ -->
+      <section class="ai-section" id="ai-section">
+        <h2><span class="cn" data-zh-auto>人工智能</span>AI-Assisted Analysis · Optional</h2>
+        <p class="desc">
+          Send your tongue photo to <strong>Google Gemini</strong> for a structured second opinion on
+          body color, coating, shape, and likely TCM patterns. <strong>This breaks the &ldquo;photo never
+          leaves your device&rdquo; promise above</strong> — the photo is sent to Google's servers under
+          your own API key.
+        </p>
+        <details class="ai-disclosure">
+          <summary>How to get a free Gemini API key (one-time setup)</summary>
+          <ol>
+            <li>Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with a Google account.</li>
+            <li>Click <em>Create API key</em> → copy the key.</li>
+            <li>Paste it below and click <em>Save</em>. The key is stored only in your browser's localStorage.</li>
+            <li>Free tier: ~1500 requests/day on <code>gemini-2.0-flash</code> at no charge.</li>
+          </ol>
+        </details>
+
+        <div class="ai-key-row">
+          <label for="gemini-key">Gemini API key:</label>
+          <input type="password" id="gemini-key" placeholder="AIza…" autocomplete="off">
+          <button type="button" class="photo-btn" id="gemini-save">Save key</button>
+          <button type="button" class="photo-btn" id="gemini-forget" hidden>Forget key</button>
+        </div>
+
+        <button type="button" class="photo-btn primary" id="gemini-analyze" disabled>
+          🤖 <span data-zh-s="智能分析" data-zh-t="智能分析">Analyze with AI</span>
+        </button>
+        <div class="ai-status" id="ai-status"></div>
+        <div class="ai-output" id="ai-output" hidden></div>
       </section>
 
       <!-- ============================================================
@@ -905,9 +946,146 @@ function renderPhoto() {
     img.alt = 'Your tongue photo';
     photoDisplay.insertBefore(img, photoClear);
     photoDisplay.classList.add('has-photo');
+    // Run a privacy-preserving color heuristic: stays in the browser, no upload.
+    analyzeTongueFromPhoto(currentPhotoDataURL);
   } else {
     photoDisplay.classList.remove('has-photo');
+    hideAutoSuggestion();
   }
+  // Keep AI button enabled state in sync with photo presence (defined later;
+  // safe-guard the call in case the AI block isn't loaded yet on first paint).
+  if (typeof refreshAiButtons === 'function') refreshAiButtons();
+}
+
+/* ============================================================
+   PHOTO COLOR HEURISTIC — pre-selects nearest body-color and
+   coating swatches by averaging pixel colors in the central
+   tongue region. This is a starting hint, NOT a diagnosis.
+   Runs entirely in the browser — image bytes never leave the page.
+   ============================================================ */
+
+function hexToRgb(hex) {
+  const m = hex.replace('#','');
+  return [
+    parseInt(m.slice(0,2), 16),
+    parseInt(m.slice(2,4), 16),
+    parseInt(m.slice(4,6), 16)
+  ];
+}
+
+function colorDistance(a, b) {
+  // Weighted RGB distance — a perceptual approximation that's good
+  // enough for matching against a small palette.
+  const dr = a[0] - b[0], dg = a[1] - b[1], db = a[2] - b[2];
+  const rMean = (a[0] + b[0]) / 2;
+  return Math.sqrt(
+    (2 + rMean / 256) * dr * dr +
+    4 * dg * dg +
+    (2 + (255 - rMean) / 256) * db * db
+  );
+}
+
+function nearestSwatch(rgb, palette) {
+  let best = null, bestD = Infinity;
+  palette.forEach(item => {
+    if (!item.swatch) return;
+    const d = colorDistance(rgb, hexToRgb(item.swatch));
+    if (d < bestD) { bestD = d; best = item; }
+  });
+  return best;
+}
+
+function sampleAverage(ctx, x, y, w, h, filter) {
+  const data = ctx.getImageData(x, y, w, h).data;
+  let r = 0, g = 0, b = 0, n = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    const R = data[i], G = data[i+1], B = data[i+2], A = data[i+3];
+    if (A < 200) continue;
+    // Drop near-black shadows and near-white highlights — they are usually
+    // glare or background, not the tongue surface.
+    const lum = (R + G + B) / 3;
+    if (lum < 50 || lum > 240) continue;
+    if (filter && !filter(R, G, B)) continue;
+    r += R; g += G; b += B; n++;
+  }
+  if (n === 0) return null;
+  return [Math.round(r / n), Math.round(g / n), Math.round(b / n)];
+}
+
+function analyzeTongueFromPhoto(dataURL) {
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement('canvas');
+    // Cap analysis canvas size — we only need average colors, not detail.
+    const maxDim = 400;
+    const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+    c.width  = Math.round(img.width  * scale);
+    c.height = Math.round(img.height * scale);
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+
+    // Crop to the centred 60% — the alignment guide tells the user to put
+    // the tongue here, so it's a reasonable bet.
+    const cx = Math.round(c.width  * 0.20);
+    const cy = Math.round(c.height * 0.20);
+    const cw = Math.round(c.width  * 0.60);
+    const ch = Math.round(c.height * 0.60);
+
+    // Body colour: reddish pixels in the centre crop (R dominates).
+    const body = sampleAverage(ctx, cx, cy, cw, ch,
+      (R, G, B) => R > G - 5 && R > B - 5);
+
+    // Coating: sample the upper third of the centre crop, where the tongue
+    // dorsum / coating tends to dominate the framed mouth picture.
+    const coatY = cy;
+    const coatH = Math.round(ch * 0.40);
+    const coat = sampleAverage(ctx, cx, coatY, cw, coatH);
+
+    const bodyMatch    = body ? nearestSwatch(body, TONGUE_COLORS)    : null;
+    const coatingMatch = coat ? nearestSwatch(coat, TONGUE_COATINGS) : null;
+
+    // Pre-select inside the existing diagnosis state machine.
+    if (bodyMatch) {
+      state.color = bodyMatch.key;
+      const card = document.querySelector(`#color-selector .selector-card[data-key="${bodyMatch.key}"]`);
+      if (card) {
+        document.querySelectorAll('#color-selector .selector-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      }
+    }
+    if (coatingMatch) {
+      state.coating = coatingMatch.key;
+      const card = document.querySelector(`#coating-selector .selector-card[data-key="${coatingMatch.key}"]`);
+      if (card) {
+        document.querySelectorAll('#coating-selector .selector-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      }
+    }
+    updateDiagnosis();
+    showAutoSuggestion(bodyMatch, coatingMatch);
+  };
+  img.onerror = () => { /* silently skip — analysis is optional */ };
+  img.src = dataURL;
+}
+
+function showAutoSuggestion(bodyMatch, coatingMatch) {
+  const banner = document.getElementById('auto-analysis-banner');
+  if (!banner) return;
+  const parts = [];
+  if (bodyMatch)    parts.push(`Body color → <strong>${bodyMatch.cn} ${bodyMatch.en}</strong>`);
+  if (coatingMatch) parts.push(`Coating → <strong>${coatingMatch.cn} ${coatingMatch.en}</strong>`);
+  if (parts.length === 0) {
+    banner.hidden = true;
+    return;
+  }
+  document.getElementById('auto-analysis-text').innerHTML =
+    parts.join(' · ') + ' &nbsp; <em style="color:var(--ink-mute);font-size:0.78rem">— color match only, please confirm or correct below</em>';
+  banner.hidden = false;
+}
+
+function hideAutoSuggestion() {
+  const banner = document.getElementById('auto-analysis-banner');
+  if (banner) banner.hidden = true;
 }
 
 document.getElementById('photo-file-input').addEventListener('change', (e) => {
@@ -924,10 +1102,11 @@ const cameraModal   = document.getElementById('camera-modal');
 const cameraVideo   = document.getElementById('camera-video');
 const cameraCanvas  = document.getElementById('camera-canvas');
 const cameraHint    = document.getElementById('camera-hint');
-const openCameraBtn = document.getElementById('open-camera-btn');
-const cameraShutter = document.getElementById('camera-shutter');
-const cameraFlip    = document.getElementById('camera-flip');
-const cameraClose   = document.getElementById('camera-close');
+const openCameraBtn      = document.getElementById('open-camera-btn');
+const cameraShutter      = document.getElementById('camera-shutter');
+const cameraFlip         = document.getElementById('camera-flip');
+const cameraClose        = document.getElementById('camera-close');
+const cameraFallbackBtn  = document.getElementById('camera-fallback-btn');
 
 let cameraStream = null;
 let cameraFacing = 'environment';  // start with rear camera on phones; ignored on desktop
@@ -943,6 +1122,22 @@ async function startCamera(facingMode) {
   cameraHint.textContent = (window.tcmScript && window.tcmScript.get() === 't')
     ? '若瀏覽器詢問，請允許使用相機權限。'
     : '若浏览器询问，请允许使用相机权限。';
+  // Hide the fallback button on each fresh attempt; we only re-show it on failure.
+  if (cameraFallbackBtn) cameraFallbackBtn.hidden = true;
+
+  // Hard pre-check: getUserMedia requires a secure context (https or localhost).
+  // On file:// or plain http:// the browser reports `mediaDevices` as undefined
+  // or rejects silently — give the user a clear explanation instead.
+  const isSecure = window.isSecureContext ||
+                   location.hostname === 'localhost' ||
+                   location.hostname === '127.0.0.1';
+  if (!isSecure) {
+    cameraHint.classList.add('error');
+    cameraHint.textContent = 'The browser only allows camera access on a secure connection (https://). Open this page on its Netlify URL — or use the device camera button below.';
+    if (cameraFallbackBtn) cameraFallbackBtn.hidden = false;
+    return;
+  }
+
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: { ideal: facingMode }, width: { ideal: 1280 }, height: { ideal: 1280 } },
@@ -954,13 +1149,31 @@ async function startCamera(facingMode) {
     console.warn('Camera failed:', err);
     cameraHint.classList.add('error');
     if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-      cameraHint.textContent = 'Camera access was denied. Please allow camera permission and try again, or use Choose photo to upload an image.';
+      cameraHint.textContent = 'Camera access was denied. Allow camera permission for this site in your browser settings, or use the device camera button below.';
     } else if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') {
-      cameraHint.textContent = 'No camera was found on this device. Please use Choose photo to upload an image instead.';
+      cameraHint.textContent = 'No camera was found on this device. Use the device camera button below to open the system camera, or close this and pick a photo from your album.';
     } else {
-      cameraHint.textContent = 'Could not open the camera (' + (err.message || err.name) + '). Please use Choose photo instead.';
+      cameraHint.textContent = 'Could not open the camera (' + (err.message || err.name) + '). Use the device camera button below.';
     }
+    // Surface the OS-level fallback so mobile users always have a way through.
+    if (cameraFallbackBtn) cameraFallbackBtn.hidden = false;
   }
+}
+
+// Triggers the OS native camera (iOS / Android) via a hidden file input.
+// Works even when getUserMedia is blocked, off, or unsupported.
+function openSystemCamera() {
+  const f = document.createElement('input');
+  f.type = 'file';
+  f.accept = 'image/*';
+  f.capture = 'environment';
+  f.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) {
+      loadPhoto(e.target.files[0]);
+      closeCameraModal();
+    }
+  });
+  f.click();
 }
 
 function stopCamera() {
@@ -1022,6 +1235,7 @@ cameraFlip.addEventListener('click', () => {
   cameraFacing = (cameraFacing === 'environment') ? 'user' : 'environment';
   startCamera(cameraFacing);
 });
+if (cameraFallbackBtn) cameraFallbackBtn.addEventListener('click', openSystemCamera);
 
 // ESC closes the camera modal
 document.addEventListener('keydown', (e) => {
@@ -1033,6 +1247,174 @@ photoClear.addEventListener('click', () => {
   currentPhotoDataURL = null;
   renderPhoto();
   document.getElementById('photo-file-input').value = '';
+});
+
+/* ============================================================
+   OPTIONAL: GEMINI AI ANALYSIS
+   The user provides their own free Gemini API key (saved to
+   localStorage). The photo is sent base64-encoded to Google.
+   ============================================================ */
+
+const GEMINI_KEY_STORE = 'tcm-tongue-gemini-key-v1';
+const GEMINI_ENDPOINT  = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+const geminiKeyInput = document.getElementById('gemini-key');
+const geminiSaveBtn  = document.getElementById('gemini-save');
+const geminiForgetBtn= document.getElementById('gemini-forget');
+const geminiAnalyze  = document.getElementById('gemini-analyze');
+const aiStatus       = document.getElementById('ai-status');
+const aiOutput       = document.getElementById('ai-output');
+
+function getGeminiKey() {
+  try { return localStorage.getItem(GEMINI_KEY_STORE) || ''; } catch (_) { return ''; }
+}
+function setGeminiKey(k) {
+  try {
+    if (k) localStorage.setItem(GEMINI_KEY_STORE, k);
+    else   localStorage.removeItem(GEMINI_KEY_STORE);
+  } catch (_) { /* private mode */ }
+}
+function refreshAiButtons() {
+  const hasKey   = !!getGeminiKey();
+  const hasPhoto = !!currentPhotoDataURL;
+  geminiAnalyze.disabled       = !(hasKey && hasPhoto);
+  geminiForgetBtn.hidden       = !hasKey;
+  geminiAnalyze.title          = !hasKey   ? 'Enter and save your Gemini API key first.'
+                              : !hasPhoto ? 'Upload or capture a tongue photo first.'
+                              : '';
+  if (hasKey) geminiKeyInput.placeholder = '••••••••••• (saved)';
+}
+geminiKeyInput.value = '';      // never echo the saved key into the input
+refreshAiButtons();
+
+geminiSaveBtn.addEventListener('click', () => {
+  const v = (geminiKeyInput.value || '').trim();
+  if (!v) { aiStatus.textContent = 'Paste a key first.'; return; }
+  setGeminiKey(v);
+  geminiKeyInput.value = '';
+  aiStatus.textContent = 'Key saved to this browser.';
+  refreshAiButtons();
+});
+geminiForgetBtn.addEventListener('click', () => {
+  setGeminiKey('');
+  aiStatus.textContent = 'Key removed from this browser.';
+  refreshAiButtons();
+});
+
+const GEMINI_PROMPT = `You are a Traditional Chinese Medicine (TCM) tongue diagnosis assistant.
+Analyze the tongue photo and reply with ONLY a JSON object — no markdown fences, no commentary.
+
+Use these exact keys and only these allowed values:
+{
+  "body_color":     one of ["pink","pale","red","crimson","purple","blue-purple"],
+  "body_color_note": short observation in English (≤25 words),
+  "shape":          one of ["normal","swollen","thin","cracks","scalloped","flaccid","deviated"],
+  "shape_note":     short observation in English (≤25 words),
+  "coating":        one of ["thin-white","thick-white","yellow","greasy","dry","peeled","gray-black"],
+  "coating_note":   short observation in English (≤25 words),
+  "patterns":       array of 1–3 strings from ["qi-deficiency","yang-deficiency","yin-deficiency","blood-deficiency","heat-excess","cold","damp","damp-heat","blood-stasis","qi-stagnation"],
+  "advice":         1–2 sentence lifestyle suggestion in English,
+  "confidence":     "low" | "medium" | "high",
+  "disclaimer":     "Educational use only — not a medical diagnosis."
+}
+
+If the photo does not show a tongue clearly, set every observation field to a short note saying so and confidence to "low".`;
+
+function renderAiResult(data) {
+  const safe = (s) => String(s == null ? '' : s).replace(/[<>&]/g,
+    c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+  const matchedColor   = TONGUE_COLORS.find(c   => c.key === data.body_color);
+  const matchedCoating = TONGUE_COATINGS.find(c => c.key === data.coating);
+  const matchedShape   = TONGUE_SHAPES.find(s   => s.key === data.shape);
+  // Auto-apply the AI's picks to the diagnosis state machine
+  if (matchedColor)   { state.color   = matchedColor.key;
+    document.querySelectorAll('#color-selector .selector-card').forEach(c => c.classList.remove('active'));
+    const card = document.querySelector(`#color-selector .selector-card[data-key="${matchedColor.key}"]`);
+    if (card) card.classList.add('active'); }
+  if (matchedShape)   { state.shape   = matchedShape.key;
+    document.querySelectorAll('#shape-selector .selector-card').forEach(c => c.classList.remove('active'));
+    const card = document.querySelector(`#shape-selector .selector-card[data-key="${matchedShape.key}"]`);
+    if (card) card.classList.add('active'); }
+  if (matchedCoating) { state.coating = matchedCoating.key;
+    document.querySelectorAll('#coating-selector .selector-card').forEach(c => c.classList.remove('active'));
+    const card = document.querySelector(`#coating-selector .selector-card[data-key="${matchedCoating.key}"]`);
+    if (card) card.classList.add('active'); }
+  updateDiagnosis();
+
+  aiOutput.hidden = false;
+  aiOutput.innerHTML = `
+    <div class="ai-result">
+      <div class="ai-result-row"><strong>Body color:</strong>
+        ${matchedColor ? `<span data-zh-auto>${matchedColor.cn}</span> <em>${matchedColor.en}</em>` : safe(data.body_color)}
+        <div class="ai-note">${safe(data.body_color_note)}</div></div>
+      <div class="ai-result-row"><strong>Shape:</strong>
+        ${matchedShape ? `<span data-zh-auto>${matchedShape.cn}</span> <em>${matchedShape.en}</em>` : safe(data.shape)}
+        <div class="ai-note">${safe(data.shape_note)}</div></div>
+      <div class="ai-result-row"><strong>Coating:</strong>
+        ${matchedCoating ? `<span data-zh-auto>${matchedCoating.cn}</span> <em>${matchedCoating.en}</em>` : safe(data.coating)}
+        <div class="ai-note">${safe(data.coating_note)}</div></div>
+      <div class="ai-result-row"><strong>Likely patterns:</strong>
+        ${(data.patterns || []).map(p => {
+          const info = TONGUE_PATTERNS[p];
+          return info ? `<span class="tag">${info.cn} · ${info.en}</span>` : `<span class="tag">${safe(p)}</span>`;
+        }).join(' ')}</div>
+      <div class="ai-result-row"><strong>Lifestyle advice:</strong> ${safe(data.advice)}</div>
+      <div class="ai-result-row ai-confidence"><strong>Model confidence:</strong> ${safe(data.confidence)}</div>
+      <div class="ai-result-row ai-disclaim">${safe(data.disclaimer || 'Educational use only — not a medical diagnosis.')}</div>
+    </div>`;
+  // Re-apply current Chinese script variant to the new content
+  if (window.tcmScript) window.tcmScript.set(window.tcmScript.get());
+}
+
+geminiAnalyze.addEventListener('click', async () => {
+  const key = getGeminiKey();
+  if (!key || !currentPhotoDataURL) { refreshAiButtons(); return; }
+  geminiAnalyze.disabled = true;
+  aiOutput.hidden = true;
+  aiStatus.textContent = 'Sending photo to Gemini…';
+
+  // Strip the data URL prefix to get raw base64 + mime type
+  const m = /^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/.exec(currentPhotoDataURL);
+  if (!m) { aiStatus.textContent = 'Could not read the photo.'; refreshAiButtons(); return; }
+  const mimeType = m[1], base64 = m[2];
+
+  try {
+    const resp = await fetch(`${GEMINI_ENDPOINT}?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { text: GEMINI_PROMPT },
+            { inline_data: { mime_type: mimeType, data: base64 } }
+          ]
+        }],
+        generationConfig: { temperature: 0.2, responseMimeType: 'application/json' }
+      })
+    });
+    if (!resp.ok) {
+      const errTxt = await resp.text().catch(() => '');
+      throw new Error(`HTTP ${resp.status} — ${errTxt.slice(0, 200) || 'request failed'}`);
+    }
+    const json = await resp.json();
+    const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    if (!text) throw new Error('Empty response from model.');
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch (_) {
+      // The model occasionally wraps JSON in fences despite instructions.
+      const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+      parsed = JSON.parse(fence ? fence[1] : text);
+    }
+    aiStatus.textContent = '';
+    renderAiResult(parsed);
+  } catch (err) {
+    console.warn('Gemini analyze failed:', err);
+    aiStatus.textContent = 'Gemini request failed: ' + (err.message || err);
+  } finally {
+    refreshAiButtons();
+  }
 });
 
 // Toggle the alignment guide on/off when a photo is loaded
