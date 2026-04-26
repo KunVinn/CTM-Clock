@@ -29,14 +29,10 @@ const SIDEBAR_HTML = `
     </div>
   </a>
   <div class="zoom-control" title="How much clock labels enlarge when you hover over them">
-    <div class="zoom-control-label">
-      <span>Hover zoom · 悬停放大</span>
-      <span class="zoom-control-value" id="zoom-value">125%</span>
-    </div>
-    <div class="zoom-control-row">
-      <input type="range" id="zoom-range" min="100" max="300" step="5" value="125" aria-label="Clock label hover zoom">
-      <button type="button" class="zoom-control-reset" id="zoom-reset" title="Reset to default 125%">Reset</button>
-    </div>
+    <span class="zoom-control-label-inline">悬停 Zoom</span>
+    <input type="range" id="zoom-range" min="100" max="300" step="10" value="160" aria-label="Clock label hover zoom">
+    <span class="zoom-control-value" id="zoom-value">160%</span>
+    <button type="button" class="zoom-control-reset" id="zoom-reset" title="Reset to 160%">↺</button>
   </div>
   <div class="sidebar-credit">
     Inspired by <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener">CTM-Clock</a><br>
@@ -55,7 +51,7 @@ function readStoredZoom() {
     const v = parseFloat(localStorage.getItem(ZOOM_STORE_KEY));
     if (!isNaN(v) && v >= 1 && v <= 3) return v;
   } catch (_) {}
-  return 1.25;   // default 125% — gentle, readable, not overwhelming
+  return 1.6;
 }
 function applyZoom(scale) {
   document.documentElement.style.setProperty('--clock-zoom-scale', String(scale));
@@ -79,7 +75,7 @@ function initZoomControl() {
 
   sync(Math.round(initial * 100));
   range.addEventListener('input', () => sync(parseInt(range.value, 10)));
-  reset.addEventListener('click', () => sync(125));
+  reset.addEventListener('click', () => sync(160));
 }
 
 // Inject sidebar + mobile toggle + overlay

@@ -3974,9 +3974,9 @@ a:hover { color: var(--gold-bright); }
 }
 .clock-zoom:hover,
 .clock-zoom:focus {
-  /* Default 1.25×; overridable per-user via the sidebar slider, which
+  /* Default 1.6×; overridable per-user via the sidebar slider, which
      sets --clock-zoom-scale on :root and persists to localStorage. */
-  transform: scale(var(--clock-zoom-scale, 1.25));
+  transform: scale(var(--clock-zoom-scale, 1.6));
   fill: var(--gold-bright) !important;
   opacity: 1 !important;
   filter: drop-shadow(0 0 6px rgba(212, 175, 122, 0.6));
@@ -4059,56 +4059,59 @@ html[data-script="c"] .menu-btn { gap: 0; }
 
 /* ============================================================
    SIDEBAR · USER ZOOM CONTROL
-   Slider that sets --clock-zoom-scale on :root, persisted in
-   localStorage. Sits unobtrusively at the bottom of the sidebar.
+   Compact single-row strip: "悬停 Zoom  [——●———]  160% [↺]".
+   Sets --clock-zoom-scale on :root, persisted in localStorage.
    ============================================================ */
 .zoom-control {
-  margin: 0.6rem 0 0.4rem;
-  padding: 0.55rem 0.75rem;
-  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.4rem 0 0.3rem;
+  padding: 0.3rem 0.5rem;
+  background: rgba(0, 0, 0, 0.18);
   border: 1px solid var(--line);
   border-radius: 3px;
   font-family: var(--font-ui);
   font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
   color: var(--ink-soft);
 }
-.zoom-control-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.4rem;
-}
-.zoom-control-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-.zoom-control-value {
-  font-family: var(--font-han, 'Microsoft Yahei');
-  font-size: 0.78rem;
-  letter-spacing: 0;
-  color: var(--gold-bright, #e6c082);
-  text-transform: none;
+.zoom-control-label-inline {
+  flex: 0 0 auto;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--ink-mute);
 }
 .zoom-control input[type="range"] {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   accent-color: var(--gold, #c8a250);
-  height: 4px;
+  height: 3px;
+  margin: 0;
+}
+.zoom-control-value {
+  flex: 0 0 auto;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0;
+  color: var(--gold-bright, #e6c082);
+  min-width: 2.6em;
+  text-align: right;
 }
 .zoom-control-reset {
+  flex: 0 0 auto;
   background: transparent;
   border: 1px solid var(--line);
   color: var(--ink-mute);
-  font-family: var(--font-ui);
-  font-size: 0.6rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.5rem;
-  border-radius: 2px;
+  font-size: 0.78rem;
+  line-height: 1;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .zoom-control-reset:hover { border-color: var(--gold); color: var(--gold-bright); }
 
