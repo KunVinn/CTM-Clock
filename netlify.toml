@@ -11,11 +11,13 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
-# Static assets: cache aggressively (versions change with content hash if you ever add a build step)
+# Static assets: cache for an hour, but require revalidation so a fresh
+# deploy is picked up without users having to clear cache. We add a ?v=
+# query string to asset URLs from the HTML side as the actual cache-bust.
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=3600, must-revalidate"
 
 # Pretty URLs: serve /hours instead of /hours.html
 [[redirects]]

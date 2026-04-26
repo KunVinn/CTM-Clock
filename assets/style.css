@@ -3857,6 +3857,42 @@ a:hover { color: var(--gold-bright); }
 }
 
 /* ============================================================
+   ENGLISH-ONLY MODE (set on <html data-script="e"> by the
+   tcm-script-toggle script). Hides Chinese-only chrome and
+   enlarges the bilingual English fragments where possible.
+   Simplified (s) and Traditional (t) modes show everything.
+   ============================================================ */
+html[data-script="e"] [data-zh-auto],
+html[data-script="e"] .cn,
+html[data-script="e"] .cn-mark,
+html[data-script="e"] .branch-cn,
+html[data-script="e"] .seal {
+  display: none !important;
+}
+/* Restore inline-flex layout where the .cn span sat next to bare text;
+   the .menu-btn used `display:flex` with gap, which leaves an empty
+   slot when the .cn child is removed — collapse the gap to zero. */
+html[data-script="e"] .menu-btn { gap: 0; }
+
+/* Collapse rows whose only non-text child was the CN seal */
+html[data-script="e"] .detail-header { grid-template-columns: 1fr !important; text-align: left; }
+
+/* SVG clock: hide Chinese label rings, enlarge the English organ ring
+   so the clock remains informative without overlapping. */
+html[data-script="e"] .label-organ-cn,
+html[data-script="e"] .label-fangwei,
+html[data-script="e"] .label-branch {
+  display: none;
+}
+html[data-script="e"] .label-organ-en {
+  font-size: 14px;
+  fill: var(--gold-bright);
+}
+
+/* Sidebar: hide the big 子午流注 mark so only the pinyin remains */
+html[data-script="e"] .sidebar-mark { display: none; }
+
+/* ============================================================
    SIDEBAR · USER ZOOM CONTROL
    Slider that sets --clock-zoom-scale on :root, persisted in
    localStorage. Sits unobtrusively at the bottom of the sidebar.

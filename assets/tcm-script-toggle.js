@@ -164,7 +164,12 @@
     document.querySelectorAll('[data-zh-s], [data-zh-t]').forEach(el => {
       const s = el.dataset.zhS;
       const t = el.dataset.zhT;
-      if (dir === 't' && t) el.textContent = t;
+      // First-run snapshot of the inline (usually English) text so 'e'
+      // mode can restore it. We only snapshot once per element.
+      if (!el.dataset.zhE) el.dataset.zhE = el.textContent.trim();
+      if (dir === 'e') {
+        el.textContent = el.dataset.zhE || s || t || '';
+      } else if (dir === 't' && t) el.textContent = t;
       else if (dir === 's' && s) el.textContent = s;
       else if (s) el.textContent = s;
       else if (t) el.textContent = t;
@@ -172,31 +177,41 @@
 
     // 2. Auto-convert any element marked with data-zh-auto.
     //    We snapshot the original text on first run so toggling is reversible.
+    //    'e' mode: convert to simplified for the snapshot fallback (visually
+    //    the element is hidden anyway via the [data-script="e"] CSS rule, so
+    //    the textContent stays valid CN for screen readers / SEO).
     document.querySelectorAll('[data-zh-auto]').forEach(el => {
       if (!el.dataset.zhOriginal) {
         el.dataset.zhOriginal = el.textContent;
       }
       const original = el.dataset.zhOriginal;
-      el.textContent = convertString(original, dir);
+      el.textContent = convertString(original, dir === 'e' ? 's' : dir);
     });
 
     // Track on <html> for any CSS that wants to react
     document.documentElement.dataset.script = dir;
 
-    // Update toggle button label if present
+    // Update toggle button label if present. Button shows the CURRENT mode;
+    // the cycle order is s → t → e → s.
     const btn = document.getElementById('script-toggle');
     if (btn) {
-      btn.textContent = dir === 't' ? '简' : '繁';
-      btn.setAttribute('aria-label',
-        dir === 't' ? 'Switch to Simplified Chinese' : 'Switch to Traditional Chinese');
-      btn.title = dir === 't' ? '切换到简体' : '切換到繁體';
+      const labels = { s: '简', t: '繁', e: 'EN' };
+      const titles = {
+        s: '当前: 简体 · 点击切换为繁體',
+        t: '當前: 繁體 · 點擊切換為 EN',
+        e: 'Current: English · Click to switch to 简体'
+      };
+      btn.textContent = labels[dir] || '?';
+      btn.setAttribute('aria-label', titles[dir] || '');
+      btn.title = titles[dir] || '';
     }
     applying = false;
   }
 
   function toggle() {
     const curr = getCurrent();
-    const next = curr === 't' ? 's' : 't';
+    // Cycle order: 简 → 繁 → EN → 简
+    const next = curr === 's' ? 't' : curr === 't' ? 'e' : 's';
     setCurrent(next);
     applyScript(next);
   }
