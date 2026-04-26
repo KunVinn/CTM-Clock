@@ -471,7 +471,7 @@ const TERMS = {
   // Five-Shu point system
   'wu-shu-points': {
     cn: '五输穴 · Wǔ Shū Xué', en: 'Five-Shu Points',
-    def: 'Five points on each of the 12 main channels, distal to the elbow/knee, classically described as the river-flow of qi: 井 jǐng (Well, source), 荥 yíng (Spring), 输 shū (Stream), 经 jīng (River), 合 hé (Sea).',
+    def: 'Five points on each of the 12 main channels, distal to the elbow/knee, classically described as the river-flow of qi: 井 jǐng (Well, source), 荥 xíng (Spring), 输 shū (Stream), 经 jīng (River), 合 hé (Sea).',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'jing-well': {
@@ -480,8 +480,8 @@ const TERMS = {
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'ying-spring': {
-    cn: '荥穴 · Yíng Xué', en: 'Spring Point',
-    def: 'Where qi "glides" — the second point. Classically: "荥主身热" — chiefly used for febrile diseases and heat patterns.',
+    cn: '荥穴 · Xíng Xué', en: 'Spring Point',
+    def: 'Where qi "glides" — the second point. Classically: "荥主身热 · Xíng zhǔ shēn rè" — chiefly used for febrile diseases and heat patterns.',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'shu-stream': {

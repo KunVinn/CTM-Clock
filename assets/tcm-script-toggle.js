@@ -257,7 +257,7 @@
       const titles = {
         s: '当前: 简体双语 · 点击切换为繁體',
         t: '當前: 繁體雙語 · 點擊切換為 EN',
-        e: 'Current: English-only · Click to switch to Chinese-only',
+        e: 'Current: English-emphasized (Chinese still shown for context) · Click for Chinese-only',
         c: cnVariant === 't'
             ? '當前: 純繁體 · 點擊回到簡體雙語'
             : '当前: 纯简体 · 点击回到简体双语'

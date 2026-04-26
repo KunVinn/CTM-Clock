@@ -3921,28 +3921,17 @@ a:hover { color: var(--gold-bright); }
 }
 
 /* ============================================================
-   ENGLISH-ONLY MODE (set on <html data-script="e"> by the
-   tcm-script-toggle script). Hides Chinese-only chrome and
-   enlarges the bilingual English fragments where possible.
-   Simplified (s) and Traditional (t) modes show everything.
+   ENGLISH-EMPHASIZED MODE (set on <html data-script="e"> by the
+   tcm-script-toggle script). Important: this mode now keeps the
+   Chinese chrome (.cn, .cn-mark, [data-zh-auto], page seals,
+   sidebar mark) VISIBLE alongside English so users can still
+   learn the TCM terminology. The actual EN-mode behaviour is
+   driven by the JS, which replaces the textContent of
+   [data-zh-s/t] elements with the snapshotted English original.
    ============================================================ */
-html[data-script="e"] [data-zh-auto],
-html[data-script="e"] .cn,
-html[data-script="e"] .cn-mark,
-html[data-script="e"] .branch-cn,
-html[data-script="e"] .seal {
-  display: none !important;
-}
-/* Restore inline-flex layout where the .cn span sat next to bare text;
-   the .menu-btn used `display:flex` with gap, which leaves an empty
-   slot when the .cn child is removed — collapse the gap to zero. */
-html[data-script="e"] .menu-btn { gap: 0; }
-
-/* Collapse rows whose only non-text child was the CN seal */
-html[data-script="e"] .detail-header { grid-template-columns: 1fr !important; text-align: left; }
-
-/* SVG clock: hide Chinese label rings, enlarge the English organ ring
-   so the clock remains informative without overlapping. */
+/* SVG clock: only place where dual-script labels would visually
+   collide. Hide the Chinese label rings and enlarge the English
+   organ ring so the clock stays legible in EN mode. */
 html[data-script="e"] .label-organ-cn,
 html[data-script="e"] .label-fangwei,
 html[data-script="e"] .label-branch {
@@ -3952,9 +3941,6 @@ html[data-script="e"] .label-organ-en {
   font-size: 14px;
   fill: var(--gold-bright);
 }
-
-/* Sidebar: hide the big 子午流注 mark so only the pinyin remains */
-html[data-script="e"] .sidebar-mark { display: none; }
 
 /* ============================================================
    CHINESE-ONLY MODE (data-script="c") — hides bare English text
