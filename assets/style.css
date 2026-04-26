@@ -2067,7 +2067,22 @@ a:hover { color: var(--gold-bright); }
 }
 
 .photo-btn input[type="file"] {
-  display: none;
+  /* iOS Safari and several Android WebViews fail to open the file
+     picker when a labelled <input type="file"> is `display: none`.
+     Use the screen-reader-only pattern instead — input stays in flow
+     and remains interactive, just visually invisible. This is what
+     finally makes both 'Choose photo' and 'Camera' open the picker
+     reliably across mobile browsers. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
 }
 
 .photo-display {
