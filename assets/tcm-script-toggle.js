@@ -232,6 +232,20 @@
     // [data-script="c"] CSS rule can hide it cleanly. Idempotent.
     wrapEnglishSiblings();
 
+    // Auto-translate body content when entering Chinese-only mode, and
+    // restore it on the way out. The translator wraps each translatable
+    // text node in a <span data-zh-trans="<original>"> so toggling can
+    // round-trip.
+    if (dir === 'c') {
+      // Apply any cached translations *immediately* (synchronous), then
+      // fetch missing pieces asynchronously via Gemini if the key exists.
+      autoApplyChineseFromCache(displayDir);
+      scheduleAutoTranslateFetch(displayDir);
+    } else {
+      restoreEnglishFromTranslations();
+      hideTranslateBanner();
+    }
+
     // Track on <html> for any CSS that wants to react
     document.documentElement.dataset.script = dir;
 
@@ -253,6 +267,220 @@
       btn.title = titles[dir] || '';
     }
     applying = false;
+  }
+
+  /* ============================================================
+     AUTO-TRANSLATION (中 mode only)
+     Walks the DOM for English text nodes that no [data-zh-*] handler
+     covers, wraps each one in a <span data-zh-trans="..."> so the
+     original can be restored, applies cached translations
+     immediately, and fetches missing pieces from Gemini if the user
+     has saved a key on the Tongue page (tcm-tongue-gemini-key-v1).
+     Per-page cache keyed by (pathname, variant) means subsequent
+     visits and toggles are free.
+     ============================================================ */
+  const TRANS_CACHE_KEY = 'tcm-page-translations-v1';
+  const GEMINI_KEY_STORE = 'tcm-tongue-gemini-key-v1';
+  const GEMINI_ENDPOINT  = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+  // CSS selectors that should NEVER be touched by auto-translation —
+  // explicit zh-* markers handle these themselves, or they're code,
+  // numbers, technical labels, etc.
+  const NO_TRANSLATE_SELECTOR =
+    'script,style,noscript,code,pre,textarea,input,select,option,' +
+    '[data-zh-s],[data-zh-t],[data-zh-auto],[data-zh-trans],' +
+    '.cn,.cn-mark,.label-organ-cn,.label-fangwei,.label-branch,' +
+    '.label-zodiac,.label-organ-en,.label-hour,.bagua-trigram,' +
+    '.acupoint-method,.acupoint-py,.acupoint-code,' +
+    '.script-toggle,.nav-arrow,.cn-translate-banner,' +
+    '#zoom-value,#zoom-range,.zoom-control-reset';
+
+  function getGeminiKey() {
+    try { return localStorage.getItem(GEMINI_KEY_STORE) || ''; } catch (_) { return ''; }
+  }
+  function readTransCache() {
+    try { return JSON.parse(localStorage.getItem(TRANS_CACHE_KEY) || '{}'); } catch (_) { return {}; }
+  }
+  function writeTransCache(c) {
+    try { localStorage.setItem(TRANS_CACHE_KEY, JSON.stringify(c)); } catch (_) {}
+  }
+  function pageCache(variant) {
+    const all = readTransCache();
+    const path = location.pathname || '/';
+    return (all[path] && all[path][variant]) || {};
+  }
+  function mergePageCache(variant, additions) {
+    const all = readTransCache();
+    const path = location.pathname || '/';
+    if (!all[path]) all[path] = {};
+    all[path][variant] = Object.assign(all[path][variant] || {}, additions);
+    writeTransCache(all);
+  }
+
+  // True if the given text node is worth translating.
+  function isTranslatable(node) {
+    const text = node.nodeValue;
+    if (!text || !text.trim()) return false;
+    if (!/[A-Za-z]/.test(text)) return false;          // must contain Latin letters
+    let p = node.parentElement;
+    while (p) {
+      if (p.matches && p.matches(NO_TRANSLATE_SELECTOR)) return false;
+      p = p.parentElement;
+    }
+    return true;
+  }
+
+  // Walk the DOM once: convert each translatable text node into
+  // <span data-zh-trans="<original>">…</span>. Returns ALL wrapped spans
+  // on the page, both pre-existing and newly created.
+  function ensureTranslatableSpans() {
+    // 1. Collect every already-wrapped span first — we want to apply
+    //    cached translations to them on subsequent toggles too.
+    const spans = Array.from(document.querySelectorAll('[data-zh-trans]'));
+    // 2. Walk text nodes for new candidates not yet wrapped.
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const candidates = [];
+    let n;
+    while ((n = walker.nextNode())) {
+      if (isTranslatable(n)) candidates.push(n);
+    }
+    candidates.forEach(node => {
+      const lead = node.nodeValue.match(/^\s*/)[0];
+      const tail = node.nodeValue.match(/\s*$/)[0];
+      const core = node.nodeValue.slice(lead.length, node.nodeValue.length - tail.length);
+      if (!core.trim()) return;
+      const span = document.createElement('span');
+      span.dataset.zhTrans = core;       // original English snapshot
+      span.textContent = core;
+      const parent = node.parentNode;
+      if (lead) parent.insertBefore(document.createTextNode(lead), node);
+      parent.insertBefore(span, node);
+      if (tail) parent.insertBefore(document.createTextNode(tail), node);
+      parent.removeChild(node);
+      spans.push(span);
+    });
+    return spans;
+  }
+
+  // Apply cached Chinese translations to all wrapped spans without any
+  // network call. Returns the list of spans still missing a translation.
+  function autoApplyChineseFromCache(variant) {
+    const spans = ensureTranslatableSpans();
+    const cache = pageCache(variant);
+    const missing = [];
+    spans.forEach(span => {
+      const orig = span.dataset.zhTrans;
+      if (cache[orig]) {
+        span.textContent = cache[orig];
+      } else {
+        missing.push(span);
+      }
+    });
+    return missing;
+  }
+
+  function restoreEnglishFromTranslations() {
+    document.querySelectorAll('[data-zh-trans]').forEach(span => {
+      span.textContent = span.dataset.zhTrans;
+    });
+  }
+
+  let translatePending = null;
+  function scheduleAutoTranslateFetch(variant) {
+    // Defer slightly so the synchronous cache-application paint finishes first.
+    if (translatePending) clearTimeout(translatePending);
+    translatePending = setTimeout(() => fetchMissingTranslations(variant), 80);
+  }
+
+  async function fetchMissingTranslations(variant) {
+    const missing = autoApplyChineseFromCache(variant)
+                       .filter(span => span.textContent === span.dataset.zhTrans);
+    if (missing.length === 0) { hideTranslateBanner(); return; }
+
+    const key = getGeminiKey();
+    if (!key) {
+      showTranslateBanner(
+        '部分内容仍为英文。在「舌诊」页保存免费的 Gemini API 密钥后即可自动翻译整页。 / Some content is still English. Save a free Gemini API key on the Tongue page to auto-translate this page.',
+        false,
+        { closable: true }
+      );
+      return;
+    }
+
+    showTranslateBanner('正在用 Gemini 翻译此页 / Translating this page with Gemini…', true);
+    try {
+      const variantName = (variant === 't') ? 'Traditional Chinese (繁體)' : 'Simplified Chinese (简体)';
+      const BATCH = 40;
+      const newCache = {};
+      // Deduplicate originals so we don't send the same string twice
+      const uniq = Array.from(new Set(missing.map(s => s.dataset.zhTrans)));
+      for (let i = 0; i < uniq.length; i += BATCH) {
+        const chunk = uniq.slice(i, i + BATCH);
+        const prompt =
+          `Translate the following English UI / content strings into ${variantName}. ` +
+          `Reply with ONLY a JSON array of strings, in the same order, same length. ` +
+          `Do not add commentary. Preserve numbers, punctuation, names, and inline HTML-like markers verbatim. ` +
+          `Strings:\n${JSON.stringify(chunk)}`;
+        const resp = await fetch(`${GEMINI_ENDPOINT}?key=${encodeURIComponent(key)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0, responseMimeType: 'application/json' }
+          })
+        });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const json = await resp.json();
+        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
+        let parsed;
+        try { parsed = JSON.parse(text); }
+        catch (_) {
+          const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+          parsed = JSON.parse(fence ? fence[1] : text);
+        }
+        chunk.forEach((eng, idx) => {
+          const cn = (parsed && parsed[idx]) || eng;
+          newCache[eng] = cn;
+        });
+      }
+      mergePageCache(variant, newCache);
+      // Apply newly cached translations to the wrapped spans
+      missing.forEach(span => {
+        const cn = newCache[span.dataset.zhTrans];
+        if (cn) span.textContent = cn;
+      });
+      hideTranslateBanner();
+    } catch (err) {
+      console.warn('Auto-translate failed:', err);
+      showTranslateBanner('翻译失败 / Translation failed: ' + (err.message || err), false, { closable: true });
+    }
+  }
+
+  function showTranslateBanner(msg, loading, opts) {
+    let banner = document.getElementById('cn-translate-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'cn-translate-banner';
+      banner.className = 'cn-translate-banner';
+      document.body.appendChild(banner);
+    }
+    banner.innerHTML = '';
+    banner.appendChild(document.createTextNode(msg));
+    banner.classList.toggle('loading', !!loading);
+    if (opts && opts.closable) {
+      const x = document.createElement('button');
+      x.type = 'button';
+      x.className = 'cn-translate-close';
+      x.setAttribute('aria-label', 'Dismiss');
+      x.textContent = '✕';
+      x.addEventListener('click', hideTranslateBanner);
+      banner.appendChild(x);
+    }
+    banner.style.display = '';
+  }
+  function hideTranslateBanner() {
+    const banner = document.getElementById('cn-translate-banner');
+    if (banner) banner.style.display = 'none';
   }
 
   function toggle() {

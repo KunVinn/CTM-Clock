@@ -165,6 +165,38 @@ function updateTopbarOverflowState(nav) {
 function initTopbarBehaviour() {
   const nav = document.querySelector('.topbar nav');
   if (nav) {
+    const bar = nav.closest('.topbar');
+    // Inject explicit scroll buttons. CSS shows them only when there is
+    // overflow in the matching direction. They click-scroll the nav by
+    // ~70% of its visible width — comparable to a tab's worth of items.
+    if (bar && !bar.querySelector('.nav-arrow')) {
+      const left = document.createElement('button');
+      left.type = 'button';
+      left.className = 'nav-arrow nav-arrow-left';
+      left.setAttribute('aria-label', 'Scroll menu left');
+      left.innerHTML = '‹‹';
+      const right = document.createElement('button');
+      right.type = 'button';
+      right.className = 'nav-arrow nav-arrow-right';
+      right.setAttribute('aria-label', 'Scroll menu right');
+      right.innerHTML = '››';
+      bar.insertBefore(left, nav);
+      // right button after the nav (before the script-toggle / actions)
+      if (nav.nextSibling) bar.insertBefore(right, nav.nextSibling);
+      else bar.appendChild(right);
+
+      const scrollNav = (delta) => {
+        const step = Math.round(nav.clientWidth * 0.70) * delta;
+        if (typeof nav.scrollBy === 'function') {
+          nav.scrollBy({ left: step, behavior: 'smooth' });
+        } else {
+          nav.scrollLeft += step;
+        }
+      };
+      left.addEventListener('click',  () => scrollNav(-1));
+      right.addEventListener('click', () => scrollNav(+1));
+    }
+
     updateTopbarOverflowState(nav);
     nav.addEventListener('scroll', () => updateTopbarOverflowState(nav), { passive: true });
     window.addEventListener('resize', () => updateTopbarOverflowState(nav));
