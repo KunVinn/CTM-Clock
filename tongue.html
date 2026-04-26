@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426al">
+<link rel="stylesheet" href="assets/style.css?v=20260426am">
 </head>
 <body data-page="tongue">
 
@@ -463,12 +463,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426al"></script>
-<script src="assets/glossary.js?v=20260426al"></script>
-<script src="assets/clock.js?v=20260426al"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426al"></script>
-<script src="assets/tcm-music.js?v=20260426al"></script>
-<script src="assets/tcm-link.js?v=20260426al"></script>
+<script src="assets/data.js?v=20260426am"></script>
+<script src="assets/glossary.js?v=20260426am"></script>
+<script src="assets/clock.js?v=20260426am"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426am"></script>
+<script src="assets/tcm-music.js?v=20260426am"></script>
+<script src="assets/tcm-link.js?v=20260426am"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1275,32 +1275,35 @@ bindFilePicker(cameraDirectInput);
 bindFilePicker(document.getElementById('photo-fallback-input'));
 
 // Camera-button routing per device:
-//   - Android (and other touch+capture-friendly browsers): native
-//     <input capture=environment> opens the OS camera directly.
-//   - Desktop with a webcam: in-page video modal (alignment guide).
-//   - iOS Safari: in-page video modal (Safari's getUserMedia is
-//     reliable, and the modal avoids the chooser-with-Camera-option
-//     dialog that confuses some users).
-// If the modal route fails (no getUserMedia, permission denied), the
-// underlying <label>+<input> remains as a transparent fallback —
-// since openCameraModal opens the modal but the input still exists
-// and can be tapped if all else fails.
+//   - ANY touch device (Android, iOS, Huawei, Samsung Internet, etc.):
+//     the native <label>+<input capture=environment> opens the OS
+//     camera. JS doesn't touch the click.
+//   - Desktop with a webcam: in-page video modal with the alignment
+//     guide (the previous Windows-only behaviour).
+//
+// The previous build's UA-sniff for 'Android' was missing some browsers
+// (notably Huawei Browser, whose UA sometimes drops the Android token).
+// On those browsers the JS modal handler fired, openCameraModal then
+// silently failed (or mid-failed), and the modal stayed visible
+// covering Choose Photo too. Switching to a feature-based touch check
+// avoids the whole class of UA-sniff bugs.
 (function wireCameraButton() {
   const camLabel = document.getElementById('open-camera-btn');
   if (!camLabel) return;
 
-  const ua = navigator.userAgent || '';
-  const isAndroid  = /Android/i.test(ua);
-  const isIOS      = /iPad|iPhone|iPod/.test(navigator.platform) ||
-                     (ua.includes('Mac') && navigator.maxTouchPoints > 0);
-  const hasWebcam  = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  const isTouch = ('ontouchstart' in window) ||
+                  (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
+                  (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+                  (window.matchMedia && window.matchMedia('(max-width: 820px)').matches);
+  const hasWebcam = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 
-  // Android path: do nothing — let the native input+capture fire.
-  if (isAndroid) return;
-  // No webcam available → also let the native flow handle it.
+  // Any touchscreen / phone / tablet → leave the click alone, native
+  // input+capture handles the camera.
+  if (isTouch) return;
+  // Desktop without a webcam → also leave to the native picker.
   if (!hasWebcam) return;
 
-  // Desktop or iOS → hijack the click and open the in-page modal.
+  // Desktop with a webcam → in-page video modal.
   camLabel.addEventListener('click', (e) => {
     e.preventDefault();
     if (typeof openCameraModal === 'function') openCameraModal();
