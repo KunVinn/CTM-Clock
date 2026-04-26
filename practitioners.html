@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>医师 · TCM Practitioners · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426m">
+<link rel="stylesheet" href="assets/style.css?v=20260426n">
 </head>
 <body data-page="practitioners">
 
@@ -30,8 +30,8 @@
       <header class="page-head">
         <div class="cn-mark" data-zh-auto>医师</div>
         <div class="eyebrow">Yī Shī · Featured TCM Practitioners</div>
-        <h1>A small directory of practitioners we trust</h1>
-        <p class="subtitle">
+        <h1 data-zh-s="所信医师之小录" data-zh-t="所信醫師之小錄">A small directory of practitioners we trust</h1>
+        <p class="subtitle subtitle-en">
           This page lists a small number of TCM practitioners who have given
           their explicit written consent to be listed here. They are people
           we know personally and can vouch for the quality of their training.
@@ -39,6 +39,7 @@
           tool, you can either pick someone from this list or enter your own
           practitioner's email manually.
         </p>
+        <p class="subtitle subtitle-cn"><span data-zh-auto>本页所列为已书面同意刊载之少数中医师，皆为编者亲识、可担保其学问与品德者。使用</span><span data-term="tongue-diagnosis">舌诊</span><span data-zh-auto>工具时，可从此名单中择一医师，或自行输入熟识医师之邮箱。</span></p>
       </header>
 
       <!-- ============================================================
@@ -59,12 +60,13 @@
             <span class="cn" data-zh-auto>申请加入</span>
             <span class="prac-apply-en">For TCM practitioners — to apply to be listed</span>
           </h2>
-          <p>
+          <p class="lang-en-only">
             If you are a credentialed TCM practitioner and would like to be
             listed here so users can send you their self-check reports directly,
             please email the site owner at the address below with:
           </p>
-          <ul class="prac-apply-list">
+          <p class="lang-cn-only" data-zh-auto>若您为有执照之中医师，欲刊载于此以便用户直接转发其舌诊报告，请向以下邮箱致信，附以下内容：</p>
+          <ul class="prac-apply-list lang-en-only">
             <li>Your full name (and optionally Chinese name)</li>
             <li>Your professional credentials and the jurisdiction(s) where you are licensed</li>
             <li>Languages you practice in</li>
@@ -73,21 +75,35 @@
             <li>The email address users should send their report to</li>
             <li>Optionally: a clinic website and a professional photo</li>
           </ul>
-          <p>
+          <ul class="prac-apply-list lang-cn-only">
+            <li data-zh-auto>姓名全称（可附中文姓名）</li>
+            <li data-zh-auto>专业资格及取得执照之地区</li>
+            <li data-zh-auto>所擅长之语言</li>
+            <li data-zh-auto>诊所所在地</li>
+            <li data-zh-auto>简介一段（约 80 字）——可中英并陈</li>
+            <li data-zh-auto>用户报告应送达之邮箱</li>
+            <li data-zh-auto>可选：诊所网址与专业照片一张</li>
+          </ul>
+          <p class="lang-en-only">
             We will reply with a short consent form
             (<a href="PRACTITIONER_CONSENT.md" target="_blank" rel="noopener" style="color:var(--gold-bright)">PRACTITIONER_CONSENT.md</a>)
             that explains exactly what will be published and how to withdraw at
             any time. Once you've returned the signed consent, your listing
             usually appears within 7 days.
           </p>
-          <p class="prac-apply-note">
+          <p class="lang-cn-only"><span data-zh-auto>编者将回复一份简短之同意书（</span><a href="PRACTITIONER_CONSENT.md" target="_blank" rel="noopener" style="color:var(--gold-bright)">PRACTITIONER_CONSENT.md</a><span data-zh-auto>），载明刊载内容及随时撤销之办法。签署后送回，刊载通常于七日内完成。</span></p>
+          <p class="prac-apply-note lang-en-only">
             Listing is <strong>free</strong>. We do not accept payment in exchange
             for a listing — this is an editorial directory of practitioners we
             personally vouch for, not an advertising platform.
           </p>
+          <p class="prac-apply-note lang-cn-only"><span data-zh-auto>刊载</span><strong data-zh-auto>免费</strong><span data-zh-auto>。本录拒收任何付费——此为编者亲识可担保之医师名录，非广告平台。</span></p>
           <p class="prac-apply-contact">
-            <strong>Contact:</strong> <a href="mailto:practitioners@your-domain.example" style="color:var(--cinnabar-bright)">practitioners@your-domain.example</a>
-            <em style="display:block;margin-top:0.4rem;font-size:0.78rem;color:var(--ink-mute)">— site owner: please update this email address before deploying</em>
+            <strong class="lang-en-only">Contact:</strong>
+            <strong class="lang-cn-only" data-zh-auto>联系方式：</strong>
+            <a href="mailto:practitioners@your-domain.example" style="color:var(--cinnabar-bright)">practitioners@your-domain.example</a>
+            <em class="lang-en-only" style="display:block;margin-top:0.4rem;font-size:0.78rem;color:var(--ink-mute)">— site owner: please update this email address before deploying</em>
+            <em class="lang-cn-only" style="display:block;margin-top:0.4rem;font-size:0.78rem;color:var(--ink-mute)" data-zh-auto>—— 站点维护者：发布前请更新此邮箱地址</em>
           </p>
         </div>
       </section>
@@ -95,7 +111,7 @@
       <!-- ============================================================
            DISCLAIMER
            ============================================================ -->
-      <div class="disclaimer-box" style="margin-top:2.5rem">
+      <div class="disclaimer-box lang-en-only" style="margin-top:2.5rem">
         <strong>About this directory.</strong> The site is an educational
         signpost only. The listed practitioners are independent professionals;
         the site owner is not their employer, agent, or clinical supervisor,
@@ -105,6 +121,12 @@
         persistent health concern, please consult a qualified healthcare
         professional in person.
       </div>
+      <div class="disclaimer-box lang-cn-only" style="margin-top:2.5rem">
+        <strong data-zh-auto>关于本录。</strong>
+        <span data-zh-auto>本站为教育性指引。所列医师皆为独立执业人员；编者非其雇主、代理或临床督导，对具体治疗结果不作任何承诺。</span>
+        <span data-term="tongue-diagnosis">舌诊自察</span>
+        <span data-zh-auto>仅为增进自我觉察之助，非临床诊断。如有持续或严重之健康问题，请亲自就诊于合格医师。</span>
+      </div>
     </div>
   </main>
 </div>
@@ -112,12 +134,12 @@
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<script src="assets/data.js?v=20260426m"></script>
-<script src="assets/glossary.js?v=20260426m"></script>
-<script src="assets/clock.js?v=20260426m"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426m"></script>
-<script src="assets/tcm-music.js?v=20260426m"></script>
-<script src="assets/tcm-link.js?v=20260426m"></script>
+<script src="assets/data.js?v=20260426n"></script>
+<script src="assets/glossary.js?v=20260426n"></script>
+<script src="assets/clock.js?v=20260426n"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426n"></script>
+<script src="assets/tcm-music.js?v=20260426n"></script>
+<script src="assets/tcm-link.js?v=20260426n"></script>
 
 <script>
 /* ============================================================

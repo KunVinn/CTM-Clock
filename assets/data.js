@@ -39,6 +39,7 @@ const ORGANS = [
     musicEffect: '疏肝利胆，调和气血 · soothes the liver-gallbladder axis, harmonises qi and blood',
     tracks: ['梅花三弄', '潇湘水云', '胡笳十八拍'],
     habit: 'Lights out, screens away',
+    habitCn: '熄灯远屏',
     kg: {
       properties: ['平 Neutral', '微温 Slightly Warm'],
       flavours: ['苦 Bitter', '甘 Sweet'],
@@ -87,6 +88,7 @@ const ORGANS = [
     musicEffect: '解郁疏肝，平复情绪 · resolves stagnation, calms the emotions',
     tracks: ['庄周梦蝶', '春江花月夜', '紫竹调'],
     habit: 'Sleep deeply (1–3 AM is liver-restoration time)',
+    habitCn: '深眠静养（1–3 时为肝复之时）',
     kg: {
       properties: ['温 Warm', '凉 Cool'],
       flavours: ['酸 Sour', '苦 Bitter'],
@@ -136,6 +138,7 @@ const ORGANS = [
     musicEffect: '润肺降燥，清肃呼吸 · moistens the lungs, calms the breath',
     tracks: ['阳春白雪', '广陵散', '黄河大合唱'],
     habit: 'Stay sleeping; open a window for fresh morning air',
+    habitCn: '继续安睡；微开窗纳清气',
     kg: {
       properties: ['凉 Cool', '平 Neutral'],
       flavours: ['辛 Pungent', '甘 Sweet'],
@@ -187,6 +190,7 @@ const ORGANS = [
     musicEffect: '通腑润肠，代谢调理 · supports elimination and metabolism',
     tracks: ['潇湘水云', '梅花三弄', '十面埋伏'],
     habit: 'Warm water on rising · allow time for the morning bowel movement',
+    habitCn: '醒后饮温水 · 从容如厕',
     kg: {
       properties: ['温 Warm'],
       flavours: ['辛 Pungent'],
@@ -237,6 +241,7 @@ const ORGANS = [
     musicEffect: '健脾和胃，促进运化 · strengthens the spleen-stomach, supports transformation',
     tracks: ['古琴山居吟', '洞庭秋思', '北国之春'],
     habit: 'Warm, nourishing breakfast · no cold drinks or screens',
+    habitCn: '温热丰盛早餐 · 不饮冷不看屏',
     kg: {
       properties: ['温 Warm', '平 Neutral'],
       flavours: ['甘 Sweet'],
@@ -286,6 +291,7 @@ const ORGANS = [
     musicEffect: "益气运化，强健肌理 · boosts qi, strengthens the body's structure",
     tracks: ['高山流水', '阳春', '花好月圆'],
     habit: 'Tackle your hardest mental work · sip warm water',
+    habitCn: '专注用脑 · 频饮温水',
     kg: {
       properties: ['温 Warm', '平 Neutral'],
       flavours: ['甘 Sweet'],
@@ -337,6 +343,7 @@ const ORGANS = [
     musicEffect: '宁心安神，调和阴阳 · calms the spirit, harmonises yin and yang',
     tracks: ['乌夜啼', '雉朝飞', '步步高'],
     habit: '15–30 minute midday rest · connect with someone you love',
+    habitCn: '小憩 15–30 分钟 · 与所爱者相连',
     kg: {
       properties: ['平 Neutral', '微寒 Slightly Cold'],
       flavours: ['苦 Bitter'],
@@ -386,6 +393,7 @@ const ORGANS = [
     musicEffect: '促进吸收，分化清浊 · supports absorption, separates clear from turbid',
     tracks: ['列子御风', '文王操', '渔舟唱晚'],
     habit: 'Steady warm water · light analytical work',
+    habitCn: '徐饮温水 · 行轻度分析之事',
     kg: {
       properties: ['温 Warm'],
       flavours: ['苦 Bitter', '甘 Sweet'],
@@ -436,6 +444,7 @@ const ORGANS = [
     musicEffect: '利水排毒，疏通经络 · drains dampness, opens the meridians',
     tracks: ['白雪', '长清', '平湖秋月'],
     habit: 'Move your body · learn or study · stay hydrated',
+    habitCn: '活动身体 · 读书或思考 · 多饮温水',
     kg: {
       properties: ['寒 Cold', '平 Neutral'],
       flavours: ['淡 Bland', '甘 Sweet'],
@@ -486,6 +495,7 @@ const ORGANS = [
     musicEffect: '滋补肾气，固本培元 · nourishes essence, anchors the root',
     tracks: ['流水', '鹤鸣九皋', '二泉映月'],
     habit: 'Light, warm dinner · gentle low-back stretches',
+    habitCn: '清淡温热晚膳 · 轻舒腰背',
     kg: {
       properties: ['温 Warm', '平 Neutral'],
       flavours: ['咸 Salty', '甘 Sweet'],
@@ -537,6 +547,7 @@ const ORGANS = [
     musicEffect: '宁心定志，调和情志 · settles the spirit, harmonises emotion',
     tracks: ['文王操', '庄周梦蝶', '烛影摇红'],
     habit: 'Connect with someone · gentle walk · warm foot soak',
+    habitCn: '与人相聚 · 散步 · 温水泡脚',
     kg: {
       properties: ['温 Warm'],
       flavours: ['苦 Bitter', '甘 Sweet'],
@@ -587,6 +598,7 @@ const ORGANS = [
     musicEffect: '平衡阴阳，通调水道 · balances yin-yang, regulates the waterways',
     tracks: ['平沙落雁', '忆故人', '阳关三叠'],
     habit: 'Dim the lights · screens off · in bed by 22:30',
+    habitCn: '调暗灯光 · 闭屏 · 22:30 前入卧',
     kg: {
       properties: ['温 Warm', '平 Neutral'],
       flavours: ['辛 Pungent', '苦 Bitter'],
