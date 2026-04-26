@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426k">
+<link rel="stylesheet" href="assets/style.css?v=20260426l">
 </head>
 <body data-page="tongue">
 
@@ -333,12 +333,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426k"></script>
-<script src="assets/glossary.js?v=20260426k"></script>
-<script src="assets/clock.js?v=20260426k"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426k"></script>
-<script src="assets/tcm-music.js?v=20260426k"></script>
-<script src="assets/tcm-link.js?v=20260426k"></script>
+<script src="assets/data.js?v=20260426l"></script>
+<script src="assets/glossary.js?v=20260426l"></script>
+<script src="assets/clock.js?v=20260426l"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426l"></script>
+<script src="assets/tcm-music.js?v=20260426l"></script>
+<script src="assets/tcm-link.js?v=20260426l"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1168,19 +1168,32 @@ async function startCamera(facingMode) {
   }
 }
 
-// Triggers the OS native camera (iOS / Android) via a hidden file input.
-// Works even when getUserMedia is blocked, off, or unsupported.
+// Triggers the OS native camera (iOS / Android) via a real file input.
+// iOS Safari is particular about this — the input MUST be attached to
+// the DOM, the `capture` attribute MUST be set with setAttribute (not as
+// a property), and the click MUST happen synchronously inside the same
+// user-gesture tick. Some Android flavours additionally need the input
+// to remain in-flow (off-screen) rather than display:none.
 function openSystemCamera() {
+  // If a previous attempt left an input behind, clean it up.
+  const old = document.getElementById('tcm-system-camera-input');
+  if (old) old.parentNode.removeChild(old);
+
   const f = document.createElement('input');
   f.type = 'file';
-  f.accept = 'image/*';
-  f.capture = 'environment';
-  f.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) {
-      loadPhoto(e.target.files[0]);
+  f.id = 'tcm-system-camera-input';
+  f.setAttribute('accept', 'image/*');
+  f.setAttribute('capture', 'environment');
+  f.style.cssText =
+    'position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+  f.addEventListener('change', () => {
+    if (f.files && f.files[0]) {
+      loadPhoto(f.files[0]);
       closeCameraModal();
     }
+    if (f.parentNode) f.parentNode.removeChild(f);
   });
+  document.body.appendChild(f);
   f.click();
 }
 
@@ -1201,7 +1214,13 @@ function openCameraModal() {
   // timing, address-bar layout shifts). Skip the modal and hand off to
   // the system camera directly. Desktops with a mouse still get the
   // in-page guide overlay so they can frame the tongue inside the SVG.
-  const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  // Use the most permissive mobile-detection combination we can — touch
+  // event support OR coarse pointer OR small viewport.
+  const isTouch =
+    ('ontouchstart' in window) ||
+    (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
+    (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+    (window.matchMedia && window.matchMedia('(max-width: 820px)').matches);
   if (isTouch || !hasGetUserMedia()) {
     openSystemCamera();
     return;

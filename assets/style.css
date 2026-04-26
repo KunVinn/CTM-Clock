@@ -1293,10 +1293,10 @@ a:hover { color: var(--gold-bright); }
 @media (max-width: 500px) {
   .label-zodiac   { font-size: 14px; }
   .label-organ-cn { font-size: 17px; }
-  .label-organ-en { font-size: 8px; }
-  .label-fangwei  { font-size: 10px; }
-  .label-branch   { font-size: 13px; }
-  .label-hour     { font-size: 10px; }
+  .label-organ-en { font-size: 10px; }
+  .label-fangwei  { font-size: 11px; }
+  .label-branch   { font-size: 14px; }
+  .label-hour     { font-size: 11px; }
 }
 
 
@@ -3965,14 +3965,11 @@ a:hover { color: var(--gold-bright); }
    driven by the JS, which replaces the textContent of
    [data-zh-s/t] elements with the snapshotted English original.
    ============================================================ */
-/* SVG clock: only place where dual-script labels would visually
-   collide. Hide the Chinese label rings and enlarge the English
-   organ ring so the clock stays legible in EN mode. */
-html[data-script="e"] .label-organ-cn,
-html[data-script="e"] .label-fangwei,
-html[data-script="e"] .label-branch {
-  display: none;
-}
+/* SVG clock: keep ALL label rings visible in EN mode too — the user
+   wants to retain Chinese ring annotations (organ, fangwei, branch)
+   for context even when reading the English-emphasised version. The
+   only thing EN mode does to the clock is enlarge label-organ-en so
+   the English organ name is readable beside its Chinese counterpart. */
 html[data-script="e"] .label-organ-en {
   font-size: 14px;
   fill: var(--gold-bright);
