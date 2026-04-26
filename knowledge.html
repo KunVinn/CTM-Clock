@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Knowledge Graph · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426l">
+<link rel="stylesheet" href="assets/style.css?v=20260426m">
 </head>
 <body data-page="kg">
 
@@ -32,47 +32,54 @@
       <header class="page-head">
         <div class="cn-mark" data-zh-auto>知识图谱</div>
         <div class="eyebrow">Zhī Shí Tú Pǔ · TCM Knowledge Graph</div>
-        <h1>Entities and Relations</h1>
-        <p class="subtitle">A modern TCM knowledge graph integrates millions of records from herbal databases, prescription compendiums, and biomedical sources. Below is a curated, browsable subset organised by the same entity types used in research-grade graphs.</p>
+        <h1 data-zh-s="实体与关系" data-zh-t="實體與關係">Entities and Relations</h1>
+        <p class="subtitle subtitle-en">A modern TCM knowledge graph integrates millions of records from herbal databases, prescription compendiums, and biomedical sources. Below is a curated, browsable subset organised by the same entity types used in research-grade graphs.</p>
+        <p class="subtitle subtitle-cn" data-zh-auto>当代中医知识图谱可将本草数据库、方剂典籍与生物医学资料中的数百万条记录整合为一体。下方为按学术级图谱所用之实体类别组织的精选子集，以便浏览。</p>
       </header>
 
       <div class="kg-intro">
-        <p>The <strong><span data-term="tcmm">TCMM</span></strong> graph (released by the AI-HPC research team) integrates six TCM and biomedical databases into a unified knowledge structure. Its taxonomy is the foundation for the entity browser below.</p>
+        <p class="lang-en-only">The <strong><span data-term="tcmm">TCMM</span></strong> graph (released by the AI-HPC research team) integrates six TCM and biomedical databases into a unified knowledge structure. Its taxonomy is the foundation for the entity browser below.</p>
+        <p class="lang-cn-only"><span data-zh-auto>由 AI-HPC 团队发布之</span><strong><span data-term="tcmm">TCMM</span></strong><span data-zh-auto>知识图谱，将六种中医与生物医学数据库整合为统一知识结构。其分类体系即下方实体浏览器之基础。</span></p>
         <div class="kg-stats">
-          <div class="kg-stat"><div class="num">20</div><div class="lbl">Entity Types</div></div>
-          <div class="kg-stat"><div class="num">46</div><div class="lbl">Relation Types</div></div>
-          <div class="kg-stat"><div class="num">3.4M+</div><div class="lbl">Records</div></div>
-          <div class="kg-stat"><div class="num">6</div><div class="lbl">Source DBs</div></div>
+          <div class="kg-stat"><div class="num">20</div><div class="lbl lang-en-only">Entity Types</div><div class="lbl lang-cn-only" data-zh-auto>实体类</div></div>
+          <div class="kg-stat"><div class="num">46</div><div class="lbl lang-en-only">Relation Types</div><div class="lbl lang-cn-only" data-zh-auto>关系类</div></div>
+          <div class="kg-stat"><div class="num">3.4M+</div><div class="lbl lang-en-only">Records</div><div class="lbl lang-cn-only" data-zh-auto>条目</div></div>
+          <div class="kg-stat"><div class="num">6</div><div class="lbl lang-en-only">Source DBs</div><div class="lbl lang-cn-only" data-zh-auto>源库</div></div>
         </div>
       </div>
 
       <div class="entity-section">
-        <h3><span class="cn" data-zh-auto>性</span>Property — Pharmacological nature</h3>
-        <p class="desc">The thermal/energetic nature a substance imparts: hot, warm, neutral, cool, cold.</p>
+        <h3><span class="cn" data-zh-auto>性</span><span class="acu-en">Property — Pharmacological nature</span></h3>
+        <p class="desc lang-en-only">The thermal/energetic nature a substance imparts: hot, warm, neutral, cool, cold.</p>
+        <p class="desc lang-cn-only" data-zh-auto>药物所赋之寒热温凉之性：热、温、平、凉、寒。</p>
         <div class="entity-cloud" id="entity-properties"></div>
       </div>
 
       <div class="entity-section">
-        <h3><span class="cn" data-zh-auto>味</span>Flavour — The five tastes</h3>
-        <p class="desc">Each flavour acts on a specific organ system and produces a characteristic effect.</p>
+        <h3><span class="cn" data-zh-auto>味</span><span class="acu-en">Flavour — The five tastes</span></h3>
+        <p class="desc lang-en-only">Each flavour acts on a specific organ system and produces a characteristic effect.</p>
+        <p class="desc lang-cn-only" data-zh-auto>五味各入一脏，各有其用：酸入肝、苦入心、甘入脾、辛入肺、咸入肾。</p>
         <div class="entity-cloud" id="entity-flavours"></div>
       </div>
 
       <div class="entity-section">
-        <h3><span class="cn" data-zh-auto>归经</span>Tropism — Channel-tropism</h3>
-        <p class="desc">Which of the twelve meridians a substance preferentially enters and acts upon.</p>
+        <h3><span class="cn" data-zh-auto>归经</span><span class="acu-en">Tropism — Channel-tropism</span></h3>
+        <p class="desc lang-en-only">Which of the twelve meridians a substance preferentially enters and acts upon.</p>
+        <p class="desc lang-cn-only" data-zh-auto>药物所偏入与作用之十二经脉。</p>
         <div class="entity-cloud" id="entity-tropism"></div>
       </div>
 
       <div class="entity-section">
-        <h3><span class="cn" data-zh-auto>本草</span>Medicinal Materials — Curated by hour</h3>
-        <p class="desc">Herbs supportive to each meridian during its peak window. Educational reference only.</p>
+        <h3><span class="cn" data-zh-auto>本草</span><span class="acu-en">Medicinal Materials — Curated by hour</span></h3>
+        <p class="desc lang-en-only">Herbs supportive to each meridian during its peak window. Educational reference only.</p>
+        <p class="desc lang-cn-only" data-zh-auto>各经当令时辰所宜之本草。仅供学习参考。</p>
         <div class="kg-grid" id="entity-herbs"></div>
       </div>
 
       <div class="entity-section">
-        <h3><span class="cn" data-zh-auto>证候</span>Common Syndromes — Per meridian</h3>
-        <p class="desc">Patterns of imbalance traditionally associated with each organ system.</p>
+        <h3><span class="cn" data-zh-auto>证候</span><span class="acu-en">Common Syndromes — Per meridian</span></h3>
+        <p class="desc lang-en-only">Patterns of imbalance traditionally associated with each organ system.</p>
+        <p class="desc lang-cn-only" data-zh-auto>各脏腑经络常见之失调证候。</p>
         <div class="kg-grid" id="entity-syndromes"></div>
       </div>
 
@@ -80,12 +87,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426l"></script>
-<script src="assets/glossary.js?v=20260426l"></script>
-<script src="assets/clock.js?v=20260426l"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426l"></script>
-<script src="assets/tcm-music.js?v=20260426l"></script>
-<script src="assets/tcm-link.js?v=20260426l"></script>
+<script src="assets/data.js?v=20260426m"></script>
+<script src="assets/glossary.js?v=20260426m"></script>
+<script src="assets/clock.js?v=20260426m"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426m"></script>
+<script src="assets/tcm-music.js?v=20260426m"></script>
+<script src="assets/tcm-link.js?v=20260426m"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const propSet = new Set(), flavSet = new Set(), tropSet = new Set();
@@ -121,6 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
     tropEl.appendChild(tag);
   });
 
+  // Strip the Latin half from a "中文 English" pair so the CN-mode UI
+  // shows Chinese only. The pair pattern is consistent across kg.syndrome
+  // ('膽鬱化火 · Gallbladder qi stagnation'). For the herb pinyin/English
+  // sublabel we wrap the whole `${py} · ${en}` chunk in .lang-en-only so it
+  // disappears in 中 mode.
+  const cnPart = s => (s || '').split('·')[0].trim();
+
   const herbsEl = document.getElementById('entity-herbs');
   ORGANS.forEach(o => {
     const card = document.createElement('a');
@@ -128,8 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
     card.href = `index.html?hour=${ORGANS.indexOf(o)}`;
     card.style.textDecoration = 'none';
     card.innerHTML = `
-      <div class="kg-label">${o.cn} ${o.organ} · ${String(o.start).padStart(2,'0')}:00</div>
-      <ul class="kg-list">${o.kg.herbs.map(h => `<li><strong data-term="${h.cn}" data-zh-auto>${h.cn}</strong> <span class="small">${h.py} · ${h.en}</span></li>`).join('')}</ul>`;
+      <div class="kg-label">${o.cn} <span class="lang-en-only">${o.organ} · </span>${String(o.start).padStart(2,'0')}:00</div>
+      <ul class="kg-list">${o.kg.herbs.map(h => `<li><strong data-term="${h.cn}" data-zh-auto>${h.cn}</strong> <span class="small lang-en-only">${h.py} · ${h.en}</span></li>`).join('')}</ul>`;
     herbsEl.appendChild(card);
   });
 
@@ -139,11 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
     card.className = 'kg-card';
     card.href = `index.html?hour=${ORGANS.indexOf(o)}`;
     card.style.textDecoration = 'none';
+    const symEn = (o.kg.tcmSymptoms || []).map(s => `<li>${s}</li>`).join('');
+    const symCn = (o.kg.tcmSymptomsCn || o.kg.tcmSymptoms || []).map(s => `<li data-zh-auto>${s}</li>`).join('');
     card.innerHTML = `
-      <div class="kg-label">${o.cn} ${o.organ}</div>
-      <div class="kg-value" style="margin-bottom:0.5rem">${o.kg.syndrome}</div>
-      <div class="kg-label" style="font-size:0.5rem">Symptoms</div>
-      <ul class="kg-list">${o.kg.tcmSymptoms.map(s => `<li>${s}</li>`).join('')}</ul>`;
+      <div class="kg-label">${o.cn} <span class="lang-en-only">${o.organ}</span></div>
+      <div class="kg-value lang-en-only" style="margin-bottom:0.5rem">${o.kg.syndrome}</div>
+      <div class="kg-value lang-cn-only" style="margin-bottom:0.5rem" data-zh-auto>${cnPart(o.kg.syndrome)}</div>
+      <div class="kg-label lang-en-only" style="font-size:0.5rem">Symptoms</div>
+      <div class="kg-label lang-cn-only" style="font-size:0.5rem" data-zh-auto>症状</div>
+      <ul class="kg-list lang-en-only">${symEn}</ul>
+      <ul class="kg-list lang-cn-only">${symCn}</ul>`;
     sydEl.appendChild(card);
   });
 });

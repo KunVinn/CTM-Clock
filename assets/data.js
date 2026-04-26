@@ -48,7 +48,8 @@ const ORGANS = [
         { cn: '黄芩', py: 'Huáng Qín', en: 'Scutellaria root' }
       ],
       syndrome: '膽鬱化火 · Gallbladder qi stagnation',
-      tcmSymptoms: ['Bitter mouth', 'Indecision', 'Chest tightness']
+      tcmSymptoms: ['Bitter mouth', 'Indecision', 'Chest tightness'],
+      tcmSymptomsCn: ['口苦', '寡断犹豫', '胸闷']
     }
   },
   {
@@ -96,7 +97,8 @@ const ORGANS = [
         { cn: '枸杞', py: 'Gǒu Qǐ', en: 'Goji berry' }
       ],
       syndrome: '肝血不足 · Liver blood deficiency',
-      tcmSymptoms: ['Dry eyes', 'Brittle nails', 'Restless sleep', 'Irritability']
+      tcmSymptoms: ['Dry eyes', 'Brittle nails', 'Restless sleep', 'Irritability'],
+      tcmSymptomsCn: ['目干涩', '指甲脆易裂', '睡卧不安', '易怒烦躁']
     }
   },
   {
@@ -144,7 +146,8 @@ const ORGANS = [
         { cn: '麥冬', py: 'Mài Dōng', en: 'Ophiopogon root' }
       ],
       syndrome: '肺氣虛 · Lung qi deficiency',
-      tcmSymptoms: ['Shortness of breath', 'Weak voice', 'Spontaneous sweating']
+      tcmSymptoms: ['Shortness of breath', 'Weak voice', 'Spontaneous sweating'],
+      tcmSymptomsCn: ['气短', '语声低弱', '自汗']
     }
   },
   {
@@ -193,7 +196,8 @@ const ORGANS = [
         { cn: '决明子', py: 'Jué Míng Zǐ', en: 'Cassia seed' }
       ],
       syndrome: '大腸燥結 · Dryness of the large intestine',
-      tcmSymptoms: ['Constipation', 'Dry stool', 'Abdominal fullness']
+      tcmSymptoms: ['Constipation', 'Dry stool', 'Abdominal fullness'],
+      tcmSymptomsCn: ['便秘', '大便燥结', '腹胀']
     }
   },
   {
@@ -243,7 +247,8 @@ const ORGANS = [
         { cn: '小米', py: 'Xiǎo Mǐ', en: 'Foxtail millet' }
       ],
       syndrome: '胃氣虛寒 · Stomach qi deficiency with cold',
-      tcmSymptoms: ['Poor appetite', 'Bloating', 'Cold abdomen']
+      tcmSymptoms: ['Poor appetite', 'Bloating', 'Cold abdomen'],
+      tcmSymptomsCn: ['食欲不振', '脘腹胀闷', '腹中喜温畏寒']
     }
   },
   {
@@ -291,7 +296,8 @@ const ORGANS = [
         { cn: '山药', py: 'Shān Yào', en: 'Chinese yam' }
       ],
       syndrome: '脾氣虛 · Spleen qi deficiency',
-      tcmSymptoms: ['Fatigue', 'Loose stools', 'Heavy limbs', 'Loss of appetite']
+      tcmSymptoms: ['Fatigue', 'Loose stools', 'Heavy limbs', 'Loss of appetite'],
+      tcmSymptomsCn: ['倦怠乏力', '便溏', '四肢沉重', '纳呆食少']
     }
   },
   {
@@ -341,7 +347,8 @@ const ORGANS = [
         { cn: '柏子仁', py: 'Bǎi Zǐ Rén', en: 'Biota seed' }
       ],
       syndrome: '心血不足 · Heart blood deficiency',
-      tcmSymptoms: ['Insomnia', 'Palpitations', 'Anxiety', 'Pale complexion']
+      tcmSymptoms: ['Insomnia', 'Palpitations', 'Anxiety', 'Pale complexion'],
+      tcmSymptomsCn: ['失眠', '心悸', '心神不宁', '面色无华']
     }
   },
   {
@@ -388,7 +395,8 @@ const ORGANS = [
         { cn: '车前子', py: 'Chē Qián Zǐ', en: 'Plantago seed' }
       ],
       syndrome: '小腸實熱 · Small intestine excess heat',
-      tcmSymptoms: ['Mouth ulcers', 'Scanty dark urine', 'Restlessness']
+      tcmSymptoms: ['Mouth ulcers', 'Scanty dark urine', 'Restlessness'],
+      tcmSymptomsCn: ['口舌生疮', '小便短赤', '心烦不宁']
     }
   },
   {
@@ -437,7 +445,8 @@ const ORGANS = [
         { cn: '金钱草', py: 'Jīn Qián Cǎo', en: 'Lysimachia' }
       ],
       syndrome: '膀胱濕熱 · Bladder damp-heat',
-      tcmSymptoms: ['Burning urination', 'Cloudy urine', 'Lower abdominal heaviness']
+      tcmSymptoms: ['Burning urination', 'Cloudy urine', 'Lower abdominal heaviness'],
+      tcmSymptomsCn: ['小便涩痛', '小便混浊', '小腹坠胀']
     }
   },
   {
@@ -487,7 +496,8 @@ const ORGANS = [
         { cn: '黑芝麻', py: 'Hēi Zhī Má', en: 'Black sesame' }
       ],
       syndrome: '腎陽虛 · Kidney yang deficiency',
-      tcmSymptoms: ['Cold hands and feet', 'Low back ache', 'Fatigue', 'Frequent urination']
+      tcmSymptoms: ['Cold hands and feet', 'Low back ache', 'Fatigue', 'Frequent urination'],
+      tcmSymptomsCn: ['手足不温', '腰膝酸软', '神疲乏力', '夜尿频多']
     }
   },
   {
@@ -536,7 +546,8 @@ const ORGANS = [
         { cn: '合欢花', py: 'Hé Huān Huā', en: 'Albizia flower' }
       ],
       syndrome: '心包鬱熱 · Pericardium stagnant heat',
-      tcmSymptoms: ['Anxiety', 'Mental restlessness', 'Chest oppression']
+      tcmSymptoms: ['Anxiety', 'Mental restlessness', 'Chest oppression'],
+      tcmSymptomsCn: ['心烦', '心神不宁', '胸闷']
     }
   },
   {
@@ -585,7 +596,8 @@ const ORGANS = [
         { cn: '柴胡', py: 'Chái Hú', en: 'Bupleurum root' }
       ],
       syndrome: '三焦氣鬱 · Triple Burner qi stagnation',
-      tcmSymptoms: ['Sluggish digestion', 'Edema', 'Mood swings']
+      tcmSymptoms: ['Sluggish digestion', 'Edema', 'Mood swings'],
+      tcmSymptomsCn: ['消化迟缓', '水肿', '情志不舒']
     }
   }
 ];
