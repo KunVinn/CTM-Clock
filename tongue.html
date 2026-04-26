@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426t">
+<link rel="stylesheet" href="assets/style.css?v=20260426u">
 </head>
 <body data-page="tongue">
 
@@ -53,9 +53,18 @@
             <span>📁</span> <span data-zh-s="选择照片" data-zh-t="選擇照片">Choose photo</span>
             <input type="file" id="photo-file-input" accept="image/*">
           </label>
-          <button class="photo-btn" type="button" id="open-camera-btn">
+          <!-- Camera button: a real <label> wrapping a real <input> with the
+               native `capture` attribute. On mobile (iOS Safari, Android
+               Chrome, Samsung Internet, Firefox) tapping this opens the
+               OS camera directly — no JS required, no getUserMedia quirks.
+               On desktop it opens a file picker (which on most modern
+               browsers also offers 'use webcam' if a webcam is present).
+               This replaces the previous JS-driven openCameraModal flow,
+               which kept failing on different mobile browsers. -->
+          <label class="photo-btn" id="open-camera-btn">
             <span>📷</span> <span data-zh-s="相机" data-zh-t="相機">Camera</span>
-          </button>
+            <input type="file" id="camera-direct-input" accept="image/*" capture="environment">
+          </label>
         </div>
 
         <!-- Live camera modal -->
@@ -389,12 +398,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426t"></script>
-<script src="assets/glossary.js?v=20260426t"></script>
-<script src="assets/clock.js?v=20260426t"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426t"></script>
-<script src="assets/tcm-music.js?v=20260426t"></script>
-<script src="assets/tcm-link.js?v=20260426t"></script>
+<script src="assets/data.js?v=20260426u"></script>
+<script src="assets/glossary.js?v=20260426u"></script>
+<script src="assets/clock.js?v=20260426u"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426u"></script>
+<script src="assets/tcm-music.js?v=20260426u"></script>
+<script src="assets/tcm-link.js?v=20260426u"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -1178,6 +1187,15 @@ document.getElementById('photo-file-input').addEventListener('change', (e) => {
   loadPhoto(e.target.files[0]);
 });
 
+// Native camera path: a real <input type=file capture=environment>
+// inside the Camera <label>. Browser opens the OS camera on tap.
+const cameraDirectInput = document.getElementById('camera-direct-input');
+if (cameraDirectInput) {
+  cameraDirectInput.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) loadPhoto(e.target.files[0]);
+  });
+}
+
 /* ============================================================
    LIVE CAMERA via getUserMedia (works on PC webcam AND phone camera)
    Falls back to a hidden file-input with capture="environment" if
@@ -1328,7 +1346,10 @@ function captureFrame() {
   closeCameraModal();
 }
 
-openCameraBtn.addEventListener('click', openCameraModal);
+// open-camera-btn is now a <label> wrapping a real file input — the
+// browser opens the OS camera natively on tap, so we DO NOT attach a
+// JS click handler that would race the native pick.
+//   openCameraBtn.addEventListener('click', openCameraModal);  (removed)
 cameraClose.addEventListener('click', closeCameraModal);
 cameraModal.addEventListener('click', (e) => {
   if (e.target === cameraModal) closeCameraModal();
