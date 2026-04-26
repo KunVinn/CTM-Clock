@@ -12,6 +12,7 @@ const ORGANS = [
     chineseHour: '子時 · Zǐ shí',
     element: 'wood',
     meaning: 'The day is born in stillness. Yang qi begins its slow ascent from the deepest yin.',
+    meaningCn: '一日始于静中。阳气自至阴之处徐徐而升。',
     function: 'In TCM the gallbladder governs decisiveness and the renewal of cellular tissue overnight. Sleep at this hour is the most restorative of the entire 24-hour cycle. Bile is secreted and yang qi quietly seeded.',
     practices: [
       'Be in deep sleep — ideally asleep before 23:00',
@@ -47,6 +48,7 @@ const ORGANS = [
     chineseHour: '丑時 · Chǒu shí',
     element: 'wood',
     meaning: 'The liver cleanses, regenerates, and stores the blood while you sleep.',
+    meaningCn: '人卧则血归于肝——肝在睡梦中涤血、再生、藏血。',
     function: 'TCM teaches that the liver detoxifies and replenishes blood during these hours. Waking regularly between 1 and 3 a.m. may suggest liver qi imbalance — often linked to stress, anger, or excess alcohol.',
     practices: [
       'Remain in deep sleep',
@@ -83,6 +85,7 @@ const ORGANS = [
     chineseHour: '寅時 · Yín shí',
     element: 'metal',
     meaning: 'Breath returns to the body. The lungs distribute fresh qi to every meridian.',
+    meaningCn: '气息归身。肺将清气布于诸经。',
     function: 'The lungs govern qi and protect the body. Waking with cough or shortness of breath at this hour may indicate lung-qi weakness. This is the hour of subtle renewal.',
     practices: [
       'Sleep deeply — the lungs need stillness to circulate qi',
@@ -119,6 +122,7 @@ const ORGANS = [
     chineseHour: '卯時 · Mǎo shí',
     element: 'metal',
     meaning: 'The body wakes and lets go. A new cycle of yang energy rises.',
+    meaningCn: '身觉醒，体放下。新一轮阳气始升。',
     function: 'The large intestine releases what is no longer needed. The ideal hour for a bowel movement, drinking warm water, and beginning the day with intention.',
     practices: [
       'Drink a warm glass of water on rising',
@@ -155,6 +159,7 @@ const ORGANS = [
     chineseHour: '辰時 · Chén shí',
     element: 'earth',
     meaning: 'Earth nourishes. The stomach digests most efficiently — eat your richest meal.',
+    meaningCn: '土气养身。胃运化最盛之时——当饱餐于此。',
     function: "The stomach's digestive fire is at its peak. A warm, substantial breakfast eaten now nourishes the entire day. Skipping breakfast is considered a major insult to spleen and stomach qi.",
     practices: [
       'Eat a warm, nourishing breakfast — congee, oats, eggs',
@@ -192,6 +197,7 @@ const ORGANS = [
     chineseHour: '巳時 · Sì shí',
     element: 'earth',
     meaning: 'The spleen transforms food into qi and blood — energy and clarity peak.',
+    meaningCn: '脾化水谷为气血——精力与神思俱清。',
     function: 'The spleen extracts nutrients and energy from breakfast. The mind is sharpest here. This is the prime window for focused, demanding mental work.',
     practices: [
       'Tackle your most demanding mental work',
@@ -228,6 +234,7 @@ const ORGANS = [
     chineseHour: '午時 · Wǔ shí',
     element: 'fire',
     meaning: 'Yang reaches its zenith. The heart governs the spirit and the joy of being alive.',
+    meaningCn: '阳气至极。心主神明，主生命之喜。',
     function: 'At solar noon, yang energy peaks. The heart, ruler of the meridians, circulates blood and houses the shen (spirit). A short rest here protects the heart for the rest of the day.',
     practices: [
       'Eat a moderate, nourishing lunch',
@@ -265,6 +272,7 @@ const ORGANS = [
     chineseHour: '未時 · Wèi shí',
     element: 'fire',
     meaning: 'The pure is separated from the impure — clarity follows nourishment.',
+    meaningCn: '受盛化物，泌别清浊——纳养既毕，清自现矣。',
     function: 'The small intestine sorts what to absorb and what to release, both physically and mentally. Lunch eaten before this window is now being processed. Drink water to support assimilation.',
     practices: [
       'Drink warm water steadily',
@@ -300,6 +308,7 @@ const ORGANS = [
     chineseHour: '申時 · Shēn shí',
     element: 'water',
     meaning: 'Memory and learning sharpen. The bladder meridian travels along the spine and head.',
+    meaningCn: '记性与学力俱锐。膀胱经循脊柱而上达于头。',
     function: 'The bladder meridian governs the spine and supports the brain. A strong window for learning, study, and exercise. Drinking water helps flush the system.',
     practices: [
       'Study, read, or learn something new',
@@ -336,6 +345,7 @@ const ORGANS = [
     chineseHour: '酉時 · Yǒu shí',
     element: 'water',
     meaning: 'The kidneys store essence (jīng) — the foundation of life and longevity.',
+    meaningCn: '肾藏精——为生命与长寿之本。',
     function: "TCM regards the kidneys as the body's root, holding inherited essence. This is a gentle hour for restoration. A light, warm dinner now supports the kidneys overnight.",
     practices: [
       'Eat a light, warm dinner — soups, stews, cooked vegetables',
@@ -373,6 +383,7 @@ const ORGANS = [
     chineseHour: '戌時 · Xū shí',
     element: 'fire',
     meaning: "The heart's protector. Time for warmth, connection, and emotional release.",
+    meaningCn: '心之外护。此时宜温情、相聚、舒情志。',
     function: 'The pericardium shields the heart and is closely linked to circulation and emotional regulation. This is the relational hour — for family, intimacy, and gentle conversation.',
     practices: [
       'Connect with loved ones',
@@ -409,6 +420,7 @@ const ORGANS = [
     chineseHour: '亥時 · Hài shí',
     element: 'fire',
     meaning: "The body's waterways harmonise. Yin deepens. Prepare for sleep.",
+    meaningCn: '体内水道相合。阴气加深，宜准备入睡。',
     function: "The Triple Burner (San Jiao) regulates the flow of fluids and qi through the body's three cavities. As yin gathers, the entire system prepares for the deep restoration of night.",
     practices: [
       'Dim the lights — let the body know night has come',
