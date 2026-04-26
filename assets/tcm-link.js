@@ -20,9 +20,22 @@
     return tooltip;
   }
 
+  // Pick the citation URL appropriate to the current language mode.
+  // 简/繁/中 prefer Chinese-source references (yibian.hopto.org for
+  // acupuncture, shidianguji.com for classical texts); EN keeps Wikipedia.
+  function pickUrl(entry) {
+    const mode = (window.tcmScript && window.tcmScript.get && window.tcmScript.get()) || 's';
+    if (mode !== 'e' && entry.urlCn) return entry.urlCn;
+    return entry.url;
+  }
+
   function buildTooltipHTML(entry) {
-    const linkLabel = entry.page ? '→ Open page' : '→ Read on Wikipedia';
-    const linkHref = entry.page || entry.url || '#';
+    const url = pickUrl(entry);
+    const isCn = url && url !== entry.url;
+    const linkLabel = entry.page ? '→ Open page'
+                    : isCn      ? '→ 查阅原典'
+                                : '→ Read on Wikipedia';
+    const linkHref = entry.page || url || '#';
     const linkAttrs = entry.page ? '' : 'target="_blank" rel="noopener"';
     return `
       <div class="tt-cn">${entry.cn || ''}</div>
@@ -103,11 +116,11 @@
       el.addEventListener('focus', () => showTooltip(el, entry));
       el.addEventListener('blur', hideTooltip);
 
-      // Tap → open the link (or internal page)
+      // Tap → open the link (or internal page). URL respects the
+      // currently selected language mode (CN sources for s/t/c).
       el.addEventListener('click', (e) => {
-        // Allow plain text spans to navigate
         if (el.tagName !== 'A') {
-          const href = entry.page || entry.url;
+          const href = entry.page || pickUrl(entry);
           if (!href) return;
           if (entry.page) {
             window.location.href = href;
@@ -137,8 +150,9 @@
     if (!entry) return;
     if (entry.page) {
       window.location.href = entry.page;
-    } else if (entry.url) {
-      window.open(entry.url, '_blank', 'noopener');
+    } else {
+      const url = pickUrl(entry);
+      if (url) window.open(url, '_blank', 'noopener');
     }
   };
 

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Today · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426j">
+<link rel="stylesheet" href="assets/style.css?v=20260426k">
 </head>
 <body data-page="today">
 
@@ -32,8 +32,9 @@
       <header class="page-head">
         <div class="cn-mark" data-zh-auto>此刻</div>
         <div class="eyebrow">Cǐ Kè · This Moment</div>
-        <h1>The hour that is now</h1>
-        <p class="subtitle">The clock at left tracks the twelve <span data-term="meridian">meridians</span> in real time, following the rhythm of <span data-term="ziwu-liuzhu">子午流注</span> (Midnight–Noon Ebb-and-Flow). Click any sector — or wait, and the rhythm of your day will reveal itself.</p>
+        <h1 data-zh-s="此时此刻" data-zh-t="此時此刻">The hour that is now</h1>
+        <p class="subtitle subtitle-en">The clock at left tracks the twelve <span data-term="meridian">meridians</span> in real time, following the rhythm of <span data-term="ziwu-liuzhu">子午流注</span> (Midnight–Noon Ebb-and-Flow). Click any sector — or wait, and the rhythm of your day will reveal itself.</p>
+        <p class="subtitle subtitle-cn"><span data-zh-auto>左侧时辰钟实时追踪十二</span><span data-term="meridian">经络</span><span data-zh-auto>之当令，依</span><span data-term="ziwu-liuzhu">子午流注</span><span data-zh-auto>（半夜与日中之气血盈虚）之节律而行。点击任一时辰可阅其详——或静候，日之节律自会显现。</span></p>
       </header>
       <article class="detail-card" id="detail-card"></article>
 
@@ -41,12 +42,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426j"></script>
-<script src="assets/glossary.js?v=20260426j"></script>
-<script src="assets/clock.js?v=20260426j"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426j"></script>
-<script src="assets/tcm-music.js?v=20260426j"></script>
-<script src="assets/tcm-link.js?v=20260426j"></script>
+<script src="assets/data.js?v=20260426k"></script>
+<script src="assets/glossary.js?v=20260426k"></script>
+<script src="assets/clock.js?v=20260426k"></script>
+<script src="assets/tcm-script-toggle.js?v=20260426k"></script>
+<script src="assets/tcm-music.js?v=20260426k"></script>
+<script src="assets/tcm-link.js?v=20260426k"></script>
 <script>
 /* TODAY page: render detail card for the active or URL-specified hour */
 function renderKG(kg, el) {
@@ -70,31 +71,59 @@ function renderKG(kg, el) {
     </div>`;
 }
 
+const ELEMENT_CN = { wood: '木', fire: '火', earth: '土', metal: '金', water: '水' };
+
 function renderDetail(i) {
   const o = ORGANS[i];
   const card = document.getElementById('detail-card');
   card.classList.add('fading');
   setTimeout(() => {
+    // Chinese-only fragments use authored fields when available;
+    // English-only fragments preserve the original prose. CSS swaps them.
+    const chineseHourCn = (o.chineseHour || '').split('·')[0].trim();
+    const enList = arr => (arr || []).map(p => `<li>${p}</li>`).join('');
+    const cnList = arr => (arr || []).map(p => `<li data-zh-auto>${p}</li>`).join('');
     card.innerHTML = `
       <div class="detail-header">
         <div class="seal" data-term="${o.cn}" data-zh-auto>${o.cn}</div>
         <div class="header-info">
           <div class="time">${String(o.start).padStart(2,'0')}:00 — ${String(o.end).padStart(2,'0')}:00</div>
-          <div class="organ-en">${o.organ} · ${o.pinyin}</div>
-          <div class="meta">
+          <div class="organ-en lang-en-only">${o.organ} · ${o.pinyin}</div>
+          <div class="meta lang-en-only">
             <span class="branch-cn">${o.chineseHour} · ${o.branch}时</span> · ${o.zodiacEmoji} ${o.zodiacEn} · <span class="el">${o.element.toUpperCase()}</span>
+          </div>
+          <div class="meta lang-cn-only">
+            <span class="branch-cn">${chineseHourCn} · ${o.branch}时</span> · ${o.zodiacEmoji} ${o.zodiac} · <span class="el">${ELEMENT_CN[o.element] || o.element}</span>
           </div>
         </div>
       </div>
       <div class="detail-body">
-        <div><h3>Essence of the hour</h3><p class="meaning">"${o.meaning}"</p></div>
-        <div><h3>What is happening</h3><p>${o.function}</p></div>
-        <div><h3>Practices that nourish</h3>
-          <ul class="practice-list">${o.practices.map(p => `<li>${p}</li>`).join('')}</ul></div>
-        <div><h3>What to avoid</h3>
-          <ul class="avoid-list">${o.avoid.map(p => `<li>${p}</li>`).join('')}</ul></div>
+        <div>
+          <h3 class="lang-en-only">Essence of the hour</h3>
+          <h3 class="lang-cn-only" data-zh-auto>时辰之要</h3>
+          <p class="meaning lang-en-only">"${o.meaning}"</p>
+          <p class="meaning lang-cn-only" data-zh-auto>「${o.meaningCn || o.meaning}」</p>
+        </div>
+        <div>
+          <h3 class="lang-en-only">What is happening</h3>
+          <h3 class="lang-cn-only" data-zh-auto>此时之机</h3>
+          <p class="lang-en-only">${o.function}</p>
+          <p class="lang-cn-only" data-zh-auto>${o.functionCn || o.function}</p>
+        </div>
+        <div>
+          <h3 class="lang-en-only">Practices that nourish</h3>
+          <h3 class="lang-cn-only" data-zh-auto>所宜之事</h3>
+          <ul class="practice-list lang-en-only">${enList(o.practices)}</ul>
+          <ul class="practice-list lang-cn-only">${cnList(o.practicesCn || o.practices)}</ul>
+        </div>
+        <div>
+          <h3 class="lang-en-only">What to avoid</h3>
+          <h3 class="lang-cn-only" data-zh-auto>所忌之事</h3>
+          <ul class="avoid-list lang-en-only">${enList(o.avoid)}</ul>
+          <ul class="avoid-list lang-cn-only">${cnList(o.avoidCn || o.avoid)}</ul>
+        </div>
         <div class="music-row">
-          <div class="music-tone"><span data-term="${o.tone[0]}">${o.tone}</span><small>${o.toneEn}</small></div>
+          <div class="music-tone"><span data-term="${o.tone[0]}">${o.tone}</span><small class="lang-en-only">${o.toneEn}</small></div>
           <div class="music-effect">${o.musicEffect}
             <span class="tracks">${o.tracks.map(t => `<span>${t}</span>`).join('')}</span>
           </div>

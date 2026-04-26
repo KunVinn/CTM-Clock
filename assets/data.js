@@ -14,15 +14,26 @@ const ORGANS = [
     meaning: 'The day is born in stillness. Yang qi begins its slow ascent from the deepest yin.',
     meaningCn: '一日始于静中。阳气自至阴之处徐徐而升。',
     function: 'In TCM the gallbladder governs decisiveness and the renewal of cellular tissue overnight. Sleep at this hour is the most restorative of the entire 24-hour cycle. Bile is secreted and yang qi quietly seeded.',
+    functionCn: '中医谓胆主决断，夜半主藏腑细胞之新生。子时之熟睡，乃二十四时辰中最养人之眠。胆汁分泌，阳气暗孕。',
     practices: [
       'Be in deep sleep — ideally asleep before 23:00',
       'Keep the bedroom dark, cool, and quiet',
       'Avoid bright screens and stimulating thoughts'
     ],
+    practicesCn: [
+      '深度睡眠——以亥时（21:00 前）入睡为佳',
+      '卧室宜暗、宜凉、宜静',
+      '避明亮屏幕与劳神思虑'
+    ],
     avoid: [
       'Late-night meals or heavy snacking',
       'Caffeine, alcohol, intense work',
       'Decision-making — the mind is meant to rest'
+    ],
+    avoidCn: [
+      '夜半进食与零食',
+      '咖啡、酒、剧烈劳作',
+      '决断思虑——此时神当休'
     ],
     tone: '角音', toneEn: 'Jué (E note)',
     musicEffect: '疏肝利胆，调和气血 · soothes the liver-gallbladder axis, harmonises qi and blood',
@@ -50,15 +61,26 @@ const ORGANS = [
     meaning: 'The liver cleanses, regenerates, and stores the blood while you sleep.',
     meaningCn: '人卧则血归于肝——肝在睡梦中涤血、再生、藏血。',
     function: 'TCM teaches that the liver detoxifies and replenishes blood during these hours. Waking regularly between 1 and 3 a.m. may suggest liver qi imbalance — often linked to stress, anger, or excess alcohol.',
+    functionCn: '中医谓丑时肝主疏泄、藏血。卧则血归于肝，浊去而清存。若每于丑时（凌晨 1–3 时）惊醒，多属肝气郁滞——常因忧思、恼怒或酒食过度而致。',
     practices: [
       'Remain in deep sleep',
       'Earlier in the day: reduce alcohol and processed foods',
       'Practice forgiveness and emotional release before bed'
     ],
+    practicesCn: [
+      '继续深睡，勿令惊扰',
+      '日间减酒少食加工之物',
+      '睡前宽心释怒，畅其情志'
+    ],
     avoid: [
       'Working late into the night',
       'Suppressing strong emotions like anger',
       'Heavy fats and alcohol consumed before bed'
+    ],
+    avoidCn: [
+      '熬夜劳作至深',
+      '强忍怒火，郁结于胸',
+      '睡前重油厚味与酒'
     ],
     tone: '角音', toneEn: 'Jué (E note)',
     musicEffect: '解郁疏肝，平复情绪 · resolves stagnation, calms the emotions',
@@ -87,15 +109,26 @@ const ORGANS = [
     meaning: 'Breath returns to the body. The lungs distribute fresh qi to every meridian.',
     meaningCn: '气息归身。肺将清气布于诸经。',
     function: 'The lungs govern qi and protect the body. Waking with cough or shortness of breath at this hour may indicate lung-qi weakness. This is the hour of subtle renewal.',
+    functionCn: '肺主气、司呼吸、卫外御邪。于此寅时早醒、咳喘者，多属肺气虚。此乃身体最微妙之更新时辰。',
     practices: [
       'Sleep deeply — the lungs need stillness to circulate qi',
       'If awake: gentle deep breathing or quiet meditation',
       'Open a window briefly for fresh morning air'
     ],
+    practicesCn: [
+      '继续安睡——肺气需静以行',
+      '若早醒，作深长缓慢之呼吸数次再卧',
+      '稍开窗扉，纳清晨之清气'
+    ],
     avoid: [
       'Cold drafts directly on the chest',
       'Smoking or polluted environments',
       'Forceful exercise — the body is still gathering qi'
+    ],
+    avoidCn: [
+      '寒风直吹胸背',
+      '吸烟与污浊空气',
+      '剧烈运动——身正聚气'
     ],
     tone: '商音', toneEn: 'Shāng (D note)',
     musicEffect: '润肺降燥，清肃呼吸 · moistens the lungs, calms the breath',
@@ -124,16 +157,28 @@ const ORGANS = [
     meaning: 'The body wakes and lets go. A new cycle of yang energy rises.',
     meaningCn: '身觉醒，体放下。新一轮阳气始升。',
     function: 'The large intestine releases what is no longer needed. The ideal hour for a bowel movement, drinking warm water, and beginning the day with intention.',
+    functionCn: '大肠主传导糟粕。卯时为排便、饮温水、用心起头之最佳时辰。',
     practices: [
       'Drink a warm glass of water on rising',
       'Allow time for a natural bowel movement',
       'Gentle stretching or qigong to wake the body',
       'Open curtains — let morning light enter'
     ],
+    practicesCn: [
+      '醒后即饮温开水一盏',
+      '从容如厕，不强不憋',
+      '舒缓伸展或习气功以唤身',
+      '拉开窗帘，迎晨光入室'
+    ],
     avoid: [
       'Rushing immediately into stress or screens',
       'Skipping the morning toilet routine',
       'Cold or icy drinks first thing'
+    ],
+    avoidCn: [
+      '甫醒即急于事务、手机',
+      '忽略晨间排便',
+      '清晨即饮冷水冰品'
     ],
     tone: '商音 / 宫音', toneEn: 'Shāng / Gōng',
     musicEffect: '通腑润肠，代谢调理 · supports elimination and metabolism',
@@ -161,16 +206,28 @@ const ORGANS = [
     meaning: 'Earth nourishes. The stomach digests most efficiently — eat your richest meal.',
     meaningCn: '土气养身。胃运化最盛之时——当饱餐于此。',
     function: "The stomach's digestive fire is at its peak. A warm, substantial breakfast eaten now nourishes the entire day. Skipping breakfast is considered a major insult to spleen and stomach qi.",
+    functionCn: '胃之消化之火，于辰时最旺。此时一餐温热丰盛之早膳，可养一整日之气。古谓不食早餐为伤脾胃之大忌。',
     practices: [
       'Eat a warm, nourishing breakfast — congee, oats, eggs',
       'Sit down and eat without distraction',
       'Chew thoroughly; sip warm water, not iced',
       'Include cooked grains and warming spices'
     ],
+    practicesCn: [
+      '吃温热而滋养之早餐——粥、燕麦、鸡蛋皆宜',
+      '坐下安心而食，勿事他务',
+      '细嚼慢咽，饮温水，不宜冰',
+      '兼用熟谷与温性辛香之品'
+    ],
     avoid: [
       'Skipping breakfast',
       'Cold smoothies, raw salads, ice-cold drinks',
       'Eating while standing, walking, or working'
+    ],
+    avoidCn: [
+      '不食早餐',
+      '冷饮冰沙、生菜沙拉、冰水',
+      '立食、行食、边食边事'
     ],
     tone: '宫音 / 羽音', toneEn: 'Gōng / Yǔ',
     musicEffect: '健脾和胃，促进运化 · strengthens the spleen-stomach, supports transformation',
@@ -199,15 +256,26 @@ const ORGANS = [
     meaning: 'The spleen transforms food into qi and blood — energy and clarity peak.',
     meaningCn: '脾化水谷为气血——精力与神思俱清。',
     function: 'The spleen extracts nutrients and energy from breakfast. The mind is sharpest here. This is the prime window for focused, demanding mental work.',
+    functionCn: '脾运化早餐之水谷精微，化为气血。此时神思最为清明，宜事繁难深思之业。',
     practices: [
       'Tackle your most demanding mental work',
       'Stay hydrated with warm or room-temperature water',
       'Take a brief walk if you feel sluggish'
     ],
+    practicesCn: [
+      '处理最需用脑用心之事',
+      '常饮温水或常温水',
+      '若觉倦怠，起身少行片刻'
+    ],
     avoid: [
       'Sugary snacks that strain the spleen',
       'Excessive worry or overthinking',
       'Sitting still for the entire two hours'
+    ],
+    avoidCn: [
+      '甜食零食——伤脾',
+      '思虑过度，忧愁缠心',
+      '久坐不动满二时辰'
     ],
     tone: '宫音 / 徵音', toneEn: 'Gōng / Zhǐ',
     musicEffect: "益气运化，强健肌理 · boosts qi, strengthens the body's structure",
@@ -236,16 +304,28 @@ const ORGANS = [
     meaning: 'Yang reaches its zenith. The heart governs the spirit and the joy of being alive.',
     meaningCn: '阳气至极。心主神明，主生命之喜。',
     function: 'At solar noon, yang energy peaks. The heart, ruler of the meridians, circulates blood and houses the shen (spirit). A short rest here protects the heart for the rest of the day.',
+    functionCn: '日中之时，阳气至盛。心为君主之官，行血脉，藏神明。此时小憩片刻，以养心安神，可固一日之根本。',
     practices: [
       'Eat a moderate, nourishing lunch',
       'Take a 15–30 minute rest or quiet pause',
       'Connect with someone — laughter nourishes heart qi',
       'Avoid intense conflict or strain'
     ],
+    practicesCn: [
+      '午餐宜适量、营养而不过饱',
+      '小憩 15–30 分钟，或静坐片刻',
+      '与所爱之人相谈——笑可养心',
+      '避剧烈争执与紧张'
+    ],
     avoid: [
       'Heavy or greasy lunches',
       'Vigorous exercise during peak heat',
       'Skipping rest and pushing through'
+    ],
+    avoidCn: [
+      '午餐重油厚腻',
+      '日中烈日下剧烈运动',
+      '忽略小憩，强力赶工'
     ],
     tone: '徵音 / 羽音', toneEn: 'Zhǐ / Yǔ',
     musicEffect: '宁心安神，调和阴阳 · calms the spirit, harmonises yin and yang',
@@ -274,15 +354,26 @@ const ORGANS = [
     meaning: 'The pure is separated from the impure — clarity follows nourishment.',
     meaningCn: '受盛化物，泌别清浊——纳养既毕，清自现矣。',
     function: 'The small intestine sorts what to absorb and what to release, both physically and mentally. Lunch eaten before this window is now being processed. Drink water to support assimilation.',
+    functionCn: '小肠主受盛化物、泌别清浊——既别水谷之精，亦别神思之清浊。前所食午餐，此时正在化精。饮温水以助吸收。',
     practices: [
       'Drink warm water steadily',
       'Engage in detail-oriented or analytical work',
       'A brief walk supports digestion'
     ],
+    practicesCn: [
+      '徐饮温水以助化',
+      '宜处理需细致、分析之事',
+      '稍事散步，助消化'
+    ],
     avoid: [
       'Eating a heavy second meal during this window',
       'Cold drinks that quench digestive fire',
       'Emotionally charged conversations during digestion'
+    ],
+    avoidCn: [
+      '此时再饱餐',
+      '冷饮——熄消化之火',
+      '情绪激越之谈话扰消化'
     ],
     tone: '徵音 / 角音', toneEn: 'Zhǐ / Jué',
     musicEffect: '促进吸收，分化清浊 · supports absorption, separates clear from turbid',
@@ -310,16 +401,28 @@ const ORGANS = [
     meaning: 'Memory and learning sharpen. The bladder meridian travels along the spine and head.',
     meaningCn: '记性与学力俱锐。膀胱经循脊柱而上达于头。',
     function: 'The bladder meridian governs the spine and supports the brain. A strong window for learning, study, and exercise. Drinking water helps flush the system.',
+    functionCn: '膀胱经循脊柱而上达于脑，主一身阳气之外卫。申时为学习、读书、运动之佳时。多饮水可助水道通利。',
     practices: [
       'Study, read, or learn something new',
       'Drink plenty of water',
       'Gentle to moderate exercise',
       'Stand and stretch the spine often'
     ],
+    practicesCn: [
+      '读书、思考、习新事物',
+      '多饮温水',
+      '行轻至中度之运动',
+      '常起身舒展腰背脊柱'
+    ],
     avoid: [
       'Holding urination',
       'Dehydration — fatigue here is often thirst',
       'Slumping at a desk'
+    ],
+    avoidCn: [
+      '憋尿',
+      '不饮水——此时之倦多由渴',
+      '长时间伏案塌肩'
     ],
     tone: '羽音 / 商音', toneEn: 'Yǔ / Shāng',
     musicEffect: '利水排毒，疏通经络 · drains dampness, opens the meridians',
@@ -347,16 +450,28 @@ const ORGANS = [
     meaning: 'The kidneys store essence (jīng) — the foundation of life and longevity.',
     meaningCn: '肾藏精——为生命与长寿之本。',
     function: "TCM regards the kidneys as the body's root, holding inherited essence. This is a gentle hour for restoration. A light, warm dinner now supports the kidneys overnight.",
+    functionCn: '中医谓肾为先天之本，藏先天之精。酉时宜静养调息。此时一餐温淡之晚膳，可助肾气安养至夜。',
     practices: [
       'Eat a light, warm dinner — soups, stews, cooked vegetables',
       'Include kidney-supporting foods: black beans, walnuts, sesame',
       'Begin to slow the pace of the day',
       'Stretch the lower back gently'
     ],
+    practicesCn: [
+      '晚餐宜清淡温热——汤、炖菜、煮熟蔬',
+      '多食补肾之物：黑豆、核桃、黑芝麻',
+      '渐缓日间之节奏',
+      '轻舒腰背'
+    ],
     avoid: [
       'Heavy, late, or salty meals',
       'Cold raw foods that drain kidney yang',
       'Pushing through fatigue with stimulants'
+    ],
+    avoidCn: [
+      '晚餐重口、过咸或过晚',
+      '生冷之食——耗肾阳',
+      '以咖啡浓茶强撑倦怠'
     ],
     tone: '羽音', toneEn: 'Yǔ (A note)',
     musicEffect: '滋补肾气，固本培元 · nourishes essence, anchors the root',
@@ -385,16 +500,28 @@ const ORGANS = [
     meaning: "The heart's protector. Time for warmth, connection, and emotional release.",
     meaningCn: '心之外护。此时宜温情、相聚、舒情志。',
     function: 'The pericardium shields the heart and is closely linked to circulation and emotional regulation. This is the relational hour — for family, intimacy, and gentle conversation.',
+    functionCn: '心包为心之外卫，主血脉之运行，与情志调和最为密切。戌时为人伦相聚之时——宜与家人相处、温言细语。',
     practices: [
       'Connect with loved ones',
       'A leisurely walk after dinner',
       'Gentle yoga, journaling, or reading',
       'Warm (not hot) bath or foot soak'
     ],
+    practicesCn: [
+      '与家人朋友相聚共度',
+      '饭后从容散步',
+      '柔缓瑜伽、写日记或阅读',
+      '温水（非烫）沐浴或泡脚'
+    ],
     avoid: [
       'Heavy work or overtime',
       'Stressful news, tense arguments',
       'Eating large meals now'
+    ],
+    avoidCn: [
+      '繁重劳作或加班',
+      '紧张新闻、激烈争论',
+      '此时大餐'
     ],
     tone: '徵音 / 角音', toneEn: 'Zhǐ / Jué',
     musicEffect: '宁心定志，调和情志 · settles the spirit, harmonises emotion',
@@ -422,16 +549,28 @@ const ORGANS = [
     meaning: "The body's waterways harmonise. Yin deepens. Prepare for sleep.",
     meaningCn: '体内水道相合。阴气加深，宜准备入睡。',
     function: "The Triple Burner (San Jiao) regulates the flow of fluids and qi through the body's three cavities. As yin gathers, the entire system prepares for the deep restoration of night.",
+    functionCn: '三焦为「孤府」，统摄水液运行，与上中下三焦之气化。亥时阴气渐聚，全身始入夜养之深修。',
     practices: [
       'Dim the lights — let the body know night has come',
       'Stop working; close screens',
       'Read something calming, meditate, or do gentle breathing',
       'Aim to be in bed by 22:30'
     ],
+    practicesCn: [
+      '调暗灯光——使身知夜已临',
+      '停事务，闭屏幕',
+      '读宁静书籍、静坐或调息',
+      '于亥末（22:30 前）入卧'
+    ],
     avoid: [
       'Bright screens, especially blue light',
       'Vigorous exercise or heated debate',
       'Late caffeine or large drinks'
+    ],
+    avoidCn: [
+      '明亮屏幕，尤其蓝光',
+      '剧烈运动或激烈辩论',
+      '晚间咖啡因或大量饮水'
     ],
     tone: '商音 / 宫音', toneEn: 'Shāng / Gōng',
     musicEffect: '平衡阴阳，通调水道 · balances yin-yang, regulates the waterways',

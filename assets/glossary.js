@@ -53,7 +53,8 @@ const TERMS = {
   'huangdi-neijing': {
     cn: '黃帝內經 · Huáng Dì Nèi Jīng', en: "Yellow Emperor's Inner Canon",
     def: 'The foundational classic of Chinese medicine, compiled c. 100 BCE; source of most TCM theory.',
-    url: 'https://en.wikipedia.org/wiki/Huangdi_Neijing'
+    url: 'https://en.wikipedia.org/wiki/Huangdi_Neijing',
+    urlCn: 'https://www.shidianguji.com/book/SBCK072'
   },
 
   // ================== EARTHLY BRANCHES & ZODIAC ==================
@@ -109,62 +110,74 @@ const TERMS = {
   'liver-tcm': {
     cn: '肝 · Gān', en: 'Liver',
     def: 'In TCM the Liver governs the free flow of qi, stores blood, houses the hún (ethereal soul), and opens to the eyes.',
-    url: 'https://en.wikipedia.org/wiki/Liver_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Liver_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=15'
   },
   'heart-tcm': {
     cn: '心 · Xīn', en: 'Heart',
     def: 'The "emperor" organ; governs blood, houses the shén (spirit), and opens to the tongue.',
-    url: 'https://en.wikipedia.org/wiki/Heart_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Heart_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=11'
   },
   'spleen-tcm': {
     cn: '脾 · Pí', en: 'Spleen',
     def: 'Governs transformation of food into qi and blood; controls muscles, the four limbs, and houses yì (intent).',
-    url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=13'
   },
   'lung-tcm': {
     cn: '肺 · Fèi', en: 'Lung',
     def: 'Governs qi and breathing, regulates the water passages, controls the skin, houses pò (corporeal soul).',
-    url: 'https://en.wikipedia.org/wiki/Lung_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Lung_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=14'
   },
   'kidney-tcm': {
     cn: '腎 / 肾 · Shèn', en: 'Kidney',
     def: 'Stores essence (jīng), governs water, fills the bones and marrow, houses zhì (will).',
-    url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=12'
   },
   'gallbladder-tcm': {
     cn: '膽 / 胆 · Dǎn', en: 'Gallbladder',
     def: 'Stores and secretes bile; governs decisiveness; paired with the Liver in the Wood phase.',
-    url: 'https://en.wikipedia.org/wiki/Gallbladder_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Gallbladder_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=24'
   },
   'stomach-tcm': {
     cn: '胃 · Wèi', en: 'Stomach',
     def: 'The "sea of grain and water"; rots and ripens food. Paired with the Spleen in the Earth phase.',
-    url: 'https://en.wikipedia.org/wiki/Stomach_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Stomach_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=22'
   },
   'small-intestine-tcm': {
     cn: '小腸 / 小肠 · Xiǎo Cháng', en: 'Small Intestine',
     def: 'Separates the clear from the turbid in food. Paired with the Heart in the Fire phase.',
-    url: 'https://en.wikipedia.org/wiki/Small_intestine_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Small_intestine_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=21'
   },
   'large-intestine-tcm': {
     cn: '大腸 / 大肠 · Dà Cháng', en: 'Large Intestine',
     def: 'Receives waste and conducts elimination. Paired with the Lung in the Metal phase.',
-    url: 'https://en.wikipedia.org/wiki/Large_intestine_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Large_intestine_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=23'
   },
   'bladder-tcm': {
     cn: '膀胱 · Páng Guāng', en: 'Bladder',
     def: 'Stores and excretes urine; its meridian runs the entire spine. Paired with the Kidney in the Water phase.',
-    url: 'https://en.wikipedia.org/wiki/Urinary_bladder_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Urinary_bladder_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=25'
   },
   'pericardium-tcm': {
     cn: '心包 · Xīn Bāo', en: 'Pericardium',
     def: "The Heart's protector; first line of defense against external pathogens reaching the heart.",
-    url: 'https://en.wikipedia.org/wiki/Pericardium_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Pericardium_(Chinese_medicine)',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=20'
   },
   'sanjiao': {
     cn: '三焦 · Sān Jiāo', en: 'Triple Burner',
     def: "Coordinates qi and fluid metabolism through the body's three cavities (chest, abdomen, pelvis).",
-    url: 'https://en.wikipedia.org/wiki/San_Jiao'
+    url: 'https://en.wikipedia.org/wiki/San_Jiao',
+    urlCn: 'https://yibian.hopto.org/zang/?gid=26'
   },
 
   // ================== FIVE TONES ==================
