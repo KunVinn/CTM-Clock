@@ -242,13 +242,14 @@
     // producing inauthentic phrasing. Translation is opt-in via a banner
     // button so the user explicitly accepts when they want a Gemini fill.
     if (dir === 'c') {
-      const stillMissing = autoApplyChineseFromCache(displayDir)
-                              .filter(s => s.textContent === s.dataset.zhTrans);
-      if (stillMissing.length > 0) {
-        showOptInTranslateBanner(stillMissing.length, displayDir);
-      } else {
-        hideTranslateBanner();
-      }
+      // Apply whatever Chinese is authored in the markup (.cn, .cn-mark,
+      // .lang-cn-only siblings, [data-zh-auto], data-zh-s/data-zh-t) plus
+      // any prior cached translations the user opted into. Don't nag
+      // about leftover English — paragraphs without authored Chinese are
+      // intentionally left as-is and the user can ignore or get to them
+      // later with hand-authoring.
+      autoApplyChineseFromCache(displayDir);
+      hideTranslateBanner();
     } else {
       restoreEnglishFromTranslations();
       hideTranslateBanner();
