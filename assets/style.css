@@ -2074,15 +2074,26 @@ a:hover { color: var(--gold-bright); }
   position: relative;
 }
 .photo-fallback-row {
-  margin-bottom: 1rem;
-  padding: 0.5rem 0.7rem;
+  margin: 0.4rem 0 1rem;
+  font-size: 0.74rem;
+  color: var(--ink-mute);
+}
+.photo-fallback-row > summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-block;
+  padding: 0.3rem 0.5rem;
   border: 1px dashed var(--line);
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.18);
-  color: var(--ink-mute);
-  font-size: 0.74rem;
   font-style: italic;
+  user-select: none;
 }
+.photo-fallback-row > summary::-webkit-details-marker { display: none; }
+.photo-fallback-row > summary:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+.photo-fallback-row[open] > summary { color: var(--gold-bright); border-color: var(--gold); }
 .photo-fallback-row input[type="file"] {
   font-style: normal;
   color: var(--ink-soft);

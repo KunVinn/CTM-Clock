@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426ao">
+<link rel="stylesheet" href="assets/style.css?v=20260428a">
 </head>
 <body data-page="tongue">
 
@@ -98,11 +98,11 @@
         <p class="desc lang-cn-only" data-zh-auto>拍下自己之舌照，对比下方色板，自察更为准确。</p>
 
         <div class="photo-privacy-note lang-en-only">
-          <strong>Your photo stays on your device.</strong> It is never uploaded, sent to any server, or shared with anyone — it lives only in your browser's memory while this page is open. Refresh the page and it's gone.
+          <strong>Your photo stays on your device by default.</strong> It is held only in this page's browser memory and is gone on refresh. The single exception is if you explicitly opt in to AI analysis below — that step sends the photo to Google under your own API key. The two practitioner-share buttons (email / mailto) attach the photo to a message you compose; they don't run unless you press Send.
         </div>
         <div class="photo-privacy-note lang-cn-only">
-          <strong data-zh-auto>您的照片仅存于本机。</strong>
-          <span data-zh-auto>不会上传，不会送往任何服务器，亦不会与任何人共享——只在本页打开时驻于浏览器内存之中。刷新页面，即归乌有。</span>
+          <strong data-zh-auto>默认情况下，您的照片仅存于本机。</strong>
+          <span data-zh-auto>仅驻于浏览器内存中，刷新即逝。唯一例外：若您下方主动选择「AI 分析」，照片将以您自有的 API 密钥送至 Google。「转发给医师」按钮（邮件 / mailto）则在您按下「发送」之前不会启动。</span>
         </div>
 
         <div class="photo-upload-row">
@@ -116,15 +116,15 @@
           </label>
         </div>
 
-        <!-- Plain visible file input as a guaranteed-working fallback.
-             If the styled buttons above fail on a particular mobile
-             browser (in-app webviews, unusual permissions, etc.) the
-             user can always upload via this picker. -->
-        <div class="photo-fallback-row">
-          <small data-zh-s="若上方按钮在您的浏览器中无效，可使用此处的原生选择器：" data-zh-t="若上方按鈕在您的瀏覽器中無效，可使用此處的原生選擇器：">If the buttons above don't open the picker on your browser, use this native picker:</small>
+        <!-- Plain visible file input — collapsed inside a <details> so it
+             doesn't add visual clutter, but still reachable in one tap on
+             any browser where the styled buttons above misbehave (in-app
+             webviews, unusual permissions, etc.). -->
+        <details class="photo-fallback-row">
+          <summary data-zh-s="按钮无效？使用浏览器原生选择器" data-zh-t="按鈕無效？使用瀏覽器原生選擇器">Trouble? Use the browser-native picker</summary>
           <input type="file" accept="image/*" id="photo-fallback-input" onclick="this.value=null"
-                 style="display:block;margin-top:0.4rem">
-        </div>
+                 style="display:block;margin-top:0.5rem">
+        </details>
 
         <!-- Live camera modal -->
         <div class="camera-modal" id="camera-modal" role="dialog" aria-modal="true" aria-labelledby="camera-title">
@@ -463,12 +463,12 @@
   </main>
 </div>
 
-<script src="assets/data.js?v=20260426ao"></script>
-<script src="assets/glossary.js?v=20260426ao"></script>
-<script src="assets/clock.js?v=20260426ao"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426ao"></script>
-<script src="assets/tcm-music.js?v=20260426ao"></script>
-<script src="assets/tcm-link.js?v=20260426ao"></script>
+<script src="assets/data.js?v=20260428a"></script>
+<script src="assets/glossary.js?v=20260428a"></script>
+<script src="assets/clock.js?v=20260428a"></script>
+<script src="assets/tcm-script-toggle.js?v=20260428a"></script>
+<script src="assets/tcm-music.js?v=20260428a"></script>
+<script src="assets/tcm-link.js?v=20260428a"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA

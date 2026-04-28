@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>医师 · TCM Practitioners · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260426ao">
+<link rel="stylesheet" href="assets/style.css?v=20260428a">
 </head>
 <body data-page="practitioners">
 
@@ -101,9 +101,7 @@
           <p class="prac-apply-contact">
             <strong class="lang-en-only">Contact:</strong>
             <strong class="lang-cn-only" data-zh-auto>联系方式：</strong>
-            <a href="mailto:practitioners@your-domain.example" style="color:var(--cinnabar-bright)">practitioners@your-domain.example</a>
-            <em class="lang-en-only" style="display:block;margin-top:0.4rem;font-size:0.78rem;color:var(--ink-mute)">— site owner: please update this email address before deploying</em>
-            <em class="lang-cn-only" style="display:block;margin-top:0.4rem;font-size:0.78rem;color:var(--ink-mute)" data-zh-auto>—— 站点维护者：发布前请更新此邮箱地址</em>
+            <a href="mailto:aikaikong@gmail.com" style="color:var(--cinnabar-bright)">aikaikong@gmail.com</a>
           </p>
         </div>
       </section>
@@ -134,12 +132,12 @@
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<script src="assets/data.js?v=20260426ao"></script>
-<script src="assets/glossary.js?v=20260426ao"></script>
-<script src="assets/clock.js?v=20260426ao"></script>
-<script src="assets/tcm-script-toggle.js?v=20260426ao"></script>
-<script src="assets/tcm-music.js?v=20260426ao"></script>
-<script src="assets/tcm-link.js?v=20260426ao"></script>
+<script src="assets/data.js?v=20260428a"></script>
+<script src="assets/glossary.js?v=20260428a"></script>
+<script src="assets/clock.js?v=20260428a"></script>
+<script src="assets/tcm-script-toggle.js?v=20260428a"></script>
+<script src="assets/tcm-music.js?v=20260428a"></script>
+<script src="assets/tcm-link.js?v=20260428a"></script>
 
 <script>
 /* ============================================================
@@ -150,20 +148,11 @@
 
 (async function () {
   const grid = document.getElementById('practitioners-grid');
-  let practitioners = [];
-  try {
-    const resp = await fetch('assets/practitioners.json', { cache: 'no-cache' });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    practitioners = await resp.json();
-  } catch (err) {
-    console.warn('Could not load practitioners list:', err);
-    grid.innerHTML = `<p class="practitioners-empty">Could not load the practitioner directory just now.</p>`;
-    return;
-  }
-
-  const active = practitioners.filter(p => p.active);
-
-  if (active.length === 0) {
+  if (!grid) return;
+  // Whatever happens, never let the initial 'Loading practitioners…'
+  // text persist. The default replacement is the empty-state UI; the
+  // catch path below overrides it with a clearer error message.
+  function renderEmpty(reason) {
     grid.innerHTML = `
       <div class="practitioners-empty-state">
         <p>
@@ -173,7 +162,26 @@
           the <a href="tongue.html" style="color:var(--gold-bright)">tongue diagnosis</a>
           form to send your report to a practitioner you already know.
         </p>
+        ${reason ? `<p style="font-size:0.78rem;color:var(--ink-mute);margin-top:0.6rem;font-style:italic">${reason}</p>` : ''}
       </div>`;
+  }
+
+  let practitioners = [];
+  try {
+    const resp = await fetch('assets/practitioners.json', { cache: 'no-cache' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    practitioners = await resp.json();
+    if (!Array.isArray(practitioners)) throw new Error('practitioners.json is not an array');
+  } catch (err) {
+    console.warn('Could not load practitioners list:', err);
+    renderEmpty(`(directory file unavailable — ${(err && err.message) || 'unknown error'})`);
+    return;
+  }
+
+  const active = practitioners.filter(p => p && p.active);
+
+  if (active.length === 0) {
+    renderEmpty();
     return;
   }
 

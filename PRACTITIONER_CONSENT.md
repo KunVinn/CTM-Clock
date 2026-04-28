@@ -8,7 +8,7 @@
 
 ## 1. What the listing contains / 收录内容 / Hva oppføringen inneholder
 
-The site `[your-domain.com]` would publish the following information about you:
+The site `drmusic.netlify.app` would publish the following information about you:
 
 | Field | Example |
 |---|---|
@@ -68,8 +68,8 @@ After withdrawal:
 
 | Role | Entity |
 |---|---|
-| Data controller | `[Your name / company]` |
-| Contact for privacy questions | `[Your email]` |
+| Data controller | The site owner — see contact below |
+| Contact for privacy questions | aikaikong@gmail.com |
 | Hosting | Netlify, Inc. (USA — adequate-decision via SCC) |
 | Email forwarding (optional) | Resend (USA — adequate-decision via SCC) |
 
@@ -99,7 +99,7 @@ By signing below you confirm:
 > I, **`__________________________________________`** *(full legal name)*,
 >
 > consent to the publication of the information in §1 above on the site
-> `[your-domain.com]` and to the use of my email address as described in §3.
+> `drmusic.netlify.app` and to the use of my email address as described in §3.
 >
 > I confirm I am the rightful owner of the email and (if applicable) photo
 > provided.
@@ -116,7 +116,7 @@ By signing below you confirm:
 
 ## 8. How to return this form
 
-Send this filled-out form back to **`[your email]`** as either:
+Send this filled-out form back to **aikaikong@gmail.com** as either:
 
 - A scanned PDF / photo of the signed paper form, or
 - A reply email with the §7 statement filled in (typed counts as a signature

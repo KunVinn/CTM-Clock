@@ -2,7 +2,29 @@
 
 > **Midnight–Noon Ebb-and-Flow** — a contemplative TCM educational site built around the classical 24-hour organ-meridian clock, with a bilingual knowledge base spanning 五行 Five Elements, 经络 meridians, 舌诊 tongue diagnosis, the 针灸 acupuncture point system, and a small directory of consented practitioners.
 
+**Live deploy:** [drmusic.netlify.app](https://drmusic.netlify.app)
+**Date-by-date changelog:** [CHANGELOG.md](CHANGELOG.md) — what's been added or fixed and why.
+
 A static, self-contained, single-deploy website. Drop the folder onto Netlify and it runs. No build step, no database, no user accounts, no external CDN dependencies (the cosmological clock and all UI render purely from local SVG and CSS).
+
+---
+
+## Current state — at a glance (2026-04)
+
+The site has grown a lot since the initial deploy. The high-level state today:
+
+- **Four-mode language toggle**: 简 (simplified bilingual) → 繁 (traditional bilingual) → EN (English-emphasized, Chinese still visible) → 中 (Chinese-only). Persists across sessions.
+- **SPA-style menu navigation**: clicking a top-bar menu item or changing the dropdown swaps only `.main-content` and keeps the music player + audio element + sidebar alive — music never stops mid-track during navigation.
+- **Authentic Chinese authoring** for every TCM-theory paragraph on the site (no machine back-translation in the canonical content). Source citations include 《灵枢》, 《素问》, 《针灸大成》, and Master 郭's clinical lineage notes.
+- **Acupuncture page · 妇科调经 section**: 痛经 / 月事不下 / 月经不调 with classical-Chinese descriptions and recommended acupoint lists, sourced from 郭氏针灸 + 《针灸大成·卷九·妇人门》.
+- **Tongue page · 9-row 舌与经络 table**: full classical channel + divergence + sinew connections per 《灵枢》, including 三焦 and 肺 (omitted from the prior 6-channel formulation).
+- **Photo + Camera**: native `<label>+<input capture=environment>` with `onclick="this.value=null"` plus deferred `value=''` reset in `change` — fixes the Firefox-on-Huawei "works once" bug. Touch devices use the native flow; desktop with webcam opens an in-page video modal with alignment guide. A collapsed `<details>` "Trouble?" link below provides a plain native picker fallback for restrictive in-app webviews.
+- **Privacy framing**: "your photo stays on your device" is now phrased conditionally — explicit acknowledgement that the AI-analysis section breaks that promise if opted into.
+- **Tongue zone-organ overlay**: with a photo loaded, "Show zone map" draws the five TCM zones (tip / front / center / sides / root) directly over the photo, each labelled with its organ correspondence.
+- **Music**: per-organ five-tone playlists, event-driven 时辰 transitions (responds to the clock's `hourchange` event the moment the organ changes — no 60-second poll lag), state persistence across page navigation, audio continuity across SPA-style menu changes.
+- **Glossary tooltips · Chinese-source references**: in 简/繁/中 modes, a clicked term opens its `urlCn` (yibian.hopto.org / shidianguji.com) instead of Wikipedia.
+
+See [CHANGELOG.md](CHANGELOG.md) for a dated record of each batch.
 
 ---
 
