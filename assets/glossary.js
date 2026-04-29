@@ -114,80 +114,82 @@ const TERMS = {
   },
 
   // ================== ORGANS (12 main + relevant) ==================
-  // For each organ in 简/繁/中 mode we link to its MERIDIAN page on
-  // yibian.hopto.org (which contains both the organ overview and the
-  // full acupoint listing) rather than the organ-only page.
+  // For each organ in 简/繁/中 mode we link to the rhky.com (人卫慕课)
+  // online TCM course on the meridians. Where a specific chapter card
+  // ID is known, we deep-link to that chapter; otherwise we fall back
+  // to the master course page (245888516) so the user can pick.
+  // Adding more specific chapter IDs as the user supplies them.
   'liver-tcm': {
     cn: '肝 · Gān', en: 'Liver',
     def: 'In TCM the Liver governs the free flow of qi, stores blood, houses the hún (ethereal soul), and opens to the eyes.',
     url: 'https://en.wikipedia.org/wiki/Liver_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6966'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'heart-tcm': {
     cn: '心 · Xīn', en: 'Heart',
     def: 'The "emperor" organ; governs blood, houses the shén (spirit), and opens to the tongue.',
     url: 'https://en.wikipedia.org/wiki/Heart_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6970'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'spleen-tcm': {
     cn: '脾 · Pí', en: 'Spleen',
     def: 'Governs transformation of food into qi and blood; controls muscles, the four limbs, and houses yì (intent).',
     url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6962'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'lung-tcm': {
     cn: '肺 · Fèi', en: 'Lung',
     def: 'Governs qi and breathing, regulates the water passages, controls the skin, houses pò (corporeal soul).',
     url: 'https://en.wikipedia.org/wiki/Lung_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6968'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005650?courseId=245888516&name=%E7%AC%AC%E4%BA%8C%E7%AB%A0+%E6%89%8B%E5%A4%AA%E9%98%B4%E8%82%BA%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'kidney-tcm': {
     cn: '腎 / 肾 · Shèn', en: 'Kidney',
     def: 'Stores essence (jīng), governs water, fills the bones and marrow, houses zhì (will).',
     url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6964'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'gallbladder-tcm': {
     cn: '膽 / 胆 · Dǎn', en: 'Gallbladder',
     def: 'Stores and secretes bile; governs decisiveness; paired with the Liver in the Wood phase.',
     url: 'https://en.wikipedia.org/wiki/Gallbladder_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6965'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'stomach-tcm': {
     cn: '胃 · Wèi', en: 'Stomach',
     def: 'The "sea of grain and water"; rots and ripens food. Paired with the Spleen in the Earth phase.',
     url: 'https://en.wikipedia.org/wiki/Stomach_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6961'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'small-intestine-tcm': {
     cn: '小腸 / 小肠 · Xiǎo Cháng', en: 'Small Intestine',
     def: 'Separates the clear from the turbid in food. Paired with the Heart in the Fire phase.',
     url: 'https://en.wikipedia.org/wiki/Small_intestine_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6969'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'large-intestine-tcm': {
     cn: '大腸 / 大肠 · Dà Cháng', en: 'Large Intestine',
     def: 'Receives waste and conducts elimination. Paired with the Lung in the Metal phase.',
     url: 'https://en.wikipedia.org/wiki/Large_intestine_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6967'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005678?courseId=245888516&name=%E7%AC%AC%E4%B8%89%E7%AB%A0+%E6%89%8B%E9%98%B3%E6%98%8E%E5%A4%A7%E8%82%A0%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'bladder-tcm': {
     cn: '膀胱 · Páng Guāng', en: 'Bladder',
     def: 'Stores and excretes urine; its meridian runs the entire spine. Paired with the Kidney in the Water phase.',
     url: 'https://en.wikipedia.org/wiki/Urinary_bladder_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6963'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'pericardium-tcm': {
     cn: '心包 · Xīn Bāo', en: 'Pericardium',
     def: "The Heart's protector; first line of defense against external pathogens reaching the heart.",
     url: 'https://en.wikipedia.org/wiki/Pericardium_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6972'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'sanjiao': {
     cn: '三焦 · Sān Jiāo', en: 'Triple Burner',
     def: "Coordinates qi and fluid metabolism through the body's three cavities (chest, abdomen, pelvis).",
     url: 'https://en.wikipedia.org/wiki/San_Jiao',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6971'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
 
   // ================== FIVE TONES ==================
@@ -495,13 +497,13 @@ const TERMS = {
     cn: '督脉 · Dū Mài', en: 'Governor Vessel',
     def: 'The "Sea of Yang Channels" running up the back midline from the perineum to the upper lip; governs all yang qi in the body.',
     url: 'https://en.wikipedia.org/wiki/Governing_vessel',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6944'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
   'ren-mai': {
     cn: '任脉 · Rèn Mài', en: 'Conception Vessel',
     def: 'The "Sea of Yin Channels" running up the front midline from the perineum to the lower lip; governs all yin and is central to gynecology and fertility.',
     url: 'https://en.wikipedia.org/wiki/Conception_vessel',
-    urlCn: 'https://yibian.hopto.org/shu/?sid=6943'
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocourse/245888516?user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry='
   },
 
   // Five-Shu point system
