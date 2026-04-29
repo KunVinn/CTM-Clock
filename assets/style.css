@@ -4376,3 +4376,389 @@ html[data-script="c"] .menu-btn { gap: 0; }
   text-decoration-style: dotted;
 }
 .share-remember-row .forget-link:hover { text-decoration-style: solid; }
+
+/* ============================================================
+   Tongue real-photo reference gallery — anatomical map,
+   five-zone real photos, three common teeth-marked patterns.
+   ============================================================ */
+.tongue-gallery-section {
+  margin: 2.5rem 0;
+}
+.tongue-gallery-section h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+.tongue-gallery-section h2 .cn {
+  font-family: var(--font-han);
+  margin-right: 0.4rem;
+  color: var(--gold-bright);
+}
+.tongue-gallery-section .desc {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin-bottom: 1.2rem;
+}
+.tongue-gallery-subhead {
+  margin: 1.8rem 0 0.7rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  border-bottom: 1px dotted var(--line);
+  padding-bottom: 0.35rem;
+}
+.tongue-gallery-subhead .cn {
+  font-family: var(--font-han);
+  margin-right: 0.5rem;
+  color: var(--gold-bright);
+}
+
+.tongue-overview-figure {
+  margin: 0 0 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+}
+.tongue-overview-figure img {
+  max-width: 100%;
+  max-height: 460px;
+  width: auto;
+  height: auto;
+  border-radius: 3px;
+  display: block;
+  margin: 0 auto 0.8rem;
+}
+.tongue-overview-figure figcaption {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-align: left;
+}
+.tongue-overview-figure figcaption .cn {
+  font-family: var(--font-han);
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--ink);
+}
+
+.tongue-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.tongue-photo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+}
+.tongue-photo-card[data-el="wood"]  { border-left: 3px solid var(--el-wood); }
+.tongue-photo-card[data-el="fire"]  { border-left: 3px solid var(--el-fire); }
+.tongue-photo-card[data-el="earth"] { border-left: 3px solid var(--el-earth); }
+.tongue-photo-card[data-el="metal"] { border-left: 3px solid var(--el-metal); }
+.tongue-photo-card[data-el="water"] { border-left: 3px solid var(--el-water); }
+.tongue-photo-card .tongue-photo-link {
+  display: block;
+  position: relative;
+  margin-bottom: 0.6rem;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: zoom-in;
+}
+.tongue-photo-card .tongue-photo-link::after {
+  content: '⤢';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: rgba(0,0,0,0.55);
+  color: var(--gold-bright);
+  font-size: 0.85rem;
+  padding: 1px 6px;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.tongue-photo-card .tongue-photo-link:hover::after { opacity: 1; }
+.tongue-photo-card img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  border-radius: 3px;
+  display: block;
+}
+.tongue-photo-card h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--gold-bright);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.03em;
+}
+.tongue-photo-card h4 .cn {
+  font-family: var(--font-han);
+  margin-right: 0.4rem;
+}
+.tongue-photo-signs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+.tongue-photo-signs li {
+  margin-bottom: 0.35rem;
+  padding-left: 0.7rem;
+  position: relative;
+  color: var(--ink-soft);
+}
+.tongue-photo-signs li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+.tongue-photo-signs li strong {
+  font-family: var(--font-han);
+  color: var(--cinnabar-bright);
+  font-weight: normal;
+}
+
+.tongue-pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+}
+.tongue-pattern-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.tongue-pattern-card[data-el="wood"]  { border-top: 3px solid var(--el-wood); }
+.tongue-pattern-card[data-el="earth"] { border-top: 3px solid var(--el-earth); }
+.tongue-pattern-card[data-el="water"] { border-top: 3px solid var(--el-water); }
+.tongue-pattern-card .tongue-photo-link {
+  display: block;
+  position: relative;
+  margin-bottom: 0.7rem;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: zoom-in;
+}
+.tongue-pattern-card .tongue-photo-link::after {
+  content: '⤢';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: rgba(0,0,0,0.55);
+  color: var(--gold-bright);
+  font-size: 0.9rem;
+  padding: 1px 6px;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.tongue-pattern-card img {
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 3px;
+  display: block;
+}
+
+/* CCTV reference charts — wide landscape posters */
+.tongue-chart-figure {
+  margin: 0 0 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.8rem;
+}
+.tongue-chart-figure .tongue-photo-link {
+  display: block;
+  position: relative;
+  background: var(--bg);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.tongue-chart-figure .tongue-photo-link::after {
+  content: '⤢';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: rgba(0,0,0,0.55);
+  color: var(--gold-bright);
+  font-size: 0.95rem;
+  padding: 2px 7px;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.tongue-chart-figure img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  display: block;
+}
+.tongue-chart-figure figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.tongue-chart-figure figcaption .cn {
+  font-family: var(--font-han);
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+}
+.tongue-pattern-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--gold-bright);
+  margin: 0 0 0.6rem;
+}
+.tongue-pattern-card h4 .cn {
+  font-family: var(--font-han);
+  margin-right: 0.4rem;
+}
+.tongue-pattern-body p {
+  font-size: 0.86rem;
+  line-height: 1.65;
+  margin: 0.35rem 0;
+  color: var(--ink-soft);
+}
+.tongue-pattern-body p strong {
+  font-family: var(--font-han);
+  color: var(--cinnabar-bright);
+  font-weight: normal;
+  margin-right: 0.2rem;
+}
+.tongue-pattern-body p em {
+  color: var(--gold-bright);
+  font-style: normal;
+  font-family: var(--font-han);
+}
+
+.tongue-gallery-note {
+  margin: 1.2rem 0 0;
+  padding: 0.9rem 1.1rem;
+  background: var(--bg-soft);
+  border-left: 3px solid var(--cinnabar);
+  border-radius: 2px;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+@media (max-width: 700px) {
+  .tongue-photo-card img { height: 160px; }
+  .tongue-pattern-card img { max-height: 220px; }
+  .tongue-photo-grid { grid-template-columns: 1fr 1fr; }
+  .tongue-pattern-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .tongue-photo-grid { grid-template-columns: 1fr; }
+  .tongue-photo-card img { height: 220px; }
+}
+
+/* ============================================================
+   Site footer — appears at the bottom of every page.
+   Privacy link, source code, version, last-updated.
+   ============================================================ */
+.site-footer {
+  margin: 3rem 0 1rem;
+  padding: 1rem 1.2rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+}
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  max-width: 100%;
+}
+.site-footer a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--line);
+  padding-bottom: 1px;
+}
+.site-footer a:hover {
+  color: var(--gold-bright);
+  border-bottom-color: var(--gold);
+}
+.site-footer .footer-sep {
+  color: var(--ink-mute);
+  opacity: 0.5;
+}
+.site-footer .footer-version {
+  margin-left: auto;
+  font-style: italic;
+  font-size: 0.72rem;
+}
+@media (max-width: 700px) {
+  .site-footer-inner { gap: 0.4rem 0.7rem; }
+  .site-footer .footer-version {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 0.3rem;
+  }
+}
+
+/* ============================================================
+   Privacy page — data-flow grid.
+   ============================================================ */
+.privacy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.privacy-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 3px;
+  padding: 1rem 1.1rem;
+}
+.privacy-card.privacy-card-local  { border-left-color: var(--jade); }
+.privacy-card.privacy-card-google { border-left-color: var(--cinnabar); }
+.privacy-card.privacy-card-relay  { border-left-color: var(--gold-bright); }
+.privacy-card.privacy-card-public { border-left-color: var(--ink-soft); }
+.privacy-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--gold-bright);
+}
+.privacy-card h3 .privacy-tag {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  padding: 0.05rem 0.4rem;
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--ink-mute);
+  font-weight: normal;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.privacy-card p { margin: 0.4rem 0; font-size: 0.88rem; line-height: 1.55; }
+.privacy-card ul { margin: 0.4rem 0 0 1.2rem; font-size: 0.85rem; line-height: 1.55; }
+.privacy-card ul li { margin-bottom: 0.2rem; }

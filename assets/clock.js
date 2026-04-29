@@ -822,23 +822,31 @@ async function spaNavigate(href, opts) {
       history.pushState({}, '', href);
     }
 
-    // Re-execute any inline <script> elements that came in with the new
-    // content. document.createElement+appendChild is the canonical way
-    // to make injected script content actually run.
-    const scripts = newMain ? newMain.querySelectorAll('script') : [];
+    // Re-execute scripts from the new document. Look at the WHOLE body of
+    // the fetched document, not just .main-content — per-page init code
+    // typically lives in inline <script> tags at the bottom of <body>,
+    // outside .main-content. Without this, the swapped page renders an
+    // empty grid / placeholder because the build-on-DOMContentLoaded
+    // script never runs.
+    const scripts = doc.body.querySelectorAll('script');
     scripts.forEach(oldScript => {
-      const s = document.createElement('script');
-      for (const a of oldScript.attributes) s.setAttribute(a.name, a.value);
-      if (oldScript.src) {
-        // External script — only re-attach if not already loaded.
-        if (!document.querySelector('script[src="' + oldScript.src + '"]')) {
-          document.head.appendChild(s);
-        }
+      const src = oldScript.getAttribute('src');
+      if (src) {
+        // External script — skip if same src already in document.
+        const sel = 'script[src="' + src.replace(/"/g, '\\"') + '"]';
+        if (document.querySelector(sel)) return;
+        const s = document.createElement('script');
+        for (const a of oldScript.attributes) s.setAttribute(a.name, a.value);
+        document.head.appendChild(s);
       } else {
+        // Inline — re-create so it runs. document.createElement +
+        // appendChild is the canonical way to make injected script
+        // content actually execute.
+        const s = document.createElement('script');
+        for (const a of oldScript.attributes) s.setAttribute(a.name, a.value);
         s.textContent = oldScript.textContent;
         document.head.appendChild(s);
-        // Remove after execution to keep the head tidy.
-        s.parentNode.removeChild(s);
+        s.parentNode && s.parentNode.removeChild(s);
       }
     });
 

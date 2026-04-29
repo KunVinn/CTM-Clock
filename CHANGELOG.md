@@ -5,8 +5,65 @@ The site is a single-author study aid; the format is informal but the entries
 should give a future reader (or future-me) enough context to understand why
 each thing exists.
 
+## 2026-04-29 (later)
+
+- **Tongue gallery · images cleaned of source attribution.** Each
+  reference image was cropped to remove the broadcaster logo / book
+  watermark / broadcast subtitle that was baked into the source —
+  CCTV-4 logos and 中文国际 / CCTV.com tags from the color &
+  shape charts; "@中医王主任 / @中医王子华" attribution from the
+  zone and pattern photos; "如有不适 请线下就医" advisory bar
+  from the pattern posters; "心脑" trailing label from the
+  three-burner overview. All originals (.webp / .png) replaced
+  with cleaned .jpg files; HTML references updated. Cache bumped
+  to `?v=20260429b`.
+
+## 2026-04-29
+
+- **Tongue gallery · click-to-enlarge fix.** The five-zone real photos
+  were being rendered at 200 px tall with `object-fit: cover`, which
+  cropped away the educational text baked into each source image —
+  effectively making them unreadable. Now each photo is wrapped in a
+  link that opens the full-size original in a new tab, the card image
+  uses `object-fit: contain` with a 360 px max-height (480 px for the
+  pattern posters, 360 px for the CCTV charts), and a small ⤢ badge
+  hints that the image is enlargeable.
+- **Tongue gallery · CCTV reference charts added.** Two new figures
+  inserted between the three-burner overview and the five-zone grid:
+  the four tongue body colors (淡白 / 淡红 / 红绛 / 青紫) and the five
+  body shapes (胖大 / 瘦小 / 齿痕 / 裂纹 / 瘀斑), each with bilingual
+  captions naming the pattern they typically signal. Source: CCTV-4
+  中文国际 educational broadcast.
+
+## 2026-04-28 (later)
+
+- **SPA-nav bug fixed**: when navigating between menu items, per-page
+  init scripts (which build the hour grid, the elements table, the KG
+  cards, etc.) live as inline `<script>` tags at the bottom of `<body>`,
+  outside `.main-content`. The SPA loader was only collecting scripts
+  from inside the swapped-in `.main-content`, so those init scripts
+  never ran and pages rendered with empty placeholders. Now collects
+  scripts from the whole `doc.body`; external scripts are deduped by
+  src, inline scripts are re-created so they execute. Pages render
+  fully on every menu click.
+- **Tongue page · real-photo gallery** added below the abstract zone-map
+  SVG: a three-burner anatomical diagram, a five-zone real-photo grid
+  with the typical signs for each organ (心 sunken/red/swollen/pale tip;
+  肺 cracks/red/sunken front; etc.), and three common teeth-marked
+  patterns (脾虚, 阳虚, 肝郁) with full 辨证 / 表现 / 调理 from the
+  source reference plus reference formula (参苓白术散 / 附子理中丸 /
+  逍遥丸). Bilingual cards, color-coded by element. Photos served from
+  new `assets/tongue/` (9 webp files, ASCII filenames for portability).
+
 ## 2026-04-28
 
+- New `privacy.html` page: a 4-card data-flow summary (stays-on-device,
+  Google-when-opted-in, Resend-when-you-press-Send, public practitioner
+  listings) plus a no-analytics statement and a remove/forget contact
+  block. Bilingual throughout. Linked from a new shared footer that
+  appears at the bottom of every page (privacy / source / changelog +
+  version stamp `v2026.04.28b · last updated 2026-04-28`). Footer is
+  positioned outside `.main-content` so it survives SPA navigation.
 - Practitioners page: replaced the placeholder `practitioners@your-domain.example`
   contact with the site owner's real email; removed the meta-comment that was
   visible to public visitors. Stiffened the directory loader so the initial
