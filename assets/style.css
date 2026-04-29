@@ -4664,6 +4664,110 @@ html[data-script="c"] .menu-btn { gap: 0; }
   line-height: 1.65;
 }
 
+/* Reference-formula link inside pattern cards */
+.formula-link {
+  color: var(--gold-bright);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--gold);
+  font-style: normal;
+  white-space: nowrap;
+}
+.formula-link em { color: inherit; font-style: italic; }
+.formula-link:hover {
+  color: var(--cinnabar-bright);
+  border-bottom-color: var(--cinnabar);
+}
+
+/* ============================================================
+   Tongue gallery lightbox
+   ============================================================ */
+.tongue-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.tongue-lightbox[hidden] { display: none; }
+.tongue-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+}
+.tongue-lightbox-content {
+  position: relative;
+  z-index: 1;
+  max-width: min(94vw, 720px);
+  max-height: 94vh;
+  background: var(--bg-card);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 0.9rem 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.tongue-lightbox-close {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--gold-bright);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  z-index: 2;
+}
+.tongue-lightbox-close:hover { color: var(--cinnabar-bright); }
+.tongue-lightbox-title {
+  margin: 0 2rem 0.6rem 0;
+  font-family: var(--font-display);
+  color: var(--gold-bright);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  font-weight: normal;
+}
+.tongue-lightbox-title .tongue-lightbox-title-cn {
+  font-family: var(--font-han);
+  display: block;
+  font-size: 1.15rem;
+  margin-bottom: 0.15rem;
+  color: var(--ink);
+}
+.tongue-lightbox-title .tongue-lightbox-title-en {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.tongue-lightbox-img-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  text-align: center;
+  background: var(--bg);
+  border-radius: 3px;
+}
+.tongue-lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+body.tongue-lightbox-open { overflow: hidden; }
+
+@media (max-width: 700px) {
+  .tongue-lightbox { padding: 0.4rem; }
+  .tongue-lightbox-content { padding: 0.7rem 0.8rem 0.8rem; }
+  .tongue-lightbox-title { font-size: 0.9rem; }
+  .tongue-lightbox-title .tongue-lightbox-title-cn { font-size: 1rem; }
+}
+
 @media (max-width: 700px) {
   .tongue-photo-card img { height: 160px; }
   .tongue-pattern-card img { max-height: 220px; }

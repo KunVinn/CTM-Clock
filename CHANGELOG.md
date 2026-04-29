@@ -5,6 +5,26 @@ The site is a single-author study aid; the format is informal but the entries
 should give a future reader (or future-me) enough context to understand why
 each thing exists.
 
+## 2026-04-29 (latest)
+
+- **Tongue gallery · renumbered, lightboxed, prescription-linked.**
+  - Five zone cards reordered to **1.肝 → 2.心 → 3.脾 → 4.肺 → 5.肾**
+    with the new number rendered in HTML, so it is correct regardless
+    of what the source poster's baked-in number happened to be.
+  - Each photo now ships in two versions: `*-photo.jpg` (just the
+    tongue photograph — used in the small card thumbnail, since the
+    diagnostic-text rows are already shown alongside) and `*-full.jpg`
+    (photo + diagnostic-text rows, with the source title bar cropped
+    off — used when enlarged). Same treatment for the three 齿痕舌
+    pattern cards (脾虚 / 阳虚 / 肝郁).
+  - In-page lightbox modal: clicking a card opens an overlay that
+    renders a clean HTML title bar with the corrected number above
+    the full-poster image (Esc / backdrop / × button to close).
+    Falls back to opening the full image in a new tab if JS is off.
+  - 参考方 names (参苓白术散 / 附子理中丸 / 逍遥丸) are now clickable
+    links to their Baidu Baike entries for users who want the formula
+    composition and indications.
+
 ## 2026-04-29 (later)
 
 - **Tongue gallery · images cleaned of source attribution.** Each
