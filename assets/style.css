@@ -37,6 +37,21 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+/* Honor users who request reduced motion: drop the smooth scroll
+   that hijacks anchor jumps, and shorten transitions / animations
+   from the typical 0.18-0.4s down to a 0.01s no-op flash so the
+   visual state still updates but without sweeping motion. Applies
+   to all elements via the * selector. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 body {
   font-family: var(--font-display);
   background: var(--bg-deep);

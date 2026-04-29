@@ -1,5 +1,44 @@
 # Changelog · 子午流注
 
+## 2026-04-29 (latest batch)
+
+- **`LICENSE`** added with explicit dual-license: MIT for code, CC BY-NC
+  4.0 for content, with a fair-use note on third-party reference
+  imagery (CCTV-4 charts, 中医王子华 齿痕舌 posters).
+- **Security headers** added in `netlify.toml`: a strict
+  Content-Security-Policy (`default-src 'self'`, allowing only the
+  Gemini and Resend endpoints under `connect-src`),
+  `Permissions-Policy: camera=(self)` with everything else off,
+  `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
+  `Referrer-Policy: strict-origin-when-cross-origin`,
+  `Cross-Origin-Opener-Policy: same-origin`.
+- **`manifest.webmanifest`** + `<meta name="theme-color">` so the site
+  is installable as a PWA. Background `#0d0a08`, theme `#c43c2a`.
+- **Open Graph & Twitter Card** meta added to `index.html` and
+  `tongue.html` (the two pages most likely to be shared) with proper
+  `og:locale` and `og:image`.
+- **`prefers-reduced-motion: reduce`** honoured: smooth scroll
+  cancelled, animations and transitions clamped to 0.01ms.
+- **Tongue overview re-cropped**: bottom 5% → 3.5% (the trailing
+  source-attribution band is gone but the `心脑` label at the very
+  tip is fully visible). Output is now 679 × 781; the SVG zone-map
+  viewBox has been updated to match.
+- **CCTV charts re-cropped** with looser horizontal margins (left
+  10% → 4%, right 6% → 4%) so the leftmost / rightmost tongue tile
+  and label are fully visible on both `舌质` (4 colours) and `舌体`
+  (5 shapes).
+- **Pattern-match output now bilingual.** `TONGUE_PATTERNS` carries
+  `symptomsCn` / `adviceCn` for each of the 10 patterns. The
+  `updateDiagnosis()` renderer emits `lang-en-only` / `lang-cn-only`
+  sibling spans for the picks header, the empty-state messages, the
+  "X signs match" tag, the symptom and advice paragraphs, the
+  acupoint Location / Why labels, and the long acupoint disclaimer
+  — so 中 mode now shows Chinese only, while 简 / 繁 / EN modes show
+  both.
+- Cache version bumped to `?v=20260429g`; footer stamp `v2026.04.29g`.
+
+
+
 A dated log of meaningful changes to the site, in reverse-chronological order.
 The site is a single-author study aid; the format is informal but the entries
 should give a future reader (or future-me) enough context to understand why

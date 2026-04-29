@@ -5,6 +5,25 @@
   publish = "."
   functions = "netlify/functions"
 
+# Security & privacy headers — applied to every response.
+# - CSP allows only same-origin assets; the only externally-fetched
+#   resource at runtime is the Gemini API (when the user opts in to
+#   AI tongue analysis), and the email-relay function lives same-origin
+#   under /.netlify/functions/.
+# - Permissions-Policy restricts camera to first-party; Gemini call
+#   uses fetch() to a Google endpoint (allow-listed in connect-src).
+# - X-Frame-Options DENY blocks click-jacking attempts that would
+#   embed the practitioners directory or tongue page inside another site.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com https://api.resend.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(self), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+
 # HTML pages: never cache (so content updates appear immediately)
 [[headers]]
   for = "/*.html"
