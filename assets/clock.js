@@ -842,9 +842,19 @@ async function spaNavigate(href, opts) {
         // Inline — re-create so it runs. document.createElement +
         // appendChild is the canonical way to make injected script
         // content actually execute.
+        //
+        // Wrap the script body in an IIFE so each SPA-nav invocation
+        // gets its own scope. Without this, top-level `const`/`let`
+        // declarations (e.g. `const ELEMENT_CN = ...` at the top of
+        // index.html and hours.html's per-page init script) go to the
+        // shared script-global lexical environment and the SECOND
+        // invocation throws SyntaxError: Identifier already declared,
+        // killing the DOMContentLoaded listener that builds the page.
+        // Module scripts and inline scripts that depend on cross-script
+        // shared state are not used here, so IIFE-wrapping is safe.
         const s = document.createElement('script');
         for (const a of oldScript.attributes) s.setAttribute(a.name, a.value);
-        s.textContent = oldScript.textContent;
+        s.textContent = '(function(){\n' + oldScript.textContent + '\n})();';
         document.head.appendChild(s);
         s.parentNode && s.parentNode.removeChild(s);
       }
