@@ -5,6 +5,29 @@ The site is a single-author study aid; the format is informal but the entries
 should give a future reader (or future-me) enough context to understand why
 each thing exists.
 
+## 2026-04-29 (later still)
+
+- **Zone map · realistic photo + abstract diagram combined.** The
+  interactive zone map at the top of the Tongue page now uses the
+  realistic anatomical photo (`tongue-overview.jpg`) as its backdrop
+  with the five clickable bands drawn on top in photo-pixel space
+  (viewBox `0 0 657 811`). Hover/click feedback uses a gold dashed
+  outline so it reads clearly over the photo. The standalone
+  "anatomical overview" figure that was duplicated below has been
+  removed — one source of truth for the zone map.
+- **Reference images re-cropped horizontally.** All five zone photos,
+  three pattern posters, two CCTV charts, and the anatomical overview
+  now have their wide blank/decorative left and right margins trimmed
+  alongside the existing top/bottom crops, so the photos fill more of
+  the card area.
+- **`tongue-overview.jpg` lower content restored.** The previous bot=13%
+  crop was too aggressive and was clipping "心脑" at the very tip;
+  now bot=5% so the full anatomical labelling (including 心脑 and the
+  1/3 上焦 band on the right) is visible.
+- **`TONGUE_ZONES`** carries a parallel `coordsReal` field (photo pixel
+  space) alongside the abstract `coords` (still used by the
+  photo-zone-overlay drawn over a user's uploaded photo).
+
 ## 2026-04-29 (latest)
 
 - **Tongue gallery · renumbered, lightboxed, prescription-linked.**

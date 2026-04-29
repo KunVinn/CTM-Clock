@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tongue Diagnosis · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260429c">
+<link rel="stylesheet" href="assets/style.css?v=20260429d">
 </head>
 <body data-page="tongue">
 
@@ -197,23 +197,8 @@
            ============================================================ -->
       <section class="tongue-gallery-section">
         <h2><span class="cn" data-zh-auto>实景舌象</span><span class="acu-en">Real-Photo Reference · Shé Xiàng</span></h2>
-        <p class="desc lang-en-only">The abstract diagram above shows the five zones; the real photographs below show what the same map looks like on a real tongue, plus three common patterns you may meet often in clinic. Use them to calibrate what you see in the mirror.</p>
-        <p class="desc lang-cn-only" data-zh-auto>上图为分区之示意，下列实景舌象可对照学习——五区之实例及临床常见之三种齿痕舌型。镜中所察之舌，可与之相比。</p>
-
-        <!-- ============================================================
-             Anatomical overview — 三焦五脏 detailed map
-             ============================================================ -->
-        <figure class="tongue-overview-figure">
-          <a class="tongue-photo-link" href="assets/tongue/tongue-overview.jpg" target="_blank" rel="noopener" aria-label="Open full-size anatomical map">
-            <img src="assets/tongue/tongue-overview.jpg"
-                 alt="Tongue anatomical map showing upper, middle, and lower burner zones with their organ correspondences"
-                 loading="lazy">
-          </a>
-          <figcaption>
-            <span class="cn" data-zh-auto>舌之三焦分布图：上焦（心 · 肺）于舌前，中焦（脾 · 胃 · 肝 · 胆）于舌中，下焦（肾 · 肠 · 膀胱）于舌根。两侧亦应肢腿。</span>
-            <span class="lang-en-only">Three-burner map: <strong>Upper burner</strong> (Heart · Lung) sits at the front, <strong>Middle burner</strong> (Spleen · Stomach · Liver · Gallbladder) at the center, <strong>Lower burner</strong> (Kidney · Intestines · Bladder) at the root. The far edges also reflect the limbs. <em>Tap the image to enlarge.</em></span>
-          </figcaption>
-        </figure>
+        <p class="desc lang-en-only">The interactive zone map above (the realistic anatomical photo with five clickable bands) is now combined with the abstract diagram — click any band on the photo for the full description. Below: CCTV-4 colour &amp; shape reference, real photos of each of the five zones, and three common teeth-marked patterns you may meet in clinic.</p>
+        <p class="desc lang-cn-only" data-zh-auto>上方互动分区图——实景舌象配五处可点击之分区——已与示意图合一，点击任一区即得详解。下列：CCTV-4 舌质舌形参考、五区实例、与临床常见三种齿痕舌。</p>
 
         <!-- ============================================================
              CCTV reference charts — 4 tongue body colors + 5 shapes
@@ -730,18 +715,18 @@
         <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener"><span class="cn" data-zh-auto>源码</span> Source</a>
         <span class="footer-sep">·</span>
         <a href="CHANGELOG.md" target="_blank" rel="noopener"><span class="cn" data-zh-auto>更新日志</span> Changelog</a>
-        <span class="footer-version">v2026.04.29c · last updated 2026-04-29</span>
+        <span class="footer-version">v2026.04.29d · last updated 2026-04-29</span>
       </div>
     </footer>
   </main>
 </div>
 
-<script src="assets/data.js?v=20260429c"></script>
-<script src="assets/glossary.js?v=20260429c"></script>
-<script src="assets/clock.js?v=20260429c"></script>
-<script src="assets/tcm-script-toggle.js?v=20260429c"></script>
-<script src="assets/tcm-music.js?v=20260429c"></script>
-<script src="assets/tcm-link.js?v=20260429c"></script>
+<script src="assets/data.js?v=20260429d"></script>
+<script src="assets/glossary.js?v=20260429d"></script>
+<script src="assets/clock.js?v=20260429d"></script>
+<script src="assets/tcm-script-toggle.js?v=20260429d"></script>
+<script src="assets/tcm-music.js?v=20260429d"></script>
+<script src="assets/tcm-link.js?v=20260429d"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -749,6 +734,12 @@
             standard TCM teaching texts.
    ============================================================ */
 
+// Two coordinate systems live on each zone:
+//   coords     — abstract 280x360 viewBox (used for the photo-zone-overlay
+//                that is drawn over the user's uploaded photo).
+//   coordsReal — pixel-space of the realistic anatomical photo
+//                assets/tongue/tongue-overview.jpg (657 x 811), used for
+//                the main interactive zone-map on this page.
 const TONGUE_ZONES = [
   {
     key: 'tip',
@@ -758,6 +749,7 @@ const TONGUE_ZONES = [
     organTerm: 'heart-tcm',
     desc: 'The very front of the tongue reflects the upper burner — the Heart and Lung. A red, dotted, or sore tip often points to Heart fire (often from anxiety, stress, insomnia) or Lung heat.',
     coords: { cx: 140, cy: 290, rx: 80, ry: 35 },
+    coordsReal: { cx: 328, cy: 778, rx: 95, ry: 28 },
     labelXY: [140, 290]
   },
   {
@@ -768,6 +760,7 @@ const TONGUE_ZONES = [
     organTerm: 'lung-tcm',
     desc: 'Just behind the tip is the Lung area. A coating change here may relate to respiration, the chest, or the immune surface ("wei qi").',
     coords: { cx: 140, cy: 240, rx: 60, ry: 25 },
+    coordsReal: { cx: 328, cy: 690, rx: 130, ry: 40 },
     labelXY: [140, 240]
   },
   {
@@ -778,6 +771,7 @@ const TONGUE_ZONES = [
     organTerm: 'spleen-tcm',
     desc: 'The middle of the tongue is the Spleen-Stomach territory. Cracks here are very common and usually indicate Stomach yin deficiency. A thick coat in the center suggests undigested damp or food stagnation.',
     coords: { cx: 140, cy: 180, rx: 55, ry: 28 },
+    coordsReal: { cx: 328, cy: 525, rx: 175, ry: 70 },
     labelXY: [140, 180]
   },
   {
@@ -788,6 +782,7 @@ const TONGUE_ZONES = [
     organTerm: 'liver-tcm',
     desc: 'The sides reflect the Liver and Gallbladder. Redness, swelling, or purple discoloration on the sides commonly indicates Liver qi stagnation, Liver heat, or Liver blood stasis.',
     coords: { type: 'sides' },
+    coordsReal: { type: 'sides' },
     labelXY: [62, 200]
   },
   {
@@ -798,6 +793,7 @@ const TONGUE_ZONES = [
     organTerm: 'kidney-tcm',
     desc: 'The back/root reflects the Kidneys, Bladder, and Intestines. A thick coat at the root often indicates damp or heat in the lower burner; a peeled root suggests Kidney yin deficiency.',
     coords: { cx: 140, cy: 110, rx: 60, ry: 30 },
+    coordsReal: { cx: 328, cy: 360, rx: 145, ry: 90 },
     labelXY: [140, 110]
   }
 ];
@@ -1082,97 +1078,60 @@ const TONGUE_PATTERNS = {
 
 (function buildZoneMap() {
   const svg = document.getElementById('tongue-zone-svg');
-  const NS = 'http://www.w3.org/2000/svg';
+  if (!svg) return;
+  const NS    = 'http://www.w3.org/2000/svg';
+  const XLINK = 'http://www.w3.org/1999/xlink';
 
-  // Define gradient for tongue body
-  const defs = document.createElementNS(NS, 'defs');
-  defs.innerHTML = `
-    <radialGradient id="tongueGrad" cx="50%" cy="50%" r="55%">
-      <stop offset="0%" stop-color="#cd7864" stop-opacity="0.9"/>
-      <stop offset="80%" stop-color="#8e3a30" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#5a221a" stop-opacity="1"/>
-    </radialGradient>
-    <radialGradient id="tongueShine" cx="50%" cy="35%" r="40%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </radialGradient>
-  `;
-  svg.appendChild(defs);
+  // Switch viewBox to the realistic photo's pixel space (657 x 811).
+  // Existing CSS still scales the SVG to 100% of its container.
+  svg.setAttribute('viewBox', '0 0 657 811');
 
-  // Tongue body shape (an oval with a slightly pointed tip downward)
-  const tonguePath = document.createElementNS(NS, 'path');
-  tonguePath.setAttribute('d', `
-    M 140 50
-    C 60 50, 30 110, 35 200
-    C 40 290, 90 340, 140 340
-    C 190 340, 240 290, 245 200
-    C 250 110, 220 50, 140 50
-    Z
-  `);
-  tonguePath.setAttribute('fill', 'url(#tongueGrad)');
-  tonguePath.setAttribute('stroke', 'var(--cinnabar-deep, #7a2515)');
-  tonguePath.setAttribute('stroke-width', '1');
-  svg.appendChild(tonguePath);
+  // Realistic anatomical photo as the backdrop.
+  const photo = document.createElementNS(NS, 'image');
+  photo.setAttribute('x', '0');
+  photo.setAttribute('y', '0');
+  photo.setAttribute('width', '657');
+  photo.setAttribute('height', '811');
+  photo.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  photo.setAttributeNS(XLINK, 'href', 'assets/tongue/tongue-overview.jpg');
+  photo.setAttribute('href', 'assets/tongue/tongue-overview.jpg');
+  photo.setAttribute('pointer-events', 'none');
+  svg.appendChild(photo);
 
-  // Center crease
-  const crease = document.createElementNS(NS, 'line');
-  crease.setAttribute('x1', '140'); crease.setAttribute('y1', '70');
-  crease.setAttribute('x2', '140'); crease.setAttribute('y2', '320');
-  crease.setAttribute('stroke', 'rgba(0,0,0,0.18)');
-  crease.setAttribute('stroke-width', '1');
-  crease.setAttribute('stroke-dasharray', '2,3');
-  svg.appendChild(crease);
-
-  // Highlight overlay
-  const shine = document.createElementNS(NS, 'path');
-  shine.setAttribute('d', `
-    M 140 50
-    C 60 50, 30 110, 35 200
-    C 40 290, 90 340, 140 340
-    C 190 340, 240 290, 245 200
-    C 250 110, 220 50, 140 50
-    Z
-  `);
-  shine.setAttribute('fill', 'url(#tongueShine)');
-  shine.setAttribute('pointer-events', 'none');
-  svg.appendChild(shine);
-
-  // Zones
+  // Click-zones drawn ON TOP of the photo, positioned in photo pixels.
+  // Photo already has Chinese organ labels baked in, so no extra SVG
+  // text labels are added here — they would overlap.
   TONGUE_ZONES.forEach(z => {
     let shape;
-    if (z.coords.type === 'sides') {
-      // Two crescent shapes for left and right sides
+    if (z.coordsReal.type === 'sides') {
+      // Two ellipses outlining the side bands of the tongue (Liver / Gall-
+      // bladder territory) on the realistic photo.
       shape = document.createElementNS(NS, 'path');
-      shape.setAttribute('d', `
-        M 35 200 C 35 130 50 90 75 65 L 75 80 C 55 105 50 150 50 200 C 50 250 60 290 80 315 L 75 330 C 50 305 35 270 35 200 Z
-        M 245 200 C 245 130 230 90 205 65 L 205 80 C 225 105 230 150 230 200 C 230 250 220 290 200 315 L 205 330 C 230 305 245 270 245 200 Z
-      `);
+      shape.setAttribute('d',
+        // Left side band
+        'M 145 460 ' +
+        'C 105 470, 90 540, 95 620 ' +
+        'C 100 670, 130 690, 175 685 ' +
+        'L 175 470 ' +
+        'C 165 460, 155 458, 145 460 Z ' +
+        // Right side band
+        'M 510 460 ' +
+        'C 550 470, 565 540, 560 620 ' +
+        'C 555 670, 525 690, 480 685 ' +
+        'L 480 470 ' +
+        'C 490 460, 500 458, 510 460 Z'
+      );
     } else {
       shape = document.createElementNS(NS, 'ellipse');
-      shape.setAttribute('cx', z.coords.cx);
-      shape.setAttribute('cy', z.coords.cy);
-      shape.setAttribute('rx', z.coords.rx);
-      shape.setAttribute('ry', z.coords.ry);
+      shape.setAttribute('cx', z.coordsReal.cx);
+      shape.setAttribute('cy', z.coordsReal.cy);
+      shape.setAttribute('rx', z.coordsReal.rx);
+      shape.setAttribute('ry', z.coordsReal.ry);
     }
     shape.setAttribute('class', 'tongue-zone');
     shape.dataset.zone = z.key;
     shape.addEventListener('click', () => selectZone(z.key));
     svg.appendChild(shape);
-
-    // Label
-    const lbl = document.createElementNS(NS, 'text');
-    lbl.setAttribute('x', z.labelXY[0]);
-    lbl.setAttribute('y', z.labelXY[1] - 6);
-    lbl.setAttribute('class', 'tongue-zone-label');
-    lbl.textContent = z.cn;
-    svg.appendChild(lbl);
-
-    const lblEn = document.createElementNS(NS, 'text');
-    lblEn.setAttribute('x', z.labelXY[0]);
-    lblEn.setAttribute('y', z.labelXY[1] + 8);
-    lblEn.setAttribute('class', 'tongue-zone-label-en');
-    lblEn.textContent = z.en;
-    svg.appendChild(lblEn);
   });
 })();
 

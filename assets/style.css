@@ -1673,17 +1673,24 @@ a:hover { color: var(--gold-bright); }
   z-index: 1;
 }
 
+/* Click-zones overlaid on the realistic anatomical photo
+   (viewBox 657x811). Stroke widths are sized for that viewBox; the SVG
+   itself scales responsively via CSS width:100%. */
 .tongue-zone {
   cursor: pointer;
-  fill: var(--bg-deep);
-  stroke: var(--gold);
-  stroke-width: 0.7;
-  fill-opacity: 0.05;
-  transition: fill-opacity 0.2s ease, stroke-width 0.2s ease;
+  fill: var(--cinnabar);
+  fill-opacity: 0;
+  stroke: var(--gold-bright);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 4;
+  stroke-opacity: 0.85;
+  transition: fill-opacity 0.2s ease, stroke-opacity 0.2s ease, stroke-width 0.2s ease;
 }
 .tongue-zone:hover, .tongue-zone.active {
-  fill-opacity: 0.18;
-  stroke-width: 1.5;
+  fill-opacity: 0.22;
+  stroke-opacity: 1;
+  stroke-width: 4;
+  stroke-dasharray: none;
 }
 .tongue-zone-label {
   font-family: var(--font-han);
