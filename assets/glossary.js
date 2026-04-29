@@ -114,77 +114,80 @@ const TERMS = {
   },
 
   // ================== ORGANS (12 main + relevant) ==================
+  // For each organ in 简/繁/中 mode we link to its MERIDIAN page on
+  // yibian.hopto.org (which contains both the organ overview and the
+  // full acupoint listing) rather than the organ-only page.
   'liver-tcm': {
     cn: '肝 · Gān', en: 'Liver',
     def: 'In TCM the Liver governs the free flow of qi, stores blood, houses the hún (ethereal soul), and opens to the eyes.',
     url: 'https://en.wikipedia.org/wiki/Liver_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=15'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6966'
   },
   'heart-tcm': {
     cn: '心 · Xīn', en: 'Heart',
     def: 'The "emperor" organ; governs blood, houses the shén (spirit), and opens to the tongue.',
     url: 'https://en.wikipedia.org/wiki/Heart_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=11'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6970'
   },
   'spleen-tcm': {
     cn: '脾 · Pí', en: 'Spleen',
     def: 'Governs transformation of food into qi and blood; controls muscles, the four limbs, and houses yì (intent).',
     url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=13'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6962'
   },
   'lung-tcm': {
     cn: '肺 · Fèi', en: 'Lung',
     def: 'Governs qi and breathing, regulates the water passages, controls the skin, houses pò (corporeal soul).',
     url: 'https://en.wikipedia.org/wiki/Lung_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=14'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6968'
   },
   'kidney-tcm': {
     cn: '腎 / 肾 · Shèn', en: 'Kidney',
     def: 'Stores essence (jīng), governs water, fills the bones and marrow, houses zhì (will).',
     url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=12'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6964'
   },
   'gallbladder-tcm': {
     cn: '膽 / 胆 · Dǎn', en: 'Gallbladder',
     def: 'Stores and secretes bile; governs decisiveness; paired with the Liver in the Wood phase.',
     url: 'https://en.wikipedia.org/wiki/Gallbladder_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=24'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6965'
   },
   'stomach-tcm': {
     cn: '胃 · Wèi', en: 'Stomach',
     def: 'The "sea of grain and water"; rots and ripens food. Paired with the Spleen in the Earth phase.',
     url: 'https://en.wikipedia.org/wiki/Stomach_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=22'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6961'
   },
   'small-intestine-tcm': {
     cn: '小腸 / 小肠 · Xiǎo Cháng', en: 'Small Intestine',
     def: 'Separates the clear from the turbid in food. Paired with the Heart in the Fire phase.',
     url: 'https://en.wikipedia.org/wiki/Small_intestine_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=21'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6969'
   },
   'large-intestine-tcm': {
     cn: '大腸 / 大肠 · Dà Cháng', en: 'Large Intestine',
     def: 'Receives waste and conducts elimination. Paired with the Lung in the Metal phase.',
     url: 'https://en.wikipedia.org/wiki/Large_intestine_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=23'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6967'
   },
   'bladder-tcm': {
     cn: '膀胱 · Páng Guāng', en: 'Bladder',
     def: 'Stores and excretes urine; its meridian runs the entire spine. Paired with the Kidney in the Water phase.',
     url: 'https://en.wikipedia.org/wiki/Urinary_bladder_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=25'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6963'
   },
   'pericardium-tcm': {
     cn: '心包 · Xīn Bāo', en: 'Pericardium',
     def: "The Heart's protector; first line of defense against external pathogens reaching the heart.",
     url: 'https://en.wikipedia.org/wiki/Pericardium_(Chinese_medicine)',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=20'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6972'
   },
   'sanjiao': {
     cn: '三焦 · Sān Jiāo', en: 'Triple Burner',
     def: "Coordinates qi and fluid metabolism through the body's three cavities (chest, abdomen, pelvis).",
     url: 'https://en.wikipedia.org/wiki/San_Jiao',
-    urlCn: 'https://yibian.hopto.org/zang/?gid=26'
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6971'
   },
 
   // ================== FIVE TONES ==================
@@ -491,12 +494,14 @@ const TERMS = {
   'du-mai': {
     cn: '督脉 · Dū Mài', en: 'Governor Vessel',
     def: 'The "Sea of Yang Channels" running up the back midline from the perineum to the upper lip; governs all yang qi in the body.',
-    url: 'https://en.wikipedia.org/wiki/Governing_vessel'
+    url: 'https://en.wikipedia.org/wiki/Governing_vessel',
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6944'
   },
   'ren-mai': {
     cn: '任脉 · Rèn Mài', en: 'Conception Vessel',
     def: 'The "Sea of Yin Channels" running up the front midline from the perineum to the lower lip; governs all yin and is central to gynecology and fertility.',
-    url: 'https://en.wikipedia.org/wiki/Conception_vessel'
+    url: 'https://en.wikipedia.org/wiki/Conception_vessel',
+    urlCn: 'https://yibian.hopto.org/shu/?sid=6943'
   },
 
   // Five-Shu point system
