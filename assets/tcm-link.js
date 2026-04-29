@@ -49,6 +49,7 @@
   }
 
   function buildTooltipHTML(entry) {
+    const mode = (window.tcmScript && window.tcmScript.get && window.tcmScript.get()) || 's';
     const url = pickUrl(entry);
     const isCn = url && url !== entry.url;
     const linkLabel = entry.page ? '→ Open page'
@@ -56,11 +57,19 @@
                                 : '→ Read on Wikipedia';
     const linkHref = entry.page || url || '#';
     const linkAttrs = entry.page ? '' : 'target="_blank" rel="noopener"';
+    // In 简/繁/中 mode, show a small backup link if the entry has one.
+    // Useful when the primary urlCn (e.g. a paywalled course or
+    // session-token-bearing URL) might break for some users.
+    let backupHTML = '';
+    if (mode !== 'e' && entry.urlCnBackup) {
+      backupHTML = `<a class="tt-link tt-link-backup" href="${entry.urlCnBackup}" target="_blank" rel="noopener">→ 备用</a>`;
+    }
     return `
       <div class="tt-cn">${entry.cn || ''}</div>
       <div class="tt-en">${entry.en || ''}</div>
       <div class="tt-def">${entry.def || ''}</div>
       <a class="tt-link" href="${linkHref}" ${linkAttrs}>${linkLabel}</a>
+      ${backupHTML}
     `;
   }
 

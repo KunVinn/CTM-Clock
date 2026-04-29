@@ -1656,6 +1656,16 @@ a:hover { color: var(--gold-bright); }
   color: var(--gold-bright);
   border-color: var(--gold-bright);
 }
+.term-tooltip .tt-link-backup {
+  margin-left: 0.6rem;
+  font-size: 0.6rem;
+  color: var(--ink-mute);
+  border-bottom-color: var(--line);
+}
+.term-tooltip .tt-link-backup:hover {
+  color: var(--ink-soft);
+  border-color: var(--ink-soft);
+}
 
 /* ============================================================
    TONGUE DIAGNOSIS PAGE
