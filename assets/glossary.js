@@ -73,37 +73,44 @@ const TERMS = {
   'wood': {
     cn: '木 · Mù', en: 'Wood',
     def: 'The phase of springtime, growth, and outward expansion. Associated with Liver and Gallbladder.',
-    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Wood'
+    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Wood',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'fire': {
     cn: '火 · Huǒ', en: 'Fire',
     def: 'The phase of summer and peak yang. Associated with Heart, Small Intestine, Pericardium, and Triple Burner.',
-    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Fire'
+    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Fire',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'earth': {
     cn: '土 · Tǔ', en: 'Earth',
     def: 'The pivot phase of late summer, transformation, and nourishment. Associated with Spleen and Stomach.',
-    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Earth'
+    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Earth',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'metal': {
     cn: '金 · Jīn', en: 'Metal',
     def: 'The phase of autumn, gathering, and letting go. Associated with Lung and Large Intestine.',
-    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Metal'
+    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Metal',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'water': {
     cn: '水 · Shuǐ', en: 'Water',
     def: 'The phase of winter, storage, and depth. Associated with Kidney and Bladder.',
-    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Water'
+    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Water',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'sheng-cycle': {
     cn: '相生 · Xiāng Shēng', en: 'Generation Cycle',
     def: 'The nourishing cycle: Wood→Fire→Earth→Metal→Water→Wood. Each phase generates the next.',
-    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Generating'
+    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Generating',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C%E7%9B%B8%E7%94%9F%E7%9B%B8%E5%85%8B'
   },
   'ke-cycle': {
     cn: '相克 · Xiāng Kè', en: 'Control Cycle',
     def: 'The restraining cycle: Wood↔Earth, Fire↔Metal, Earth↔Water, Metal↔Wood, Water↔Fire. Each phase controls another.',
-    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Overcoming'
+    url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Overcoming',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C%E7%9B%B8%E7%94%9F%E7%9B%B8%E5%85%8B'
   },
 
   // ================== ORGANS (12 main + relevant) ==================
@@ -181,52 +188,63 @@ const TERMS = {
   },
 
   // ================== FIVE TONES ==================
+  // All five tones share the 五音 entry on Baidu Baike, which has the
+  // most authoritative coverage of the pentatonic system.
   'jue-tone': {
     cn: '角音 · Jué', en: 'Jué (E)',
     def: 'Wood-element musical tone; gentle, rising; used to soothe the Liver in 五音疗法 (five-tone therapy).',
-    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic'
+    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'zhi-tone': {
     cn: '徵音 · Zhǐ', en: 'Zhǐ (G)',
     def: 'Fire-element musical tone; warm, joyful; supports the Heart.',
-    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic'
+    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'gong-tone': {
     cn: '宮音 / 宫音 · Gōng', en: 'Gōng (C)',
     def: 'Earth-element musical tone; centering, grounding; supports the Spleen.',
-    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic'
+    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'shang-tone': {
     cn: '商音 · Shāng', en: 'Shāng (D)',
     def: 'Metal-element musical tone; crisp, clear; supports the Lung.',
-    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic'
+    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'yu-tone': {
     cn: '羽音 · Yǔ', en: 'Yǔ (A)',
     def: 'Water-element musical tone; deep, anchoring; supports the Kidney.',
-    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic'
+    url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
 
   // ================== FIVE SPIRITS (五神) ==================
   'hun': {
     cn: '魂 · Hún', en: 'Ethereal Soul',
     def: 'The "yang soul" housed in the Liver; governs imagination, dreams, plans, and life-vision.',
-    url: 'https://en.wikipedia.org/wiki/Hun_and_po'
+    url: 'https://en.wikipedia.org/wiki/Hun_and_po',
+    urlCn: 'https://baike.baidu.com/item/%E4%B8%89%E9%AD%82%E4%B8%83%E9%AD%84'
   },
   'po': {
     cn: '魄 · Pò', en: 'Corporeal Soul',
     def: 'The "yin soul" housed in the Lung; governs reflexes, sensations, and bodily instinct.',
-    url: 'https://en.wikipedia.org/wiki/Hun_and_po'
+    url: 'https://en.wikipedia.org/wiki/Hun_and_po',
+    urlCn: 'https://baike.baidu.com/item/%E4%B8%89%E9%AD%82%E4%B8%83%E9%AD%84'
   },
   'yi': {
     cn: '意 · Yì', en: 'Intent',
     def: 'The aspect of mind housed in the Spleen; thought, focused attention, intention.',
-    url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E5%BF%97'
   },
   'zhi': {
     cn: '志 · Zhì', en: 'Will',
     def: 'The aspect of mind housed in the Kidney; willpower, memory, determination.',
-    url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)'
+    url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)',
+    urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E5%BF%97'
   },
 
   // ================== HERBS ==================

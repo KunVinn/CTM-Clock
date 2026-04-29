@@ -22,10 +22,29 @@
 
   // Pick the citation URL appropriate to the current language mode.
   // 简/繁/中 prefer Chinese-source references (yibian.hopto.org for
-  // acupuncture, shidianguji.com for classical texts); EN keeps Wikipedia.
+  // acupuncture, shidianguji.com for classical texts, baike.baidu.com
+  // for everything else); EN keeps the original (usually Wikipedia).
+  //
+  // For Wikipedia-only entries we derive a Baidu Baike URL on the fly
+  // from the Chinese term in entry.cn — saves having to author urlCn
+  // by hand for 70+ glossary entries.
   function pickUrl(entry) {
     const mode = (window.tcmScript && window.tcmScript.get && window.tcmScript.get()) || 's';
-    if (mode !== 'e' && entry.urlCn) return entry.urlCn;
+    if (mode === 'e') return entry.url;
+    if (entry.urlCn) return entry.urlCn;
+    // Fallback: if the only reference is Wikipedia, route to the
+    // equivalent Baidu Baike page for the Chinese term.
+    if (entry.url && /(?:^|\.)wikipedia\.org\//.test(entry.url) && entry.cn) {
+      // entry.cn looks like '氣 / 气 · Qì' or '茯苓 · Fú Líng'.
+      // Take the head part before the pinyin separator '·', then
+      // split on '/' (Trad / Simp) and prefer the second half (Simp).
+      const head = entry.cn.split('·')[0];
+      const pieces = head.split('/').map(s => s.trim()).filter(Boolean);
+      const term = pieces[1] || pieces[0];
+      if (term) {
+        return 'https://baike.baidu.com/item/' + encodeURIComponent(term);
+      }
+    }
     return entry.url;
   }
 
