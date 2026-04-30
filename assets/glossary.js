@@ -694,6 +694,34 @@ const TERMS = {
     cn: '膈俞 · Gé Shù', en: 'Bladder 17',
     def: 'Influential Point for Blood. On the back, level with the lower edge of the shoulder blade. Used for any blood disorder — stasis, deficiency, or hemorrhage.',
     url: 'https://yibian.hopto.org/shu/?sid=6963'
+  },
+
+  // ============================================================
+  // Per-acupoint deep-links to the rhky.com 人卫慕课 course.
+  // Card IDs are assigned chronologically by the course publisher
+  // and are NOT predictable from each other, so each entry has to
+  // be manually added as the URL is supplied.
+  // ============================================================
+  'lu1': {
+    cn: '中府 · Zhōng Fǔ', en: 'Lung 1',
+    def: 'Front-Mu of the Lung. On the upper chest, 6 cùn lateral to the midline at the 1st intercostal space. Tonifies Lung qi; treats cough and chest oppression.',
+    url: 'https://yibian.hopto.org/shu/?sid=6968',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005652?courseId=245888516&name=%E4%B8%AD%E5%BA%9C&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968'
+  },
+  'lu2': {
+    cn: '云门 · Yún Mén', en: 'Lung 2',
+    def: 'On the upper chest in the depression below the lateral end of the clavicle, 6 cùn lateral to the midline. Disperses Lung qi; treats chest fullness and shoulder pain.',
+    url: 'https://yibian.hopto.org/shu/?sid=6968',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005656?courseId=245888516&name=%E4%BA%91%E9%97%A8&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968'
+  },
+  'li1': {
+    cn: '商阳 · Shāng Yáng', en: 'Large Intestine 1',
+    def: 'Jǐng-Well point of the Large Intestine. On the radial side of the index fingertip, 0.1 cùn proximal to the corner of the nail. Clears heat from the head and face; classical first-aid bleeding point for wind-heat sore throat.',
+    url: 'https://yibian.hopto.org/shu/?sid=6967',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005685?courseId=245888516&name=%E5%95%86%E9%98%B3&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6967'
   }
 };
 
@@ -828,7 +856,11 @@ const TERM_ALIASES = {
   '丰隆': 'st40', '豐隆': 'st40', 'st40': 'st40', 'ST40': 'st40',
   '中脘': 'cv12', 'cv12': 'cv12', 'CV12': 'cv12',
   '膻中': 'cv17', 'cv17': 'cv17', 'CV17': 'cv17',
-  '膈俞': 'bl17', '膈腧': 'bl17', 'bl17': 'bl17', 'BL17': 'bl17'
+  '膈俞': 'bl17', '膈腧': 'bl17', 'bl17': 'bl17', 'BL17': 'bl17',
+  // rhky-deeplinked acupoints (newly added; awaiting more chapter cards)
+  '中府': 'lu1', 'lu1': 'lu1', 'LU1': 'lu1',
+  '云门': 'lu2', '雲門': 'lu2', 'lu2': 'lu2', 'LU2': 'lu2',
+  '商阳': 'li1', '商陽': 'li1', 'li1': 'li1', 'LI1': 'li1'
 };
 
 function lookupTerm(key) {
