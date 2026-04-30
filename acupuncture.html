@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>针灸经络 · Acupuncture & Meridians · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260429o">
+<link rel="stylesheet" href="assets/style.css?v=20260429p">
 </head>
 <body data-page="acupuncture">
 
@@ -154,13 +154,27 @@
         <div class="meridian-grid">
           <article class="meridian-card">
             <header><span class="meridian-name"><span class="cn" data-zh-auto>督脉</span> <span data-term="du-mai">Governor Vessel · Dū Mài</span></span><a class="yibian-link" href="https://yibian.hopto.org/shu/?sid=6944" target="_blank" rel="noopener">29 points →</a></header>
-            <p class="meridian-desc lang-en-only">Sea of Yang Channels. Up the back midline, perineum to upper lip. Governs all yang qi.</p>
-            <p class="meridian-desc lang-cn-only" data-zh-auto>阳脉之海。起于会阴，循背正中上行至唇上龈交。总督一身之阳气。</p>
+            <div class="meridian-card-body">
+              <div class="meridian-card-text">
+                <p class="meridian-desc lang-en-only">Sea of Yang Channels. Up the back midline, perineum to upper lip. Governs all yang qi.</p>
+                <p class="meridian-desc lang-cn-only" data-zh-auto>阳脉之海。起于会阴，循背正中上行至唇上龈交。总督一身之阳气。</p>
+              </div>
+              <a class="meridian-pathway" href="JingXue/Dou.png" target="_blank" rel="noopener" aria-label="Open full-size 督脉 pathway diagram">
+                <img src="JingXue/Dou.png" alt="督脉 循行路线图" loading="lazy">
+              </a>
+            </div>
           </article>
           <article class="meridian-card">
             <header><span class="meridian-name"><span class="cn" data-zh-auto>任脉</span> <span data-term="ren-mai">Conception Vessel · Rèn Mài</span></span><a class="yibian-link" href="https://yibian.hopto.org/shu/?sid=6943" target="_blank" rel="noopener">24 points →</a></header>
-            <p class="meridian-desc lang-en-only">Sea of Yin Channels. Up the front midline, perineum to lower lip. Central to gynecology and fertility.</p>
-            <p class="meridian-desc lang-cn-only" data-zh-auto>阴脉之海。起于会阴，循腹胸正中上达承浆。任主胞胎，妇科与孕育之关键。</p>
+            <div class="meridian-card-body">
+              <div class="meridian-card-text">
+                <p class="meridian-desc lang-en-only">Sea of Yin Channels. Up the front midline, perineum to lower lip. Central to gynecology and fertility.</p>
+                <p class="meridian-desc lang-cn-only" data-zh-auto>阴脉之海。起于会阴，循腹胸正中上达承浆。任主胞胎，妇科与孕育之关键。</p>
+              </div>
+              <a class="meridian-pathway" href="JingXue/Ren.png" target="_blank" rel="noopener" aria-label="Open full-size 任脉 pathway diagram">
+                <img src="JingXue/Ren.png" alt="任脉 循行路线图" loading="lazy">
+              </a>
+            </div>
           </article>
           <article class="meridian-card">
             <header><span class="meridian-name"><span class="cn" data-zh-auto>冲脉</span> Chōng Mài</span></header>
@@ -598,7 +612,7 @@
         <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener"><span class="cn" data-zh-auto>源码</span> Source</a>
         <span class="footer-sep">·</span>
         <a href="CHANGELOG.md" target="_blank" rel="noopener"><span class="cn" data-zh-auto>更新日志</span> Changelog</a>
-        <span class="footer-version">v2026.04.29o · last updated 2026-04-29</span>
+        <span class="footer-version">v2026.04.29p · last updated 2026-04-29</span>
       </div>
     </footer>
   </main>
@@ -607,12 +621,12 @@
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<script src="assets/data.js?v=20260429o"></script>
-<script src="assets/glossary.js?v=20260429o"></script>
-<script src="assets/clock.js?v=20260429o"></script>
-<script src="assets/tcm-script-toggle.js?v=20260429o"></script>
-<script src="assets/tcm-music.js?v=20260429o"></script>
-<script src="assets/tcm-link.js?v=20260429o"></script>
+<script src="assets/data.js?v=20260429p"></script>
+<script src="assets/glossary.js?v=20260429p"></script>
+<script src="assets/clock.js?v=20260429p"></script>
+<script src="assets/tcm-script-toggle.js?v=20260429p"></script>
+<script src="assets/tcm-music.js?v=20260429p"></script>
+<script src="assets/tcm-link.js?v=20260429p"></script>
 
 <script>
 /* ============================================================
@@ -626,6 +640,7 @@ const MERIDIAN_VERSES = [
     cn: '手太阴肺经', en: 'Lung · Tài Yīn',
     flow: 'arm-yin · 寅时 03–05', count: 11,
     url: 'https://yibian.hopto.org/shu/?sid=6968',
+    pathway: 'JingXue/Fei.png',
     verse: [
       '手太阴肺十一穴，',
       '中府云门天府诀，',
@@ -639,6 +654,7 @@ const MERIDIAN_VERSES = [
     cn: '手阳明大肠经', en: 'Large Intestine · Yáng Míng',
     flow: 'arm-yang · 卯时 05–07', count: 20,
     url: 'https://yibian.hopto.org/shu/?sid=6967',
+    pathway: 'JingXue/DaChang.png',
     verse: [
       '二十大肠起商阳，',
       '二间三间合谷藏，',
@@ -654,6 +670,7 @@ const MERIDIAN_VERSES = [
     cn: '足阳明胃经', en: 'Stomach · Yáng Míng',
     flow: 'leg-yang · 辰时 07–09', count: 45,
     url: 'https://yibian.hopto.org/shu/?sid=6961',
+    pathway: 'JingXue/Wei.png',
     verse: [
       '四十五穴足阳明，',
       '承泣四白巨髎经，',
@@ -679,6 +696,7 @@ const MERIDIAN_VERSES = [
     cn: '足太阴脾经', en: 'Spleen · Tài Yīn',
     flow: 'leg-yin · 巳时 09–11', count: 21,
     url: 'https://yibian.hopto.org/shu/?sid=6962',
+    pathway: 'JingXue/Pi.png',
     verse: [
       '二十一穴脾中州，',
       '隐白在足大趾头，',
@@ -696,6 +714,7 @@ const MERIDIAN_VERSES = [
     cn: '手少阴心经', en: 'Heart · Shào Yīn',
     flow: 'arm-yin · 午时 11–13', count: 9,
     url: 'https://yibian.hopto.org/shu/?sid=6970',
+    pathway: 'JingXue/Xing.png',
     verse: [
       '九穴心经手少阴，',
       '极泉青灵少海深，',
@@ -707,6 +726,7 @@ const MERIDIAN_VERSES = [
     cn: '手太阳小肠经', en: 'Small Intestine · Tài Yáng',
     flow: 'arm-yang · 未时 13–15', count: 19,
     url: 'https://yibian.hopto.org/shu/?sid=6969',
+    pathway: 'JingXue/XiaoChang.png',
     verse: [
       '手太阳经小肠穴，',
       '少泽先行小指末，',
@@ -724,6 +744,7 @@ const MERIDIAN_VERSES = [
     cn: '足太阳膀胱经', en: 'Bladder · Tài Yáng',
     flow: 'leg-yang · 申时 15–17', count: 67,
     url: 'https://yibian.hopto.org/shu/?sid=6963',
+    pathway: 'JingXue/PangGuang.png',
     verse: [
       '六十七穴足太阳，',
       '睛明目内红肉藏，',
@@ -759,6 +780,7 @@ const MERIDIAN_VERSES = [
     cn: '足少阴肾经', en: 'Kidney · Shào Yīn',
     flow: 'leg-yin · 酉时 17–19', count: 27,
     url: 'https://yibian.hopto.org/shu/?sid=6964',
+    pathway: 'JingXue/Shen.png',
     verse: [
       '少阴肾经二十七，',
       '涌泉然谷与太溪，',
@@ -778,6 +800,7 @@ const MERIDIAN_VERSES = [
     cn: '手厥阴心包经', en: 'Pericardium · Jué Yīn',
     flow: 'arm-yin · 戌时 19–21', count: 9,
     url: 'https://yibian.hopto.org/shu/?sid=6972',
+    pathway: 'JingXue/XingBao.png',
     verse: [
       '心包九穴天池近，',
       '天泉曲泽郄门认，',
@@ -789,6 +812,7 @@ const MERIDIAN_VERSES = [
     cn: '手少阳三焦经', en: 'Triple Burner · Shào Yáng',
     flow: 'arm-yang · 亥时 21–23', count: 23,
     url: 'https://yibian.hopto.org/shu/?sid=6971',
+    pathway: 'JingXue/SanJiao.png',
     verse: [
       '少阳三焦二十三，',
       '关冲液门中渚间，',
@@ -806,6 +830,7 @@ const MERIDIAN_VERSES = [
     cn: '足少阳胆经', en: 'Gallbladder · Shào Yáng',
     flow: 'leg-yang · 子时 23–01', count: 44,
     url: 'https://yibian.hopto.org/shu/?sid=6965',
+    pathway: 'JingXue/Dan.png',
     verse: [
       '足少阳起瞳子髎，',
       '四十四穴君记牢，',
@@ -831,6 +856,7 @@ const MERIDIAN_VERSES = [
     cn: '足厥阴肝经', en: 'Liver · Jué Yīn',
     flow: 'leg-yin · 丑时 01–03', count: 14,
     url: 'https://yibian.hopto.org/shu/?sid=6966',
+    pathway: 'JingXue/Gan.png',
     verse: [
       '足厥阴经一十四，',
       '大敦行间太冲是，',
@@ -843,16 +869,25 @@ const MERIDIAN_VERSES = [
 ];
 
 const grid = document.getElementById('meridian-grid');
-grid.innerHTML = MERIDIAN_VERSES.map(m => `
+grid.innerHTML = MERIDIAN_VERSES.map(m => {
+  const pathwayHtml = m.pathway
+    ? `<a class="meridian-pathway" href="${m.pathway}" target="_blank" rel="noopener" aria-label="Open full-size meridian pathway diagram">
+         <img src="${m.pathway}" alt="${m.cn} 循行路线图" loading="lazy">
+       </a>`
+    : '';
+  return `
   <article class="meridian-card">
     <header>
       <span class="meridian-name"><span class="cn" data-zh-auto>${m.cn}</span> ${m.en}</span>
       <a class="yibian-link" href="${m.url}" target="_blank" rel="noopener">${m.count} points →</a>
     </header>
     <p class="meridian-flow">${m.flow}</p>
-    <pre class="meridian-verse" data-zh-auto>${m.verse.join('\n')}</pre>
-  </article>
-`).join('');
+    <div class="meridian-card-body">
+      <pre class="meridian-verse" data-zh-auto>${m.verse.join('\n')}</pre>
+      ${pathwayHtml}
+    </div>
+  </article>`;
+}).join('');
 </script>
 
 </body>

@@ -3646,6 +3646,64 @@ a:hover { color: var(--gold-bright); }
   background: transparent;
 }
 
+/* Two-column body inside each meridian card: text on the left, the
+   循行路线图 thumbnail on the right. Stacks on narrow viewports. */
+.meridian-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  gap: 0.9rem;
+  align-items: start;
+}
+.meridian-card-body .meridian-card-text {
+  min-width: 0;
+}
+.meridian-pathway {
+  display: block;
+  position: relative;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: zoom-in;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.meridian-pathway:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold-bright);
+}
+.meridian-pathway img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  object-fit: contain;
+}
+.meridian-pathway::after {
+  content: '⤢';
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: rgba(0,0,0,0.55);
+  color: var(--gold-bright);
+  font-size: 0.75rem;
+  padding: 1px 5px;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.meridian-pathway:hover::after { opacity: 1; }
+
+@media (max-width: 700px) {
+  .meridian-card-body {
+    grid-template-columns: 1fr;
+  }
+  .meridian-pathway {
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
 
 /* ============================================================
    ACUPOINT SUGGESTIONS (in tongue diagnosis pattern cards)
