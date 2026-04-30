@@ -608,92 +608,128 @@ const TERMS = {
   'st36': {
     cn: '足三里 · Zú Sān Lǐ', en: 'Stomach 36',
     def: 'Master point for tonifying qi and strengthening the Spleen-Stomach. Located four fingers below the kneecap, one finger lateral to the shinbone. Classical line: "肚腹三里留" — for any abdominal disorder, look to ST36.',
-    url: 'https://yibian.hopto.org/shu/?sid=6961'
+    url: 'https://yibian.hopto.org/shu/?sid=6961',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005760?courseId=245888516&name=%E8%B6%B3%E4%B8%89%E9%87%8C&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6961'
   },
   'cv4': {
     cn: '关元 · Guān Yuán', en: 'Conception Vessel 4',
     def: '"Gate of Origin." 3 cùn below the navel on the midline. The most foundational point for tonifying yang and original qi. Classical indirect-moxa point for 阳虚 (yang deficiency) and cold patterns.',
-    url: 'https://yibian.hopto.org/shu/?sid=6943'
+    url: 'https://yibian.hopto.org/shu/?sid=6943',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006092?courseId=245888516&name=%E5%85%B3%E5%85%83&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943'
   },
   'cv6': {
     cn: '气海 · Qì Hǎi', en: 'Conception Vessel 6',
     def: '"Sea of Qi." 1.5 cùn below the navel. Replenishes qi throughout the body; classical point for fatigue and qi deficiency.',
-    url: 'https://yibian.hopto.org/shu/?sid=6943'
+    url: 'https://yibian.hopto.org/shu/?sid=6943',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006095?courseId=245888516&name=%E6%B0%94%E6%B5%B7&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943'
   },
   'cv8': {
     cn: '神阙 · Shén Què', en: 'Conception Vessel 8',
     def: 'The center of the navel. Salt-and-ginger moxibustion on this point warms interior cold and lifts collapsed yang. Never needled.',
-    url: 'https://yibian.hopto.org/shu/?sid=6943'
+    url: 'https://yibian.hopto.org/shu/?sid=6943',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006097?courseId=245888516&name=%E7%A5%9E%E9%98%99&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943'
   },
   'gv4': {
     cn: '命门 · Mìng Mén', en: 'Governor Vessel 4',
     def: '"Gate of Life." Between L2 and L3 spinous processes (level with the navel). Kindles kidney yang and warms the body core; indispensable for chronic cold-deficiency back pain.',
-    url: 'https://yibian.hopto.org/shu/?sid=6944'
+    url: 'https://yibian.hopto.org/shu/?sid=6944',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006054?courseId=245888516&name=%E5%91%BD%E9%97%A8&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6944'
   },
   'sp6': {
     cn: '三阴交 · Sān Yīn Jiāo', en: 'Spleen 6',
     def: 'Crossing point of the three foot-yin meridians (Spleen, Liver, Kidney). 3 cùn above the inner ankle, behind the tibia. Powerful for nourishing yin, blood, and the lower abdomen. (Avoid in pregnancy.)',
-    url: 'https://yibian.hopto.org/shu/?sid=6962'
+    url: 'https://yibian.hopto.org/shu/?sid=6962',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005780?courseId=245888516&name=%E4%B8%89%E9%98%B4%E4%BA%A4&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962'
   },
   'sp9': {
     cn: '阴陵泉 · Yīn Líng Quán', en: 'Spleen 9',
     def: 'Master point for resolving dampness — He-Sea point of the Spleen channel. Inner shin, depression below and behind the head of the tibia.',
-    url: 'https://yibian.hopto.org/shu/?sid=6962'
+    url: 'https://yibian.hopto.org/shu/?sid=6962',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005785?courseId=245888516&name=%E9%98%B4%E9%99%B5%E6%B3%89&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962'
   },
   'sp10': {
     cn: '血海 · Xuè Hǎi', en: 'Spleen 10',
     def: '"Sea of Blood." 2 cùn above the upper border of the kneecap on the inner thigh. Foremost point for any blood disorder — moves and nourishes blood.',
-    url: 'https://yibian.hopto.org/shu/?sid=6962'
+    url: 'https://yibian.hopto.org/shu/?sid=6962',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005786?courseId=245888516&name=%E8%A1%80%E6%B5%B7&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962'
   },
   'ki3': {
     cn: '太溪 · Tài Xī', en: 'Kidney 3',
     def: 'Source point of the Kidney channel. In the depression between the inner ankle bone and the Achilles tendon. Replenishes kidney essence, yin, and yang.',
-    url: 'https://yibian.hopto.org/shu/?sid=6964'
+    url: 'https://yibian.hopto.org/shu/?sid=6964',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005919?courseId=245888516&name=%E5%A4%AA%E6%BA%AA&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6964'
   },
   'ki6': {
     cn: '照海 · Zhào Hǎi', en: 'Kidney 6',
     def: 'Confluence point for the Yin Qiao Vessel. Below the inner ankle bone. Cools yin-deficiency heat, calms the spirit, treats night insomnia and dry throat.',
-    url: 'https://yibian.hopto.org/shu/?sid=6964'
+    url: 'https://yibian.hopto.org/shu/?sid=6964',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005922?courseId=245888516&name=%E7%85%A7%E6%B5%B7&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6964'
   },
   'lv3': {
     cn: '太冲 · Tài Chōng', en: 'Liver 3',
     def: 'Source point of the Liver. In the V where the 1st and 2nd metatarsal bones meet on top of the foot. The foremost point for moving stagnant Liver qi and calming irritability.',
-    url: 'https://yibian.hopto.org/shu/?sid=6966'
+    url: 'https://yibian.hopto.org/shu/?sid=6966',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006036?courseId=245888516&name=%E5%A4%AA%E5%86%B2&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6966'
   },
   'li4': {
     cn: '合谷 · Hé Gǔ', en: 'Large Intestine 4',
     def: 'Source point of the Large Intestine, master point for the face. Between thumb and index finger. Combined with LV3 forms the "Four Gates" — opens qi flow throughout the body. (Avoid in pregnancy.)',
-    url: 'https://yibian.hopto.org/shu/?sid=6967'
+    url: 'https://yibian.hopto.org/shu/?sid=6967',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005692?courseId=245888516&name=%E5%90%88%E8%B0%B7&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6967'
   },
   'li11': {
     cn: '曲池 · Qū Chí', en: 'Large Intestine 11',
     def: 'He-Sea point of the Large Intestine. At the outer end of the elbow crease. Powerful heat-clearer for skin, fever, and digestive heat.',
-    url: 'https://yibian.hopto.org/shu/?sid=6967'
+    url: 'https://yibian.hopto.org/shu/?sid=6967',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005707?courseId=245888516&name=%E6%9B%B2%E6%B1%A0&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6967'
   },
   'gv14': {
     cn: '大椎 · Dà Zhuī', en: 'Governor Vessel 14',
     def: '"Great Hammer." Below C7 (the most prominent vertebra at the neck base). Meeting of all six yang channels — releases excess heat and treats all febrile diseases.',
-    url: 'https://yibian.hopto.org/shu/?sid=6944'
+    url: 'https://yibian.hopto.org/shu/?sid=6944',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006065?courseId=245888516&name=%E5%A4%A7%E6%A4%8E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6944'
   },
   'st40': {
     cn: '丰隆 · Fēng Lóng', en: 'Stomach 40',
     def: 'Connecting (Luo) point of the Stomach channel. The classical "phlegm-resolving" point — used whenever phlegm (湿痰) is present.',
-    url: 'https://yibian.hopto.org/shu/?sid=6961'
+    url: 'https://yibian.hopto.org/shu/?sid=6961',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005765?courseId=245888516&name=%E4%B8%B0%E9%9A%86&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6961'
   },
   'cv12': {
     cn: '中脘 · Zhōng Wǎn', en: 'Conception Vessel 12',
     def: 'Front-Mu of the Stomach AND Influential Point for the Fu organs. Halfway between the breastbone tip and the navel. Warms the middle burner and harmonizes the entire digestive system.',
-    url: 'https://yibian.hopto.org/shu/?sid=6943'
+    url: 'https://yibian.hopto.org/shu/?sid=6943',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006101?courseId=245888516&name=%E4%B8%AD%E8%84%98&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943'
   },
   'cv17': {
     cn: '膻中 · Dàn Zhōng', en: 'Conception Vessel 17',
     def: 'Influential Point for Qi AND Front-Mu of the Pericardium. Midpoint of the breastbone, level with the nipples. Releases chest oppression, calms emotional bottling, regulates breath.',
-    url: 'https://yibian.hopto.org/shu/?sid=6943'
+    url: 'https://yibian.hopto.org/shu/?sid=6943',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006106?courseId=245888516&name=%E8%86%BB%E4%B8%AD&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943'
   },
   'bl17': {
     cn: '膈俞 · Gé Shù', en: 'Bladder 17',
     def: 'Influential Point for Blood. On the back, level with the lower edge of the shoulder blade. Used for any blood disorder — stasis, deficiency, or hemorrhage.',
-    url: 'https://yibian.hopto.org/shu/?sid=6963'
+    url: 'https://yibian.hopto.org/shu/?sid=6963',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005864?courseId=245888516&name=%E8%86%88%E4%BF%9E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6963'
   },
 
   // ============================================================
