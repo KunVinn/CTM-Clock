@@ -3623,6 +3623,27 @@ a:hover { color: var(--gold-bright); }
   background: rgba(196, 60, 42, 0.15);
   color: var(--gold-bright);
 }
+.meridian-card-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+.meridian-card .yibian-link-backup {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-mute);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--line);
+  padding-bottom: 1px;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.meridian-card .yibian-link-backup:hover {
+  color: var(--ink-soft);
+  border-bottom-color: var(--ink-soft);
+}
 .meridian-card .meridian-flow {
   font-family: var(--font-ui);
   font-size: 0.7rem;
