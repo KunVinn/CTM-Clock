@@ -48,6 +48,27 @@
     return entry.url;
   }
 
+  // Pick the backup URL for 简/繁/中 mode. Returns null in EN mode or
+  // when no sensible backup exists.
+  // 1. Explicit entry.urlCnBackup wins (used by the 14 meridian entries
+  //    where primary is rhky.com and backup is yibian.hopto.org).
+  // 2. Otherwise, if the entry's primary reference is Wikipedia (we
+  //    know the term has a Wikipedia article), derive a zh.wikipedia.org
+  //    URL from entry.cn so users can fall back to the Chinese
+  //    Wikipedia version of the same article.
+  function pickBackupUrl(entry) {
+    if (entry.urlCnBackup) return entry.urlCnBackup;
+    if (entry.url && /(?:^|\.)wikipedia\.org\//.test(entry.url) && entry.cn) {
+      const head = entry.cn.split('·')[0];
+      const pieces = head.split('/').map(s => s.trim()).filter(Boolean);
+      const term = pieces[1] || pieces[0];
+      if (term) {
+        return 'https://zh.wikipedia.org/wiki/' + encodeURIComponent(term);
+      }
+    }
+    return null;
+  }
+
   function buildTooltipHTML(entry) {
     const mode = (window.tcmScript && window.tcmScript.get && window.tcmScript.get()) || 's';
     const url = pickUrl(entry);
@@ -57,12 +78,15 @@
                                 : '→ Read on Wikipedia';
     const linkHref = entry.page || url || '#';
     const linkAttrs = entry.page ? '' : 'target="_blank" rel="noopener"';
-    // In 简/繁/中 mode, show a small backup link if the entry has one.
-    // Useful when the primary urlCn (e.g. a paywalled course or
-    // session-token-bearing URL) might break for some users.
+    // In 简/繁/中 mode, show a small backup link next to the primary
+    // reference. Falls back gracefully if the primary URL (e.g. a
+    // session-token-bearing course URL) ever stops working.
     let backupHTML = '';
-    if (mode !== 'e' && entry.urlCnBackup) {
-      backupHTML = `<a class="tt-link tt-link-backup" href="${entry.urlCnBackup}" target="_blank" rel="noopener">→ 备用</a>`;
+    if (mode !== 'e' && !entry.page) {
+      const backupUrl = pickBackupUrl(entry);
+      if (backupUrl && backupUrl !== linkHref) {
+        backupHTML = `<a class="tt-link tt-link-backup" href="${backupUrl}" target="_blank" rel="noopener">→ 备用</a>`;
+      }
     }
     return `
       <div class="tt-cn">${entry.cn || ''}</div>
