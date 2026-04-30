@@ -758,7 +758,52 @@ const TERMS = {
     url: 'https://yibian.hopto.org/shu/?sid=6967',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005685?courseId=245888516&name=%E5%95%86%E9%98%B3&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6967'
-  }
+  },
+
+  // ============================================================
+  // Acupoints discovered via probing the rhky course (May 2026).
+  // All card IDs verified by direct page fetch.
+  // ============================================================
+  // ---- Lung 肺经 (sid=6968) ----
+  'lu3': { cn: '天府 · Tiān Fǔ', en: 'Lung 3', def: 'On the anterior arm, 3 cun below the anterior axillary fold, on the radial border of the biceps brachii. Regulates Lung qi; treats cough, asthma, and nosebleed.', url: 'https://yibian.hopto.org/shu/?sid=6968', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005658?courseId=245888516&name=%E5%A4%A9%E5%BA%9C&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968' },
+  'lu4': { cn: '侠白 · Xiá Bái', en: 'Lung 4', def: 'On the anterior arm, 4 cun below the anterior axillary fold, on the radial border of the biceps. Diffuses Lung qi; treats chest pain and arm pain.', url: 'https://yibian.hopto.org/shu/?sid=6968', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005660?courseId=245888516&name=%E4%BE%A0%E7%99%BD&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968' },
+  'lu5': { cn: '尺泽 · Chǐ Zé', en: 'Lung 5', def: 'He-Sea point of the Lung. In the cubital crease on the radial side of the biceps tendon. Clears Lung heat, descends Lung qi.', url: 'https://yibian.hopto.org/shu/?sid=6968', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005662?courseId=245888516&name=%E5%B0%BA%E6%B3%BD&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968' },
+  'lu6': { cn: '孔最 · Kǒng Zuì', en: 'Lung 6', def: 'Xi-Cleft point of the Lung. On the forearm, 7 cun above the wrist crease on the line connecting LU5 and LU9. Clears Lung heat, stops bleeding (especially nosebleed and hemoptysis).', url: 'https://yibian.hopto.org/shu/?sid=6968', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005664?courseId=245888516&name=%E5%AD%94%E6%9C%80&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968' },
+  'lu7': { cn: '列缺 · Liè Quē', en: 'Lung 7', def: 'Luo-Connecting point of the Lung; one of the Four Command Points (head and neck). On the radial wrist, 1.5 cun above the crease. Diffuses Lung qi, expels exterior wind.', url: 'https://yibian.hopto.org/shu/?sid=6968', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005666?courseId=245888516&name=%E5%88%97%E7%BC%BA&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968' },
+  // ---- Large Intestine 大肠经 (sid=6967) ----
+  'li2': { cn: '二间 · Èr Jiān', en: 'Large Intestine 2', def: 'Ying-Spring point of the Large Intestine. On the radial side of the 2nd metacarpophalangeal joint at the red-white skin border. Clears heat from the head, face, and throat.', url: 'https://yibian.hopto.org/shu/?sid=6967', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005687?courseId=245888516&name=%E4%BA%8C%E9%97%B4&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6967' },
+  'li10': { cn: '手三里 · Shǒu Sān Lǐ', en: 'Large Intestine 10', def: 'On the forearm, 2 cun below the elbow crease on the LI4–LI11 line. Opens channels, regulates qi, treats arm and shoulder pain.', url: 'https://yibian.hopto.org/shu/?sid=6967', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005705?courseId=245888516&name=%E6%89%8B%E4%B8%89%E9%87%8C&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6967' },
+  // ---- Stomach 胃经 (sid=6961) ----
+  'st37': { cn: '上巨虚 · Shàng Jù Xū', en: 'Stomach 37', def: 'Lower-He-Sea point of the Large Intestine. On the lower leg, 6 cun below ST35. Harmonizes the intestines; treats abdominal pain, diarrhea, dysentery.', url: 'https://yibian.hopto.org/shu/?sid=6961', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005762?courseId=245888516&name=%E4%B8%8A%E5%B7%A8%E8%99%9A&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6961' },
+  'st41': { cn: '解溪 · Xiè Xī', en: 'Stomach 41', def: 'Jing-River point of the Stomach. In the central ankle depression in front of the joint, between the two tendons. Clears heat, calms the spirit; treats headache, dizziness, ankle pain.', url: 'https://yibian.hopto.org/shu/?sid=6961', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005766?courseId=245888516&name=%E8%A7%A3%E6%BA%AA&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6961' },
+  // ---- Spleen 脾经 (sid=6962) ----
+  'sp1': { cn: '隐白 · Yǐn Bái', en: 'Spleen 1', def: 'Jing-Well point of the Spleen. On the medial side of the great toe, 0.1 cun proximal to the corner of the nail. Strengthens the Spleen, restores yang; treats excessive menstruation and bleeding disorders.', url: 'https://yibian.hopto.org/shu/?sid=6962', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005775?courseId=245888516&name=%E9%9A%90%E7%99%BD&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962' },
+  'sp2': { cn: '大都 · Dà Dū', en: 'Spleen 2', def: 'Ying-Spring point of the Spleen. On the foot, in the depression at the red-white skin border distal to the 1st metatarsophalangeal joint. Strengthens the Spleen, drains heat.', url: 'https://yibian.hopto.org/shu/?sid=6962', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005776?courseId=245888516&name=%E5%A4%A7%E9%83%BD&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962' },
+  'sp7': { cn: '漏谷 · Lòu Gǔ', en: 'Spleen 7', def: 'On the inner leg, 6 cun above the medial malleolus, on the posterior border of the medial tibia. Strengthens the Spleen, drains dampness.', url: 'https://yibian.hopto.org/shu/?sid=6962', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005783?courseId=245888516&name=%E6%BC%8F%E8%B0%B7&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962' },
+  'sp8': { cn: '地机 · Dì Jī', en: 'Spleen 8', def: 'Xi-Cleft point of the Spleen. On the inner leg, 3 cun below SP9, on the medial tibia border. Regulates menstruation, drains dampness.', url: 'https://yibian.hopto.org/shu/?sid=6962', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005784?courseId=245888516&name=%E5%9C%B0%E6%9C%BA&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962' },
+  'sp12': { cn: '冲门 · Chōng Mén', en: 'Spleen 12', def: 'In the inguinal region along the inguinal crease, lateral to the femoral artery. Regulates qi, treats hernia and abdominal pain.', url: 'https://yibian.hopto.org/shu/?sid=6962', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005788?courseId=245888516&name=%E5%86%B2%E9%97%A8&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962' },
+  // ---- Bladder 膀胱经 (sid=6963) ----
+  'bl1': { cn: '睛明 · Jīng Míng', en: 'Bladder 1', def: 'On the face, in the depression medial to the inner canthus of the eye. Clears heat, brightens the eyes; the principal point for eye disease.', url: 'https://yibian.hopto.org/shu/?sid=6963', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005846?courseId=245888516&name=%E7%9D%9B%E6%98%8E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl13': { cn: '肺俞 · Fèi Shù', en: 'Bladder 13', def: 'Back-Shu of the Lung. 1.5 cun lateral to the spine, level with the lower border of T3. Nourishes Lung yin, clears heat, regulates Lung qi.', url: 'https://yibian.hopto.org/shu/?sid=6963', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005860?courseId=245888516&name=%E8%82%BA%E4%BF%9E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6963' },
+  // ---- Kidney 肾经 (sid=6964) ----
+  'ki1': { cn: '涌泉 · Yǒng Quán', en: 'Kidney 1', def: 'Jing-Well point of the Kidney. On the sole of the foot, in the depression appearing when the foot is flexed. Nourishes yin, calms wind, awakens consciousness, opens the orifices.', url: 'https://yibian.hopto.org/shu/?sid=6964', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005917?courseId=245888516&name=%E6%B6%8C%E6%B3%89&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6964' },
+  'ki2': { cn: '然谷 · Rán Gǔ', en: 'Kidney 2', def: 'Ying-Spring point of the Kidney. On the medial foot, in the depression below the navicular tuberosity. Nourishes yin, supplements the kidneys, clears heat.', url: 'https://yibian.hopto.org/shu/?sid=6964', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005918?courseId=245888516&name=%E7%84%B6%E8%B0%B7&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6964' },
+  // ---- Liver 肝经 (sid=6966) ----
+  'lv1': { cn: '大敦 · Dà Dūn', en: 'Liver 1', def: 'Jing-Well point of the Liver. On the dorsum of the great toe, 0.1 cun proximal to the corner of the nail. Soothes the Liver, calms wind, settles the spirit.', url: 'https://yibian.hopto.org/shu/?sid=6966', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006032?courseId=245888516&name=%E5%A4%A7%E6%95%A6&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6966' },
+  'lv2': { cn: '行间 · Xíng Jiān', en: 'Liver 2', def: 'Ying-Spring point of the Liver. On the foot, between the 1st and 2nd toes at the proximal end of the web margin. Soothes Liver fire, calms wind.', url: 'https://yibian.hopto.org/shu/?sid=6966', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006034?courseId=245888516&name=%E8%A1%8C%E9%97%B4&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6966' },
+  // ---- Du Mai 督脉 (sid=6944) ----
+  'gv2': { cn: '腰俞 · Yāo Shù', en: 'Governor Vessel 2', def: 'On the lower back, in the depression of the sacral hiatus. Tonifies the kidneys, strengthens the lower back, regulates menstruation.', url: 'https://yibian.hopto.org/shu/?sid=6944', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006052?courseId=245888516&name=%E8%85%B0%E4%BF%9E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6944' },
+  'gv15': { cn: '哑门 · Yǎ Mén', en: 'Governor Vessel 15', def: 'On the back of the neck, in the depression above the spinous process of C2 on the posterior midline. Opens consciousness, awakens the spirit, dispels wind.', url: 'https://yibian.hopto.org/shu/?sid=6944', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006066?courseId=245888516&name=%E5%93%91%E9%97%A8&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6944' },
+  // ---- Ren Mai 任脉 (sid=6943) ----
+  'cv1': { cn: '会阴 · Huì Yīn', en: 'Conception Vessel 1', def: 'In the perineum, between the anus and the genitals. Regulates menstruation, tonifies the kidneys, clears damp-heat.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006088?courseId=245888516&name=%E4%BC%9A%E9%98%B4&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+  'cv3': { cn: '中极 · Zhōng Jí', en: 'Conception Vessel 3', def: 'On the lower abdomen, 4 cun below the navel on the anterior midline. Front-Mu of the Bladder. Benefits the kidneys, opens channels.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006091?courseId=245888516&name=%E4%B8%AD%E6%9E%81&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+  'cv7': { cn: '阴交 · Yīn Jiāo', en: 'Conception Vessel 7', def: 'On the lower abdomen, 1 cun below the navel on the anterior midline. Treats abdominal pain, edema, menstrual irregularities.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006096?courseId=245888516&name=%E9%98%B4%E4%BA%A4&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+  'cv9': { cn: '水分 · Shuǐ Fèn', en: 'Conception Vessel 9', def: 'On the upper abdomen, 1 cun above the navel on the anterior midline. Drains dampness, regulates water passages.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006098?courseId=245888516&name=%E6%B0%B4%E5%88%86&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+  'cv11': { cn: '建里 · Jiàn Lǐ', en: 'Conception Vessel 11', def: 'On the upper abdomen, 3 cun above the navel on the anterior midline. Harmonizes the Stomach, regulates qi.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006100?courseId=245888516&name=%E5%BB%BA%E9%87%8C&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+  'cv13': { cn: '上脘 · Shàng Wǎn', en: 'Conception Vessel 13', def: 'On the upper abdomen, 5 cun above the navel on the anterior midline. Strengthens the Spleen-Stomach, regulates qi, treats vomiting and indigestion.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006102?courseId=245888516&name=%E4%B8%8A%E8%84%98&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+  'cv24': { cn: '承浆 · Chéng Jiāng', en: 'Conception Vessel 24', def: 'On the face, in the depression in the centre of the mentolabial groove. Calms wind, clears heat, treats facial paralysis and toothache.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006113?courseId=245888516&name=%E6%89%BF%E6%B5%86&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+  // ---- Extra (奇穴) ----
+  'ba-feng': { cn: '八风 · Bā Fēng', en: 'EX-LE10 (Eight Winds)', def: 'Eight extra-meridian points on the dorsum of each foot, in the depressions at the proximal margin of each web between adjacent toes. Treats foot swelling, toe numbness, and headaches.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006159?courseId=245888516&name=%E5%85%AB%E9%A3%8E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' }
 };
 
 /* ---------- Lookup aliases (case-insensitive) ----------
@@ -893,10 +938,53 @@ const TERM_ALIASES = {
   '中脘': 'cv12', 'cv12': 'cv12', 'CV12': 'cv12',
   '膻中': 'cv17', 'cv17': 'cv17', 'CV17': 'cv17',
   '膈俞': 'bl17', '膈腧': 'bl17', 'bl17': 'bl17', 'BL17': 'bl17',
-  // rhky-deeplinked acupoints (newly added; awaiting more chapter cards)
+  // ============================================================
+  // rhky-deeplinked acupoints (probed and verified against the live
+  // course at special.rhky.com).
+  // ============================================================
+  // Lung
   '中府': 'lu1', 'lu1': 'lu1', 'LU1': 'lu1',
   '云门': 'lu2', '雲門': 'lu2', 'lu2': 'lu2', 'LU2': 'lu2',
-  '商阳': 'li1', '商陽': 'li1', 'li1': 'li1', 'LI1': 'li1'
+  '天府': 'lu3', 'lu3': 'lu3', 'LU3': 'lu3',
+  '侠白': 'lu4', '俠白': 'lu4', 'lu4': 'lu4', 'LU4': 'lu4',
+  '尺泽': 'lu5', '尺澤': 'lu5', 'lu5': 'lu5', 'LU5': 'lu5',
+  '孔最': 'lu6', 'lu6': 'lu6', 'LU6': 'lu6',
+  '列缺': 'lu7', 'lu7': 'lu7', 'LU7': 'lu7',
+  // Large Intestine
+  '商阳': 'li1', '商陽': 'li1', 'li1': 'li1', 'LI1': 'li1',
+  '二间': 'li2', '二間': 'li2', 'li2': 'li2', 'LI2': 'li2',
+  '手三里': 'li10', 'li10': 'li10', 'LI10': 'li10',
+  // Stomach
+  '上巨虚': 'st37', '上巨虛': 'st37', 'st37': 'st37', 'ST37': 'st37',
+  '解溪': 'st41', '解谿': 'st41', 'st41': 'st41', 'ST41': 'st41',
+  // Spleen
+  '隐白': 'sp1', '隱白': 'sp1', 'sp1': 'sp1', 'SP1': 'sp1',
+  '大都': 'sp2', 'sp2': 'sp2', 'SP2': 'sp2',
+  '漏谷': 'sp7', 'sp7': 'sp7', 'SP7': 'sp7',
+  '地机': 'sp8', '地機': 'sp8', 'sp8': 'sp8', 'SP8': 'sp8',
+  '冲门': 'sp12', '衝門': 'sp12', 'sp12': 'sp12', 'SP12': 'sp12',
+  // Bladder
+  '睛明': 'bl1', 'bl1': 'bl1', 'BL1': 'bl1',
+  '肺俞': 'bl13', '肺腧': 'bl13', 'bl13': 'bl13', 'BL13': 'bl13',
+  // Kidney
+  '涌泉': 'ki1', '湧泉': 'ki1', 'ki1': 'ki1', 'KI1': 'ki1',
+  '然谷': 'ki2', 'ki2': 'ki2', 'KI2': 'ki2',
+  // Liver
+  '大敦': 'lv1', 'lv1': 'lv1', 'LV1': 'lv1', 'LR1': 'lv1',
+  '行间': 'lv2', '行間': 'lv2', 'lv2': 'lv2', 'LV2': 'lv2', 'LR2': 'lv2',
+  // Du Mai
+  '腰俞': 'gv2', '腰腧': 'gv2', 'gv2': 'gv2', 'GV2': 'gv2',
+  '哑门': 'gv15', '啞門': 'gv15', 'gv15': 'gv15', 'GV15': 'gv15',
+  // Ren Mai
+  '会阴': 'cv1', '會陰': 'cv1', 'cv1': 'cv1', 'CV1': 'cv1',
+  '中极': 'cv3', '中極': 'cv3', 'cv3': 'cv3', 'CV3': 'cv3',
+  '阴交': 'cv7', '陰交': 'cv7', 'cv7': 'cv7', 'CV7': 'cv7',
+  '水分': 'cv9', 'cv9': 'cv9', 'CV9': 'cv9',
+  '建里': 'cv11', 'cv11': 'cv11', 'CV11': 'cv11',
+  '上脘': 'cv13', 'cv13': 'cv13', 'CV13': 'cv13',
+  '承浆': 'cv24', '承漿': 'cv24', 'cv24': 'cv24', 'CV24': 'cv24',
+  // Extra
+  '八风': 'ba-feng', '八風': 'ba-feng'
 };
 
 function lookupTerm(key) {
