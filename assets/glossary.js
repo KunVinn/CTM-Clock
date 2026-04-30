@@ -803,7 +803,102 @@ const TERMS = {
   'cv13': { cn: '上脘 · Shàng Wǎn', en: 'Conception Vessel 13', def: 'On the upper abdomen, 5 cun above the navel on the anterior midline. Strengthens the Spleen-Stomach, regulates qi, treats vomiting and indigestion.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006102?courseId=245888516&name=%E4%B8%8A%E8%84%98&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
   'cv24': { cn: '承浆 · Chéng Jiāng', en: 'Conception Vessel 24', def: 'On the face, in the depression in the centre of the mentolabial groove. Calms wind, clears heat, treats facial paralysis and toothache.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006113?courseId=245888516&name=%E6%89%BF%E6%B5%86&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
   // ---- Extra (奇穴) ----
-  'ba-feng': { cn: '八风 · Bā Fēng', en: 'EX-LE10 (Eight Winds)', def: 'Eight extra-meridian points on the dorsum of each foot, in the depressions at the proximal margin of each web between adjacent toes. Treats foot swelling, toe numbness, and headaches.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006159?courseId=245888516&name=%E5%85%AB%E9%A3%8E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' }
+  'ba-feng': { cn: '八风 · Bā Fēng', en: 'EX-LE10 (Eight Winds)', def: 'Eight extra-meridian points on the dorsum of each foot, in the depressions at the proximal margin of each web between adjacent toes. Treats foot swelling, toe numbness, and headaches.', url: 'https://yibian.hopto.org/shu/?sid=6943', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006159?courseId=245888516&name=%E5%85%AB%E9%A3%8E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943' },
+
+  // ============================================================
+  // Compact acupoint entries — every point referenced in the
+  // 十六郄穴歌, 十二募穴, 十二经脉流注表, and 妇科调经 sections.
+  // No rhky deep-link yet (would require per-card probing); the
+  // tooltip routes to yibian as primary and auto-derives a Baidu
+  // Baike backup via pickBackupUrl().
+  // ============================================================
+  // Lung (LU8-LU11)
+  'lu8': { cn: '经渠 · Jīng Qú', en: 'Lung 8', def: 'Jing-River point of the Lung. On the wrist, 1 cùn proximal to the radial pulse.', url: 'https://yibian.hopto.org/shu/?sid=6968' },
+  'lu9': { cn: '太渊 · Tài Yuān', en: 'Lung 9', def: 'Yuan-Source and Stream point of the Lung; Eight-Influential Point for vessels (脉会). On the radial wrist crease.', url: 'https://yibian.hopto.org/shu/?sid=6968' },
+  'lu10': { cn: '鱼际 · Yú Jì', en: 'Lung 10', def: 'Ying-Spring point of the Lung. On the palm, midpoint of the 1st metacarpal at the red-white skin border.', url: 'https://yibian.hopto.org/shu/?sid=6968' },
+  'lu11': { cn: '少商 · Shào Shāng', en: 'Lung 11', def: 'Jing-Well point of the Lung. On the radial side of the thumb. Emergency revival; acute throat heat.', url: 'https://yibian.hopto.org/shu/?sid=6968' },
+  // Large Intestine (LI3, LI5, LI7)
+  'li3': { cn: '三间 · Sān Jiān', en: 'Large Intestine 3', def: 'Stream point of the LI. On the dorsum of the hand, in the depression on the radial side of the 2nd metacarpophalangeal joint.', url: 'https://yibian.hopto.org/shu/?sid=6967' },
+  'li5': { cn: '阳溪 · Yáng Xī', en: 'Large Intestine 5', def: 'Jing-River point of the LI. In the anatomical snuffbox on the radial wrist.', url: 'https://yibian.hopto.org/shu/?sid=6967' },
+  'li7': { cn: '温溜 · Wēn Liū', en: 'Large Intestine 7', def: 'Cleft point of the LI channel. On the back forearm, 5 cùn above the wrist crease.', url: 'https://yibian.hopto.org/shu/?sid=6967' },
+  // Stomach (ST25, ST34, ST42, ST43, ST44, ST45)
+  'st25': { cn: '天枢 · Tiān Shū', en: 'Stomach 25', def: 'Front-Mu of the Large Intestine. 2 cùn lateral to the navel. Treats abdominal pain, constipation, diarrhea.', url: 'https://yibian.hopto.org/shu/?sid=6961' },
+  'st34': { cn: '梁丘 · Liáng Qiū', en: 'Stomach 34', def: 'Cleft point of the Stomach. On the front thigh, 2 cùn above the upper lateral border of the patella. Acute stomach pain.', url: 'https://yibian.hopto.org/shu/?sid=6961' },
+  'st42': { cn: '冲阳 · Chōng Yáng', en: 'Stomach 42', def: 'Yuan-Source of the Stomach. On the dorsum of the foot, on the highest point of the dorsum.', url: 'https://yibian.hopto.org/shu/?sid=6961' },
+  'st43': { cn: '陷谷 · Xiàn Gǔ', en: 'Stomach 43', def: 'Stream point of the Stomach. On the foot dorsum, in the depression distal to the 2nd-3rd metatarsal junction.', url: 'https://yibian.hopto.org/shu/?sid=6961' },
+  'st44': { cn: '内庭 · Nèi Tíng', en: 'Stomach 44', def: 'Ying-Spring of the Stomach. Between the 2nd and 3rd toes at the proximal end of the web. Clears stomach heat.', url: 'https://yibian.hopto.org/shu/?sid=6961' },
+  'st45': { cn: '厉兑 · Lì Duì', en: 'Stomach 45', def: 'Jing-Well of the Stomach. On the lateral side of the 2nd toe.', url: 'https://yibian.hopto.org/shu/?sid=6961' },
+  // Spleen (SP3, SP5)
+  'sp3': { cn: '太白 · Tài Bái', en: 'Spleen 3', def: 'Yuan-Source and Stream of the Spleen. On the medial foot, proximal to the 1st metatarsophalangeal joint at the red-white skin border.', url: 'https://yibian.hopto.org/shu/?sid=6962' },
+  'sp5': { cn: '商丘 · Shāng Qiū', en: 'Spleen 5', def: 'Jing-River of the Spleen. On the medial foot, in the depression anterior and inferior to the medial malleolus.', url: 'https://yibian.hopto.org/shu/?sid=6962' },
+  // Heart (HT3, HT4, HT6, HT7, HT8, HT9)
+  'ht3': { cn: '少海 · Shào Hǎi', en: 'Heart 3', def: 'He-Sea point of the Heart. On the medial elbow crease, just anterior to the medial epicondyle.', url: 'https://yibian.hopto.org/shu/?sid=6970' },
+  'ht4': { cn: '灵道 · Líng Dào', en: 'Heart 4', def: 'Jing-River of the Heart. On the inner forearm, 1.5 cùn proximal to the wrist crease.', url: 'https://yibian.hopto.org/shu/?sid=6970' },
+  'ht6': { cn: '阴郄 · Yīn Xī', en: 'Heart 6', def: 'Cleft point of the Heart. On the inner forearm, 0.5 cùn proximal to the wrist crease, on the radial side of the FCU tendon.', url: 'https://yibian.hopto.org/shu/?sid=6970' },
+  'ht7': { cn: '神门 · Shén Mén', en: 'Heart 7', def: 'Yuan-Source and Stream of the Heart. On the inner wrist crease. Calms the spirit; treats insomnia and palpitations.', url: 'https://yibian.hopto.org/shu/?sid=6970' },
+  'ht8': { cn: '少府 · Shào Fǔ', en: 'Heart 8', def: 'Ying-Spring of the Heart. On the palm, between the 4th and 5th metacarpals.', url: 'https://yibian.hopto.org/shu/?sid=6970' },
+  'ht9': { cn: '少冲 · Shào Chōng', en: 'Heart 9', def: 'Jing-Well of the Heart. On the radial side of the little fingertip. Emergency revival.', url: 'https://yibian.hopto.org/shu/?sid=6970' },
+  // Small Intestine (SI1-SI6, SI8)
+  'si1': { cn: '少泽 · Shào Zé', en: 'Small Intestine 1', def: 'Jing-Well of the SI. On the ulnar side of the little fingertip. Postpartum lactation insufficiency.', url: 'https://yibian.hopto.org/shu/?sid=6969' },
+  'si2': { cn: '前谷 · Qián Gǔ', en: 'Small Intestine 2', def: 'Ying-Spring of the SI. On the ulnar side of the 5th MCP joint at the red-white skin border.', url: 'https://yibian.hopto.org/shu/?sid=6969' },
+  'si3': { cn: '后溪 · Hòu Xī', en: 'Small Intestine 3', def: 'Stream point of the SI; Confluent point of the Du Mai. On the ulnar side of the 5th metacarpal head when fist is loosely clenched.', url: 'https://yibian.hopto.org/shu/?sid=6969' },
+  'si4': { cn: '腕骨 · Wàn Gǔ', en: 'Small Intestine 4', def: 'Yuan-Source of the SI. On the ulnar wrist, between the 5th metacarpal base and the triquetral.', url: 'https://yibian.hopto.org/shu/?sid=6969' },
+  'si5': { cn: '阳谷 · Yáng Gǔ', en: 'Small Intestine 5', def: 'Jing-River of the SI. On the ulnar wrist, between the styloid process of the ulna and the triquetral.', url: 'https://yibian.hopto.org/shu/?sid=6969' },
+  'si6': { cn: '养老 · Yǎng Lǎo', en: 'Small Intestine 6', def: 'Cleft point of the SI. On the ulnar wrist, in the bony cleft on the radial side of the styloid process of the ulna.', url: 'https://yibian.hopto.org/shu/?sid=6969' },
+  'si8': { cn: '小海 · Xiǎo Hǎi', en: 'Small Intestine 8', def: 'He-Sea of the SI. In the depression between the medial epicondyle of the humerus and the olecranon.', url: 'https://yibian.hopto.org/shu/?sid=6969' },
+  // Bladder (BL23, 八髎, BL40, BL59, BL60, BL63, BL64, BL65, BL66, BL67)
+  'bl23': { cn: '肾俞 · Shèn Shù', en: 'Bladder 23', def: 'Back-Shu of the Kidney. 1.5 cùn lateral to the spine, level with L2. Tonifies kidney essence and yang.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'baliao': { cn: '八髎 · Bā Liáo', en: 'BL31-34 group', def: 'Eight points over the four pairs of sacral foramina (BL31-34). Used for menstrual regulation, infertility, retroverted uterus, dysmenorrhea.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl40': { cn: '委中 · Wěi Zhōng', en: 'Bladder 40', def: 'He-Sea of the Bladder; Four Command Point for low back. In the centre of the popliteal fossa.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl59': { cn: '跗阳 · Fū Yáng', en: 'Bladder 59', def: 'Cleft point of the Yang Qiao Vessel. On the back of the lower leg, 3 cùn above BL60.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl60': { cn: '昆仑 · Kūn Lún', en: 'Bladder 60', def: 'Jing-River of the Bladder. In the depression between the lateral malleolus and the Achilles tendon. Treats headache, neck stiffness, low back pain.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl63': { cn: '金门 · Jīn Mén', en: 'Bladder 63', def: 'Cleft point of the Bladder. On the lateral foot, posterior to the tuberosity of the 5th metatarsal base.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl64': { cn: '京骨 · Jīng Gǔ', en: 'Bladder 64', def: 'Yuan-Source of the Bladder. On the lateral foot, at the proximal-inferior corner of the 5th metatarsal base.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl65': { cn: '束骨 · Shù Gǔ', en: 'Bladder 65', def: 'Stream point of the Bladder. On the lateral foot, posterior to the 5th MTP joint at the red-white skin border.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl66': { cn: '足通谷 · Zú Tōng Gǔ', en: 'Bladder 66', def: 'Ying-Spring of the Bladder. On the lateral foot, anterior to the 5th MTP joint.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  'bl67': { cn: '至阴 · Zhì Yīn', en: 'Bladder 67', def: 'Jing-Well of the Bladder. On the lateral side of the little toe. Classical malposition-of-fetus moxa point.', url: 'https://yibian.hopto.org/shu/?sid=6963' },
+  // Kidney (KI5, KI7, KI8, KI9, KI10)
+  'ki5': { cn: '水泉 · Shuǐ Quán', en: 'Kidney 5', def: 'Cleft point of the Kidney. 1 cùn directly below KI3.', url: 'https://yibian.hopto.org/shu/?sid=6964' },
+  'ki7': { cn: '复溜 · Fù Liū', en: 'Kidney 7', def: 'Jing-River of the Kidney. 2 cùn above KI3, anterior to the Achilles tendon. Tonifies kidney yin and yang.', url: 'https://yibian.hopto.org/shu/?sid=6964' },
+  'ki8': { cn: '交信 · Jiāo Xìn', en: 'Kidney 8', def: 'Cleft point of the Yin Qiao Vessel. 2 cùn above KI3, 0.5 cùn anterior to KI7.', url: 'https://yibian.hopto.org/shu/?sid=6964' },
+  'ki9': { cn: '筑宾 · Zhù Bīn', en: 'Kidney 9', def: 'Cleft point of the Yin Wei Vessel. 5 cùn above KI3 on the line connecting KI3 and KI10.', url: 'https://yibian.hopto.org/shu/?sid=6964' },
+  'ki10': { cn: '阴谷 · Yīn Gǔ', en: 'Kidney 10', def: 'He-Sea of the Kidney. On the medial knee, in the depression between the tendons of semitendinosus and semimembranosus.', url: 'https://yibian.hopto.org/shu/?sid=6964' },
+  // Pericardium (PC3, PC4, PC5, PC7, PC8, PC9)
+  'pc3': { cn: '曲泽 · Qū Zé', en: 'Pericardium 3', def: 'He-Sea of the Pericardium. On the elbow crease, on the ulnar side of the biceps tendon. Cools heart and stomach heat.', url: 'https://yibian.hopto.org/shu/?sid=6972' },
+  'pc4': { cn: '郄门 · Xī Mén', en: 'Pericardium 4', def: 'Cleft point of the Pericardium. On the inner forearm, 5 cùn proximal to the wrist crease. Acute heart pain.', url: 'https://yibian.hopto.org/shu/?sid=6972' },
+  'pc5': { cn: '间使 · Jiān Shǐ', en: 'Pericardium 5', def: 'Jing-River of the Pericardium. On the inner forearm, 3 cùn proximal to the wrist crease.', url: 'https://yibian.hopto.org/shu/?sid=6972' },
+  'pc7': { cn: '大陵 · Dà Líng', en: 'Pericardium 7', def: 'Yuan-Source and Stream of the Pericardium. On the wrist crease between the FCR and PL tendons. Calms the spirit; treats heart-fire.', url: 'https://yibian.hopto.org/shu/?sid=6972' },
+  'pc8': { cn: '劳宫 · Láo Gōng', en: 'Pericardium 8', def: 'Ying-Spring of the Pericardium. In the centre of the palm, where the tip of the middle finger touches when the fist is clenched.', url: 'https://yibian.hopto.org/shu/?sid=6972' },
+  'pc9': { cn: '中冲 · Zhōng Chōng', en: 'Pericardium 9', def: 'Jing-Well of the Pericardium. On the tip of the middle finger. Emergency revival.', url: 'https://yibian.hopto.org/shu/?sid=6972' },
+  // Triple Burner (TE1-TE4, TE6, TE7, TE10)
+  'te1': { cn: '关冲 · Guān Chōng', en: 'Triple Burner 1', def: 'Jing-Well of the TE. On the ulnar side of the ring fingertip.', url: 'https://yibian.hopto.org/shu/?sid=6971' },
+  'te2': { cn: '液门 · Yè Mén', en: 'Triple Burner 2', def: 'Ying-Spring of the TE. On the dorsum of the hand, between the 4th and 5th MCP joints when the fist is clenched.', url: 'https://yibian.hopto.org/shu/?sid=6971' },
+  'te3': { cn: '中渚 · Zhōng Zhǔ', en: 'Triple Burner 3', def: 'Stream point of the TE. On the dorsum of the hand, in the depression proximal to the 4th-5th MCP junction.', url: 'https://yibian.hopto.org/shu/?sid=6971' },
+  'te4': { cn: '阳池 · Yáng Chí', en: 'Triple Burner 4', def: 'Yuan-Source of the TE. On the dorsum of the wrist, on the ulnar side of the EDC tendon.', url: 'https://yibian.hopto.org/shu/?sid=6971' },
+  'te6': { cn: '支沟 · Zhī Gōu', en: 'Triple Burner 6', def: 'Jing-River of the TE. On the back forearm, 3 cùn proximal to the wrist crease, between the radius and ulna. Treats constipation and intercostal neuralgia.', url: 'https://yibian.hopto.org/shu/?sid=6971' },
+  'te7': { cn: '会宗 · Huì Zōng', en: 'Triple Burner 7', def: 'Cleft point of the TE. On the back forearm, 3 cùn above the wrist crease, 1 finger ulnar to TE6.', url: 'https://yibian.hopto.org/shu/?sid=6971' },
+  'te10': { cn: '天井 · Tiān Jǐng', en: 'Triple Burner 10', def: 'He-Sea of the TE. On the back of the elbow, 1 cùn proximal to the olecranon.', url: 'https://yibian.hopto.org/shu/?sid=6971' },
+  // Gallbladder (GB24, GB25, GB34, GB35, GB36, GB38, GB40, GB41, GB43, GB44)
+  'gb24': { cn: '日月 · Rì Yuè', en: 'Gallbladder 24', def: 'Front-Mu of the Gallbladder. In the 7th intercostal space, 4 cùn lateral to the midline.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb25': { cn: '京门 · Jīng Mén', en: 'Gallbladder 25', def: 'Front-Mu of the Kidney. On the side waist, below the free end of the 12th rib.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb34': { cn: '阳陵泉 · Yáng Líng Quán', en: 'Gallbladder 34', def: 'He-Sea of the GB; Eight-Influential Point for sinews (筋会). Below and anterior to the head of the fibula.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb35': { cn: '阳交 · Yáng Jiāo', en: 'Gallbladder 35', def: 'Cleft point of the Yang Wei Vessel. 7 cùn above the lateral malleolus on the posterior border of the fibula.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb36': { cn: '外丘 · Wài Qiū', en: 'Gallbladder 36', def: 'Cleft point of the GB. 7 cùn above the lateral malleolus on the anterior border of the fibula.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb38': { cn: '阳辅 · Yáng Fǔ', en: 'Gallbladder 38', def: 'Jing-River of the GB. 4 cùn above the lateral malleolus on the anterior border of the fibula.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb40': { cn: '丘墟 · Qiū Xū', en: 'Gallbladder 40', def: 'Yuan-Source of the GB. In the depression in front and below the lateral malleolus, on the lateral side of EDL.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb41': { cn: '足临泣 · Zú Lín Qì', en: 'Gallbladder 41', def: 'Stream point of the GB; Confluent point of the Dài Mài (Belt Vessel). On the dorsum of the foot, distal to the 4th-5th metatarsal junction.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb43': { cn: '侠溪 · Xiá Xī', en: 'Gallbladder 43', def: 'Ying-Spring of the GB. On the dorsum of the foot, between the 4th and 5th toes at the proximal end of the web.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  'gb44': { cn: '足窍阴 · Zú Qiào Yīn', en: 'Gallbladder 44', def: 'Jing-Well of the GB. On the lateral side of the 4th toe.', url: 'https://yibian.hopto.org/shu/?sid=6965' },
+  // Liver (LV4, LV6, LV8, LV9, LV13, LV14)
+  'lv4': { cn: '中封 · Zhōng Fēng', en: 'Liver 4', def: 'Jing-River of the Liver. On the dorsum of the foot, in front of the medial malleolus on the medial side of the tibialis anterior tendon.', url: 'https://yibian.hopto.org/shu/?sid=6966' },
+  'lv6': { cn: '中都 · Zhōng Dū', en: 'Liver 6', def: 'Cleft point of the Liver. 7 cùn above the medial malleolus on the medial tibia border.', url: 'https://yibian.hopto.org/shu/?sid=6966' },
+  'lv8': { cn: '曲泉 · Qū Quán', en: 'Liver 8', def: 'He-Sea of the Liver. On the medial knee crease, in the depression at the medial end when the knee is flexed.', url: 'https://yibian.hopto.org/shu/?sid=6966' },
+  'lv9': { cn: '阴包 · Yīn Bāo', en: 'Liver 9', def: 'On the inner thigh, 4 cùn above the medial epicondyle of the femur, between sartorius and vastus medialis. 郭氏 lineage point for menstrual regulation, endometriosis, retroverted uterus.', url: 'https://yibian.hopto.org/shu/?sid=6966' },
+  'lv13': { cn: '章门 · Zhāng Mén', en: 'Liver 13', def: 'Front-Mu of the Spleen; Eight-Influential Point for zang organs (脏会). Below the free end of the 11th rib.', url: 'https://yibian.hopto.org/shu/?sid=6966' },
+  'lv14': { cn: '期门 · Qī Mén', en: 'Liver 14', def: 'Front-Mu of the Liver. In the 6th intercostal space, 4 cùn lateral to the midline (directly below the nipple).', url: 'https://yibian.hopto.org/shu/?sid=6966' },
+  // Conception Vessel (CV5, CV14)
+  'cv5': { cn: '石门 · Shí Mén', en: 'Conception Vessel 5', def: 'Front-Mu of the Triple Burner. On the lower abdomen midline, 2 cùn below the navel.', url: 'https://yibian.hopto.org/shu/?sid=6943' },
+  'cv14': { cn: '巨阙 · Jù Què', en: 'Conception Vessel 14', def: 'Front-Mu of the Heart. On the upper abdomen midline, 6 cùn above the navel.', url: 'https://yibian.hopto.org/shu/?sid=6943' }
 };
 
 /* ---------- Lookup aliases (case-insensitive) ----------
@@ -984,7 +1079,99 @@ const TERM_ALIASES = {
   '上脘': 'cv13', 'cv13': 'cv13', 'CV13': 'cv13',
   '承浆': 'cv24', '承漿': 'cv24', 'cv24': 'cv24', 'CV24': 'cv24',
   // Extra
-  '八风': 'ba-feng', '八風': 'ba-feng'
+  '八风': 'ba-feng', '八風': 'ba-feng',
+
+  // ============================================================
+  // Bulk acupoints (yibian-primary, baike-backup auto-derived)
+  // covering 十六郄穴歌, 十二募穴, 十二经脉流注表, 妇科调经.
+  // ============================================================
+  // Lung
+  '经渠': 'lu8', '經渠': 'lu8', 'lu8': 'lu8', 'LU8': 'lu8',
+  '太渊': 'lu9', '太淵': 'lu9', 'lu9': 'lu9', 'LU9': 'lu9',
+  '鱼际': 'lu10', '魚際': 'lu10', 'lu10': 'lu10', 'LU10': 'lu10',
+  '少商': 'lu11', 'lu11': 'lu11', 'LU11': 'lu11',
+  // Large Intestine
+  '三间': 'li3', '三間': 'li3', 'li3': 'li3', 'LI3': 'li3',
+  '阳溪': 'li5', '陽溪': 'li5', '陽谿': 'li5', 'li5': 'li5', 'LI5': 'li5',
+  '温溜': 'li7', '溫溜': 'li7', 'li7': 'li7', 'LI7': 'li7',
+  // Stomach
+  '天枢': 'st25', '天樞': 'st25', 'st25': 'st25', 'ST25': 'st25',
+  '梁丘': 'st34', 'st34': 'st34', 'ST34': 'st34',
+  '冲阳': 'st42', '衝陽': 'st42', 'st42': 'st42', 'ST42': 'st42',
+  '陷谷': 'st43', 'st43': 'st43', 'ST43': 'st43',
+  '内庭': 'st44', '內庭': 'st44', 'st44': 'st44', 'ST44': 'st44',
+  '厉兑': 'st45', '厲兌': 'st45', 'st45': 'st45', 'ST45': 'st45',
+  // Spleen
+  '太白': 'sp3', 'sp3': 'sp3', 'SP3': 'sp3',
+  '商丘': 'sp5', 'sp5': 'sp5', 'SP5': 'sp5',
+  // Heart
+  '少海': 'ht3', 'ht3': 'ht3', 'HT3': 'ht3',
+  '灵道': 'ht4', '靈道': 'ht4', 'ht4': 'ht4', 'HT4': 'ht4',
+  '阴郄': 'ht6', '陰郄': 'ht6', 'ht6': 'ht6', 'HT6': 'ht6',
+  '神门': 'ht7', '神門': 'ht7', 'ht7': 'ht7', 'HT7': 'ht7',
+  '少府': 'ht8', 'ht8': 'ht8', 'HT8': 'ht8',
+  '少冲': 'ht9', '少衝': 'ht9', 'ht9': 'ht9', 'HT9': 'ht9',
+  // Small Intestine
+  '少泽': 'si1', '少澤': 'si1', 'si1': 'si1', 'SI1': 'si1',
+  '前谷': 'si2', 'si2': 'si2', 'SI2': 'si2',
+  '后溪': 'si3', '後溪': 'si3', '後谿': 'si3', 'si3': 'si3', 'SI3': 'si3',
+  '腕骨': 'si4', 'si4': 'si4', 'SI4': 'si4',
+  '阳谷': 'si5', '陽谷': 'si5', 'si5': 'si5', 'SI5': 'si5',
+  '养老': 'si6', '養老': 'si6', 'si6': 'si6', 'SI6': 'si6',
+  '小海': 'si8', 'si8': 'si8', 'SI8': 'si8',
+  // Bladder
+  '肾俞': 'bl23', '腎俞': 'bl23', '腎腧': 'bl23', '肾腧': 'bl23', 'bl23': 'bl23', 'BL23': 'bl23',
+  '八髎': 'baliao', 'baliao': 'baliao', 'BALIAO': 'baliao',
+  '委中': 'bl40', 'bl40': 'bl40', 'BL40': 'bl40',
+  '跗阳': 'bl59', '跗陽': 'bl59', 'bl59': 'bl59', 'BL59': 'bl59',
+  '昆仑': 'bl60', '崑崙': 'bl60', '崑仑': 'bl60', 'bl60': 'bl60', 'BL60': 'bl60',
+  '金门': 'bl63', '金門': 'bl63', 'bl63': 'bl63', 'BL63': 'bl63',
+  '京骨': 'bl64', 'bl64': 'bl64', 'BL64': 'bl64',
+  '束骨': 'bl65', 'bl65': 'bl65', 'BL65': 'bl65',
+  '足通谷': 'bl66', 'bl66': 'bl66', 'BL66': 'bl66',
+  '至阴': 'bl67', '至陰': 'bl67', 'bl67': 'bl67', 'BL67': 'bl67',
+  // Kidney
+  '水泉': 'ki5', 'ki5': 'ki5', 'KI5': 'ki5',
+  '复溜': 'ki7', '復溜': 'ki7', 'ki7': 'ki7', 'KI7': 'ki7',
+  '交信': 'ki8', 'ki8': 'ki8', 'KI8': 'ki8',
+  '筑宾': 'ki9', '築賓': 'ki9', 'ki9': 'ki9', 'KI9': 'ki9',
+  '阴谷': 'ki10', '陰谷': 'ki10', 'ki10': 'ki10', 'KI10': 'ki10',
+  // Pericardium
+  '曲泽': 'pc3', '曲澤': 'pc3', 'pc3': 'pc3', 'PC3': 'pc3',
+  '郄门': 'pc4', '郄門': 'pc4', 'pc4': 'pc4', 'PC4': 'pc4',
+  '间使': 'pc5', '間使': 'pc5', 'pc5': 'pc5', 'PC5': 'pc5',
+  '大陵': 'pc7', 'pc7': 'pc7', 'PC7': 'pc7',
+  '劳宫': 'pc8', '勞宮': 'pc8', 'pc8': 'pc8', 'PC8': 'pc8',
+  '中冲': 'pc9', '中衝': 'pc9', 'pc9': 'pc9', 'PC9': 'pc9',
+  // Triple Burner
+  '关冲': 'te1', '關衝': 'te1', 'te1': 'te1', 'TE1': 'te1', 'TH1': 'te1', 'SJ1': 'te1',
+  '液门': 'te2', '液門': 'te2', 'te2': 'te2', 'TE2': 'te2', 'TH2': 'te2', 'SJ2': 'te2',
+  '中渚': 'te3', 'te3': 'te3', 'TE3': 'te3', 'TH3': 'te3', 'SJ3': 'te3',
+  '阳池': 'te4', '陽池': 'te4', 'te4': 'te4', 'TE4': 'te4', 'TH4': 'te4', 'SJ4': 'te4',
+  '支沟': 'te6', '支溝': 'te6', 'te6': 'te6', 'TE6': 'te6', 'TH6': 'te6', 'SJ6': 'te6',
+  '会宗': 'te7', '會宗': 'te7', 'te7': 'te7', 'TE7': 'te7', 'TH7': 'te7', 'SJ7': 'te7',
+  '天井': 'te10', 'te10': 'te10', 'TE10': 'te10', 'TH10': 'te10', 'SJ10': 'te10',
+  // Gallbladder
+  '日月': 'gb24', 'gb24': 'gb24', 'GB24': 'gb24',
+  '京门': 'gb25', '京門': 'gb25', 'gb25': 'gb25', 'GB25': 'gb25',
+  '阳陵泉': 'gb34', '陽陵泉': 'gb34', 'gb34': 'gb34', 'GB34': 'gb34',
+  '阳交': 'gb35', '陽交': 'gb35', 'gb35': 'gb35', 'GB35': 'gb35',
+  '外丘': 'gb36', 'gb36': 'gb36', 'GB36': 'gb36',
+  '阳辅': 'gb38', '陽輔': 'gb38', 'gb38': 'gb38', 'GB38': 'gb38',
+  '丘墟': 'gb40', 'gb40': 'gb40', 'GB40': 'gb40',
+  '足临泣': 'gb41', '足臨泣': 'gb41', 'gb41': 'gb41', 'GB41': 'gb41',
+  '侠溪': 'gb43', '俠溪': 'gb43', '俠谿': 'gb43', 'gb43': 'gb43', 'GB43': 'gb43',
+  '足窍阴': 'gb44', '足竅陰': 'gb44', 'gb44': 'gb44', 'GB44': 'gb44',
+  // Liver
+  '中封': 'lv4', 'lv4': 'lv4', 'LV4': 'lv4', 'LR4': 'lv4',
+  '中都': 'lv6', 'lv6': 'lv6', 'LV6': 'lv6', 'LR6': 'lv6',
+  '曲泉': 'lv8', 'lv8': 'lv8', 'LV8': 'lv8', 'LR8': 'lv8',
+  '阴包': 'lv9', '陰包': 'lv9', 'lv9': 'lv9', 'LV9': 'lv9', 'LR9': 'lv9',
+  '章门': 'lv13', '章門': 'lv13', 'lv13': 'lv13', 'LV13': 'lv13', 'LR13': 'lv13',
+  '期门': 'lv14', '期門': 'lv14', 'lv14': 'lv14', 'LV14': 'lv14', 'LR14': 'lv14',
+  // Conception Vessel
+  '石门': 'cv5', '石門': 'cv5', 'cv5': 'cv5', 'CV5': 'cv5',
+  '巨阙': 'cv14', '巨闕': 'cv14', 'cv14': 'cv14', 'CV14': 'cv14'
 };
 
 function lookupTerm(key) {

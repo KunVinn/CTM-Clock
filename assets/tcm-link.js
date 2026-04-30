@@ -58,13 +58,19 @@
   //    Wikipedia version of the same article.
   function pickBackupUrl(entry) {
     if (entry.urlCnBackup) return entry.urlCnBackup;
-    if (entry.url && /(?:^|\.)wikipedia\.org\//.test(entry.url) && entry.cn) {
-      const head = entry.cn.split('·')[0];
-      const pieces = head.split('/').map(s => s.trim()).filter(Boolean);
-      const term = pieces[1] || pieces[0];
-      if (term) {
-        return 'https://zh.wikipedia.org/wiki/' + encodeURIComponent(term);
-      }
+    if (!entry.cn) return null;
+    const head = entry.cn.split('·')[0];
+    const pieces = head.split('/').map(s => s.trim()).filter(Boolean);
+    const term = pieces[1] || pieces[0];
+    if (!term) return null;
+    // For Wikipedia primaries, backup is the zh.wikipedia version of
+    // the same article. For yibian primaries (TCM-specific), backup
+    // routes to Baidu Baike. Other primary types get no auto-backup.
+    if (entry.url && /(?:^|\.)wikipedia\.org\//.test(entry.url)) {
+      return 'https://zh.wikipedia.org/wiki/' + encodeURIComponent(term);
+    }
+    if (entry.url && /yibian\.hopto\.org/.test(entry.url)) {
+      return 'https://baike.baidu.com/item/' + encodeURIComponent(term);
     }
     return null;
   }
