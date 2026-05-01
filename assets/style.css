@@ -2999,6 +2999,21 @@ a:hover { color: var(--gold-bright); }
   color: var(--ink-mute);
   font-style: italic;
 }
+.ai-status.warn {
+  color: var(--gold-bright);
+  font-style: normal;
+  font-weight: 600;
+}
+/* Brief highlight on the photo upload area when the user clicks
+   Analyze without having added a photo yet. */
+.photo-upload-row.flash {
+  animation: photoUploadFlash 1.4s ease;
+}
+@keyframes photoUploadFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(212,169,106,0.0); }
+  20%  { box-shadow: 0 0 0 4px rgba(212,169,106,0.55); }
+  100% { box-shadow: 0 0 0 0 rgba(212,169,106,0.0); }
+}
 .ai-output {
   margin-top: 1rem;
   padding: 1rem;
