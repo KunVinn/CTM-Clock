@@ -17,7 +17,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com https://api.deepseek.com https://dashscope.aliyuncs.com https://api.resend.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com https://api.anthropic.com https://api.deepseek.com https://dashscope.aliyuncs.com https://api.resend.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
