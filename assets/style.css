@@ -2949,6 +2949,28 @@ a:hover { color: var(--gold-bright); }
   padding: 0.1rem 0.4rem;
   border-radius: 2px;
 }
+.ai-provider-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.ai-provider {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+.ai-help-link {
+  font-size: 0.74rem;
+  color: var(--gold);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.ai-help-link:hover { color: var(--gold-bright); }
 .ai-key-row {
   display: flex;
   flex-wrap: wrap;
