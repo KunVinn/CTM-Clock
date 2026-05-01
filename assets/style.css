@@ -466,6 +466,20 @@ a:hover { color: var(--gold-bright); }
   text-decoration-style: dotted;
 }
 .cn-translate-banner .cn-translate-help:hover { color: var(--gold-bright); }
+.cn-translate-banner .cn-translate-providers {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+  margin: 0.15rem 0 0.1rem;
+}
+.cn-translate-banner .cn-translate-provider {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+}
 @media (max-width: 480px) {
   .cn-translate-banner.with-input { font-size: 0.78rem; }
 }

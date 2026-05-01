@@ -291,6 +291,7 @@
   const TRANS_CACHE_KEY = 'tcm-page-translations-v1';
   const GEMINI_KEY_STORE = 'tcm-tongue-gemini-key-v1';
   const DEEPSEEK_KEY_STORE = 'tcm-deepseek-key-v1';
+  const BAILIAN_KEY_STORE = 'tcm-bailian-key-v1';
   const PROVIDER_STORE = 'tcm-translate-provider-v1';
 
   // Provider registry. Both endpoints accept the same {chunk → JSON
@@ -332,39 +333,63 @@
       getKeyUrl: 'https://platform.deepseek.com/api_keys',
       endpoint: 'https://api.deepseek.com/chat/completions',
       async translateBatch(key, chunk, variantName) {
-        // DeepSeek's response_format=json_object requires an OBJECT,
-        // not an array, so we wrap the request and unwrap on receipt.
-        const sysMsg =
-          `You translate English UI / content strings into ${variantName}. ` +
-          `Reply ONLY with a JSON object {"translations": [...]} where the array has the same order and length as the input. ` +
-          `Preserve numbers, punctuation, names, and inline HTML-like markers verbatim.`;
-        const userMsg = JSON.stringify({ strings: chunk });
-        const resp = await fetch(this.endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + key,
-          },
-          body: JSON.stringify({
-            model: 'deepseek-chat',
-            messages: [
-              { role: 'system', content: sysMsg },
-              { role: 'user', content: userMsg },
-            ],
-            temperature: 0,
-            response_format: { type: 'json_object' },
-          })
-        });
-        if (!resp.ok) throw new Error('DeepSeek HTTP ' + resp.status);
-        const json = await resp.json();
-        const text = json.choices?.[0]?.message?.content || '{}';
-        const obj = parseLooseJsonObject(text);
-        const arr = obj.translations || obj.result || obj.data;
-        if (!Array.isArray(arr)) throw new Error('DeepSeek: no translations array');
-        return arr;
+        return openAiCompatibleBatch(this.endpoint, key, 'deepseek-chat', chunk, variantName, 'DeepSeek');
+      }
+    },
+    bailian: {
+      label: 'Qwen (Bailian)',
+      keyStore: BAILIAN_KEY_STORE,
+      keyPlaceholder: 'sk-…',
+      getKeyUrl: 'https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-key',
+      // Aliyun Bailian / DashScope OpenAI-compatible endpoint.
+      endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+      // qwen-plus is a strong native-Chinese model with good handling of
+      // classical/medical terminology — better choice for TCM than the
+      // cheaper qwen-turbo. Replace with qwen-max if quality > cost.
+      async translateBatch(key, chunk, variantName) {
+        return openAiCompatibleBatch(this.endpoint, key, 'qwen-plus', chunk, variantName, 'Qwen');
       }
     }
   };
+
+  // Shared batch translator for any OpenAI-compatible /chat/completions
+  // endpoint that accepts response_format=json_object. Wraps the
+  // request as {strings:[...]} and unwraps {translations:[...]} on
+  // reply because json_object mode requires an OBJECT root.
+  async function openAiCompatibleBatch(endpoint, key, model, chunk, variantName, providerLabel) {
+    const sysMsg =
+      `You translate English UI / content strings into ${variantName}. ` +
+      `Reply ONLY with a JSON object {"translations": [...]} where the array has the same order and length as the input. ` +
+      `Preserve numbers, punctuation, names, and inline HTML-like markers verbatim.`;
+    const userMsg = JSON.stringify({ strings: chunk });
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: sysMsg },
+          { role: 'user', content: userMsg },
+        ],
+        temperature: 0,
+        response_format: { type: 'json_object' },
+      })
+    });
+    if (!resp.ok) {
+      let detail = '';
+      try { detail = ' — ' + (await resp.text()).slice(0, 240); } catch (_) {}
+      throw new Error(`${providerLabel} HTTP ${resp.status}${detail}`);
+    }
+    const json = await resp.json();
+    const text = json.choices?.[0]?.message?.content || '{}';
+    const obj = parseLooseJsonObject(text);
+    const arr = obj.translations || obj.result || obj.data;
+    if (!Array.isArray(arr)) throw new Error(`${providerLabel}: no "translations" array in reply`);
+    return arr;
+  }
 
   // Tolerant JSON parsers — some models still wrap their output in
   // ```json fences even when asked not to.
@@ -387,6 +412,7 @@
     // Default to whichever has a saved key; tie → gemini for backward compat.
     if (localStorage.getItem(GEMINI_KEY_STORE)) return 'gemini';
     if (localStorage.getItem(DEEPSEEK_KEY_STORE)) return 'deepseek';
+    if (localStorage.getItem(BAILIAN_KEY_STORE)) return 'bailian';
     return 'gemini';
   }
   function setProvider(p) {
