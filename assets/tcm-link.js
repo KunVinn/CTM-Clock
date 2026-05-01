@@ -202,6 +202,12 @@
     obs.observe(document.body, { childList: true, subtree: true });
   }
 
+  // Expose for programmatic use. wrapAcupointTextNodes() in
+  // acupuncture.html sets data-term attributes on existing
+  // [data-zh-auto] spans (an attribute change, not a childList
+  // mutation), so it must call this manually to trigger decoration.
+  window.tcmDecorateTerms = decorateTerms;
+
   // Expose for programmatic use
   window.openTermPopover = function (termKey) {
     const entry = lookupTerm(termKey);

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>针灸经络 · Acupuncture & Meridians · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260430b">
+<link rel="stylesheet" href="assets/style.css?v=20260430c">
 </head>
 <body data-page="acupuncture">
 
@@ -620,7 +620,7 @@
         <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener"><span class="cn" data-zh-auto>源码</span> Source</a>
         <span class="footer-sep">·</span>
         <a href="CHANGELOG.md" target="_blank" rel="noopener"><span class="cn" data-zh-auto>更新日志</span> Changelog</a>
-        <span class="footer-version">v2026.04.30b · last updated 2026-04-30</span>
+        <span class="footer-version">v2026.04.30c · last updated 2026-04-30</span>
       </div>
     </footer>
   </main>
@@ -629,12 +629,12 @@
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<script src="assets/data.js?v=20260430b"></script>
-<script src="assets/glossary.js?v=20260430b"></script>
-<script src="assets/clock.js?v=20260430b"></script>
-<script src="assets/tcm-script-toggle.js?v=20260430b"></script>
-<script src="assets/tcm-music.js?v=20260430b"></script>
-<script src="assets/tcm-link.js?v=20260430b"></script>
+<script src="assets/data.js?v=20260430c"></script>
+<script src="assets/glossary.js?v=20260430c"></script>
+<script src="assets/clock.js?v=20260430c"></script>
+<script src="assets/tcm-script-toggle.js?v=20260430c"></script>
+<script src="assets/tcm-music.js?v=20260430c"></script>
+<script src="assets/tcm-link.js?v=20260430c"></script>
 
 <script>
 /* ============================================================
@@ -943,6 +943,29 @@ function wrapAcupointTextNodes(root) {
     re.lastIndex = 0;
     const text = textNode.nodeValue;
     if (!re.test(text)) return;
+
+    // Special case: if the text node's parent is a [data-zh-auto]
+    // span whose entire text is exactly one acupoint name, set
+    // data-term on the parent instead of nesting a child span. The
+    // script-toggle's applyScript does `el.textContent = converted`
+    // on every [data-zh-auto] which would otherwise destroy our
+    // injected child on the very next toggle pass.
+    const parent = textNode.parentElement;
+    if (parent && parent.hasAttribute && parent.hasAttribute('data-zh-auto')
+        && parent.childNodes.length === 1
+        && parent.childNodes[0] === textNode) {
+      const trimmed = text.trim();
+      re.lastIndex = 0;
+      const onlyMatch = re.exec(trimmed);
+      if (onlyMatch && onlyMatch[0] === trimmed) {
+        if (!parent.hasAttribute('data-term')) {
+          parent.setAttribute('data-term', trimmed);
+          parent.classList.add('verse-acupoint');
+        }
+        return;
+      }
+    }
+
     re.lastIndex = 0;
     const frag = document.createDocumentFragment();
     let lastIdx = 0;
@@ -954,7 +977,10 @@ function wrapAcupointTextNodes(root) {
       const span = document.createElement('span');
       span.className = 'verse-acupoint';
       span.setAttribute('data-term', m[1]);
-      span.setAttribute('data-zh-auto', '');
+      // Intentionally NOT adding data-zh-auto — that would trigger the
+      // script-toggle's MutationObserver and the next applyScript pass
+      // would set this span's textContent (no real-world conversion is
+      // needed since acupoint names round-trip the same in s/t modes).
       span.textContent = m[1];
       frag.appendChild(span);
       lastIdx = m.index + m[0].length;
@@ -979,6 +1005,10 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapAcupointTextNodes(sec);
     }
   });
+  // Some entries got data-term added via setAttribute on an existing
+  // [data-zh-auto] span (no childList mutation), so the tcm-link.js
+  // observer doesn't see them. Trigger decoration explicitly.
+  if (window.tcmDecorateTerms) window.tcmDecorateTerms();
 });
 
 const grid = document.getElementById('meridian-grid');
