@@ -85,7 +85,7 @@
     // location') for these. Reserve 查阅原典 ('consult the original
     // classic') for canonical / classical sources (灵枢, 素问,
     // 针灸大成 via shidianguji.com etc.).
-    const isAcupointSrc = url && /(?:^|\.)(?:special\.rhky\.com|yibian\.hopto\.org)\//.test(url);
+    const isAcupointSrc = url && /:\/\/(?:special\.rhky\.com|yibian\.hopto\.org)\//.test(url);
     const linkLabel = entry.page    ? '→ Open page'
                     : isAcupointSrc ? (mode === 'e' ? '→ Point location' : '→ 标准定位')
                     : isCn          ? '→ 查阅原典'
