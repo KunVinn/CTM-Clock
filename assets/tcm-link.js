@@ -79,9 +79,17 @@
     const mode = (window.tcmScript && window.tcmScript.get && window.tcmScript.get()) || 's';
     const url = pickUrl(entry);
     const isCn = url && url !== entry.url;
-    const linkLabel = entry.page ? '→ Open page'
-                    : isCn      ? '→ 查阅原典'
-                                : '→ Read on Wikipedia';
+    // 'Acupoint reference' source = the rhky course (locations) or
+    // yibian (acupuncture point dictionary). Both describe a physical
+    // body location, not a classical text. Use 标准定位 ('standard
+    // location') for these. Reserve 查阅原典 ('consult the original
+    // classic') for canonical / classical sources (灵枢, 素问,
+    // 针灸大成 via shidianguji.com etc.).
+    const isAcupointSrc = url && /(?:^|\.)(?:special\.rhky\.com|yibian\.hopto\.org)\//.test(url);
+    const linkLabel = entry.page    ? '→ Open page'
+                    : isAcupointSrc ? (mode === 'e' ? '→ Point location' : '→ 标准定位')
+                    : isCn          ? '→ 查阅原典'
+                                    : '→ Read on Wikipedia';
     const linkHref = entry.page || url || '#';
     const linkAttrs = entry.page ? '' : 'target="_blank" rel="noopener"';
     // In 简/繁/中 mode, show a small backup link next to the primary
