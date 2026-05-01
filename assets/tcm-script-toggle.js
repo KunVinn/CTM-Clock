@@ -290,7 +290,115 @@
      ============================================================ */
   const TRANS_CACHE_KEY = 'tcm-page-translations-v1';
   const GEMINI_KEY_STORE = 'tcm-tongue-gemini-key-v1';
-  const GEMINI_ENDPOINT  = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  const DEEPSEEK_KEY_STORE = 'tcm-deepseek-key-v1';
+  const PROVIDER_STORE = 'tcm-translate-provider-v1';
+
+  // Provider registry. Both endpoints accept the same {chunk → JSON
+  // array of strings} batch format we want, but their request shapes
+  // differ — DeepSeek is OpenAI-compatible (Authorization: Bearer +
+  // chat/completions), Gemini uses ?key= and contents/parts. The
+  // translateBatch fn isolates that shape difference.
+  const PROVIDERS = {
+    gemini: {
+      label: 'Gemini',
+      keyStore: GEMINI_KEY_STORE,
+      keyPlaceholder: 'AIza…',
+      getKeyUrl: 'https://aistudio.google.com/apikey',
+      endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+      async translateBatch(key, chunk, variantName) {
+        const prompt =
+          `Translate the following English UI / content strings into ${variantName}. ` +
+          `Reply with ONLY a JSON array of strings, in the same order, same length. ` +
+          `Do not add commentary. Preserve numbers, punctuation, names, and inline HTML-like markers verbatim. ` +
+          `Strings:\n${JSON.stringify(chunk)}`;
+        const resp = await fetch(`${this.endpoint}?key=${encodeURIComponent(key)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0, responseMimeType: 'application/json' }
+          })
+        });
+        if (!resp.ok) throw new Error('Gemini HTTP ' + resp.status);
+        const json = await resp.json();
+        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
+        return parseLooseJsonArray(text);
+      }
+    },
+    deepseek: {
+      label: 'DeepSeek',
+      keyStore: DEEPSEEK_KEY_STORE,
+      keyPlaceholder: 'sk-…',
+      getKeyUrl: 'https://platform.deepseek.com/api_keys',
+      endpoint: 'https://api.deepseek.com/chat/completions',
+      async translateBatch(key, chunk, variantName) {
+        // DeepSeek's response_format=json_object requires an OBJECT,
+        // not an array, so we wrap the request and unwrap on receipt.
+        const sysMsg =
+          `You translate English UI / content strings into ${variantName}. ` +
+          `Reply ONLY with a JSON object {"translations": [...]} where the array has the same order and length as the input. ` +
+          `Preserve numbers, punctuation, names, and inline HTML-like markers verbatim.`;
+        const userMsg = JSON.stringify({ strings: chunk });
+        const resp = await fetch(this.endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key,
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              { role: 'system', content: sysMsg },
+              { role: 'user', content: userMsg },
+            ],
+            temperature: 0,
+            response_format: { type: 'json_object' },
+          })
+        });
+        if (!resp.ok) throw new Error('DeepSeek HTTP ' + resp.status);
+        const json = await resp.json();
+        const text = json.choices?.[0]?.message?.content || '{}';
+        const obj = parseLooseJsonObject(text);
+        const arr = obj.translations || obj.result || obj.data;
+        if (!Array.isArray(arr)) throw new Error('DeepSeek: no translations array');
+        return arr;
+      }
+    }
+  };
+
+  // Tolerant JSON parsers — some models still wrap their output in
+  // ```json fences even when asked not to.
+  function parseLooseJsonArray(text) {
+    try { return JSON.parse(text); } catch (_) {}
+    const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+    return JSON.parse(fence ? fence[1] : text);
+  }
+  function parseLooseJsonObject(text) {
+    try { return JSON.parse(text); } catch (_) {}
+    const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+    return JSON.parse(fence ? fence[1] : text);
+  }
+
+  function getProvider() {
+    try {
+      const v = localStorage.getItem(PROVIDER_STORE);
+      if (v && PROVIDERS[v]) return v;
+    } catch (_) {}
+    // Default to whichever has a saved key; tie → gemini for backward compat.
+    if (localStorage.getItem(GEMINI_KEY_STORE)) return 'gemini';
+    if (localStorage.getItem(DEEPSEEK_KEY_STORE)) return 'deepseek';
+    return 'gemini';
+  }
+  function setProvider(p) {
+    if (!PROVIDERS[p]) return;
+    try { localStorage.setItem(PROVIDER_STORE, p); } catch (_) {}
+  }
+  function getApiKey(provider) {
+    try { return localStorage.getItem(PROVIDERS[provider].keyStore) || ''; } catch (_) { return ''; }
+  }
+  function setApiKey(provider, key) {
+    try { localStorage.setItem(PROVIDERS[provider].keyStore, key); } catch (_) {}
+  }
 
   // CSS selectors that should NEVER be touched by auto-translation —
   // explicit zh-* markers handle these themselves, or they're code,
@@ -304,9 +412,9 @@
     '.script-toggle,.nav-arrow,.cn-translate-banner,' +
     '#zoom-value,#zoom-range,.zoom-control-reset';
 
-  function getGeminiKey() {
-    try { return localStorage.getItem(GEMINI_KEY_STORE) || ''; } catch (_) { return ''; }
-  }
+  // Back-compat alias for any external caller / inline script that
+  // still references the old name. Returns the Gemini-specific key.
+  function getGeminiKey() { return getApiKey('gemini'); }
   function readTransCache() {
     try { return JSON.parse(localStorage.getItem(TRANS_CACHE_KEY) || '{}'); } catch (_) { return {}; }
   }
@@ -406,8 +514,32 @@
   // user knows TCM-source content is being machine-translated, not the
   // canonical Chinese. Two routes: tap the button to invoke Gemini for
   // this page, or dismiss to leave the English visible as-is.
+  // Build a Gemini/DeepSeek radio row. Selecting one sets it as the
+  // active provider AND re-renders the parent banner so the key
+  // input/help link below switches to the new provider's defaults.
+  function buildProviderRadios(onChange) {
+    const wrap = document.createElement('span');
+    wrap.className = 'cn-translate-providers';
+    const current = getProvider();
+    Object.keys(PROVIDERS).forEach(id => {
+      const lbl = document.createElement('label');
+      lbl.className = 'cn-translate-provider';
+      const r = document.createElement('input');
+      r.type = 'radio';
+      r.name = 'cn-translate-provider';
+      r.value = id;
+      r.checked = (id === current);
+      r.addEventListener('change', () => {
+        if (r.checked) { setProvider(id); onChange && onChange(id); }
+      });
+      lbl.appendChild(r);
+      lbl.appendChild(document.createTextNode(' ' + PROVIDERS[id].label));
+      wrap.appendChild(lbl);
+    });
+    return wrap;
+  }
+
   function showOptInTranslateBanner(missingCount, variant) {
-    const key = getGeminiKey();
     let banner = document.getElementById('cn-translate-banner');
     if (!banner) {
       banner = document.createElement('div');
@@ -415,67 +547,75 @@
       banner.className = 'cn-translate-banner';
       document.body.appendChild(banner);
     }
-    banner.innerHTML = '';
-    banner.classList.remove('loading');
-    banner.classList.add('with-input');
 
-    const text = document.createElement('span');
-    text.className = 'cn-translate-msg';
-    text.textContent = '本页有 ' + missingCount + ' 段英文段落（多为说明性散文，非 TCM 经典原文）。如需机器翻译，可调用 Gemini：';
-    banner.appendChild(text);
+    const render = () => {
+      const providerId = getProvider();
+      const provider = PROVIDERS[providerId];
+      const key = getApiKey(providerId);
+      banner.innerHTML = '';
+      banner.classList.remove('loading');
+      banner.classList.add('with-input');
 
-    const row = document.createElement('div');
-    row.className = 'cn-translate-row';
+      const text = document.createElement('span');
+      text.className = 'cn-translate-msg';
+      text.textContent = '本页有 ' + missingCount + ' 段英文段落（多为说明性散文，非 TCM 经典原文）。机器翻译：';
+      banner.appendChild(text);
 
-    if (!key) {
-      const input = document.createElement('input');
-      input.type = 'password';
-      input.placeholder = 'AIza…';
-      input.autocomplete = 'off';
-      input.spellcheck = false;
-      const help = document.createElement('a');
-      help.href = 'https://aistudio.google.com/apikey';
-      help.target = '_blank';
-      help.rel = 'noopener';
-      help.textContent = '获取免费密钥 ↗';
-      help.className = 'cn-translate-help';
-      const saveBtn = document.createElement('button');
-      saveBtn.type = 'button';
-      saveBtn.textContent = '保存并翻译';
-      const submit = () => {
-        const v = (input.value || '').trim();
-        if (!v) { input.focus(); return; }
-        try { localStorage.setItem(GEMINI_KEY_STORE, v); } catch (_) {}
-        input.value = '';
-        showTranslateBanner('正在用 Gemini 翻译此页…', true);
-        fetchMissingTranslations(variant);
-      };
-      saveBtn.addEventListener('click', submit);
-      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
-      row.appendChild(input);
-      row.appendChild(saveBtn);
-      row.appendChild(help);
-    } else {
-      const goBtn = document.createElement('button');
-      goBtn.type = 'button';
-      goBtn.textContent = '用 Gemini 翻译本页';
-      goBtn.addEventListener('click', () => {
-        showTranslateBanner('正在用 Gemini 翻译此页…', true);
-        fetchMissingTranslations(variant);
-      });
-      row.appendChild(goBtn);
-    }
-    banner.appendChild(row);
+      banner.appendChild(buildProviderRadios(() => render()));
 
-    const x = document.createElement('button');
-    x.type = 'button';
-    x.className = 'cn-translate-close';
-    x.setAttribute('aria-label', 'Dismiss');
-    x.textContent = '✕';
-    x.addEventListener('click', hideTranslateBanner);
-    banner.appendChild(x);
+      const row = document.createElement('div');
+      row.className = 'cn-translate-row';
 
-    banner.style.display = '';
+      if (!key) {
+        const input = document.createElement('input');
+        input.type = 'password';
+        input.placeholder = provider.keyPlaceholder;
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        const help = document.createElement('a');
+        help.href = provider.getKeyUrl;
+        help.target = '_blank';
+        help.rel = 'noopener';
+        help.textContent = '获取密钥 ↗';
+        help.className = 'cn-translate-help';
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'button';
+        saveBtn.textContent = '保存并翻译';
+        const submit = () => {
+          const v = (input.value || '').trim();
+          if (!v) { input.focus(); return; }
+          setApiKey(providerId, v);
+          input.value = '';
+          showTranslateBanner('正在用 ' + provider.label + ' 翻译此页…', true);
+          fetchMissingTranslations(variant);
+        };
+        saveBtn.addEventListener('click', submit);
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+        row.appendChild(input);
+        row.appendChild(saveBtn);
+        row.appendChild(help);
+      } else {
+        const goBtn = document.createElement('button');
+        goBtn.type = 'button';
+        goBtn.textContent = '用 ' + provider.label + ' 翻译本页';
+        goBtn.addEventListener('click', () => {
+          showTranslateBanner('正在用 ' + provider.label + ' 翻译此页…', true);
+          fetchMissingTranslations(variant);
+        });
+        row.appendChild(goBtn);
+      }
+      banner.appendChild(row);
+
+      const x = document.createElement('button');
+      x.type = 'button';
+      x.className = 'cn-translate-close';
+      x.setAttribute('aria-label', 'Dismiss');
+      x.textContent = '✕';
+      x.addEventListener('click', hideTranslateBanner);
+      banner.appendChild(x);
+      banner.style.display = '';
+    };
+    render();
   }
 
   async function fetchMissingTranslations(variant) {
@@ -483,56 +623,34 @@
                        .filter(span => span.textContent === span.dataset.zhTrans);
     if (missing.length === 0) { hideTranslateBanner(); return; }
 
-    const key = getGeminiKey();
+    const providerId = getProvider();
+    const provider = PROVIDERS[providerId];
+    const key = getApiKey(providerId);
     if (!key) {
-      // No key yet — surface an inline input so the user can paste their
-      // free Gemini key right here without navigating to the Tongue page.
       showTranslateBanner(
-        '需要 Gemini 密钥才能将本页全部翻译为中文：',
+        `需要 ${provider.label} 密钥才能将本页全部翻译为中文：`,
         false,
         { askForKey: true, closable: true }
       );
       return;
     }
 
-    showTranslateBanner('正在用 Gemini 翻译此页 / Translating this page with Gemini…', true);
+    const busyMsg = `正在用 ${provider.label} 翻译此页 / Translating with ${provider.label}…`;
+    showTranslateBanner(busyMsg, true);
     try {
       const variantName = (variant === 't') ? 'Traditional Chinese (繁體)' : 'Simplified Chinese (简体)';
       const BATCH = 40;
       const newCache = {};
-      // Deduplicate originals so we don't send the same string twice
       const uniq = Array.from(new Set(missing.map(s => s.dataset.zhTrans)));
       for (let i = 0; i < uniq.length; i += BATCH) {
         const chunk = uniq.slice(i, i + BATCH);
-        const prompt =
-          `Translate the following English UI / content strings into ${variantName}. ` +
-          `Reply with ONLY a JSON array of strings, in the same order, same length. ` +
-          `Do not add commentary. Preserve numbers, punctuation, names, and inline HTML-like markers verbatim. ` +
-          `Strings:\n${JSON.stringify(chunk)}`;
-        const resp = await fetch(`${GEMINI_ENDPOINT}?key=${encodeURIComponent(key)}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0, responseMimeType: 'application/json' }
-          })
-        });
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const json = await resp.json();
-        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-        let parsed;
-        try { parsed = JSON.parse(text); }
-        catch (_) {
-          const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-          parsed = JSON.parse(fence ? fence[1] : text);
-        }
+        const parsed = await provider.translateBatch(key, chunk, variantName);
         chunk.forEach((eng, idx) => {
           const cn = (parsed && parsed[idx]) || eng;
           newCache[eng] = cn;
         });
       }
       mergePageCache(variant, newCache);
-      // Apply newly cached translations to the wrapped spans
       missing.forEach(span => {
         const cn = newCache[span.dataset.zhTrans];
         if (cn) span.textContent = cn;
@@ -561,15 +679,25 @@
     text.textContent = msg;
     banner.appendChild(text);
 
-    // Inline Gemini-key prompt so the user can enable 中 auto-translation
-    // from anywhere on the site, no detour to the Tongue page required.
+    // Inline key prompt so the user can enable 中 auto-translation
+    // from anywhere on the site. Provider-aware: shows a Gemini /
+    // DeepSeek radio so the user can pick or switch on the spot.
     if (opts && opts.askForKey) {
+      const providerId = getProvider();
+      const provider = PROVIDERS[providerId];
+
+      banner.appendChild(buildProviderRadios((newId) => {
+        // User changed provider — re-render the askForKey banner so
+        // the placeholder, help link, and save behaviour update.
+        showTranslateBanner(msg, loading, opts);
+      }));
+
       const row = document.createElement('div');
       row.className = 'cn-translate-row';
 
       const input = document.createElement('input');
       input.type = 'password';
-      input.placeholder = 'AIza…';
+      input.placeholder = provider.keyPlaceholder;
       input.autocomplete = 'off';
       input.spellcheck = false;
       input.id = 'cn-translate-key-input';
@@ -579,20 +707,20 @@
       saveBtn.textContent = '保存并翻译';
 
       const help = document.createElement('a');
-      help.href = 'https://aistudio.google.com/apikey';
+      help.href = provider.getKeyUrl;
       help.target = '_blank';
       help.rel = 'noopener';
-      help.textContent = '获取免费密钥 ↗';
+      help.textContent = '获取密钥 ↗';
       help.className = 'cn-translate-help';
 
       const submit = () => {
         const v = (input.value || '').trim();
         if (!v) { input.focus(); return; }
-        try { localStorage.setItem(GEMINI_KEY_STORE, v); } catch (_) {}
+        setApiKey(providerId, v);
         input.value = '';
         // Translate now using the current 中-mode variant
         if (getCurrent() === 'c') {
-          showTranslateBanner('正在用 Gemini 翻译此页…', true);
+          showTranslateBanner('正在用 ' + provider.label + ' 翻译此页…', true);
           fetchMissingTranslations(getCnVariant());
         } else {
           hideTranslateBanner();
