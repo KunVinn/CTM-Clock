@@ -545,6 +545,92 @@ a:hover { color: var(--gold-bright); }
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--line);
 }
+
+/* ============================================================
+   Current-season card (四气调神 condensed)
+   Sits between page-head and detail-card on the homepage.
+   ============================================================ */
+.siqi-now {
+  display: block;
+  background: linear-gradient(180deg, rgba(212,169,106,0.07), rgba(212,169,106,0.02));
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  padding: 0.85rem 1rem 0.7rem;
+  margin: 0 0 1.6rem;
+  font-size: 0.85rem;
+}
+.siqi-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+.siqi-head .siqi-icon { font-size: 1.4rem; line-height: 1; }
+.siqi-head .siqi-title {
+  font-family: var(--font-han);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--gold-bright);
+}
+.siqi-head .siqi-en {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-left: 0.5rem;
+}
+.siqi-head .siqi-rule {
+  margin-left: auto;
+  font-family: var(--font-han);
+  font-size: 0.78rem;
+  color: var(--gold);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.15rem 0.7rem;
+  white-space: nowrap;
+}
+.siqi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 1rem;
+  margin-bottom: 0.55rem;
+}
+.siqi-grid > div { display: flex; gap: 0.5rem; align-items: baseline; min-width: 0; }
+.siqi-grid .siqi-label {
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  flex: 0 0 auto;
+}
+.siqi-grid .siqi-val {
+  color: var(--ink-soft);
+  min-width: 0;
+}
+.siqi-msg {
+  font-style: italic;
+  color: var(--ink-soft);
+  border-top: 1px dashed var(--line);
+  padding-top: 0.5rem;
+  margin-top: 0.2rem;
+  line-height: 1.5;
+}
+.siqi-source {
+  font-size: 0.68rem;
+  color: var(--ink-mute);
+  margin-top: 0.35rem;
+  text-align: right;
+  letter-spacing: 0.05em;
+}
+@media (max-width: 560px) {
+  .siqi-grid { grid-template-columns: 1fr; }
+  .siqi-head .siqi-rule { margin-left: 0; }
+}
 .page-head .cn-mark {
   font-family: var(--font-han);
   font-weight: 900;
