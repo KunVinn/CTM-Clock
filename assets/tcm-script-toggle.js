@@ -292,7 +292,6 @@
   const GEMINI_KEY_STORE = 'tcm-tongue-gemini-key-v1';
   const DEEPSEEK_KEY_STORE = 'tcm-deepseek-key-v1';
   const BAILIAN_KEY_STORE = 'tcm-bailian-key-v1';
-  const ANTHROPIC_KEY_STORE = 'tcm-anthropic-key-v1';
   const PROVIDER_STORE = 'tcm-translate-provider-v1';
 
   // Provider registry. Both endpoints accept the same {chunk → JSON
@@ -350,19 +349,6 @@
       async translateBatch(key, chunk, variantName) {
         return openAiCompatibleBatch(this.endpoint, key, 'qwen-plus', chunk, variantName, 'Qwen');
       }
-    },
-    anthropic: {
-      label: 'Claude',
-      keyStore: ANTHROPIC_KEY_STORE,
-      keyPlaceholder: 'sk-ant-…',
-      getKeyUrl: 'https://console.anthropic.com/settings/keys',
-      endpoint: 'https://api.anthropic.com/v1/messages',
-      // Haiku 4.5 = cheap + fast + great Chinese — right tier for
-      // batched UI-string translation. Bump to claude-sonnet-4-6 if
-      // you want richer prose/medical-term handling.
-      async translateBatch(key, chunk, variantName) {
-        return anthropicBatch(this.endpoint, key, 'claude-haiku-4-5-20251001', chunk, variantName);
-      }
     }
   };
 
@@ -405,48 +391,6 @@
     return arr;
   }
 
-  // Anthropic Messages API. Different shape from OpenAI (uses
-  // x-api-key header, system as a top-level field, no built-in
-  // json_object response_format) so it gets its own request builder.
-  // Browser-direct calls are gated behind anthropic-dangerous-direct-
-  // browser-access; the user's key is already in localStorage so the
-  // exposure is the same as for the other providers.
-  async function anthropicBatch(endpoint, key, model, chunk, variantName) {
-    const sysMsg =
-      `You translate English UI / content strings into ${variantName}. ` +
-      `Reply ONLY with a JSON object {"translations": [...]} where the array has the same order and length as the input. ` +
-      `Preserve numbers, punctuation, names, and inline HTML-like markers verbatim. ` +
-      `No prose, no markdown fences.`;
-    const userMsg = JSON.stringify({ strings: chunk });
-    const resp = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: 4096,
-        temperature: 0,
-        system: sysMsg,
-        messages: [{ role: 'user', content: userMsg }],
-      })
-    });
-    if (!resp.ok) {
-      let detail = '';
-      try { detail = ' — ' + (await resp.text()).slice(0, 240); } catch (_) {}
-      throw new Error(`Claude HTTP ${resp.status}${detail}`);
-    }
-    const json = await resp.json();
-    const text = json.content?.[0]?.text || '{}';
-    const obj = parseLooseJsonObject(text);
-    const arr = obj.translations || obj.result || obj.data;
-    if (!Array.isArray(arr)) throw new Error('Claude: no "translations" array in reply');
-    return arr;
-  }
-
   // Tolerant JSON parsers — some models still wrap their output in
   // ```json fences even when asked not to.
   function parseLooseJsonArray(text) {
@@ -467,7 +411,6 @@
     } catch (_) {}
     // Default to whichever has a saved key; tie → gemini for backward compat.
     if (localStorage.getItem(GEMINI_KEY_STORE)) return 'gemini';
-    if (localStorage.getItem(ANTHROPIC_KEY_STORE)) return 'anthropic';
     if (localStorage.getItem(DEEPSEEK_KEY_STORE)) return 'deepseek';
     if (localStorage.getItem(BAILIAN_KEY_STORE)) return 'bailian';
     return 'gemini';
