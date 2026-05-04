@@ -4521,6 +4521,16 @@ html[data-script="c"] .subtitle-en,
 html[data-script="c"] .lang-en-only { display: none; }
 html[data-script="c"] .subtitle-cn,
 html[data-script="c"] .lang-cn-only { display: block; }
+/* `.lang-cn-only` on inline elements (span / strong / em / a / cite)
+   must stay inline, otherwise table headers and inline phrases
+   collapse to one CJK character per line in 中 mode. */
+html[data-script="c"] span.lang-cn-only,
+html[data-script="c"] strong.lang-cn-only,
+html[data-script="c"] em.lang-cn-only,
+html[data-script="c"] a.lang-cn-only,
+html[data-script="c"] cite.lang-cn-only,
+html[data-script="c"] th .lang-cn-only,
+html[data-script="c"] td .lang-cn-only { display: inline; }
 
 /* ============================================================
    CHINESE-ONLY MODE (data-script="c") — hides bare English text
