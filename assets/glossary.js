@@ -300,6 +300,41 @@ const TERMS = {
     def: 'Sweet, bland, neutral; drains dampness, strengthens the Spleen, calms the spirit.',
     url: 'https://en.wikipedia.org/wiki/Wolfiporia_extensa'
   },
+  'qian-shi': {
+    cn: '芡实 · Qiàn Shí', en: 'Euryale seed (Fox-nut)',
+    def: 'Sweet, astringent, neutral; tonifies the Spleen and Kidney, stops diarrhea, secures essence (jīng), restrains turbid leucorrhoea.',
+    url: 'https://en.wikipedia.org/wiki/Euryale_ferox'
+  },
+  'lian-zi': {
+    cn: '莲子 · Lián Zǐ', en: 'Lotus seed',
+    def: 'Sweet, astringent, neutral; tonifies Spleen and Kidney, calms the Heart spirit, restrains seminal/leucorrheal discharge. The plumule (莲子心) is bitter and clears Heart fire.',
+    url: 'https://en.wikipedia.org/wiki/Nelumbo_nucifera'
+  },
+  'yi-yi-ren': {
+    cn: '薏苡仁 · Yì Yǐ Rén', en: 'Job\'s tears / Coix seed',
+    def: 'Sweet, bland, slightly cool; drains dampness, strengthens Spleen, expels pus, eases joint pain (痹). Often shortened to 薏仁 / 薏米.',
+    url: 'https://en.wikipedia.org/wiki/Coix_lacryma-jobi'
+  },
+  'fu-zi': {
+    cn: '附子 · Fù Zǐ', en: 'Aconite (prepared)',
+    def: 'Acrid, very hot, TOXIC raw — must be processed (paozhi) and decocted long. Restores devastated yang, warms the Kidneys, expels cold from the channels. Cardinal herb of 四逆汤.',
+    url: 'https://en.wikipedia.org/wiki/Aconitum_carmichaelii'
+  },
+  'gan-jiang': {
+    cn: '干姜 · Gān Jiāng', en: 'Dried ginger',
+    def: 'Acrid, hot; warms the middle burner, restores yang, warms the Lung and transforms phlegm. Distinct from fresh ginger 生姜 — drier and more deeply warming.',
+    url: 'https://en.wikipedia.org/wiki/Ginger'
+  },
+  'chuan-xiong': {
+    cn: '川芎 · Chuān Xiōng', en: 'Szechuan lovage rhizome',
+    def: 'Acrid, warm; the chief blood-mover that also moves qi, expels wind, stops pain — particularly headaches. Pairs with 当归 to circulate while nourishing.',
+    url: 'https://en.wikipedia.org/wiki/Ligusticum_striatum'
+  },
+  'dang-shen': {
+    cn: '党参 · Dǎng Shēn', en: 'Codonopsis root',
+    def: 'Sweet, neutral; tonifies the middle-burner qi, generates fluids, supports Lung qi. Often substituted for the more expensive 人参 in everyday formulas.',
+    url: 'https://en.wikipedia.org/wiki/Codonopsis_pilosula'
+  },
   'ren-shen': {
     cn: '人參 / 人参 · Rén Shēn', en: 'Ginseng',
     def: 'A powerful tonic for original qi (yuán qì); supports Lung and Spleen, generates fluids, calms the spirit.',
@@ -975,6 +1010,17 @@ const TERM_ALIASES = {
   '远志': 'yuan-zhi', '遠志': 'yuan-zhi',
   '合欢花': 'he-huan-hua', '合歡花': 'he-huan-hua',
   '陈皮': 'chen-pi', '陳皮': 'chen-pi',
+
+  // Four-soups herbs
+  '芡实': 'qian-shi', '芡實': 'qian-shi',
+  '莲子': 'lian-zi', '蓮子': 'lian-zi',
+  '薏苡仁': 'yi-yi-ren', '薏仁': 'yi-yi-ren', '薏米': 'yi-yi-ren',
+  '附子': 'fu-zi', '附片': 'fu-zi',
+  '干姜': 'gan-jiang', '乾薑': 'gan-jiang',
+  '炙甘草': 'gan-cao',                              // honey-fried form → same monograph
+  '川芎': 'chuan-xiong', '川弓': 'chuan-xiong',
+  '党参': 'dang-shen', '黨參': 'dang-shen',
+  '熟地': 'shu-di-huang',                            // common short form
 
   // Patterns
   '气虚': 'qi-deficiency', '氣虛': 'qi-deficiency',

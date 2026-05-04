@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Knowledge Graph · 子午流注</title>
-<link rel="stylesheet" href="assets/style.css?v=20260503e">
+<link rel="stylesheet" href="assets/style.css?v=20260503f">
 </head>
 <body data-page="kg">
 
@@ -84,6 +84,214 @@
         <div class="kg-grid" id="entity-syndromes"></div>
       </div>
 
+      <!-- ============================================================
+           FOUR GREAT SOUPS — 中医四大名汤
+           Bilingual reference; each ingredient is a [data-term] link
+           into the herbs glossary (gold dotted underline + tooltip).
+           ============================================================ -->
+      <div class="entity-section">
+        <h3><span class="cn" data-zh-auto>中医四大名汤</span><span class="acu-en">The Four Great Classical Soups</span></h3>
+        <p class="desc lang-en-only">Four millennia-tested formulas, each with a distinct "personality" — used correctly they're a cornerstone of household TCM, used wrongly they backfire. Hover any ingredient for its glossary card.</p>
+        <p class="desc lang-cn-only"><span data-zh-auto>四神汤、四逆汤、四物汤、四君子汤——千年临床验证之四大名方。每剂自有性格，对症则妙，错用反害。鼠标悬停任一组成药材可阅其本草释义。</span></p>
+
+        <div class="soup-grid">
+
+          <!-- ===== 1. 四神汤 ===== -->
+          <article class="soup-card">
+            <header class="soup-head">
+              <span class="soup-icon">🌿</span>
+              <h4 class="soup-name">
+                <span data-zh-s="四神汤" data-zh-t="四神湯">四神汤</span>
+                <span class="soup-en">Sì Shén Tāng — Four Spirits Soup</span>
+              </h4>
+              <span class="soup-tag" title="Memory mnemonic — first character of each herb"
+                    data-zh-s="健脾祛湿黄金方" data-zh-t="健脾祛濕黃金方">健脾祛湿黄金方</span>
+            </header>
+            <a class="soup-img-link" href="assets/soups/si-shen-tang.png" target="_blank" rel="noopener">
+              <img src="assets/soups/si-shen-tang.png" alt="四神汤组方" loading="lazy">
+            </a>
+            <dl class="soup-spec">
+              <dt data-zh-s="组方" data-zh-t="組方">Composition</dt>
+              <dd>
+                <span data-term="fu-ling" data-zh-auto>茯苓</span> ·
+                <span data-term="qian-shi" data-zh-auto>芡实</span> ·
+                <span data-term="lian-zi" data-zh-auto>莲子</span> ·
+                <span data-term="shan-yao" data-zh-auto>山药</span>
+                <small>(<span data-zh-s="常加" data-zh-t="常加">常加</span>
+                       <span data-term="yi-yi-ren" data-zh-auto>薏仁</span>)</small>
+              </dd>
+              <dt data-zh-s="口诀" data-zh-t="口訣">Mnemonic</dt>
+              <dd><strong class="mnemonic">山莲芡茯</strong> <small>(first char of each herb)</small></dd>
+              <dt data-zh-s="功效" data-zh-t="功效">Action</dt>
+              <dd class="lang-en-only">Strengthens the Spleen, drains dampness, tonifies the Kidney, stops diarrhea, calms the spirit. The "diligent housekeeper" of the digestive tract.</dd>
+              <dd class="lang-cn-only" data-zh-auto>像勤劳的「脾胃清洁工」——健脾祛湿、补肾止泻，兼宁心安神。</dd>
+              <dt data-zh-s="适用" data-zh-t="適用">Suits</dt>
+              <dd>
+                <ul class="soup-list">
+                  <li class="lang-en-only">✅ Damp signs (greasy tongue coat, body heaviness, sticky stool)</li>
+                  <li class="lang-cn-only" data-zh-auto>✅ 湿气重：舌苔厚腻、身体困乏、大便黏腻</li>
+                  <li class="lang-en-only">✅ Weak Spleen (poor appetite, bloating, indigestion)</li>
+                  <li class="lang-cn-only" data-zh-auto>✅ 脾胃弱：食欲差、腹胀、消化不良</li>
+                  <li class="lang-en-only">✅ Sub-health (chronic late-nighters, sedentary office work)</li>
+                  <li class="lang-cn-only" data-zh-auto>✅ 亚健康：熬夜党、久坐族日常调理</li>
+                </ul>
+              </dd>
+              <dt data-zh-s="食法" data-zh-t="食法">Use</dt>
+              <dd class="lang-en-only">Four-Spirits Congee (with rice, breakfast) · Four-Spirits Pork-Tripe Soup. 2-3× per week, long-term.</dd>
+              <dd class="lang-cn-only" data-zh-auto>四神粥（药材+大米熬煮，早餐）· 四神猪肚汤（药材与猪肚同炖）。每周 2-3 次，长期效佳。</dd>
+            </dl>
+          </article>
+
+          <!-- ===== 2. 四逆汤 ===== -->
+          <article class="soup-card">
+            <header class="soup-head">
+              <span class="soup-icon">❄️</span>
+              <h4 class="soup-name">
+                <span data-zh-s="四逆汤" data-zh-t="四逆湯">四逆汤</span>
+                <span class="soup-en">Sì Nì Tāng — Four-Reverse Decoction</span>
+              </h4>
+              <span class="soup-tag soup-tag-warn" title="Emergency formula — practitioner-only"
+                    data-zh-s="回阳救逆急救方" data-zh-t="回陽救逆急救方">回阳救逆急救方</span>
+            </header>
+            <a class="soup-img-link" href="assets/soups/si-ni-tang.png" target="_blank" rel="noopener">
+              <img src="assets/soups/si-ni-tang.png" alt="四逆汤组方" loading="lazy">
+            </a>
+            <dl class="soup-spec">
+              <dt data-zh-s="组方" data-zh-t="組方">Composition</dt>
+              <dd>
+                <span data-term="fu-zi" data-zh-auto>附子</span>
+                <small class="warn">(<span data-zh-s="生食有毒" data-zh-t="生食有毒">生食有毒</span> · raw is TOXIC)</small> ·
+                <span data-term="gan-jiang" data-zh-auto>干姜</span> ·
+                <span data-term="gan-cao" data-zh-auto>炙甘草</span>
+              </dd>
+              <dt data-zh-s="名称" data-zh-t="名稱">Name</dt>
+              <dd class="lang-en-only">"Four reverses" = the four cold limbs. The formula warms them back.</dd>
+              <dd class="lang-cn-only" data-zh-auto>「四逆」指四肢厥冷；此方回阳救逆，使四肢复温。</dd>
+              <dt data-zh-s="口诀" data-zh-t="口訣">Mnemonic</dt>
+              <dd><strong class="mnemonic">附草姜</strong> · <em data-zh-auto>「四逆汤中附草姜，阳衰寒厥急煎尝……」</em></dd>
+              <dt data-zh-s="功效" data-zh-t="功效">Action</dt>
+              <dd class="lang-en-only">A "miniature sun" inside the body — rapidly rouses Yang qi and disperses interior cold.</dd>
+              <dd class="lang-cn-only" data-zh-auto>堪称「人体小太阳」，迅速振奋阳气，驱散体内阴寒。</dd>
+              <dt data-zh-s="适用" data-zh-t="適用">Suits</dt>
+              <dd>
+                <ul class="soup-list">
+                  <li class="lang-en-only">⚠️ Only for collapsed yang: ice-cold limbs, profuse cold sweat, faint pulse</li>
+                  <li class="lang-cn-only" data-zh-auto>⚠️ 仅限阳气暴脱者：四肢冰冷、冷汗淋漓、脉微欲绝</li>
+                  <li class="lang-en-only">⚠️ Adjuvant in acute gastroenteritis, shock, and similar emergencies</li>
+                  <li class="lang-cn-only" data-zh-auto>⚠️ 常用于急性肠胃炎、休克等危急症之辅助治疗</li>
+                </ul>
+              </dd>
+              <dt class="warn" data-zh-s="禁忌" data-zh-t="禁忌">Cautions</dt>
+              <dd class="warn">
+                <ul class="soup-list">
+                  <li class="lang-en-only">❗ NOT for non-deficient-cold patients</li>
+                  <li class="lang-cn-only" data-zh-auto>❗ 非虚寒体质禁用</li>
+                  <li class="lang-en-only">❗ <span data-term="fu-zi">附子</span> must be long-decocted to detoxify — practitioner-only</li>
+                  <li class="lang-cn-only" data-zh-auto>❗ <span data-term="fu-zi">附子</span>须久煎去毒，必须严格遵医嘱，自行乱用可能中毒</li>
+                </ul>
+              </dd>
+            </dl>
+          </article>
+
+          <!-- ===== 3. 四物汤 ===== -->
+          <article class="soup-card">
+            <header class="soup-head">
+              <span class="soup-icon">🌸</span>
+              <h4 class="soup-name">
+                <span data-zh-s="四物汤" data-zh-t="四物湯">四物汤</span>
+                <span class="soup-en">Sì Wù Tāng — Four Substances Decoction</span>
+              </h4>
+              <span class="soup-tag" title="Foundational gynecology formula"
+                    data-zh-s="妇科养血圣方" data-zh-t="婦科養血聖方">妇科养血圣方</span>
+            </header>
+            <a class="soup-img-link" href="assets/soups/si-wu-tang.png" target="_blank" rel="noopener">
+              <img src="assets/soups/si-wu-tang.png" alt="四物汤组方" loading="lazy">
+            </a>
+            <dl class="soup-spec">
+              <dt data-zh-s="组方" data-zh-t="組方">Composition</dt>
+              <dd>
+                <span data-term="dang-gui" data-zh-auto>当归</span> ·
+                <span data-term="chuan-xiong" data-zh-auto>川芎</span> ·
+                <span data-term="bai-shao" data-zh-auto>白芍</span> ·
+                <span data-term="shu-di-huang" data-zh-auto>熟地</span>
+              </dd>
+              <dt data-zh-s="口诀" data-zh-t="口訣">Mnemonic</dt>
+              <dd><strong class="mnemonic">归芎芍地</strong> <small>(first char of each herb)</small></dd>
+              <dt data-zh-s="功效" data-zh-t="功效">Action</dt>
+              <dd class="lang-en-only">Tonifies and moves blood; regulates menstruation; stops pain. Known as "the first formula of gynecology" (<span data-term="meridian">妇科第一方</span>).</dd>
+              <dd class="lang-cn-only" data-zh-auto>补血活血、调经止痛——「妇科第一方」。</dd>
+              <dt data-zh-s="适用" data-zh-t="適用">Suits</dt>
+              <dd>
+                <ul class="soup-list">
+                  <li class="lang-en-only">✅ <span data-term="blood-deficiency">Blood deficiency</span> in women: pale complexion, dizziness, insomnia, vivid dreams</li>
+                  <li class="lang-cn-only" data-zh-auto>✅ 女性<span data-term="blood-deficiency">血虚</span>：面色苍白、头晕眼花、失眠多梦</li>
+                  <li class="lang-en-only">✅ Menstrual disorders: scant flow, amenorrhea, dysmenorrhea, dark-red color</li>
+                  <li class="lang-cn-only" data-zh-auto>✅ 月经不调：量少、闭经、痛经、经色暗红</li>
+                </ul>
+              </dd>
+              <dt data-zh-s="加减" data-zh-t="加減">Modifications</dt>
+              <dd class="lang-en-only">Heavy <span data-term="blood-stasis">blood stasis</span>: add 桃仁 + 红花 (stronger circulation). Marked blood deficiency: heavier <span data-term="shu-di-huang">熟地</span> + <span data-term="dang-gui">当归</span>.</dd>
+              <dd class="lang-cn-only"><span data-zh-auto><span data-term="blood-stasis">血瘀</span>重：加桃仁、红花增强活血。血虚明显：重用</span><span data-term="shu-di-huang">熟地</span><span data-zh-auto>、</span><span data-term="dang-gui">当归</span><span data-zh-auto>。</span></dd>
+              <dt data-zh-s="时机" data-zh-t="時機">Timing</dt>
+              <dd class="lang-en-only">Best taken for 3–5 consecutive days after menses end.</dd>
+              <dd class="lang-cn-only" data-zh-auto>月经结束后连续服用 3-5 天，效果最佳。</dd>
+            </dl>
+          </article>
+
+          <!-- ===== 4. 四君子汤 ===== -->
+          <article class="soup-card">
+            <header class="soup-head">
+              <span class="soup-icon">🧡</span>
+              <h4 class="soup-name">
+                <span data-zh-s="四君子汤" data-zh-t="四君子湯">四君子汤</span>
+                <span class="soup-en">Sì Jūn Zǐ Tāng — Four Gentlemen Decoction</span>
+              </h4>
+              <span class="soup-tag" title="The premier qi-tonifying formula"
+                    data-zh-s="补气健脾第一方" data-zh-t="補氣健脾第一方">补气健脾第一方</span>
+            </header>
+            <a class="soup-img-link" href="assets/soups/si-jun-zi-tang.png" target="_blank" rel="noopener">
+              <img src="assets/soups/si-jun-zi-tang.png" alt="四君子汤组方" loading="lazy">
+            </a>
+            <dl class="soup-spec">
+              <dt data-zh-s="组方" data-zh-t="組方">Composition</dt>
+              <dd>
+                <span data-term="ren-shen" data-zh-auto>人参</span>
+                <small>(<span data-zh-s="或" data-zh-t="或">或</span>
+                       <span data-term="dang-shen" data-zh-auto>党参</span>)</small> ·
+                <span data-term="bai-zhu" data-zh-auto>白术</span> ·
+                <span data-term="fu-ling" data-zh-auto>茯苓</span> ·
+                <span data-term="gan-cao" data-zh-auto>炙甘草</span>
+              </dd>
+              <dt data-zh-s="名称" data-zh-t="名稱">Name</dt>
+              <dd class="lang-en-only">All four herbs are mild and balanced — like 君子 (gentlemen).</dd>
+              <dd class="lang-cn-only" data-zh-auto>四味药性平和，如同「君子」。</dd>
+              <dt data-zh-s="简称" data-zh-t="簡稱">Short name</dt>
+              <dd><strong class="mnemonic">四君汤</strong> <small>(first two chars of 四君子)</small></dd>
+              <dt data-zh-s="功效" data-zh-t="功效">Action</dt>
+              <dd class="lang-en-only">A gentle qi-tonic — like recharging the Spleen-Stomach battery; strengthens digestion and absorption.</dd>
+              <dd class="lang-cn-only" data-zh-auto>温和补气，像给脾胃「充电」，增强消化吸收能力。</dd>
+              <dt data-zh-s="适用" data-zh-t="適用">Suits</dt>
+              <dd>
+                <ul class="soup-list">
+                  <li class="lang-en-only">✅ <span data-term="qi-deficiency">Qi-deficient</span> constitution: shortness of breath, fatigue, sweating on exertion</li>
+                  <li class="lang-cn-only" data-zh-auto>✅ <span data-term="qi-deficiency">气虚</span>体质：气短懒言、易疲劳、动则出汗</li>
+                  <li class="lang-en-only">✅ Post-surgery / postpartum weakness, poor appetite</li>
+                  <li class="lang-cn-only" data-zh-auto>✅ 术后/产后：虚弱乏力、食欲不佳</li>
+                </ul>
+              </dd>
+              <dt data-zh-s="食法" data-zh-t="食法">Use</dt>
+              <dd class="lang-en-only">Tea decoction (boil the herbs, drink as tea) · Four-Gentlemen Steamed Chicken (steam the herbs with chicken).</dd>
+              <dd class="lang-cn-only" data-zh-auto>代茶饮（药材煮水当茶）· 四君子蒸鸡（药材与鸡肉同蒸）。</dd>
+            </dl>
+          </article>
+
+        </div>
+        <p class="soup-source">
+          <span class="lang-en-only">— compiled from classical 中医方剂 references; <a href="https://www.zhongyifangji.com/home/prescription/index" target="_blank" rel="noopener">中医方剂网</a></span>
+          <span class="lang-cn-only" data-zh-auto>——参考</span><a class="lang-cn-only" href="https://www.zhongyifangji.com/home/prescription/index" target="_blank" rel="noopener" data-zh-auto>中医方剂网</a>
+        </p>
+      </div>
+
     </div>
     <footer class="site-footer">
       <div class="site-footer-inner">
@@ -92,18 +300,18 @@
         <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener"><span class="cn" data-zh-auto>源码</span> Source</a>
         <span class="footer-sep">·</span>
         <a href="CHANGELOG.md" target="_blank" rel="noopener"><span class="cn" data-zh-auto>更新日志</span> Changelog</a>
-        <span class="footer-version">v2026.05.03e · last updated 2026-05-03</span>
+        <span class="footer-version">v2026.05.03f · last updated 2026-05-03</span>
       </div>
     </footer>
   </main>
 </div>
 
-<script src="assets/data.js?v=20260503e"></script>
-<script src="assets/glossary.js?v=20260503e"></script>
-<script src="assets/clock.js?v=20260503e"></script>
-<script src="assets/tcm-script-toggle.js?v=20260503e"></script>
-<script src="assets/tcm-music.js?v=20260503e"></script>
-<script src="assets/tcm-link.js?v=20260503e"></script>
+<script src="assets/data.js?v=20260503f"></script>
+<script src="assets/glossary.js?v=20260503f"></script>
+<script src="assets/clock.js?v=20260503f"></script>
+<script src="assets/tcm-script-toggle.js?v=20260503f"></script>
+<script src="assets/tcm-music.js?v=20260503f"></script>
+<script src="assets/tcm-link.js?v=20260503f"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const propSet = new Set(), flavSet = new Set(), tropSet = new Set();

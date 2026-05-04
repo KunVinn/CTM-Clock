@@ -647,6 +647,135 @@ a:hover { color: var(--gold-bright); }
   color: var(--gold-bright);
   border-bottom-color: var(--gold-bright);
 }
+
+/* ============================================================
+   FOUR GREAT SOUPS (knowledge.html bottom)
+   ============================================================ */
+.soup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+.soup-card {
+  background: linear-gradient(180deg, rgba(212,169,106,0.05), rgba(0,0,0,0.18));
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  padding: 1rem 1.1rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+}
+.soup-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+.soup-head .soup-icon { font-size: 1.5rem; line-height: 1; }
+.soup-head .soup-name {
+  margin: 0;
+  font-family: var(--font-han);
+  font-size: 1.1rem;
+  color: var(--gold-bright);
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.soup-head .soup-en {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  font-style: italic;
+}
+.soup-tag {
+  font-family: var(--font-han);
+  font-size: 0.72rem;
+  color: var(--gold);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.15rem 0.65rem;
+  white-space: nowrap;
+}
+.soup-tag-warn {
+  border-color: var(--cinnabar, #c43c2a);
+  color: var(--cinnabar, #c43c2a);
+}
+.soup-img-link {
+  display: block;
+  margin: 0 -0.3rem 0.7rem;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,0.25);
+}
+.soup-img-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.25s ease;
+}
+.soup-img-link:hover img { transform: scale(1.02); }
+.soup-spec {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 0.7rem;
+  row-gap: 0.35rem;
+  margin: 0;
+  font-size: 0.82rem;
+}
+.soup-spec dt {
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  align-self: start;
+  padding-top: 0.1rem;
+}
+.soup-spec dt.warn { color: var(--cinnabar, #c43c2a); }
+.soup-spec dd {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.soup-spec dd.warn { color: #d68a7c; }
+.soup-spec dd small { color: var(--ink-mute); font-size: 0.78em; }
+.soup-spec dd small.warn { color: var(--cinnabar, #c43c2a); }
+.soup-spec .mnemonic {
+  font-family: var(--font-han);
+  color: var(--cinnabar, #c43c2a);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.soup-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.soup-list li {
+  padding: 0.05rem 0;
+  line-height: 1.45;
+}
+.soup-source {
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+  text-align: right;
+  margin-top: 0.8rem;
+  font-style: italic;
+}
+.soup-source a { color: var(--gold); }
+.soup-source a:hover { color: var(--gold-bright); }
+@media (max-width: 480px) {
+  .soup-spec { grid-template-columns: 1fr; }
+  .soup-spec dt { padding-top: 0.4rem; }
+}
 @media (max-width: 560px) {
   .siqi-grid { grid-template-columns: 1fr; }
   .siqi-head .siqi-rule { margin-left: 0; }
