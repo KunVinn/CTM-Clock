@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="子午流注 · TCM Clock">
 <meta name="twitter:description" content="Twelve-Hour Meridian Clock & Five-Element Theory — bilingual educational reference.">
-<link rel="stylesheet" href="assets/style.css?v=20260503b">
+<link rel="stylesheet" href="assets/style.css?v=20260503d">
 </head>
 <body data-page="today">
 
@@ -32,6 +32,7 @@
         <a class="menu-btn" data-page="today" href="index.html"><span class="cn" data-zh-auto>此刻</span> Today</a>
         <a class="menu-btn" data-page="hours" href="hours.html"><span class="cn" data-zh-auto>十二时辰</span> Twelve Hours</a>
         <a class="menu-btn" data-page="elements" href="elements.html"><span class="cn" data-zh-auto>五行</span> Five Elements</a>
+        <a class="menu-btn" data-page="siqi" href="siqi.html"><span class="cn" data-zh-auto>四气调神</span> Four Seasons</a>
         <a class="menu-btn" data-page="kg" href="knowledge.html"><span class="cn" data-zh-auto>知识图谱</span> Knowledge Graph</a>
         <a class="menu-btn" data-page="tongue" href="tongue.html"><span class="cn" data-zh-auto>舌诊</span> Tongue Diagnosis</a>
         <a class="menu-btn" data-page="acupuncture" href="acupuncture.html"><span class="cn" data-zh-auto>针灸</span> Acupuncture</a>
@@ -61,18 +62,18 @@
         <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener"><span class="cn" data-zh-auto>源码</span> Source</a>
         <span class="footer-sep">·</span>
         <a href="CHANGELOG.md" target="_blank" rel="noopener"><span class="cn" data-zh-auto>更新日志</span> Changelog</a>
-        <span class="footer-version">v2026.05.03b · last updated 2026-05-03</span>
+        <span class="footer-version">v2026.05.03d · last updated 2026-05-03</span>
       </div>
     </footer>
   </main>
 </div>
 
-<script src="assets/data.js?v=20260503b"></script>
-<script src="assets/glossary.js?v=20260503b"></script>
-<script src="assets/clock.js?v=20260503b"></script>
-<script src="assets/tcm-script-toggle.js?v=20260503b"></script>
-<script src="assets/tcm-music.js?v=20260503b"></script>
-<script src="assets/tcm-link.js?v=20260503b"></script>
+<script src="assets/data.js?v=20260503d"></script>
+<script src="assets/glossary.js?v=20260503d"></script>
+<script src="assets/clock.js?v=20260503d"></script>
+<script src="assets/tcm-script-toggle.js?v=20260503d"></script>
+<script src="assets/tcm-music.js?v=20260503d"></script>
+<script src="assets/tcm-link.js?v=20260503d"></script>
 <script>
 /* TODAY page: render detail card for the active or URL-specified hour */
 function renderKG(kg, el) {
@@ -99,12 +100,12 @@ function renderKG(kg, el) {
 const ELEMENT_CN = { wood: '木', fire: '火', earth: '土', metal: '金', water: '水' };
 
 /* ============================================================
-   Current-season card — 四气调神大论 (素问) condensed to one row
-   based on today's calendar month. Months mapped to seasons:
-     2,3,4   → 春   ·   5,6,7  → 夏
-     8,9,10  → 秋   ·   11,12,1 → 冬
-   Each season ships with the 起居 / 神志 / 当令 / 逆则 quartet
-   plus its half-year rule (春夏养阳 / 秋冬养阴).
+   Current-season card — 四气调神大论 (素问) condensed to one row,
+   keyed off today's solar term (节气), NOT the calendar month.
+   TCM seasons run 立春→立夏→立秋→立冬→立春 (≈ Feb 4 / May 5 /
+   Aug 8 / Nov 7), with each 立XX day being the FIRST day of the
+   new season. Each season ships with the 起居 / 神志 / 当令 / 逆则
+   quartet plus its half-year rule (春夏养阳 / 秋冬养阴).
    ============================================================ */
 const SIQI_SEASONS = {
   spring: {
@@ -149,12 +150,30 @@ const SIQI_SEASONS = {
   }
 };
 
+// TCM seasons run on solar terms (节气), not calendar months. The
+// boundary days for the four 立XX (start-of-season) terms vary 1-2
+// days year-to-year. The 21st-century approximation:
+//   day_of_month = floor(yy * 0.2422 + C) - floor(yy / 4)
+// where yy is the 2-digit year and C is term-specific. Verified for
+// 2026: 立春=Feb 4, 立夏=May 5, 立秋=Aug 8, 立冬=Nov 7.
+function solarTermDay(yy, c) {
+  return Math.floor(yy * 0.2422 + c) - Math.floor(yy / 4);
+}
 function currentSeason() {
-  const m = new Date().getMonth() + 1;       // 1..12
-  if (m >= 2 && m <= 4)  return SIQI_SEASONS.spring;
-  if (m >= 5 && m <= 7)  return SIQI_SEASONS.summer;
-  if (m >= 8 && m <= 10) return SIQI_SEASONS.autumn;
-  return SIQI_SEASONS.winter;                 // 11, 12, 1
+  const now = new Date();
+  const m  = now.getMonth() + 1;
+  const d  = now.getDate();
+  const yy = now.getFullYear() % 100;
+  const lichun = solarTermDay(yy, 4.475);   // 立春 ~ Feb 3-5
+  const lixia  = solarTermDay(yy, 5.520);   // 立夏 ~ May 5-7
+  const liqiu  = solarTermDay(yy, 8.350);   // 立秋 ~ Aug 7-9
+  const lidong = solarTermDay(yy, 7.438);   // 立冬 ~ Nov 7-8
+  // Pack month*100 + day so we can compare in a single int (e.g. May 3 = 503).
+  const md = m * 100 + d;
+  if (md >= 200 + lichun && md < 500 + lixia)  return SIQI_SEASONS.spring;
+  if (md >= 500 + lixia  && md < 800 + liqiu)  return SIQI_SEASONS.summer;
+  if (md >= 800 + liqiu  && md < 1100 + lidong) return SIQI_SEASONS.autumn;
+  return SIQI_SEASONS.winter;                 // 立冬 → 立春 (wraps year)
 }
 
 function renderSiqiNow() {
@@ -181,9 +200,14 @@ function renderSiqiNow() {
            <span class="siqi-val"  data-zh-s="${s.nirule}" data-zh-t="${s.niruleTrad}">${s.nirule}</span></div>
     </div>
     <div class="siqi-msg" data-zh-s="${s.halfMsg}" data-zh-t="${s.halfMsgTrad}">${s.halfMsg}</div>
-    <div class="siqi-source lang-en-only">— condensed from 黄帝内经·素问·四气调神大论</div>
-    <div class="siqi-source lang-cn-only" data-zh-s="——节自《黄帝内经·素问·四气调神大论》"
-                                          data-zh-t="——節自《黃帝內經·素問·四氣調神大論》">——节自《黄帝内经·素问·四气调神大论》</div>
+    <div class="siqi-foot">
+      <span class="siqi-source lang-en-only">— condensed from 黄帝内经·素问·四气调神大论</span>
+      <span class="siqi-source lang-cn-only" data-zh-s="——节自《黄帝内经·素问·四气调神大论》"
+                                              data-zh-t="——節自《黃帝內經·素問·四氣調神大論》">——节自《黄帝内经·素问·四气调神大论》</span>
+      <a class="siqi-more" href="siqi.html"
+         data-zh-s="📖 详读全文 →" data-zh-t="📖 詳讀全文 →"
+         title="Read the full essay + classical text + 24 solar terms">📖 详读全文 →</a>
+    </div>
   `;
 }
 renderSiqiNow();

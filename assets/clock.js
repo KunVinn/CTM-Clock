@@ -708,10 +708,19 @@ function updateClock() {
   const nowTone = document.getElementById('now-tone');
   const nowTrack = document.getElementById('now-track');
   if (nowName) nowName.innerHTML = `<span class="cn" data-zh-auto>${o.cn}</span> ${o.organ}`;
-  if (nowBranch) nowBranch.textContent = `${o.chineseHour} · ${o.zodiacEmoji}`;
+  // Wrap each Chinese-bearing fragment in data-zh-auto so the
+  // 简/繁 toggle picks them up. textContent strips HTML, so use
+  // innerHTML for these.
+  if (nowBranch) nowBranch.innerHTML = `<span data-zh-auto>${o.chineseHour}</span> · ${o.zodiacEmoji}`;
   if (nowTip) nowTip.textContent = `"${o.practices[0]}"`;
-  if (nowTone) nowTone.textContent = o.tone;
-  if (nowTrack) nowTrack.textContent = `♫ ${currentTrack(idx)}`;
+  if (nowTone) nowTone.innerHTML = `<span data-zh-auto>${o.tone}</span>`;
+  // Music track display: only auto-cycle when nothing else has
+  // claimed the slot. tcm-music.js sets data-claimed-by="player"
+  // when it pushes the playing-track name; in that case we leave
+  // it alone so the displayed name matches the audio.
+  if (nowTrack && nowTrack.dataset.claimedBy !== 'player') {
+    nowTrack.innerHTML = `♫ <span data-zh-auto>${currentTrack(idx)}</span>`;
+  }
 
   // Highlight current sector on every tick;
   // notify other pages about hour change via a custom event

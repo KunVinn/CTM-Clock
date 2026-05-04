@@ -149,12 +149,28 @@
 
   function updateNowPlaying(text) {
     const el = document.getElementById('music-now');
-    if (!el) return;
-    const tone = currentTone();
-    const organ = currentOrganName || '—';
-    el.innerHTML = `<span class="music-organ">${organ}</span>` +
-                   (tone ? `<span class="music-tone">${tone}</span>` : '') +
-                   `<span class="music-track">${text}</span>`;
+    if (el) {
+      const tone = currentTone();
+      const organ = currentOrganName || '—';
+      el.innerHTML = `<span class="music-organ" data-zh-auto>${organ}</span>` +
+                     (tone ? `<span class="music-tone" data-zh-auto>${tone}</span>` : '') +
+                     `<span class="music-track" data-zh-auto>${text}</span>`;
+    }
+    // Mirror the same track name into the sidebar's #now-track slot
+    // so what the user sees under the clock matches what the player
+    // is actually playing. Only claim the slot when a REAL track is
+    // loaded — placeholders like 'Press play to start' release the
+    // claim so clock.js resumes auto-cycling the suggested track.
+    const sidebarTrack = document.getElementById('now-track');
+    if (sidebarTrack) {
+      const hasRealTrack = audio && audio.src && audio.src !== window.location.href;
+      if (hasRealTrack) {
+        sidebarTrack.dataset.claimedBy = 'player';
+        sidebarTrack.innerHTML = `♫ <span data-zh-auto>${text}</span>`;
+      } else {
+        delete sidebarTrack.dataset.claimedBy;
+      }
+    }
   }
 
   function updateButtonStates() {
@@ -230,8 +246,16 @@
       if (saved.collapsed === false) panel.classList.remove('collapsed');
       if (typeof saved.volume === 'number') audio.volume = saved.volume;
 
-      currentOrganName = saved.organ || getCurrentOrganName();
-      trackIdx         = (typeof saved.trackIdx === 'number') ? saved.trackIdx : 0;
+      // Prefer the CURRENT hour's organ over whatever was saved —
+      // otherwise the player keeps playing the previous hour's
+      // tracks until the next hourchange or the 60s safety net.
+      const liveOrgan = getCurrentOrganName();
+      currentOrganName = liveOrgan || saved.organ;
+      // If the saved organ doesn't match the live one, the saved
+      // trackIdx is meaningless for the new playlist — start fresh.
+      const sameOrgan  = liveOrgan && liveOrgan === saved.organ;
+      trackIdx         = (sameOrgan && typeof saved.trackIdx === 'number')
+                          ? saved.trackIdx : 0;
 
       const playlist = currentPlaylist();
       if (playlist.length) {

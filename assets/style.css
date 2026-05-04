@@ -623,9 +623,29 @@ a:hover { color: var(--gold-bright); }
 .siqi-source {
   font-size: 0.68rem;
   color: var(--ink-mute);
-  margin-top: 0.35rem;
-  text-align: right;
   letter-spacing: 0.05em;
+}
+.siqi-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-top: 0.35rem;
+  flex-wrap: wrap;
+}
+.siqi-more {
+  font-family: var(--font-han);
+  font-size: 0.78rem;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--gold);
+  padding: 0.05rem 0.1rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+.siqi-more:hover {
+  color: var(--gold-bright);
+  border-bottom-color: var(--gold-bright);
 }
 @media (max-width: 560px) {
   .siqi-grid { grid-template-columns: 1fr; }

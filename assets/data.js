@@ -794,7 +794,7 @@ const CORRESPONDENCE_CATEGORIES = [
   { key: 'season',     cn: '五季', en: 'Season',           group: 'cosmos' },
   { key: 'direction',  cn: '五方', en: 'Direction',        group: 'cosmos' },
   { key: 'climate',    cn: '五气', en: 'Climatic Qi',      group: 'cosmos' },
-  { key: 'pernicious', cn: '五淫', en: 'Pernicious Qi',    group: 'cosmos' },
+  { key: 'pernicious', cn: '五淫', en: 'Climatic Excess',  group: 'cosmos' },
   // Anatomical
   { key: 'zang',       cn: '五脏', en: 'Yīn Organ (zàng)', group: 'body' },
   { key: 'fu',         cn: '五腑', en: 'Yáng Organ (fǔ)',  group: 'body' },
