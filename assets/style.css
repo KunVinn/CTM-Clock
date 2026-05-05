@@ -776,6 +776,70 @@ a:hover { color: var(--gold-bright); }
   .soup-spec { grid-template-columns: 1fr; }
   .soup-spec dt { padding-top: 0.4rem; }
 }
+
+/* ============================================================
+   八总穴歌 line-by-line analysis cards
+   ============================================================ */
+.bazong-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.2rem;
+}
+.bazong-card {
+  background: linear-gradient(180deg, rgba(212,169,106,0.05), rgba(0,0,0,0.18));
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  padding: 0.75rem 0.95rem 0.7rem;
+  font-size: 0.83rem;
+}
+.bazong-card.bazong-card-warn { border-left-color: var(--cinnabar, #c43c2a); }
+.bazong-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.45rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px dashed var(--line);
+}
+.bazong-line {
+  font-family: var(--font-han);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gold-bright);
+  letter-spacing: 0.05em;
+}
+.bazong-en {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+}
+.bazong-row {
+  margin: 0.25rem 0;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.bazong-row strong {
+  display: inline-block;
+  min-width: 3.2em;
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-right: 0.4rem;
+  vertical-align: baseline;
+}
+.bazong-note {
+  margin-top: 0.45rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--line);
+  font-size: 0.76rem;
+  color: var(--ink-mute);
+}
 @media (max-width: 560px) {
   .siqi-grid { grid-template-columns: 1fr; }
   .siqi-head .siqi-rule { margin-left: 0; }
@@ -4191,6 +4255,17 @@ a:hover { color: var(--gold-bright); }
   font-weight: 600;
   color: var(--ink);
 }
+/* Prose variant — for tables holding long classical phrases (eg
+   the 四季总览 table on siqi.html). Left-aligned + wrap-friendly,
+   so 四时调神大论 verses stay legible instead of squashed/centered. */
+.liuzhu-table-prose th,
+.liuzhu-table-prose td {
+  text-align: left !important;
+  white-space: normal;
+  vertical-align: top;
+  line-height: 1.55;
+}
+.liuzhu-table-prose td:first-child { white-space: nowrap; }
 .liuzhu-table .row-yin td {
   background: rgba(28, 34, 53, 0.18);     /* faint yin-blue */
   color: var(--ink-soft);

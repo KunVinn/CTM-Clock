@@ -738,6 +738,13 @@ const TERMS = {
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006065?courseId=245888516&name=%E5%A4%A7%E6%A4%8E&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6944'
   },
+  'gv26': {
+    cn: '水沟 · Shuǐ Gōu', en: 'Governor Vessel 26 (人中 / Rén Zhōng)',
+    def: 'Also known as 人中. Upper third of the philtrum (the groove between nose and upper lip). The classical emergency-revival point — open the orifices, restore consciousness, treat fainting, sunstroke, shock, acute lumbar sprain. A firm pinch with thumbnail is the canonical first-aid technique.',
+    url: 'https://yibian.hopto.org/shu/?sid=6944',
+    urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006078?courseId=245888516&name=%E6%B0%B4%E6%B2%9F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
+    urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6944'
+  },
   'st40': {
     cn: '丰隆 · Fēng Lóng', en: 'Stomach 40',
     def: 'Connecting (Luo) point of the Stomach channel. The classical "phlegm-resolving" point — used whenever phlegm (湿痰) is present.',
@@ -902,6 +909,7 @@ const TERMS = {
   'pc3': { cn: '曲泽 · Qū Zé', en: 'Pericardium 3', def: 'He-Sea of the Pericardium. On the elbow crease, on the ulnar side of the biceps tendon. Cools heart and stomach heat.', url: 'https://yibian.hopto.org/shu/?sid=6972', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005947?courseId=245888516&name=%E6%9B%B2%E6%B3%BD&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6972'  },
   'pc4': { cn: '郄门 · Xī Mén', en: 'Pericardium 4', def: 'Cleft point of the Pericardium. On the inner forearm, 5 cùn proximal to the wrist crease. Acute heart pain.', url: 'https://yibian.hopto.org/shu/?sid=6972', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005948?courseId=245888516&name=%E9%83%84%E9%97%A8&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6972'  },
   'pc5': { cn: '间使 · Jiān Shǐ', en: 'Pericardium 5', def: 'Jing-River of the Pericardium. On the inner forearm, 3 cùn proximal to the wrist crease.', url: 'https://yibian.hopto.org/shu/?sid=6972', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005949?courseId=245888516&name=%E9%97%B4%E4%BD%BF&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6972'  },
+  'pc6': { cn: '内关 · Nèi Guān', en: 'Pericardium 6', def: 'Luo-Connecting point of the Pericardium; Confluent point of the Yin Wei Vessel. Inner forearm, 2 cùn (3 finger-widths) above the wrist crease, between PL and FCR tendons. Settles the heart, calms the spirit, harmonizes the stomach, stops nausea — chief point for chest oppression, palpitations, motion sickness, gastric pain.', url: 'https://yibian.hopto.org/shu/?sid=6972', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005950?courseId=245888516&name=%E5%86%85%E5%85%B3&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6972' },
   'pc7': { cn: '大陵 · Dà Líng', en: 'Pericardium 7', def: 'Yuan-Source and Stream of the Pericardium. On the wrist crease between the FCR and PL tendons. Calms the spirit; treats heart-fire.', url: 'https://yibian.hopto.org/shu/?sid=6972', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005951?courseId=245888516&name=%E5%A4%A7%E9%99%B5&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6972'  },
   'pc8': { cn: '劳宫 · Láo Gōng', en: 'Pericardium 8', def: 'Ying-Spring of the Pericardium. In the centre of the palm, where the tip of the middle finger touches when the fist is clenched.', url: 'https://yibian.hopto.org/shu/?sid=6972', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005952?courseId=245888516&name=%E5%8A%B3%E5%AE%AB&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6972'  },
   'pc9': { cn: '中冲 · Zhōng Chōng', en: 'Pericardium 9', def: 'Jing-Well of the Pericardium. On the tip of the middle finger. Emergency revival.', url: 'https://yibian.hopto.org/shu/?sid=6972', urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005953?courseId=245888516&name=%E4%B8%AD%E5%86%B2&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=', urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6972'  },
@@ -1066,6 +1074,8 @@ const TERM_ALIASES = {
   '气海': 'cv6', '氣海': 'cv6', 'cv6': 'cv6', 'CV6': 'cv6',
   '神阙': 'cv8', '神闕': 'cv8', 'cv8': 'cv8', 'CV8': 'cv8',
   '命门': 'gv4', '命門': 'gv4', 'gv4': 'gv4', 'GV4': 'gv4',
+  '内关': 'pc6', '內關': 'pc6', 'pc6': 'pc6', 'PC6': 'pc6',
+  '水沟': 'gv26', '水溝': 'gv26', '人中': 'gv26', 'gv26': 'gv26', 'GV26': 'gv26', 'DU26': 'gv26',
   '三阴交': 'sp6', '三陰交': 'sp6', 'sp6': 'sp6', 'SP6': 'sp6',
   '阴陵泉': 'sp9', '陰陵泉': 'sp9', 'sp9': 'sp9', 'SP9': 'sp9',
   '血海': 'sp10', 'sp10': 'sp10', 'SP10': 'sp10',

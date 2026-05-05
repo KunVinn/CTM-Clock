@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#c43c2a">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="canonical" href="https://drmusic.netlify.app/siqi.html">
-<link rel="stylesheet" href="assets/style.css?v=20260503f">
+<link rel="stylesheet" href="assets/style.css?v=20260503g">
 </head>
 <body data-page="siqi">
 
@@ -91,46 +91,53 @@
 
       <!-- ============================================================
            FOUR-SEASON DETAILED TABLE
+           Cells use the original 素问 phrases (主气 / 主象 / 起居 /
+           神志 / 逆则) with no paraphrasing. The wrapper class
+           liuzhu-table-prose left-aligns and lets long classical
+           strings wrap normally instead of nowrap-stretching the
+           column.
            ============================================================ -->
       <section class="acu-section">
         <h2><span class="cn" data-zh-auto>四季总览 · 详查表</span><span class="acu-en">Four seasons at a glance</span></h2>
+        <p class="acu-source lang-en-only">All cells below quote <em>《素问 · 四气调神大论》</em> directly — no paraphrase.</p>
+        <p class="acu-source lang-cn-only"><span data-zh-auto>下表各项皆直引</span><em data-zh-auto>《素问 · 四气调神大论》</em><span data-zh-auto>原文。</span></p>
         <div class="liuzhu-table-wrap">
-          <table class="liuzhu-table">
+          <table class="liuzhu-table liuzhu-table-prose">
             <thead>
               <tr>
                 <th><span class="lang-en-only">Season</span><span class="lang-cn-only" data-zh-auto>季节</span></th>
                 <th><span class="lang-en-only">Qi · Image</span><span class="lang-cn-only" data-zh-auto>主气 · 主象</span></th>
                 <th><span class="lang-en-only">Organ</span><span class="lang-cn-only" data-zh-auto>当令脏腑</span></th>
-                <th><span class="lang-en-only">Rhythm</span><span class="lang-cn-only" data-zh-auto>起居</span></th>
-                <th><span class="lang-en-only">Spirit</span><span class="lang-cn-only" data-zh-auto>神志</span></th>
-                <th><span class="lang-en-only">If defied → next-season illness</span><span class="lang-cn-only" data-zh-auto>逆则伤 → 来年病</span></th>
+                <th><span class="lang-en-only">Rhythm (起居)</span><span class="lang-cn-only" data-zh-auto>起居</span></th>
+                <th><span class="lang-en-only">Spirit (神志)</span><span class="lang-cn-only" data-zh-auto>神志</span></th>
+                <th><span class="lang-en-only">If defied (逆则)</span><span class="lang-cn-only" data-zh-auto>逆则伤 → 来年病</span></th>
               </tr>
             </thead>
             <tbody>
               <tr><td>🌱 <span data-zh-s="春" data-zh-t="春">春</span> (<span data-zh-s="发陈" data-zh-t="發陳">发陈</span>)</td>
-                  <td><strong>生</strong> · <span data-zh-s="万物萌动、舒张" data-zh-t="萬物萌動、舒張">万物萌动、舒张</span></td>
-                  <td><strong data-zh-s="肝 · 胆" data-zh-t="肝 · 膽">肝 · 胆</strong> <span data-zh-s="（少阳之气）" data-zh-t="（少陽之氣）">（少阳之气）</span></td>
-                  <td><span data-zh-s="夜卧 · 早起 · 广步于庭 · 被发缓形" data-zh-t="夜臥 · 早起 · 廣步於庭 · 被髮緩形">夜卧 · 早起 · 广步于庭 · 被发缓形</span></td>
+                  <td><strong>生</strong> · <span data-zh-s="天地俱生，万物以荣" data-zh-t="天地俱生，萬物以榮">天地俱生，万物以荣</span></td>
+                  <td><strong data-zh-s="肝 · 胆" data-zh-t="肝 · 膽">肝 · 胆</strong> <span data-zh-s="（少阳）" data-zh-t="（少陽）">（少阳）</span></td>
+                  <td><span data-zh-s="夜卧早起 · 广步于庭 · 被发缓形" data-zh-t="夜臥早起 · 廣步於庭 · 被髮緩形">夜卧早起 · 广步于庭 · 被发缓形</span></td>
                   <td><span data-zh-s="使志生 · 生而勿杀，予而勿夺，赏而勿罚" data-zh-t="使志生 · 生而勿殺，予而勿奪，賞而勿罰">使志生 · 生而勿杀，予而勿夺，赏而勿罚</span></td>
-                  <td><span data-zh-s="伤 肝 · 肝气内变 → 夏为寒变（消化弱、易腹泻）" data-zh-t="傷 肝 · 肝氣內變 → 夏為寒變（消化弱、易腹瀉）">伤 <strong>肝</strong> · 肝气内变 → 夏为寒变</span></td></tr>
+                  <td><span data-zh-s="逆之则伤肝，夏为寒变（少阳不生 · 肝气内变）" data-zh-t="逆之則傷肝，夏為寒變（少陽不生 · 肝氣內變）">逆之则伤<strong>肝</strong>，夏为寒变（少阳不生 · 肝气内变）</span></td></tr>
               <tr><td>☀️ <span data-zh-s="夏" data-zh-t="夏">夏</span> (<span data-zh-s="蕃秀" data-zh-t="蕃秀">蕃秀</span>)</td>
-                  <td><strong>长</strong> · <span data-zh-s="天地气交、华实" data-zh-t="天地氣交、華實">天地气交、华实</span></td>
-                  <td><strong data-zh-s="心 · 小肠" data-zh-t="心 · 小腸">心 · 小肠</strong> <span data-zh-s="（太阳之气）" data-zh-t="（太陽之氣）">（太阳之气）</span></td>
-                  <td><span data-zh-s="夜卧 · 早起 · 无厌于日 · 使气得泄" data-zh-t="夜臥 · 早起 · 無厭於日 · 使氣得泄">夜卧 · 早起 · 无厌于日 · 使气得泄</span></td>
-                  <td><span data-zh-s="使志无怒 · 使华英成秀 · 若所爱在外" data-zh-t="使志無怒 · 使華英成秀 · 若所愛在外">使志无怒 · 使华英成秀</span></td>
-                  <td><span data-zh-s="伤 心 · 心气内洞 → 秋为痎疟，冬至重病" data-zh-t="傷 心 · 心氣內洞 → 秋為痎瘧，冬至重病">伤 <strong>心</strong> · 心气内洞 → 秋为痎疟</span></td></tr>
+                  <td><strong>长</strong> · <span data-zh-s="天地气交，万物华实" data-zh-t="天地氣交，萬物華實">天地气交，万物华实</span></td>
+                  <td><strong data-zh-s="心 · 小肠" data-zh-t="心 · 小腸">心 · 小肠</strong> <span data-zh-s="（太阳）" data-zh-t="（太陽）">（太阳）</span></td>
+                  <td><span data-zh-s="夜卧早起 · 无厌于日 · 使气得泄" data-zh-t="夜臥早起 · 無厭於日 · 使氣得泄">夜卧早起 · 无厌于日 · 使气得泄</span></td>
+                  <td><span data-zh-s="使志无怒 · 使华英成秀 · 若所爱在外" data-zh-t="使志無怒 · 使華英成秀 · 若所愛在外">使志无怒 · 使华英成秀 · 若所爱在外</span></td>
+                  <td><span data-zh-s="逆之则伤心，秋为痎疟，冬至重病（太阳不长 · 心气内洞）" data-zh-t="逆之則傷心，秋為痎瘧，冬至重病（太陽不長 · 心氣內洞）">逆之则伤<strong>心</strong>，秋为痎疟，冬至重病（太阳不长 · 心气内洞）</span></td></tr>
               <tr><td>🍂 <span data-zh-s="秋" data-zh-t="秋">秋</span> (<span data-zh-s="容平" data-zh-t="容平">容平</span>)</td>
                   <td><strong>收</strong> · <span data-zh-s="天气以急，地气以明" data-zh-t="天氣以急，地氣以明">天气以急，地气以明</span></td>
-                  <td><strong data-zh-s="肺 · 大肠" data-zh-t="肺 · 大腸">肺 · 大肠</strong> <span data-zh-s="（太阴之气）" data-zh-t="（太陰之氣）">（太阴之气）</span></td>
-                  <td><span data-zh-s="早卧 · 早起 · 与鸡俱兴" data-zh-t="早臥 · 早起 · 與雞俱興">早卧 · 早起 · 与鸡俱兴</span></td>
-                  <td><span data-zh-s="使志安宁 · 以缓秋刑 · 收敛神气 · 无外其志" data-zh-t="使志安寧 · 以緩秋刑 · 收斂神氣 · 無外其志">使志安宁 · 以缓秋刑 · 收敛神气</span></td>
-                  <td><span data-zh-s="伤 肺 · 肺气焦满 → 冬为飧泄（晨起腹泻）" data-zh-t="傷 肺 · 肺氣焦滿 → 冬為飧泄（晨起腹瀉）">伤 <strong>肺</strong> · 肺气焦满 → 冬为飧泄</span></td></tr>
+                  <td><strong data-zh-s="肺 · 大肠" data-zh-t="肺 · 大腸">肺 · 大肠</strong> <span data-zh-s="（太阴）" data-zh-t="（太陰）">（太阴）</span></td>
+                  <td><span data-zh-s="早卧早起 · 与鸡俱兴" data-zh-t="早臥早起 · 與雞俱興">早卧早起 · 与鸡俱兴</span></td>
+                  <td><span data-zh-s="使志安宁 · 以缓秋刑 · 收敛神气 · 无外其志 · 使肺气清" data-zh-t="使志安寧 · 以緩秋刑 · 收斂神氣 · 無外其志 · 使肺氣清">使志安宁 · 以缓秋刑 · 收敛神气 · 无外其志 · 使肺气清</span></td>
+                  <td><span data-zh-s="逆之则伤肺，冬为飧泄（太阴不收 · 肺气焦满）" data-zh-t="逆之則傷肺，冬為飧泄（太陰不收 · 肺氣焦滿）">逆之则伤<strong>肺</strong>，冬为飧泄（太阴不收 · 肺气焦满）</span></td></tr>
               <tr><td>❄️ <span data-zh-s="冬" data-zh-t="冬">冬</span> (<span data-zh-s="闭藏" data-zh-t="閉藏">闭藏</span>)</td>
                   <td><strong>藏</strong> · <span data-zh-s="水冰地坼，无扰乎阳" data-zh-t="水冰地坼，無擾乎陽">水冰地坼，无扰乎阳</span></td>
-                  <td><strong data-zh-s="肾 · 膀胱" data-zh-t="腎 · 膀胱">肾 · 膀胱</strong> <span data-zh-s="（少阴之气）" data-zh-t="（少陰之氣）">（少阴之气）</span></td>
-                  <td><span data-zh-s="早卧 · 晚起 · 必待日光 · 去寒就温 · 无泄皮肤" data-zh-t="早臥 · 晚起 · 必待日光 · 去寒就溫 · 無泄皮膚">早卧 · 晚起 · 必待日光 · 去寒就温</span></td>
-                  <td><span data-zh-s="使志若伏若匿 · 若有私意 · 若已有得" data-zh-t="使志若伏若匿 · 若有私意 · 若已有得">若伏若匿 · 若有私意</span></td>
-                  <td><span data-zh-s="伤 肾 · 肾气独沉 → 春为痿厥（手足无力）" data-zh-t="傷 腎 · 腎氣獨沉 → 春為痿厥（手足無力）">伤 <strong>肾</strong> · 肾气独沉 → 春为痿厥</span></td></tr>
+                  <td><strong data-zh-s="肾 · 膀胱" data-zh-t="腎 · 膀胱">肾 · 膀胱</strong> <span data-zh-s="（少阴）" data-zh-t="（少陰）">（少阴）</span></td>
+                  <td><span data-zh-s="早卧晚起 · 必待日光 · 去寒就温 · 无泄皮肤使气亟夺" data-zh-t="早臥晚起 · 必待日光 · 去寒就溫 · 無泄皮膚使氣亟奪">早卧晚起 · 必待日光 · 去寒就温 · 无泄皮肤使气亟夺</span></td>
+                  <td><span data-zh-s="使志若伏若匿 · 若有私意 · 若已有得" data-zh-t="使志若伏若匿 · 若有私意 · 若已有得">使志若伏若匿 · 若有私意 · 若已有得</span></td>
+                  <td><span data-zh-s="逆之则伤肾，春为痿厥（少阴不藏 · 肾气独沉）" data-zh-t="逆之則傷腎，春為痿厥（少陰不藏 · 腎氣獨沉）">逆之则伤<strong>肾</strong>，春为痿厥（少阴不藏 · 肾气独沉）</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -261,7 +268,7 @@
         <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener"><span class="cn" data-zh-auto>源码</span> Source</a>
         <span class="footer-sep">·</span>
         <a href="CHANGELOG.md" target="_blank" rel="noopener"><span class="cn" data-zh-auto>更新日志</span> Changelog</a>
-        <span class="footer-version">v2026.05.03f · last updated 2026-05-03</span>
+        <span class="footer-version">v2026.05.03g · last updated 2026-05-03</span>
       </div>
     </footer>
   </main>
@@ -270,12 +277,12 @@
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<script src="assets/data.js?v=20260503f"></script>
-<script src="assets/glossary.js?v=20260503f"></script>
-<script src="assets/clock.js?v=20260503f"></script>
-<script src="assets/tcm-script-toggle.js?v=20260503f"></script>
-<script src="assets/tcm-music.js?v=20260503f"></script>
-<script src="assets/tcm-link.js?v=20260503f"></script>
+<script src="assets/data.js?v=20260503g"></script>
+<script src="assets/glossary.js?v=20260503g"></script>
+<script src="assets/clock.js?v=20260503g"></script>
+<script src="assets/tcm-script-toggle.js?v=20260503g"></script>
+<script src="assets/tcm-music.js?v=20260503g"></script>
+<script src="assets/tcm-link.js?v=20260503g"></script>
 
 </body>
 </html>
