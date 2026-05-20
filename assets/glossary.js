@@ -18,41 +18,49 @@ const TERMS = {
   'qi': {
     cn: '氣 / 气 · Qì', en: 'Vital energy',
     def: 'The vital life-force or animating energy that flows through every meridian and powers all bodily function.',
+    defCn: '人体之生命力——流贯诸经络、推动一切生理活动之根本之气。',
     url: 'https://en.wikipedia.org/wiki/Qi'
   },
   'yin-yang': {
     cn: '陰陽 / 阴阳 · Yīn Yáng', en: 'Yin–Yang',
     def: 'Two complementary, opposing forces whose dynamic balance underlies all natural phenomena.',
+    defCn: '相对而相成之两种力，其动态平衡为天地万物之根本。',
     url: 'https://en.wikipedia.org/wiki/Yin_and_yang'
   },
   'wuxing': {
     cn: '五行 · Wǔ Xíng', en: 'Five Phases / Five Elements',
     def: 'Wood, Fire, Earth, Metal, Water — five interrelated phases that mutually generate (相生) and control (相克).',
+    defCn: '木、火、土、金、水——五大相互关联之相，互生（相生）、互制（相克），为万象之纲。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)'
   },
   'jing': {
     cn: '精 · Jīng', en: 'Essence',
     def: 'The deep, inherited substance stored chiefly in the Kidneys; foundation of growth, reproduction, and longevity.',
+    defCn: '先天之精藏于肾，为生长、生殖、寿命之根本。',
     url: 'https://en.wikipedia.org/wiki/Jing_(Chinese_medicine)'
   },
   'shen': {
     cn: '神 · Shén', en: 'Spirit / Mind',
     def: 'The luminous spirit-mind housed in the Heart; consciousness, presence, and emotional clarity.',
+    defCn: '心所藏之神明——为意识、知觉、情志清明之主。',
     url: 'https://en.wikipedia.org/wiki/Shen_(Chinese_religion)'
   },
   'meridian': {
     cn: '經絡 · Jīng Luò', en: 'Meridian / Channel',
     def: 'Networks through which qi and blood circulate, connecting organs to the surface of the body.',
+    defCn: '气血循行之径，内联脏腑，外络肢节，贯通表里上下之网络系统。',
     url: 'https://en.wikipedia.org/wiki/Meridian_(Chinese_medicine)'
   },
   'ziwu-liuzhu': {
     cn: '子午流注 · Zǐ Wǔ Liú Zhù', en: 'Midnight–Noon Ebb-and-Flow',
     def: 'The TCM theory that qi flows through the twelve organ meridians on a 24-hour cycle, with each meridian peaking in a specific two-hour window.',
+    defCn: '中医气血循行学说——气血依十二经按时辰流注，每经各有当令之两小时为其气血最盛之时。',
     url: 'https://en.wikipedia.org/wiki/Chinese_clock'
   },
   'huangdi-neijing': {
     cn: '黃帝內經 · Huáng Dì Nèi Jīng', en: "Yellow Emperor's Inner Canon",
     def: 'The foundational classic of Chinese medicine, compiled c. 100 BCE; source of most TCM theory.',
+    defCn: '中医理论之奠基经典，约成书于公元前 100 年，分《素问》《灵枢》两部——为后世中医学说之源泉。',
     url: 'https://en.wikipedia.org/wiki/Huangdi_Neijing',
     urlCn: 'https://www.shidianguji.com/book/SBCK072'
   },
@@ -559,31 +567,37 @@ const TERMS = {
   'wu-shu-points': {
     cn: '五输穴 · Wǔ Shū Xué', en: 'Five-Shu Points',
     def: 'Five points on each of the 12 main channels, distal to the elbow/knee, classically described as the river-flow of qi: 井 jǐng (Well, source), 荥 xíng (Spring), 输 shū (Stream), 经 jīng (River), 合 hé (Sea).',
+    defCn: '十二正经各有五穴，皆位肘膝以下，喻气血如流泉：井（出）、荥（溜）、输（注）、经（行）、合（入）——由远端至近端，由浅入深。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'jing-well': {
     cn: '井穴 · Jǐng Xué', en: 'Well Point',
     def: 'Where qi "issues forth" — the most distal point on each channel (fingertip/toe). Used for emergency revival, mental confusion, and 心下满 (epigastric fullness).',
+    defCn: '「所出为井」——气之初出处，位手足末端（指尖／趾尖）。古用于急救（神昏、中风初起）与「心下满」（胃脘胀闷、胸中窒塞）。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'ying-spring': {
     cn: '荥穴 · Xíng Xué', en: 'Spring Point',
     def: 'Where qi "glides" — the second point. Classically: "荥主身热 · Xíng zhǔ shēn rè" — chiefly used for febrile diseases and heat patterns.',
+    defCn: '「所溜为荥」——气之初行处，第二穴。古传：「荥主身热」——主治热病、身热诸证。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'shu-stream': {
     cn: '输穴 · Shū Xué', en: 'Stream Point',
     def: 'Where qi "pours" — the third point. Classically: "输主体重节痛" — heaviness and joint pain. On yin meridians, the Stream point doubles as the Source (原) point.',
+    defCn: '「所注为输」——气之灌注处，第三穴。古用：「输主体重节痛」——身重、关节疼痛、湿邪诸证。阴经则「输」即「原」，兼为原穴。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'jing-river': {
     cn: '经穴 · Jīng Xué', en: 'River Point',
     def: 'Where qi "moves through" — the fourth point. Classically: "经主喘咳寒热" — wheezing, cough, alternating chills and fever.',
+    defCn: '「所行为经」——气之畅行处，第四穴。古用：「经主喘咳寒热」——喘息、咳嗽、寒热往来。此层与卫气相接，主半表半里之证。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'he-sea': {
     cn: '合穴 · Hé Xué', en: 'Sea / Uniting Point',
     def: 'Where qi "enters" the deeper body — the fifth point, near elbow or knee. Classically: "合主逆气而泄" — counterflow qi and diarrhea; preferred for 六腑 (yang-organ) disorders.',
+    defCn: '「所入为合」——气之归汇处，第五穴，位近肘膝。古用：「合主逆气而泄」——气逆与腹泄；并为六腑诸疾首选（《灵枢》「合治六腑」）。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
 
@@ -591,51 +605,61 @@ const TERMS = {
   'yuan-source': {
     cn: '原穴 · Yuán Xué', en: 'Source Point',
     def: 'Where the original qi (元气) of the organ surfaces — twelve points, one per channel. Used to diagnose and treat the deepest disorders of the parent organ. (《灵枢》: "五脏有疾，当取之十二原.")',
+    defCn: '脏腑元气所注之处——十二穴，每经一穴。诊察与治疗本脏腑深层病变所必取。《灵枢》：「五脏有疾，当取之十二原。」',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'luo-connecting': {
     cn: '络穴 · Luò Xué', en: 'Connecting / Network Point',
     def: 'Fifteen points that bridge a yin-yang meridian pair. Used in 原络配穴 — pairing the source point of the diseased channel with the connecting point of its paired channel for synergy.',
+    defCn: '沟通表里两经之要穴，共十五穴。常用「原络配穴」之法：本经取原穴，表里经取络穴，相配以治。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'mu-front': {
     cn: '募穴 · Mù Xué', en: 'Front-Mu / Alarm Point',
     def: 'Twelve points on the chest and abdomen where each organ\'s qi gathers. Tender on palpation when the corresponding organ is in distress; classically paired with the back-shu point.',
+    defCn: '分布于胸腹之间，为脏腑之气所聚之处——十二穴。本脏腑有疾，按之多见压痛或结节。古法多与背俞穴相配（俞募配穴），前后并取。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'shu-back': {
     cn: '背俞穴 · Bèi Shù Xué', en: 'Back-Shu / Transport Point',
     def: 'Twelve paired points on the inner Bladder line of the upper-back, each corresponding to a specific organ. Pairs with the front-Mu point for diagnosis and treatment of internal disorders.',
+    defCn: '位于背部足太阳膀胱经第一侧线，十二穴，各应一脏腑。与对应募穴相配（俞募配穴），用于内脏诸病之诊治。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'xi-cleft': {
     cn: '郄穴 · Xī Xué', en: 'Cleft / Accumulation Point',
     def: 'Sixteen "deep gathering" points where qi and blood concentrate. Especially used for acute and painful conditions of the related channel.',
+    defCn: '气血深聚之所，共十六穴。本经急性疼痛、出血与急症皆首选郄穴。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'xia-he-lower': {
     cn: '下合穴 · Xià Hé Xué', en: 'Lower-Uniting Points',
     def: 'Six points below the knee where each yang-organ\'s qi "comes to ground." Per 《灵枢》: "合治六腑" — these are the points of choice for disorders of the six fu organs.',
+    defCn: '六腑之气下合于下肢之六穴。《灵枢》：「合治六腑」——胃、肠、胆、膀胱诸腑之疾，皆当首取下合穴。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'eight-meeting': {
     cn: '八会穴 · Bā Huì Xué', en: 'Eight Influential Points',
     def: 'Eight points where the qi of a class of substance gathers: zang (CV12 中脘), fu (LV13 章门 — note: actually 脏会), qi (CV17 膻中), blood (BL17 膈俞), tendon (GB34 阳陵泉), vessel (LU9 太渊), bone (BL11 大杼), marrow (GB39 悬钟).',
+    defCn: '八穴各为一类气血津液之所会：脏会（章门 LV13）、腑会（中脘 CV12）、气会（膻中 CV17）、血会（膈俞 BL17）、筋会（阳陵泉 GB34）、脉会（太渊 LU9）、骨会（大杼 BL11）、髓会（悬钟 GB39）。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'eight-confluence': {
     cn: '八脉交会穴 · Bā Mài Jiāo Huì Xué', en: 'Eight Confluence Points',
     def: 'Eight points on the limbs where the eight extraordinary vessels meet the main channels: SP4-PC6, GB41-TE5, SI3-BL62, LU7-KI6 — used in classical pairs.',
+    defCn: '奇经八脉与十二正经交会之处。临床多用古传配穴：公孙-内关、临泣-外关、后溪-申脉、列缺-照海。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'eight-totals': {
     cn: '八总穴 · Bā Zǒng Xué', en: 'Eight Master Points',
     def: 'A clinical mnemonic for the most-used points by region: ST36 for abdomen, BL40 for low back, LU7 for head/neck, LI4 for face/mouth, PC6 for chest/heart, SP6 for lower abdomen, ashi for pain, GV26 for emergencies.',
+    defCn: '按部位归类之临床要穴：肚腹三里留（ST36）、腰背委中求（BL40）、头项寻列缺（LU7）、面口合谷收（LI4）、心胸取内关（PC6）、小腹三阴交（SP6）、酸痛阿是穴、急救刺水沟（GV26）。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
   'ashi-points': {
     cn: '阿是穴 · Ā Shì Xué', en: 'Ashi Points',
     def: 'Tender or "ouch" points — sites of palpable tenderness that are not on a numbered meridian. Used for local pain treatment.',
+    defCn: '又称「天应穴」「不定穴」，出自《备急千金要方》。病理状态下身体在体表浮现之敏感反应点（压痛点、皮下结节、条索状物或凹陷）。位不固定，须以「以痛为腧」「按之快然」之标准寻取，绝非随意乱扎。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture_point'
   },
 

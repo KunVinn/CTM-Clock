@@ -28,54 +28,53 @@ const SIDEBAR_HTML = `
       <span id="now-track">—</span>
     </div>
   </a>
-  <div class="zoom-control" title="How much clock labels enlarge when you hover over them">
-    <span class="zoom-control-label-inline">悬停 Zoom</span>
-    <input type="range" id="zoom-range" min="100" max="300" step="10" value="160" aria-label="Clock label hover zoom">
-    <span class="zoom-control-value" id="zoom-value">160%</span>
-    <button type="button" class="zoom-control-reset" id="zoom-reset" title="Reset to 160%">↺</button>
-  </div>
   <div class="sidebar-credit">
     Inspired by <a href="https://github.com/KunVinn/CTM-Clock" target="_blank" rel="noopener">CTM-Clock</a><br>
     Knowledge taxonomy: <a href="https://github.com/AI-HPC-Research-Team/TCM_knowledge_graph" target="_blank" rel="noopener">TCMM</a>
   </div>
 `;
 
-/* ===================== USER ZOOM CONTROL ===================== */
-// User-tunable scale for hover-zoom of clock perimeter labels.
-// Default 1.6× (160%) matches the original hard-coded value; the user can
-// pick anything from 100% (off) to 300%, persisted per-browser.
-const ZOOM_STORE_KEY = 'tcm-clock-zoom-scale-v1';
+/* ===================== SECTOR LABEL CYCLE =====================
+   The old slider UI is gone. The zoom scale is fixed at 3× (set
+   in CSS via --clock-zoom-scale). Instead of every label zooming
+   when you hover it directly, hovering a SECTOR now starts a
+   timer that cycles `label-focus` across the four labels of
+   that sector (branch / zodiac / cn-organ / en-organ), so each
+   one in turn gets the 3× spotlight before the next.
+   ============================================================ */
+const SECTOR_CYCLE_MS = 700;
+let _sectorCycleTimer = null;
+let _sectorCycleIdx   = -1;
 
-function readStoredZoom() {
-  try {
-    const v = parseFloat(localStorage.getItem(ZOOM_STORE_KEY));
-    if (!isNaN(v) && v >= 1 && v <= 3) return v;
-  } catch (_) {}
-  return 1.6;
+function clearSectorCycle() {
+  if (_sectorCycleTimer) { clearInterval(_sectorCycleTimer); _sectorCycleTimer = null; }
+  document.querySelectorAll('.clock-zoom.label-focus').forEach(l => l.classList.remove('label-focus'));
+  _sectorCycleIdx = -1;
 }
-function applyZoom(scale) {
-  document.documentElement.style.setProperty('--clock-zoom-scale', String(scale));
+
+function startSectorCycle(sectorIdx) {
+  clearSectorCycle();
+  _sectorCycleIdx = sectorIdx;
+  const labels = Array.from(document.querySelectorAll('[data-sector-idx="' + sectorIdx + '"]'));
+  if (!labels.length) return;
+  let step = 0;
+  // Show the first label immediately so the spotlight appears on hover
+  // without waiting for the first interval tick.
+  labels[0].classList.add('label-focus');
+  step = 1;
+  _sectorCycleTimer = setInterval(() => {
+    if (_sectorCycleIdx !== sectorIdx) { clearSectorCycle(); return; }
+    labels.forEach(l => l.classList.remove('label-focus'));
+    labels[step % labels.length].classList.add('label-focus');
+    step++;
+  }, SECTOR_CYCLE_MS);
 }
-function initZoomControl() {
-  const initial = readStoredZoom();
-  applyZoom(initial);
 
-  const range = document.getElementById('zoom-range');
-  const value = document.getElementById('zoom-value');
-  const reset = document.getElementById('zoom-reset');
-  if (!range || !value || !reset) return;
-
-  const sync = (pct) => {
-    value.textContent = `${pct}%`;
-    range.value = String(pct);
-    const scale = pct / 100;
-    applyZoom(scale);
-    try { localStorage.setItem(ZOOM_STORE_KEY, String(scale)); } catch (_) {}
-  };
-
-  sync(Math.round(initial * 100));
-  range.addEventListener('input', () => sync(parseInt(range.value, 10)));
-  reset.addEventListener('click', () => sync(160));
+function bindSectorHoverCycle() {
+  document.querySelectorAll('.sector').forEach((sect, i) => {
+    sect.addEventListener('mouseenter', () => startSectorCycle(i));
+    sect.addEventListener('mouseleave', () => clearSectorCycle());
+  });
 }
 
 // Inject sidebar + mobile toggle + overlay
@@ -411,6 +410,7 @@ function buildClock() {
     const a = midAngle(o.start, o.end);
     const [bx, by] = polar(R_BRANCH, a);
     const branchLabel = makeText(bx, by, o.branch, 'label-branch label-cn clock-zoom');
+    branchLabel.setAttribute('data-sector-idx', String(i));
     const branchTitle = document.createElementNS(NS, 'title');
     branchTitle.textContent = `${o.branch}时 ${o.pinyin} · ${String(o.start).padStart(2,'0')}:00–${String(o.end).padStart(2,'0')}:00`;
     branchLabel.appendChild(branchTitle);
@@ -418,6 +418,7 @@ function buildClock() {
 
     const [zx, zy] = polar(R_ZODIAC, a);
     const zodiacLabel = makeText(zx, zy, o.zodiacEmoji, 'label-zodiac clock-zoom');
+    zodiacLabel.setAttribute('data-sector-idx', String(i));
     const zodiacTitle = document.createElementNS(NS, 'title');
     zodiacTitle.textContent = `${o.zodiacEmoji} ${o.zodiac} — ${o.branch}时 ${o.pinyin}`;
     zodiacLabel.appendChild(zodiacTitle);
@@ -425,6 +426,7 @@ function buildClock() {
 
     const [cx, cy] = polar(R_LABEL_CN, a);
     const cnOrgan = makeText(cx, cy, o.cn, 'label-organ-cn label-cn clock-zoom');
+    cnOrgan.setAttribute('data-sector-idx', String(i));
     const cnOrganTitle = document.createElementNS(NS, 'title');
     cnOrganTitle.textContent = `${o.cn}经 · ${o.organ}`;
     cnOrgan.appendChild(cnOrganTitle);
@@ -432,6 +434,7 @@ function buildClock() {
 
     const [ex, ey] = polar(R_LABEL_EN, a);
     const enOrgan = makeText(ex, ey, o.organ, 'label-organ-en clock-zoom');
+    enOrgan.setAttribute('data-sector-idx', String(i));
     const enOrganTitle = document.createElementNS(NS, 'title');
     enOrganTitle.textContent = `${o.organ} · ${o.cn}`;
     enOrgan.appendChild(enOrganTitle);
@@ -734,10 +737,10 @@ function updateClock() {
 /* ===================== INIT ===================== */
 document.addEventListener('DOMContentLoaded', () => {
   injectSidebarScaffold();
-  initZoomControl();
   highlightActiveMenu();
   initTopbarBehaviour();
   buildClock();
+  bindSectorHoverCycle();
   updateClock();
   setInterval(updateClock, 1000);
   initSPANav();

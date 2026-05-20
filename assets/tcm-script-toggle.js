@@ -436,7 +436,7 @@
     '.label-zodiac,.label-organ-en,.label-hour,.bagua-trigram,' +
     '.acupoint-method,.acupoint-py,.acupoint-code,' +
     '.script-toggle,.nav-arrow,.cn-translate-banner,' +
-    '#zoom-value,#zoom-range,.zoom-control-reset';
+    '#zoom-value,#zoom-range,.zoom-control-reset';  /* legacy zoom-control selectors retained for back-compat — IDs no longer present */
 
   // Back-compat alias for any external caller / inline script that
   // still references the old name. Returns the Gemini-specific key.

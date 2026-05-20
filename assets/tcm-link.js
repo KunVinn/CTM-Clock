@@ -102,10 +102,22 @@
         backupHTML = `<a class="tt-link tt-link-backup" href="${backupUrl}" target="_blank" rel="noopener">→ 备用</a>`;
       }
     }
+    // Pick which definition to show. In any CN-emphasised mode
+    // (s/t/c) prefer the Chinese def if the entry carries one;
+    // fall back to the English def. In Chinese-only mode (c) the
+    // English name row is redundant with the CN row above it, so
+    // hide it. data-zh-auto on the def lets the toggle script
+    // swap simp/trad mid-string as the user toggles.
+    const cnMode = (mode !== 'e');
+    const def = (cnMode && entry.defCn) ? entry.defCn : (entry.def || '');
+    const defAttr = (cnMode && entry.defCn) ? ' data-zh-auto' : '';
+    const enRow = (mode === 'c')
+        ? ''
+        : `<div class="tt-en">${entry.en || ''}</div>`;
     return `
-      <div class="tt-cn">${entry.cn || ''}</div>
-      <div class="tt-en">${entry.en || ''}</div>
-      <div class="tt-def">${entry.def || ''}</div>
+      <div class="tt-cn" data-zh-auto>${entry.cn || ''}</div>
+      ${enRow}
+      <div class="tt-def"${defAttr}>${def}</div>
       <a class="tt-link" href="${linkHref}" ${linkAttrs}>${linkLabel}</a>
       ${backupHTML}
     `;

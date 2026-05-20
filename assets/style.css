@@ -4657,42 +4657,43 @@ a:hover { color: var(--gold-bright); }
   cursor: help;
   transform-box: fill-box;
   transform-origin: center;
-  transition: transform 0.18s ease-out, fill 0.18s ease-out, opacity 0.18s ease-out;
-  /* Override the pointer-events:none that several base label classes
-     (.label-cn, .label-zodiac, .label-hour, .label-organ-en, .bagua-
-     trigram, etc.) set for layout reasons — without this, the :hover
-     and :focus rules below never fire and the zoom does nothing. */
-  pointer-events: auto;
+  transition: transform 0.22s ease-out, fill 0.22s ease-out, opacity 0.22s ease-out;
+  /* Labels do NOT capture pointer events any more — the sector path
+     beneath them does, so JS can cycle .label-focus across the four
+     labels of the hovered sector instead of zooming whichever label
+     the cursor happens to touch. */
+  pointer-events: none;
 }
-.clock-zoom:hover,
-.clock-zoom:focus {
-  /* Default 1.6×; overridable per-user via the sidebar slider, which
-     sets --clock-zoom-scale on :root and persists to localStorage. */
-  transform: scale(var(--clock-zoom-scale, 1.6));
+/* Keyboard focus (rare on SVG <text> but kept for a11y) and the
+   JS-driven sector cycle both trigger the spotlight zoom. Fixed at
+   3× — no more user-tunable slider. */
+.clock-zoom:focus,
+.clock-zoom.label-focus {
+  transform: scale(3);
   fill: var(--gold-bright) !important;
   opacity: 1 !important;
   filter: drop-shadow(0 0 6px rgba(212, 175, 122, 0.6));
 }
 
-/* The 八卦 trigram is special: it already lives on a colored ring
-   with a high-contrast fill, so when zoomed it should stay readable
-   in the same color but get a glow. */
-.bagua-trigram.clock-zoom:hover,
-.bagua-trigram.clock-zoom:focus {
+/* The 八卦 trigram is special — high-contrast fill, just glow when
+   zoomed. (Trigrams aren't part of the sector cycle, but keep the
+   :focus styling for keyboard navigation.) */
+.bagua-trigram.clock-zoom:focus,
+.bagua-trigram.clock-zoom.label-focus {
   fill: var(--gold-bright) !important;
   filter: drop-shadow(0 0 8px rgba(255, 215, 130, 0.85));
 }
 
 /* Zodiac emoji are colorful — never override their fill */
-.label-zodiac.clock-zoom:hover,
-.label-zodiac.clock-zoom:focus {
+.label-zodiac.clock-zoom:focus,
+.label-zodiac.clock-zoom.label-focus {
   fill: inherit !important;
   filter: drop-shadow(0 0 8px rgba(255, 215, 130, 0.6));
 }
 
-/* Branch labels are gold already; just glow on hover */
-.label-branch.clock-zoom:hover,
-.label-branch.clock-zoom:focus {
+/* Branch labels are gold already; just glow */
+.label-branch.clock-zoom:focus,
+.label-branch.clock-zoom.label-focus {
   fill: var(--gold-bright) !important;
 }
 
@@ -4758,64 +4759,6 @@ html[data-script="c"] .acu-en {
 /* Pull the .cn span back to the natural left when its English sibling
    has been hidden, so the menu doesn't look indented. */
 html[data-script="c"] .menu-btn { gap: 0; }
-
-/* ============================================================
-   SIDEBAR · USER ZOOM CONTROL
-   Compact single-row strip: "悬停 Zoom  [——●———]  160% [↺]".
-   Sets --clock-zoom-scale on :root, persisted in localStorage.
-   ============================================================ */
-.zoom-control {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0.4rem 0 0.3rem;
-  padding: 0.3rem 0.5rem;
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  font-family: var(--font-ui);
-  font-size: 0.62rem;
-  color: var(--ink-soft);
-}
-.zoom-control-label-inline {
-  flex: 0 0 auto;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  color: var(--ink-mute);
-}
-.zoom-control input[type="range"] {
-  flex: 1 1 auto;
-  min-width: 0;
-  accent-color: var(--gold, #c8a250);
-  height: 3px;
-  margin: 0;
-}
-.zoom-control-value {
-  flex: 0 0 auto;
-  font-family: var(--font-ui);
-  font-size: 0.68rem;
-  letter-spacing: 0;
-  color: var(--gold-bright, #e6c082);
-  min-width: 2.6em;
-  text-align: right;
-}
-.zoom-control-reset {
-  flex: 0 0 auto;
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--ink-mute);
-  font-size: 0.78rem;
-  line-height: 1;
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.zoom-control-reset:hover { border-color: var(--gold); color: var(--gold-bright); }
 
 /* ============================================================
    SAVED PRACTITIONER CHIPS (share form)
