@@ -81,42 +81,49 @@ const TERMS = {
   'wood': {
     cn: '木 · Mù', en: 'Wood',
     def: 'The phase of springtime, growth, and outward expansion. Associated with Liver and Gallbladder.',
+    defCn: '春之气，主生发——肝、胆、筋、目、青色、酸味、怒志所属。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Wood',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'fire': {
     cn: '火 · Huǒ', en: 'Fire',
     def: 'The phase of summer and peak yang. Associated with Heart, Small Intestine, Pericardium, and Triple Burner.',
+    defCn: '夏之气，主炎上——心、小肠、脉、舌、赤色、苦味、喜志所属。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Fire',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'earth': {
     cn: '土 · Tǔ', en: 'Earth',
     def: 'The pivot phase of late summer, transformation, and nourishment. Associated with Spleen and Stomach.',
+    defCn: '长夏之气，主化育——脾、胃、肉、口、黄色、甘味、思志所属。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Earth',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'metal': {
     cn: '金 · Jīn', en: 'Metal',
     def: 'The phase of autumn, gathering, and letting go. Associated with Lung and Large Intestine.',
+    defCn: '秋之气，主肃降——肺、大肠、皮毛、鼻、白色、辛味、悲志所属。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Metal',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'water': {
     cn: '水 · Shuǐ', en: 'Water',
     def: 'The phase of winter, storage, and depth. Associated with Kidney and Bladder.',
+    defCn: '冬之气，主闭藏——肾、膀胱、骨、耳、黑色、咸味、恐志所属。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Water',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C'
   },
   'sheng-cycle': {
     cn: '相生 · Xiāng Shēng', en: 'Generation Cycle',
     def: 'The nourishing cycle: Wood→Fire→Earth→Metal→Water→Wood. Each phase generates the next.',
+    defCn: '相生：木→火→土→金→水→木，循环不已之滋养关系。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Generating',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C%E7%9B%B8%E7%94%9F%E7%9B%B8%E5%85%8B'
   },
   'ke-cycle': {
     cn: '相克 · Xiāng Kè', en: 'Control Cycle',
     def: 'The restraining cycle: Wood↔Earth, Fire↔Metal, Earth↔Water, Metal↔Wood, Water↔Fire. Each phase controls another.',
+    defCn: '相克：木克土、土克水、水克火、火克金、金克木——彼此相制以维平衡。',
     url: 'https://en.wikipedia.org/wiki/Wuxing_(Chinese_philosophy)#Overcoming',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E8%A1%8C%E7%9B%B8%E7%94%9F%E7%9B%B8%E5%85%8B'
   },
@@ -130,6 +137,7 @@ const TERMS = {
   'liver-tcm': {
     cn: '肝 · Gān', en: 'Liver',
     def: 'In TCM the Liver governs the free flow of qi, stores blood, houses the hún (ethereal soul), and opens to the eyes.',
+    defCn: '主疏泄、调畅气机；藏血；藏魂；开窍于目。木性脏。',
     url: 'https://en.wikipedia.org/wiki/Liver_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006030?courseId=245888516&name=%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0+%E8%B6%B3%E5%8E%A5%E9%98%B4%E8%82%9D%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6966'
@@ -137,6 +145,7 @@ const TERMS = {
   'heart-tcm': {
     cn: '心 · Xīn', en: 'Heart',
     def: 'The "emperor" organ; governs blood, houses the shén (spirit), and opens to the tongue.',
+    defCn: '君主之官；主血脉，主神志；藏神；开窍于舌。火性脏。',
     url: 'https://en.wikipedia.org/wiki/Heart_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005800?courseId=245888516&name=%E7%AC%AC%E5%85%AD%E7%AB%A0+%E6%89%8B%E5%B0%91%E9%98%B4%E5%BF%83%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6970'
@@ -144,6 +153,7 @@ const TERMS = {
   'spleen-tcm': {
     cn: '脾 · Pí', en: 'Spleen',
     def: 'Governs transformation of food into qi and blood; controls muscles, the four limbs, and houses yì (intent).',
+    defCn: '主运化（化食生气血）、统血；主四肢肌肉；藏意。土性脏。',
     url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005774?courseId=245888516&name=%E7%AC%AC%E4%BA%94%E7%AB%A0+%E8%B6%B3%E5%A4%AA%E9%98%B4%E8%84%BE%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6962'
@@ -151,6 +161,7 @@ const TERMS = {
   'lung-tcm': {
     cn: '肺 · Fèi', en: 'Lung',
     def: 'Governs qi and breathing, regulates the water passages, controls the skin, houses pò (corporeal soul).',
+    defCn: '主气司呼吸；主皮毛；通调水道；藏魄。金性脏。',
     url: 'https://en.wikipedia.org/wiki/Lung_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005650?courseId=245888516&name=%E7%AC%AC%E4%BA%8C%E7%AB%A0+%E6%89%8B%E5%A4%AA%E9%98%B4%E8%82%BA%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6968'
@@ -158,6 +169,7 @@ const TERMS = {
   'kidney-tcm': {
     cn: '腎 / 肾 · Shèn', en: 'Kidney',
     def: 'Stores essence (jīng), governs water, fills the bones and marrow, houses zhì (will).',
+    defCn: '藏先天之精；主水液；主骨生髓；藏志；开窍于耳。水性脏。',
     url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005916?courseId=245888516&name=%E7%AC%AC%E4%B9%9D%E7%AB%A0+%E8%B6%B3%E5%B0%91%E9%98%B4%E8%82%BE%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6964'
@@ -165,6 +177,7 @@ const TERMS = {
   'gallbladder-tcm': {
     cn: '膽 / 胆 · Dǎn', en: 'Gallbladder',
     def: 'Stores and secretes bile; governs decisiveness; paired with the Liver in the Wood phase.',
+    defCn: '主决断；藏胆汁；与肝相表里。木性腑。',
     url: 'https://en.wikipedia.org/wiki/Gallbladder_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005978?courseId=245888516&name=%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0+%E8%B6%B3%E5%B0%91%E9%98%B3%E8%83%86%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6965'
@@ -172,6 +185,7 @@ const TERMS = {
   'stomach-tcm': {
     cn: '胃 · Wèi', en: 'Stomach',
     def: 'The "sea of grain and water"; rots and ripens food. Paired with the Spleen in the Earth phase.',
+    defCn: '主受纳腐熟水谷——「水谷之海」；与脾相表里。土性腑。',
     url: 'https://en.wikipedia.org/wiki/Stomach_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005718?courseId=245888516&name=%E7%AC%AC%E5%9B%9B%E7%AB%A0+%E8%B6%B3%E9%98%B3%E6%98%8E%E8%83%83%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6961'
@@ -179,6 +193,7 @@ const TERMS = {
   'small-intestine-tcm': {
     cn: '小腸 / 小肠 · Xiǎo Cháng', en: 'Small Intestine',
     def: 'Separates the clear from the turbid in food. Paired with the Heart in the Fire phase.',
+    defCn: '主受盛化物，分清别浊；与心相表里。火性腑。',
     url: 'https://en.wikipedia.org/wiki/Small_intestine_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005813?courseId=245888516&name=%E7%AC%AC%E4%B8%83%E7%AB%A0+%E6%89%8B%E5%A4%AA%E9%98%B3%E5%B0%8F%E8%82%A0%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6969'
@@ -186,6 +201,7 @@ const TERMS = {
   'large-intestine-tcm': {
     cn: '大腸 / 大肠 · Dà Cháng', en: 'Large Intestine',
     def: 'Receives waste and conducts elimination. Paired with the Lung in the Metal phase.',
+    defCn: '主传化糟粕，主津液；与肺相表里。金性腑。',
     url: 'https://en.wikipedia.org/wiki/Large_intestine_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005678?courseId=245888516&name=%E7%AC%AC%E4%B8%89%E7%AB%A0+%E6%89%8B%E9%98%B3%E6%98%8E%E5%A4%A7%E8%82%A0%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6967'
@@ -193,6 +209,7 @@ const TERMS = {
   'bladder-tcm': {
     cn: '膀胱 · Páng Guāng', en: 'Bladder',
     def: 'Stores and excretes urine; its meridian runs the entire spine. Paired with the Kidney in the Water phase.',
+    defCn: '主贮尿排尿；与肾相表里。其经循行贯背脊。水性腑。',
     url: 'https://en.wikipedia.org/wiki/Urinary_bladder_(Chinese_medicine)',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903005844?courseId=245888516&name=%E7%AC%AC%E5%85%AB%E7%AB%A0+%E8%B6%B3%E5%A4%AA%E9%98%B3%E8%86%80%E8%83%B1%E7%BB%8F&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6963'
@@ -218,30 +235,35 @@ const TERMS = {
   'jue-tone': {
     cn: '角音 · Jué', en: 'Jué (E)',
     def: 'Wood-element musical tone; gentle, rising; used to soothe the Liver in 五音疗法 (five-tone therapy).',
+    defCn: '角音（mi）——属木，入肝胆；舒展、生发。',
     url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'zhi-tone': {
     cn: '徵音 · Zhǐ', en: 'Zhǐ (G)',
     def: 'Fire-element musical tone; warm, joyful; supports the Heart.',
+    defCn: '徵音（sol）——属火，入心小肠；明亮、上扬。',
     url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'gong-tone': {
     cn: '宮音 / 宫音 · Gōng', en: 'Gōng (C)',
     def: 'Earth-element musical tone; centering, grounding; supports the Spleen.',
+    defCn: '宫音（do）——属土，入脾胃；浑厚、稳定。',
     url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'shang-tone': {
     cn: '商音 · Shāng', en: 'Shāng (D)',
     def: 'Metal-element musical tone; crisp, clear; supports the Lung.',
+    defCn: '商音（re）——属金，入肺大肠；清亮、收敛。',
     url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
   'yu-tone': {
     cn: '羽音 · Yǔ', en: 'Yǔ (A)',
     def: 'Water-element musical tone; deep, anchoring; supports the Kidney.',
+    defCn: '羽音（la）——属水，入肾膀胱；深沉、内藏。',
     url: 'https://en.wikipedia.org/wiki/Pentatonic_scale#Chinese_Pentatonic',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E9%9F%B3'
   },
@@ -250,24 +272,28 @@ const TERMS = {
   'hun': {
     cn: '魂 · Hún', en: 'Ethereal Soul',
     def: 'The "yang soul" housed in the Liver; governs imagination, dreams, plans, and life-vision.',
+    defCn: '魂——肝所藏；夜寐时游行，主谋虑。',
     url: 'https://en.wikipedia.org/wiki/Hun_and_po',
     urlCn: 'https://baike.baidu.com/item/%E4%B8%89%E9%AD%82%E4%B8%83%E9%AD%84'
   },
   'po': {
     cn: '魄 · Pò', en: 'Corporeal Soul',
     def: 'The "yin soul" housed in the Lung; governs reflexes, sensations, and bodily instinct.',
+    defCn: '魄——肺所藏；主本能感觉与反应。',
     url: 'https://en.wikipedia.org/wiki/Hun_and_po',
     urlCn: 'https://baike.baidu.com/item/%E4%B8%89%E9%AD%82%E4%B8%83%E9%AD%84'
   },
   'yi': {
     cn: '意 · Yì', en: 'Intent',
     def: 'The aspect of mind housed in the Spleen; thought, focused attention, intention.',
+    defCn: '意——脾所藏；主思忆与记忆。',
     url: 'https://en.wikipedia.org/wiki/Spleen_(Chinese_medicine)',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E5%BF%97'
   },
   'zhi': {
     cn: '志 · Zhì', en: 'Will',
     def: 'The aspect of mind housed in the Kidney; willpower, memory, determination.',
+    defCn: '志——肾所藏；主意志与定力。',
     url: 'https://en.wikipedia.org/wiki/Kidney_(Chinese_medicine)',
     urlCn: 'https://baike.baidu.com/item/%E4%BA%94%E5%BF%97'
   },
@@ -276,16 +302,19 @@ const TERMS = {
   'huang-qi': {
     cn: '黃芪 / 黄芪 · Huáng Qí', en: 'Astragalus root',
     def: 'A primary qi tonic; strengthens the Spleen and Lung, raises sinking qi, secures the exterior.',
+    defCn: '味甘，性微温；入脾、肺经。补气升阳、固表止汗、利水消肿、托毒生肌。气虚要药。',
     url: 'https://en.wikipedia.org/wiki/Astragalus_propinquus'
   },
   'dang-gui': {
     cn: '當歸 / 当归 · Dāng Guī', en: 'Angelica sinensis root',
     def: 'A premier blood tonic; nourishes the Liver, invigorates blood circulation, regulates menstruation.',
+    defCn: '味甘辛，性温；入肝、心、脾经。补血活血、调经止痛、润肠通便。妇科血药之首。',
     url: 'https://en.wikipedia.org/wiki/Angelica_sinensis'
   },
   'gou-qi': {
     cn: '枸杞 · Gǒu Qǐ', en: 'Goji berry / Wolfberry',
     def: 'Sweet, neutral; tonifies Liver and Kidney essence, brightens the eyes, nourishes blood.',
+    defCn: '味甘，性平；入肝、肾经。滋补肝肾、益精明目。日常滋养之品。',
     url: 'https://en.wikipedia.org/wiki/Goji'
   },
   'chai-hu': {
@@ -296,171 +325,205 @@ const TERMS = {
   'sheng-jiang': {
     cn: '生薑 / 生姜 · Shēng Jiāng', en: 'Fresh ginger',
     def: 'Warms the Stomach, releases the exterior, transforms cold mucus, alleviates nausea.',
+    defCn: '味辛，性温；入肺、脾、胃经。发汗解表、温中止呕、温肺化痰。生姜也。',
     url: 'https://en.wikipedia.org/wiki/Ginger'
   },
   'da-zao': {
     cn: '大棗 / 大枣 · Dà Zǎo', en: 'Chinese date / Jujube',
     def: 'Sweet, warm; tonifies Spleen qi, nourishes blood, calms the spirit.',
+    defCn: '味甘，性温；入脾、胃经。补中益气、养血安神、缓和药性。',
     url: 'https://en.wikipedia.org/wiki/Jujube'
   },
   'fu-ling': {
     cn: '茯苓 · Fú Líng', en: 'Poria mushroom',
     def: 'Sweet, bland, neutral; drains dampness, strengthens the Spleen, calms the spirit.',
+    defCn: '味甘淡，性平；入心、脾、肾经。利水渗湿、健脾安神。茯苓也。',
     url: 'https://en.wikipedia.org/wiki/Wolfiporia_extensa'
   },
   'qian-shi': {
     cn: '芡实 · Qiàn Shí', en: 'Euryale seed (Fox-nut)',
     def: 'Sweet, astringent, neutral; tonifies the Spleen and Kidney, stops diarrhea, secures essence (jīng), restrains turbid leucorrhoea.',
+    defCn: '味甘涩，性平；入脾、肾经。健脾止泻、益肾固精、除湿止带。',
     url: 'https://en.wikipedia.org/wiki/Euryale_ferox'
   },
   'lian-zi': {
     cn: '莲子 · Lián Zǐ', en: 'Lotus seed',
     def: 'Sweet, astringent, neutral; tonifies Spleen and Kidney, calms the Heart spirit, restrains seminal/leucorrheal discharge. The plumule (莲子心) is bitter and clears Heart fire.',
+    defCn: '味甘涩，性平；入脾、肾、心经。补脾止泻、益肾涩精、养心安神。',
     url: 'https://en.wikipedia.org/wiki/Nelumbo_nucifera'
   },
   'yi-yi-ren': {
     cn: '薏苡仁 · Yì Yǐ Rén', en: 'Job\'s tears / Coix seed',
     def: 'Sweet, bland, slightly cool; drains dampness, strengthens Spleen, expels pus, eases joint pain (痹). Often shortened to 薏仁 / 薏米.',
+    defCn: '味甘淡，性微寒；入脾、胃、肺经。利水渗湿、健脾止泻、除痹排脓。',
     url: 'https://en.wikipedia.org/wiki/Coix_lacryma-jobi'
   },
   'fu-zi': {
     cn: '附子 · Fù Zǐ', en: 'Aconite (prepared)',
     def: 'Acrid, very hot, TOXIC raw — must be processed (paozhi) and decocted long. Restores devastated yang, warms the Kidneys, expels cold from the channels. Cardinal herb of 四逆汤.',
+    defCn: '味辛甘，性大热——生用有毒，须炮制久煎。回阳救逆、补火助阳、散寒止痛。四逆汤主药。',
     url: 'https://en.wikipedia.org/wiki/Aconitum_carmichaelii'
   },
   'gan-jiang': {
     cn: '干姜 · Gān Jiāng', en: 'Dried ginger',
     def: 'Acrid, hot; warms the middle burner, restores yang, warms the Lung and transforms phlegm. Distinct from fresh ginger 生姜 — drier and more deeply warming.',
+    defCn: '味辛，性热；入脾、胃、肺、心、肾经。温中散寒、回阳通脉、温肺化饮。与生姜异。',
     url: 'https://en.wikipedia.org/wiki/Ginger'
   },
   'chuan-xiong': {
     cn: '川芎 · Chuān Xiōng', en: 'Szechuan lovage rhizome',
     def: 'Acrid, warm; the chief blood-mover that also moves qi, expels wind, stops pain — particularly headaches. Pairs with 当归 to circulate while nourishing.',
+    defCn: '味辛，性温；入肝、胆、心包经。活血行气、祛风止痛——尤治头痛。',
     url: 'https://en.wikipedia.org/wiki/Ligusticum_striatum'
   },
   'dang-shen': {
     cn: '党参 · Dǎng Shēn', en: 'Codonopsis root',
     def: 'Sweet, neutral; tonifies the middle-burner qi, generates fluids, supports Lung qi. Often substituted for the more expensive 人参 in everyday formulas.',
+    defCn: '味甘，性平；入脾、肺经。补中益气、生津养血。人参之平价替代。',
     url: 'https://en.wikipedia.org/wiki/Codonopsis_pilosula'
   },
   'ren-shen': {
     cn: '人參 / 人参 · Rén Shēn', en: 'Ginseng',
     def: 'A powerful tonic for original qi (yuán qì); supports Lung and Spleen, generates fluids, calms the spirit.',
+    defCn: '味甘微苦，性微温；入脾、肺、心经。大补元气、复脉固脱、补脾益肺、生津安神。补气之圣品。',
     url: 'https://en.wikipedia.org/wiki/Panax_ginseng'
   },
   'gan-cao': {
     cn: '甘草 · Gān Cǎo', en: 'Licorice root',
     def: 'Harmonises herbs in formulas; tonifies Spleen qi, moistens the Lungs, resolves toxicity.',
+    defCn: '味甘，性平；入心、肺、脾、胃经。补脾益气、清热解毒、祛痰止咳、调和诸药。',
     url: 'https://en.wikipedia.org/wiki/Glycyrrhiza_uralensis'
   },
   'huang-qin': {
     cn: '黃芩 / 黄芩 · Huáng Qín', en: 'Scutellaria root',
     def: 'Bitter, cold; clears heat and damp-heat, particularly in the upper burner.',
+    defCn: '味苦，性寒；入肺、胆、脾、大肠、小肠经。清热燥湿、泻火解毒、止血安胎。',
     url: 'https://en.wikipedia.org/wiki/Scutellaria_baicalensis'
   },
   'bai-shao': {
     cn: '白芍 · Bái Sháo', en: 'White Peony root',
     def: 'Sour, bitter; nourishes Liver blood, calms the Liver, softens cramping.',
+    defCn: '味苦酸，性微寒；入肝、脾经。养血敛阴、柔肝止痛、平抑肝阳。',
     url: 'https://en.wikipedia.org/wiki/Paeonia_lactiflora'
   },
   'bai-he': {
     cn: '百合 · Bǎi Hé', en: 'Lily bulb',
     def: 'Sweet, slightly cold; moistens the Lung, calms the spirit, gently nourishes yin.',
+    defCn: '味甘，性微寒；入心、肺经。养阴润肺、清心安神。',
     url: 'https://en.wikipedia.org/wiki/Lilium_brownii'
   },
   'xing-ren': {
     cn: '杏仁 · Xìng Rén', en: 'Bitter apricot kernel',
     def: 'Bitter; descends and disperses Lung qi, stops cough, moistens the intestines.',
+    defCn: '味苦，性微温；入肺、大肠经。降气止咳平喘、润肠通便。',
     url: 'https://en.wikipedia.org/wiki/Apricot_kernel'
   },
   'mai-dong': {
     cn: '麥冬 / 麦冬 · Mài Dōng', en: 'Ophiopogon root',
     def: 'Sweet, slightly cold; moistens Lung yin, generates fluids, calms the heart.',
+    defCn: '味甘微苦，性微寒；入心、肺、胃经。养阴生津、润肺清心。',
     url: 'https://en.wikipedia.org/wiki/Ophiopogon_japonicus'
   },
   'huo-ma-ren': {
     cn: '火麻仁 · Huǒ Má Rén', en: 'Hemp seed',
     def: 'Sweet, neutral; moistens the intestines, gently relieves dryness-type constipation.',
+    defCn: '味甘，性平；入脾、胃、大肠经。润肠通便。年老体弱、津血亏虚者宜。',
     url: 'https://en.wikipedia.org/wiki/Cannabis_seed'
   },
   'jue-ming-zi': {
     cn: '决明子 · Jué Míng Zǐ', en: 'Cassia seed',
     def: 'Bitter, sweet; clears Liver heat, brightens the eyes, moistens the intestines.',
+    defCn: '味苦甘咸，性微寒；入肝、大肠经。清肝明目、润肠通便。',
     url: 'https://en.wikipedia.org/wiki/Senna_obtusifolia'
   },
   'xiao-mi': {
     cn: '小米 · Xiǎo Mǐ', en: 'Foxtail millet',
     def: 'Sweet, salty, slightly cool; nourishes the Spleen-Stomach, generates fluids.',
+    defCn: '味甘咸，性凉；入脾、胃、肾经。健脾和胃、补益虚损、和中除热。',
     url: 'https://en.wikipedia.org/wiki/Foxtail_millet'
   },
   'bai-zhu': {
     cn: '白术 · Bái Zhú', en: 'Atractylodes rhizome',
     def: 'Bitter, sweet, warm; tonifies Spleen qi, dries dampness, stops sweating.',
+    defCn: '味甘苦，性温；入脾、胃经。健脾益气、燥湿利水、止汗安胎。',
     url: 'https://en.wikipedia.org/wiki/Atractylodes_macrocephala'
   },
   'shan-yao': {
     cn: '山藥 / 山药 · Shān Yào', en: 'Chinese yam',
     def: 'Sweet, neutral; tonifies Spleen, Lung, and Kidney; nourishes yin without dampness.',
+    defCn: '味甘，性平；入脾、肺、肾经。补脾养胃、生津益肺、补肾涩精。山药也。',
     url: 'https://en.wikipedia.org/wiki/Dioscorea_polystachya'
   },
   'dan-shen': {
     cn: '丹參 / 丹参 · Dān Shēn', en: 'Salvia root',
     def: 'Bitter, slightly cold; invigorates blood, removes stasis, calms the spirit.',
+    defCn: '味苦，性微寒；入心、肝经。活血祛瘀、通经止痛、清心除烦。',
     url: 'https://en.wikipedia.org/wiki/Salvia_miltiorrhiza'
   },
   'suan-zao-ren': {
     cn: '酸棗仁 / 酸枣仁 · Suān Zǎo Rén', en: 'Sour jujube seed',
     def: 'Sweet, sour, neutral; calms the spirit, treats insomnia and night sweats.',
+    defCn: '味甘酸，性平；入心、肝、胆经。养心安神、敛汗生津。失眠要药。',
     url: 'https://en.wikipedia.org/wiki/Ziziphus_jujuba'
   },
   'bai-zi-ren': {
     cn: '柏子仁 · Bǎi Zǐ Rén', en: 'Biota seed',
     def: 'Sweet, neutral; calms the spirit, nourishes the Heart, moistens the intestines.',
+    defCn: '味甘，性平；入心、肾、大肠经。养心安神、润肠通便。',
     url: 'https://en.wikipedia.org/wiki/Platycladus'
   },
   'ze-xie': {
     cn: '澤瀉 / 泽泻 · Zé Xiè', en: 'Alisma rhizome',
     def: 'Sweet, bland, cold; promotes urination, drains damp-heat from the lower burner.',
+    defCn: '味甘淡，性寒；入肾、膀胱经。利水渗湿、泄热。',
     url: 'https://en.wikipedia.org/wiki/Alisma'
   },
   'jin-qian-cao': {
     cn: '金錢草 / 金钱草 · Jīn Qián Cǎo', en: 'Lysimachia',
     def: 'Sweet, salty, cool; clears damp-heat, treats stones in the urinary tract.',
+    defCn: '味甘咸，性微寒；入肝、胆、肾、膀胱经。利湿退黄、利尿通淋、解毒消肿。结石要药。',
     url: 'https://en.wikipedia.org/wiki/Lysimachia_christinae'
   },
   'che-qian-zi': {
     cn: '車前子 / 车前子 · Chē Qián Zǐ', en: 'Plantago seed',
     def: 'Sweet, cold; promotes urination, clears heat from the eyes and lungs.',
+    defCn: '味甘，性微寒；入肝、肾、肺、小肠经。清热利尿通淋、渗湿止泻、明目、祛痰。',
     url: 'https://en.wikipedia.org/wiki/Plantago_asiatica'
   },
   'shu-di-huang': {
     cn: '熟地黃 / 熟地黄 · Shú Dì Huáng', en: 'Prepared rehmannia',
     def: 'Sweet, slightly warm; nourishes Liver and Kidney yin and blood; rich and cloying.',
+    defCn: '味甘，性微温；入肝、肾经。补血养阴、填精益髓。养血滋阴之要药。',
     url: 'https://en.wikipedia.org/wiki/Rehmannia_glutinosa'
   },
   'du-zhong': {
     cn: '杜仲 · Dù Zhòng', en: 'Eucommia bark',
     def: 'Sweet, slightly warm; tonifies Liver and Kidney yang; strengthens the lower back and knees.',
+    defCn: '味甘，性温；入肝、肾经。补肝肾、强筋骨、安胎。',
     url: 'https://en.wikipedia.org/wiki/Eucommia_ulmoides'
   },
   'hei-zhi-ma': {
     cn: '黑芝麻 · Hēi Zhī Má', en: 'Black sesame',
     def: 'Sweet, neutral; tonifies Liver and Kidney; nourishes blood and essence; moistens the intestines.',
+    defCn: '味甘，性平；入肝、肾、大肠经。补肝肾、益精血、润肠燥。',
     url: 'https://en.wikipedia.org/wiki/Sesame'
   },
   'yuan-zhi': {
     cn: '遠志 / 远志 · Yuǎn Zhì', en: 'Polygala root',
     def: 'Bitter, pungent, slightly warm; calms the spirit, opens the heart-mind, expels phlegm.',
+    defCn: '味苦辛，性微温；入心、肾、肺经。安神益智、祛痰开窍、消散痈肿。',
     url: 'https://en.wikipedia.org/wiki/Polygala_tenuifolia'
   },
   'he-huan-hua': {
     cn: '合歡花 / 合欢花 · Hé Huān Huā', en: 'Albizia flower',
     def: 'Sweet, neutral; calms the spirit, relieves emotional stagnation, lifts depression.',
+    defCn: '味甘，性平；入心、肝经。解郁安神、理气和胃。',
     url: 'https://en.wikipedia.org/wiki/Albizia_julibrissin'
   },
   'chen-pi': {
     cn: '陳皮 / 陈皮 · Chén Pí', en: 'Aged tangerine peel',
     def: 'Pungent, bitter, warm; regulates qi, harmonises the Stomach, transforms damp phlegm.',
+    defCn: '味苦辛，性温；入脾、肺经。理气健脾、燥湿化痰。',
     url: 'https://en.wikipedia.org/wiki/Citrus_reticulata'
   },
 
@@ -468,11 +531,13 @@ const TERMS = {
   'tongue-diagnosis': {
     cn: '舌診 / 舌诊 · Shé Zhěn', en: 'Tongue Diagnosis',
     def: 'A core TCM diagnostic method evaluating tongue body color, shape, coating, and moisture.',
+    defCn: '舌诊——通过观察舌质、舌苔、舌形以辨脏腑虚实寒热。中医四诊之一。',
     page: 'tongue.html'
   },
   'four-examinations': {
     cn: '四診 / 四诊 · Sì Zhěn', en: 'Four Examinations',
     def: 'The four diagnostic methods of TCM: 望 (looking), 聞 (listening/smelling), 問 (asking), 切 (pulse-taking).',
+    defCn: '四诊——望、闻、问、切，中医辨证之四大手段。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Diagnostic_principles'
   },
 
@@ -480,36 +545,43 @@ const TERMS = {
   'qi-deficiency': {
     cn: '氣虛 / 气虚 · Qì Xū', en: 'Qi Deficiency',
     def: 'Fatigue, shortness of breath, weak voice, pale tongue; the root weakness pattern in TCM.',
+    defCn: '气虚——气之不足，见少气懒言、神疲乏力、自汗、易感冒，舌淡苔白、脉虚弱。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Disharmony'
   },
   'yang-deficiency': {
     cn: '陽虛 / 阳虚 · Yáng Xū', en: 'Yang Deficiency',
     def: 'Coldness, fatigue, low libido, pale-and-puffy tongue; insufficient warming, activating energy.',
+    defCn: '阳虚——阳气不足，见畏寒肢冷、面色苍白、小便清长、舌淡胖、脉沉迟。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Disharmony'
   },
   'yin-deficiency': {
     cn: '陰虛 / 阴虚 · Yīn Xū', en: 'Yin Deficiency',
     def: 'Heat sensations, night sweats, dry mouth, red tongue with little coating; insufficient cooling, moistening substance.',
+    defCn: '阴虚——阴液亏虚，见午后潮热、五心烦热、盗汗、口干咽燥，舌红少苔、脉细数。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Disharmony'
   },
   'blood-deficiency': {
     cn: '血虛 / 血虚 · Xuè Xū', en: 'Blood Deficiency',
     def: 'Pale complexion, dizziness, brittle nails, scant menstruation, pale tongue.',
+    defCn: '血虚——血液不足，见面色萎黄、唇甲淡白、头晕眼花、心悸失眠，舌淡、脉细。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Disharmony'
   },
   'damp-heat': {
     cn: '濕熱 / 湿热 · Shī Rè', en: 'Damp-Heat',
     def: 'Heaviness with heat signs; thick yellow tongue coating, foul-smelling discharges, irritability.',
+    defCn: '湿热——湿与热相合，见身热不扬、口苦黏腻、便溏色黄、苔黄腻、脉濡数。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Disharmony'
   },
   'qi-stagnation': {
     cn: '氣滯 / 气滞 · Qì Zhì', en: 'Qi Stagnation',
     def: 'Distension, irritability, irregular cycles; qi flow is blocked. Often a Liver-qi pattern.',
+    defCn: '气滞——气机郁结不畅，见胀闷疼痛、随情志变化，舌淡、脉弦。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Disharmony'
   },
   'blood-stasis': {
     cn: '血瘀 · Xuè Yū', en: 'Blood Stasis',
     def: 'Fixed, sharp pains; purple tongue or sublingual veins; blood circulation is impeded.',
+    defCn: '血瘀——血液运行不畅或离经留滞，见刺痛固定、舌紫暗或瘀斑、脉涩。',
     url: 'https://en.wikipedia.org/wiki/Traditional_Chinese_medicine#Disharmony'
   },
 
@@ -524,33 +596,39 @@ const TERMS = {
   'acupuncture': {
     cn: '针灸 · Zhēn Jiǔ', en: 'Acupuncture & Moxibustion',
     def: 'The classical TCM modality of stimulating specific points on the body, using fine needles (针 zhēn) or burning mugwort (灸 jiǔ), to regulate qi, blood, and organ function.',
+    defCn: '针灸——以毫针刺入或艾火灸熨人体经穴，调和气血、扶正祛邪之疗法。',
     url: 'https://en.wikipedia.org/wiki/Acupuncture',
     page: 'acupuncture.html'
   },
   'guijing': {
     cn: '归经 · Guī Jīng', en: 'Channel Attribution',
     def: 'The principle that each medicinal substance (and each acupoint) has an affinity for specific meridians and so directly affects those organ systems.',
+    defCn: '归经——药物或穴位所偏入与作用之经脉。',
     url: 'https://en.wikipedia.org/wiki/Meridian_(Chinese_medicine)'
   },
   'jinglu': {
     cn: '经络 · Jīng Luò', en: 'Channels & Collaterals',
     def: 'The complete meridian system: the 12 main channels (正经), the 8 extraordinary vessels (奇经八脉), and the smaller branching collaterals (络脉) and their offshoots.',
+    defCn: '经络——内联脏腑、外络肢节，贯通上下表里之气血通路网络。',
     url: 'https://en.wikipedia.org/wiki/Meridian_(Chinese_medicine)',
     page: 'acupuncture.html'
   },
   'twelve-meridians': {
     cn: '十二正经 · Shí Èr Zhèng Jīng', en: 'Twelve Main Meridians',
     def: 'The twelve principal channels — six yin (Lung, Pericardium, Heart, Spleen, Liver, Kidney) and six yang (Large Intestine, Triple Burner, Small Intestine, Stomach, Gallbladder, Bladder).',
+    defCn: '十二经脉（十二正经）——手足三阴三阳十二条主干经脉，互为表里，循行有序。',
     url: 'https://yibian.hopto.org/'
   },
   'eight-extraordinary': {
     cn: '奇经八脉 · Qí Jīng Bā Mài', en: 'Eight Extraordinary Vessels',
     def: 'Eight non-main vessels — Du, Ren, Chong, Dai, Yin/Yang Wei, Yin/Yang Qiao — that act as reservoirs and regulators for the twelve main meridians.',
+    defCn: '奇经八脉——督、任、冲、带、阴维、阳维、阴跷、阳跷八条特殊经脉，调节十二正经气血盈虚。',
     url: 'https://en.wikipedia.org/wiki/Eight_Extraordinary_Channels'
   },
   'du-mai': {
     cn: '督脉 · Dū Mài', en: 'Governor Vessel',
     def: 'The "Sea of Yang Channels" running up the back midline from the perineum to the upper lip; governs all yang qi in the body.',
+    defCn: '督脉——阳脉之海。起于会阴，沿背正中上行至唇上龈交。总督一身阳气，共 29 穴。',
     url: 'https://en.wikipedia.org/wiki/Governing_vessel',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006050?courseId=245888516&name=%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0+%E7%9D%A3%E8%84%89&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6944'
@@ -558,6 +636,7 @@ const TERMS = {
   'ren-mai': {
     cn: '任脉 · Rèn Mài', en: 'Conception Vessel',
     def: 'The "Sea of Yin Channels" running up the front midline from the perineum to the lower lip; governs all yin and is central to gynecology and fertility.',
+    defCn: '任脉——阴脉之海。起于会阴，沿腹胸正中上达承浆。任主胞胎，为妇科与孕育之关键，共 24 穴。',
     url: 'https://en.wikipedia.org/wiki/Conception_vessel',
     urlCn: 'https://special.rhky.com/mobile/mooc/tocard/903006086?courseId=245888516&name=%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0+%E4%BB%BB%E8%84%89&code=&btype=tushu&user_token=123&DSSTASH_LOG=&UID=&_uid=&fid=&vc3=&_d=&uf=&_industry=',
     urlCnBackup: 'https://yibian.hopto.org/shu/?sid=6943'
