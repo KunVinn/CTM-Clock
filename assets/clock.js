@@ -34,46 +34,90 @@ const SIDEBAR_HTML = `
   </div>
 `;
 
-/* ===================== SECTOR LABEL CYCLE =====================
-   The old slider UI is gone. The zoom scale is fixed at 3× (set
-   in CSS via --clock-zoom-scale). Instead of every label zooming
-   when you hover it directly, hovering a SECTOR now starts a
-   timer that cycles `label-focus` across the four labels of
-   that sector (branch / zodiac / cn-organ / en-organ), so each
-   one in turn gets the 3× spotlight before the next.
-   ============================================================ */
-const SECTOR_CYCLE_MS = 700;
-let _sectorCycleTimer = null;
-let _sectorCycleIdx   = -1;
+/* ===================== SECTOR LABEL CYCLES =====================
+   The old slider UI is gone. Two cycles run on the clock:
 
-function clearSectorCycle() {
-  if (_sectorCycleTimer) { clearInterval(_sectorCycleTimer); _sectorCycleTimer = null; }
-  document.querySelectorAll('.clock-zoom.label-focus').forEach(l => l.classList.remove('label-focus'));
-  _sectorCycleIdx = -1;
+   1. ACTIVE cycle — always on. Walks the labels of whichever sector
+      is the current-hour sector at 2× zoom (label-focus-active).
+      The active sector is tracked from clock.js's hour-change
+      logic; when the hour rolls over, this cycle re-targets.
+
+   2. HOVER cycle — only when the user is hovering a sector. Walks
+      THAT sector's labels at 3× zoom (label-focus). CSS specificity
+      lets label-focus win over label-focus-active on the same
+      element, so when the user hovers the active sector they see
+      the brighter 3× version instead of two competing styles.
+
+   Both cycles include all "5 + 1" elements per sector: branch,
+   zodiac, cn-organ, en-organ, the two hour labels at the boundary
+   (shared with the neighbor sector), and the nearest bagua trigram
+   if its angle falls within (also shareable with neighbor sector).
+   ============================================================ */
+const SECTOR_CYCLE_MS_HOVER  = 700;   // mouse hover — faster, more responsive
+const SECTOR_CYCLE_MS_ACTIVE = 1100;  // always-on current-hour — slower, ambient
+
+let _hoverTimer = null;
+let _hoverIdx   = -1;
+let _hoverStep  = 0;
+
+let _activeTimer = null;
+let _activeIdx   = -1;
+let _activeStep  = 0;
+
+function _labelsFor(idx) {
+  if (idx < 0) return [];
+  return Array.from(document.querySelectorAll('[data-sector-idx~="' + idx + '"]'));
 }
 
-function startSectorCycle(sectorIdx) {
-  clearSectorCycle();
-  _sectorCycleIdx = sectorIdx;
-  const labels = Array.from(document.querySelectorAll('[data-sector-idx="' + sectorIdx + '"]'));
+function clearHoverCycle() {
+  if (_hoverTimer) { clearInterval(_hoverTimer); _hoverTimer = null; }
+  document.querySelectorAll('.clock-zoom.label-focus').forEach(l => l.classList.remove('label-focus'));
+  _hoverIdx = -1;
+}
+
+function startHoverCycle(sectorIdx) {
+  clearHoverCycle();
+  _hoverIdx = sectorIdx;
+  const labels = _labelsFor(sectorIdx);
   if (!labels.length) return;
-  let step = 0;
-  // Show the first label immediately so the spotlight appears on hover
-  // without waiting for the first interval tick.
+  _hoverStep = 0;
   labels[0].classList.add('label-focus');
-  step = 1;
-  _sectorCycleTimer = setInterval(() => {
-    if (_sectorCycleIdx !== sectorIdx) { clearSectorCycle(); return; }
+  _hoverStep = 1;
+  _hoverTimer = setInterval(() => {
+    if (_hoverIdx !== sectorIdx) { clearHoverCycle(); return; }
     labels.forEach(l => l.classList.remove('label-focus'));
-    labels[step % labels.length].classList.add('label-focus');
-    step++;
-  }, SECTOR_CYCLE_MS);
+    labels[_hoverStep % labels.length].classList.add('label-focus');
+    _hoverStep++;
+  }, SECTOR_CYCLE_MS_HOVER);
+}
+
+function _stopActiveCycle() {
+  if (_activeTimer) { clearInterval(_activeTimer); _activeTimer = null; }
+  document.querySelectorAll('.clock-zoom.label-focus-active').forEach(l => l.classList.remove('label-focus-active'));
+}
+
+function setActiveSector(sectorIdx) {
+  if (sectorIdx === _activeIdx && _activeTimer) return;  // already cycling that one
+  _stopActiveCycle();
+  _activeIdx = sectorIdx;
+  const labels = _labelsFor(sectorIdx);
+  if (!labels.length) return;
+  _activeStep = 0;
+  labels[0].classList.add('label-focus-active');
+  _activeStep = 1;
+  _activeTimer = setInterval(() => {
+    const ls = _labelsFor(_activeIdx);
+    if (!ls.length) return;
+    ls.forEach(l => l.classList.remove('label-focus-active'));
+    ls[_activeStep % ls.length].classList.add('label-focus-active');
+    _activeStep++;
+  }, SECTOR_CYCLE_MS_ACTIVE);
 }
 
 function bindSectorHoverCycle() {
   document.querySelectorAll('.sector').forEach((sect, i) => {
-    sect.addEventListener('mouseenter', () => startSectorCycle(i));
-    sect.addEventListener('mouseleave', () => clearSectorCycle());
+    sect.addEventListener('mouseenter', () => startHoverCycle(i));
+    sect.addEventListener('mouseleave', () => clearHoverCycle());
   });
 }
 
@@ -357,6 +401,19 @@ function buildClock() {
       titleEl.textContent = `${String(h).padStart(2,'0')}:00 — ${o.cn} ${o.organ} · ${o.branch}时 ${o.pinyin}`;
       label.appendChild(titleEl);
     }
+    // Wire hour-label into the per-sector hover cycle. Every hour
+    // belongs to one sector by definition; if it's right at a sector
+    // boundary it gets tagged with BOTH the sector it starts and the
+    // previous one (so both sectors include it when hovered).
+    const owners = new Set();
+    if (orgIdx >= 0) owners.add(orgIdx);
+    // Boundary hour = h matches some sector's start → also tag the
+    // previous sector (whose .end == h).
+    const startIdx = ORGANS.findIndex(o => o.start === h);
+    if (startIdx >= 0) owners.add((startIdx + ORGANS.length - 1) % ORGANS.length);
+    if (owners.size) {
+      label.setAttribute('data-sector-idx', Array.from(owners).join(' '));
+    }
     svg.appendChild(label);
     const [x1, y1] = polar(R_FANG - 12, a);
     const [x2, y2] = polar(R_HOUR - 10, a);
@@ -523,7 +580,11 @@ function buildCenter(svg) {
   baguaInnerEdge.setAttribute('class', 'bagua-ring-inner');
   svg.appendChild(baguaInnerEdge);
 
-  // 八卦 trigrams around the ring (8 evenly spaced positions) — hover-zoomable
+  // 八卦 trigrams around the ring (8 evenly spaced positions) — also
+  // wired into the per-sector hover cycle. For each trigram, figure
+  // out which sector contains its angle; if the angle sits exactly
+  // on a sector boundary (which it does for half of the 8 trigrams),
+  // assign it to BOTH neighboring sectors so both can include it.
   trigrams.forEach((tg, i) => {
     const angle = i * 45;
     const r = (R_BAGUA_OUTER + R_BAGUA_INNER) / 2;
@@ -538,6 +599,27 @@ function buildCenter(svg) {
     const titleEl = document.createElementNS(NS, 'title');
     titleEl.textContent = `${tg.name} ${tg.symbol} — ${tg.meaning}`;
     t.appendChild(titleEl);
+
+    // Map this trigram's angle to its owning sector(s).
+    const owners = new Set();
+    ORGANS.forEach((o, oi) => {
+      const sA = hourAngle(o.start);
+      const eAdj = (o.end <= o.start) ? o.end + 24 : o.end;
+      const eA = hourAngle(eAdj);
+      // Bring `angle` into the same revolution as [sA, eA]
+      let a = angle;
+      if (a < sA) a += 360;
+      if (a > sA && a < eA) owners.add(oi);     // strictly inside
+      // Boundary: angle == sA (i.e. trigram sits at this sector's start
+      // edge) → tag this sector AND the previous one.
+      if (Math.abs(angle - hourAngle(o.start)) < 0.01) {
+        owners.add(oi);
+        owners.add((oi + ORGANS.length - 1) % ORGANS.length);
+      }
+    });
+    if (owners.size) {
+      t.setAttribute('data-sector-idx', Array.from(owners).join(' '));
+    }
     svg.appendChild(t);
   });
 
@@ -730,6 +812,7 @@ function updateClock() {
   if (idx !== lastOrganIdxClock) {
     lastOrganIdxClock = idx;
     highlightSectors(idx);
+    setActiveSector(idx);   // retarget the always-on 2× cycle
     document.dispatchEvent(new CustomEvent('hourchange', { detail: { idx } }));
   }
 }

@@ -4664,9 +4664,18 @@ a:hover { color: var(--gold-bright); }
      the cursor happens to touch. */
   pointer-events: none;
 }
-/* Keyboard focus (rare on SVG <text> but kept for a11y) and the
-   JS-driven sector cycle both trigger the spotlight zoom. Fixed at
-   3× — no more user-tunable slider. */
+/* Always-on 2× cycle: clock.js puts .label-focus-active on the
+   labels of the CURRENT-hour sector (rotates each ~1.1 s). Subtle
+   gold, no big glow — it's ambient, not a call to action. */
+.clock-zoom.label-focus-active {
+  transform: scale(2);
+  fill: var(--gold) !important;
+  opacity: 1 !important;
+}
+/* Mouse-hover 3× cycle: clock.js puts .label-focus on the labels of
+   whatever sector is being hovered (rotates each ~0.7 s). Brighter +
+   glow + listed AFTER .label-focus-active so it wins on the same
+   element when the user hovers the active sector. */
 .clock-zoom:focus,
 .clock-zoom.label-focus {
   transform: scale(3);
