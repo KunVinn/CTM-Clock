@@ -132,7 +132,11 @@
 
   function getCurrent() {
     try {
-      return localStorage.getItem(STORAGE_KEY) || DEFAULT_SCRIPT;
+      const v = localStorage.getItem(STORAGE_KEY) || DEFAULT_SCRIPT;
+      // The 3-mode toggle (s/e/c) replaces the old 4-mode (s/t/e/c).
+      // Anyone returning with a stale 't' (繁體 bilingual) lands in
+      // 'c' (Chinese-only, traditional) — the closest equivalent.
+      return (v === 't') ? 'c' : v;
     } catch (e) { return DEFAULT_SCRIPT; }
   }
 
@@ -144,7 +148,11 @@
       try { localStorage.setItem(VARIANT_KEY, v); } catch (e) {}
     }
   }
-  function getCnVariant() {
+  // Always return 't' (traditional) for 中-mode display now —
+  // the old behaviour of remembering the user's last 简/繁
+  // choice is moot once the 繁體 bilingual mode is gone.
+  function getCnVariant() { return 't'; }
+  function _legacy_getCnVariant() {
     try {
       const v = localStorage.getItem(VARIANT_KEY);
       return (v === 't') ? 't' : 's';
@@ -258,18 +266,15 @@
     // Track on <html> for any CSS that wants to react
     document.documentElement.dataset.script = dir;
 
-    // Update toggle button label if present. Button shows the CURRENT mode;
-    // the cycle order is s → t → e → c → s.
+    // Update toggle button label if present. 3-mode cycle:
+    //   简 (s) → EN (e) → 中 (c, always 繁體) → 简
     const btn = document.getElementById('script-toggle');
     if (btn) {
-      const labels = { s: '简', t: '繁', e: 'EN', c: '中' };
+      const labels = { s: '简', e: 'EN', c: '中' };
       const titles = {
-        s: '当前: 简体双语 · 点击切换为繁體',
-        t: '當前: 繁體雙語 · 點擊切換為 EN',
-        e: 'Current: English-emphasized (Chinese still shown for context) · Click for Chinese-only',
-        c: cnVariant === 't'
-            ? '當前: 純繁體 · 點擊回到簡體雙語'
-            : '当前: 纯简体 · 点击回到简体双语'
+        s: '当前: 简体双语 · 点击切换为 EN',
+        e: 'Current: English-emphasized (CN still shown) · Click for 中 (纯繁體)',
+        c: '當前: 純繁體 · 點擊回到簡體雙語'
       };
       btn.textContent = labels[dir] || '?';
       btn.setAttribute('aria-label', titles[dir] || '');
@@ -779,9 +784,10 @@
 
   function toggle() {
     const curr = getCurrent();
-    // Cycle order: 简 → 繁 → EN → 中 → 简
-    const next = curr === 's' ? 't'
-              : curr === 't' ? 'e'
+    // 3-mode cycle: 简 (bilingual S) → EN → 中 (Chinese-only,
+    // always 繁體) → 简. The old 't' (繁體 bilingual) mode was
+    // dropped — its content lives on inside 中 mode now.
+    const next = curr === 's' ? 'e'
               : curr === 'e' ? 'c'
               : 's';
     setCurrent(next);
