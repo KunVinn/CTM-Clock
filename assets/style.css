@@ -116,6 +116,74 @@ a:hover { color: var(--gold-bright); }
   margin-bottom: 0.4rem;
 }
 
+/* ============================================================
+   CLOCK MODE TABS (养生时钟 / 子午流注 / 灵龟八法 / 飞腾八法)
+   Phase 1: 灵龟 / 飞腾 are visible but disabled.
+   ============================================================ */
+.clock-mode-tabs {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  margin: 0.35rem auto 0.4rem;
+  flex-wrap: wrap;
+}
+.clock-mode-tab {
+  font-family: var(--font-han);
+  font-size: 0.78rem;
+  padding: 0.25rem 0.55rem;
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.04em;
+}
+.clock-mode-tab:hover:not(.disabled):not(:disabled) {
+  color: var(--gold-bright);
+  border-color: var(--gold);
+}
+.clock-mode-tab.active {
+  background: rgba(212, 169, 106, 0.18);
+  color: var(--gold-bright);
+  border-color: var(--gold);
+  font-weight: 600;
+}
+.clock-mode-tab.disabled,
+.clock-mode-tab:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Mode-label rings (yangsheng functional labels / ziwu 五输穴) */
+.mode-label {
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-family: var(--font-han);
+  fill: var(--gold);
+  transition: transform 0.22s ease-out, fill 0.22s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.mode-label-yangsheng {
+  font-size: 14px;
+  fill: var(--ink-soft);
+}
+.mode-label-ziwu {
+  font-size: 11px;
+  fill: var(--gold);
+}
+/* In ziwu mode the 5-shu stack fills the sector interior — hide the
+   per-sector organ labels so they don't overlap. The outer ring
+   labels (branch, zodiac) stay visible. */
+.clock-svg[data-clock-mode="ziwu"] .label-organ-cn,
+.clock-svg[data-clock-mode="ziwu"] .label-organ-en {
+  display: none;
+}
+/* In yangsheng mode the function label sits below the EN organ name;
+   keep them both visible. */
+
 .clock-wrap {
   width: 100%;
   aspect-ratio: 1;
