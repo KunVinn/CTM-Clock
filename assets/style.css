@@ -4787,19 +4787,16 @@ a:hover { color: var(--gold-bright); }
   fill: var(--gold-bright) !important;
 }
 
-/* Mode labels participate in the sector cycle but MUST NOT scale —
-   5-shu (ziwu) packs 5 labels per sector at 9.5px, and a 2×–3× scale
-   makes neighbouring rings and neighbouring sectors crash into each
-   other. Keep the colour + glow highlight so the cycle is still
-   visible, just lose the transform. */
+/* Mode labels participate in the sector cycle and DO scale.
+   Safe because _labelsFor() now returns ONLY the mode-label set, so
+   the cycle pulses ONE label at a time — not the whole 5-shu stack
+   simultaneously, which was the original overlap cause. */
 .mode-label.clock-zoom.label-focus-active {
-  transform: none !important;
   fill: var(--gold-bright) !important;
   filter: drop-shadow(0 0 4px rgba(212, 175, 122, 0.55));
 }
 .mode-label.clock-zoom:focus,
 .mode-label.clock-zoom.label-focus {
-  transform: none !important;
   fill: var(--gold-bright) !important;
   filter: drop-shadow(0 0 6px rgba(255, 215, 130, 0.75));
 }
