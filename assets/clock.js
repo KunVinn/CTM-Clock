@@ -80,6 +80,13 @@ let _activeStep  = 0;
 
 function _labelsFor(idx) {
   if (idx < 0) return [];
+  // When a clock-mode has rendered its own labels for this sector,
+  // cycle ONLY those — user wants the 5-shu (中冲→劳宫→大陵→间使→曲泽)
+  // to pulse as a clean sequence, not mixed with branch/zodiac/organ.
+  // Falls back to the original 5+1 set (branch, zodiac, organ-cn,
+  // organ-en, hour-label, bagua) when no mode labels are present.
+  const modeLabels = document.querySelectorAll('.mode-label[data-sector-idx~="' + idx + '"]');
+  if (modeLabels.length) return Array.from(modeLabels);
   return Array.from(document.querySelectorAll('[data-sector-idx~="' + idx + '"]'));
 }
 
@@ -349,6 +356,14 @@ function setClockMode(m) {
     t.classList.toggle('active', t.dataset.mode === m);
   });
   renderModeLabels();
+  // Re-target the always-on cycle so it picks up the freshly-rendered
+  // mode labels right away. Without this, there's a ~1.1 s gap after
+  // mode switch where the active sector has no highlighted label.
+  if (_activeIdx >= 0) {
+    const idx = _activeIdx;
+    _activeIdx = -1;
+    setActiveSector(idx);
+  }
 }
 
 // 养生时钟 — one functional label per organ-hour. Mapped by ORGANS
