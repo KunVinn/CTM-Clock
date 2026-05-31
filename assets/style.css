@@ -169,20 +169,33 @@ a:hover { color: var(--gold-bright); }
 .mode-label-yangsheng {
   font-size: 14px;
   fill: var(--ink-soft);
+  font-weight: 500;
 }
 .mode-label-ziwu {
-  font-size: 11px;
+  font-size: 9.5px;
   fill: var(--gold);
+  letter-spacing: -0.02em;
 }
-/* In ziwu mode the 5-shu stack fills the sector interior — hide the
-   per-sector organ labels so they don't overlap. The outer ring
-   labels (branch, zodiac) stay visible. */
-.clock-svg[data-clock-mode="ziwu"] .label-organ-cn,
-.clock-svg[data-clock-mode="ziwu"] .label-organ-en {
+.mode-label-lingui,
+.mode-label-feiteng {
+  font-size: 15px;
+  fill: var(--gold-bright);
+  font-weight: 600;
+}
+/* Per-mode organ-label visibility — all four modes take over the
+   sector interior, so the existing CN+EN organ labels at R≈165/138
+   are hidden to keep the band readable. The outer ring labels
+   (branch, zodiac, fangwei, hour) stay visible in every mode. */
+.clock-svg[data-clock-mode="yangsheng"] .label-organ-cn,
+.clock-svg[data-clock-mode="yangsheng"] .label-organ-en,
+.clock-svg[data-clock-mode="ziwu"]      .label-organ-cn,
+.clock-svg[data-clock-mode="ziwu"]      .label-organ-en,
+.clock-svg[data-clock-mode="lingui"]    .label-organ-cn,
+.clock-svg[data-clock-mode="lingui"]    .label-organ-en,
+.clock-svg[data-clock-mode="feiteng"]   .label-organ-cn,
+.clock-svg[data-clock-mode="feiteng"]   .label-organ-en {
   display: none;
 }
-/* In yangsheng mode the function label sits below the EN organ name;
-   keep them both visible. */
 
 .clock-wrap {
   width: 100%;
@@ -4772,6 +4785,23 @@ a:hover { color: var(--gold-bright); }
 .label-branch.clock-zoom:focus,
 .label-branch.clock-zoom.label-focus {
   fill: var(--gold-bright) !important;
+}
+
+/* Mode labels participate in the sector cycle but MUST NOT scale —
+   5-shu (ziwu) packs 5 labels per sector at 9.5px, and a 2×–3× scale
+   makes neighbouring rings and neighbouring sectors crash into each
+   other. Keep the colour + glow highlight so the cycle is still
+   visible, just lose the transform. */
+.mode-label.clock-zoom.label-focus-active {
+  transform: none !important;
+  fill: var(--gold-bright) !important;
+  filter: drop-shadow(0 0 4px rgba(212, 175, 122, 0.55));
+}
+.mode-label.clock-zoom:focus,
+.mode-label.clock-zoom.label-focus {
+  transform: none !important;
+  fill: var(--gold-bright) !important;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 130, 0.75));
 }
 
 /* ============================================================

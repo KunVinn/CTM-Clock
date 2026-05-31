@@ -19,12 +19,12 @@ const SIDEBAR_HTML = `
     <button class="clock-mode-tab" data-mode="ziwu" role="tab"
             data-zh-s="子午流注" data-zh-t="子午流注"
             title="Ziwu Liuzhu — 5-shu points of each meridian arranged by hour">子午流注</button>
-    <button class="clock-mode-tab disabled" data-mode="lingui" role="tab"
-            data-zh-s="灵龟八法" data-zh-t="靈龜八法" disabled
-            title="Linggui Bafa — Phase 2: needs day-stem/branch + hour algorithm">灵龟八法</button>
-    <button class="clock-mode-tab disabled" data-mode="feiteng" role="tab"
-            data-zh-s="飞腾八法" data-zh-t="飛騰八法" disabled
-            title="Feiteng Bafa — Phase 2: needs hour-stem lookup table">飞腾八法</button>
+    <button class="clock-mode-tab" data-mode="lingui" role="tab"
+            data-zh-s="灵龟八法" data-zh-t="靈龜八法"
+            title="Linggui Bafa — 八脉交会穴 by sector (static placeholder, algorithm TBD)">灵龟八法</button>
+    <button class="clock-mode-tab" data-mode="feiteng" role="tab"
+            data-zh-s="飞腾八法" data-zh-t="飛騰八法"
+            title="Feiteng Bafa — 八脉交会穴 by sector (static placeholder, algorithm TBD)">飞腾八法</button>
   </div>
   <div class="clock-wrap">
     <svg class="clock-svg" id="clock-svg" viewBox="-360 -360 720 720"></svg>
@@ -327,13 +327,6 @@ function navigateMenu(delta) {
 const R_OUTER = 320, R_HOUR = 305, R_FANG = 280, R_BRANCH = 250;
 const R_ZODIAC = 220, R_SEC_OUT = 200, R_SEC_IN = 100;
 const R_LABEL_CN = 165, R_LABEL_EN = 138, R_INNER = 100;
-// Function-label ring (yangsheng mode) — placed INSIDE the sector
-// ring (R_SEC_IN=100, R_SEC_OUT=200) at a radius below the organ
-// name so both can show without overlap.
-const R_MODE_LABEL = 125;
-// 5-shu point radii (ziwu mode), stacked along each sector's mid-angle
-// from outer-distal (井, fingertip) to inner-proximal (合, elbow/knee).
-const ZIWU_RADII = [192, 172, 152, 132, 112];
 
 /* ============================================================
    CLOCK MODES (Phase 1: yangsheng + ziwu enabled)
@@ -350,8 +343,6 @@ function getClockMode() {
 }
 function setClockMode(m) {
   if (CLOCK_MODES.indexOf(m) < 0) return;
-  // Phase 2 modes not enabled yet
-  if (m === 'lingui' || m === 'feiteng') return;
   _clockMode = m;
   try { localStorage.setItem(CLOCK_MODE_STORE, m); } catch (_) {}
   document.querySelectorAll('.clock-mode-tab').forEach(t => {
@@ -360,25 +351,29 @@ function setClockMode(m) {
   renderModeLabels();
 }
 
-// 养生时钟 — one functional label per organ-hour. Sourced from
-// popular 时辰养生 charts; mapped by ORGANS index (0 = 子时/胆).
+// 养生时钟 — one functional label per organ-hour. Mapped by ORGANS
+// index (0 = 子时/胆). Plain Chinese strings only — applyScript() in
+// tcm-script-toggle.js merges SVG <title> text into textContent when
+// caching the EN form, which was the source of the "尺泽尺泽" pile-up,
+// so mode labels deliberately have no <title> children and no
+// bilingual data-* attributes. They stay Chinese in every script.
 const YANGSHENG_LABELS = [
-  { cn: '细胞重生', cnTrad: '細胞重生', en: 'cell regen' },   // 0  子 23-01 胆
-  { cn: '排毒解郁', cnTrad: '排毒解鬱', en: 'liver detox'  },  // 1  丑 01-03 肝
-  { cn: '气血灌肺', cnTrad: '氣血灌肺', en: 'lung perfuse'},   // 2  寅 03-05 肺
-  { cn: '大肠排毒', cnTrad: '大腸排毒', en: 'colon detox' },   // 3  卯 05-07 大肠
-  { cn: '消化时间', cnTrad: '消化時間', en: 'digestion'   },   // 4  辰 07-09 胃
-  { cn: '吸收时间', cnTrad: '吸收時間', en: 'absorption'  },   // 5  巳 09-11 脾
-  { cn: '养心时间', cnTrad: '養心時間', en: 'heart focus' },   // 6  午 11-13 心
-  { cn: '吸收营养', cnTrad: '吸收營養', en: 'nutrient'    },   // 7  未 13-15 小肠
-  { cn: '大量喝水', cnTrad: '大量喝水', en: 'hydration'   },   // 8  申 15-17 膀胱
-  { cn: '补充气血', cnTrad: '補充氣血', en: 'qi & blood'  },   // 9  酉 17-19 肾
-  { cn: '血液循环', cnTrad: '血液循環', en: 'circulation' },   // 10 戌 19-21 心包
-  { cn: '滋养筋骨', cnTrad: '滋養筋骨', en: 'sinews+bone' },   // 11 亥 21-23 三焦
+  '细胞重生',  // 0  子 23-01 胆
+  '排毒解郁',  // 1  丑 01-03 肝
+  '气血灌肺',  // 2  寅 03-05 肺
+  '排毒时间',  // 3  卯 05-07 大肠
+  '消化时间',  // 4  辰 07-09 胃
+  '吸收时间',  // 5  巳 09-11 脾
+  '养心时间',  // 6  午 11-13 心
+  '吸收营养',  // 7  未 13-15 小肠
+  '大量喝水',  // 8  申 15-17 膀胱
+  '补充气血',  // 9  酉 17-19 肾
+  '血液循环',  // 10 戌 19-21 心包
+  '滋养筋骨',  // 11 亥 21-23 三焦
 ];
 
 // 子午流注 5-shu points (井 荥 输 经 合) per meridian, ordered
-// distal → proximal. Reads compactly inside the sector.
+// distal → proximal. Stacked concentrically in each sector.
 const ZIWU_5SHU = [
   ['足窍阴','侠溪','足临泣','阳辅','阳陵泉'],  // 0  胆 GB
   ['大敦','行间','太冲','中封','曲泉'],         // 1  肝 LV
@@ -394,49 +389,85 @@ const ZIWU_5SHU = [
   ['关冲','液门','中渚','支沟','天井'],         // 11 三焦 TE
 ];
 
+// 八脉交会穴 placeholder rings for 灵龟八法 / 飞腾八法. Both methods
+// derive the active 穴 from day-stem + day-branch + hour-stem +
+// hour-branch arithmetic (mod 9 for yang-day Linggui, mod 6 for yin-
+// day, plus the Feiteng stem table). Implementing the full algorithm
+// is a Phase-2 item — for now we show a static representative ring
+// from a 反时辰 chart so the layout, hover wiring, and active-cycle
+// can be evaluated visually. TODO: replace with a per-hour compute.
+const LINGUI_LABELS = [
+  '申脉',  // 0  子
+  '公孙',  // 1  丑
+  '内关',  // 2  寅
+  '外关',  // 3  卯
+  '后溪',  // 4  辰
+  '足临泣',// 5  巳
+  '列缺',  // 6  午
+  '照海',  // 7  未
+  '公孙',  // 8  申
+  '申脉',  // 9  酉
+  '后溪',  // 10 戌
+  '照海',  // 11 亥
+];
+
+const FEITENG_LABELS = [
+  '列缺',  // 0  子
+  '照海',  // 1  丑
+  '外关',  // 2  寅
+  '照海',  // 3  卯
+  '列缺',  // 4  辰
+  '足临泣',// 5  巳
+  '内关',  // 6  午
+  '后溪',  // 7  未
+  '公孙',  // 8  申
+  '申脉',  // 9  酉
+  '后溪',  // 10 戌
+  '公孙',  // 11 亥
+];
+
+// Radii for the various mode rings. The ziwu stack runs distal (outer)
+// to proximal (inner) and tucks into the band between the sector outer
+// edge (200) and the bagua ring (100). The innermost ring is held at
+// ≥118 so the label box (centered ±6px at 9.5px font) clears the
+// bagua background that begins at R=100. Spacing is ~19px which gives
+// breathing room between rings even when the inner sector arc width
+// drops to ~60px. Single-label modes sit at one radius inside the sector.
+const ZIWU_RADII_R   = [191, 172, 153, 134, 118];
+const R_MODE_SINGLE  = 150;
+
 function renderModeLabels() {
-  // Wipe any previous mode-specific labels
+  // Wipe any prior mode labels — class selector matches both .mode-label
+  // and the per-mode variants. Always clear before re-rendering so
+  // mode switches don't pile elements on top of each other.
   document.querySelectorAll('.mode-label').forEach(el => el.remove());
   const svg = document.getElementById('clock-svg');
   if (!svg) return;
+  svg.setAttribute('data-clock-mode', _clockMode);
+
+  const addLabel = (radius, content, sectorIdx, variantClass) => {
+    const o = ORGANS[sectorIdx];
+    const a = midAngle(o.start, o.end);
+    const [x, y] = polar(radius, a);
+    // NOTE: no <title> child, no data-zh-* attrs — see YANGSHENG_LABELS
+    // comment above for why these are intentionally omitted.
+    const el = makeText(x, y, content, 'mode-label ' + variantClass + ' clock-zoom');
+    el.setAttribute('data-sector-idx', String(sectorIdx));
+    svg.appendChild(el);
+    return el;
+  };
+
   if (_clockMode === 'yangsheng') {
-    YANGSHENG_LABELS.forEach((entry, i) => {
-      const o = ORGANS[i];
-      const a = midAngle(o.start, o.end);
-      const [x, y] = polar(R_MODE_LABEL, a);
-      const el = makeText(x, y, entry.cn, 'mode-label mode-label-yangsheng label-cn clock-zoom');
-      el.setAttribute('data-zh-s', entry.cn);
-      el.setAttribute('data-zh-t', entry.cnTrad);
-      el.setAttribute('data-sector-idx', String(i));
-      const titleEl = document.createElementNS(NS, 'title');
-      titleEl.textContent = `${o.cn} ${o.organ} · ${entry.cn} (${entry.en})`;
-      el.appendChild(titleEl);
-      svg.appendChild(el);
-    });
+    YANGSHENG_LABELS.forEach((cn, i) => addLabel(R_MODE_SINGLE, cn, i, 'mode-label-yangsheng'));
   } else if (_clockMode === 'ziwu') {
-    // For each sector, stack the 5 五输穴 names along the sector's
-    // mid-angle, evenly placed inside the sector ring.
     ZIWU_5SHU.forEach((pts, i) => {
-      const o = ORGANS[i];
-      const a = midAngle(o.start, o.end);
-      pts.forEach((pt, j) => {
-        const [x, y] = polar(ZIWU_RADII[j], a);
-        const el = makeText(x, y, pt, 'mode-label mode-label-ziwu label-cn clock-zoom');
-        el.setAttribute('data-zh-auto', '');
-        el.setAttribute('data-sector-idx', String(i));
-        el.setAttribute('data-term', pt);
-        const titleEl = document.createElementNS(NS, 'title');
-        const role = ['井 Well','荥 Spring','输 Stream','经 River','合 Sea'][j];
-        titleEl.textContent = `${pt} · ${role} · ${o.cn}${o.organ}`;
-        el.appendChild(titleEl);
-        svg.appendChild(el);
-      });
+      pts.forEach((pt, j) => addLabel(ZIWU_RADII_R[j], pt, i, 'mode-label-ziwu'));
     });
+  } else if (_clockMode === 'lingui') {
+    LINGUI_LABELS.forEach((cn, i) => addLabel(R_MODE_SINGLE, cn, i, 'mode-label-lingui'));
+  } else if (_clockMode === 'feiteng') {
+    FEITENG_LABELS.forEach((cn, i) => addLabel(R_MODE_SINGLE, cn, i, 'mode-label-feiteng'));
   }
-  // Mark SVG with current mode so CSS can hide conflicting labels
-  // (e.g., dim the per-sector organ labels in ziwu mode where the
-  // 5-shu names take over the sector's interior).
-  if (svg) svg.setAttribute('data-clock-mode', _clockMode);
 }
 
 function polar(r, deg) {
