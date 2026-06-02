@@ -407,27 +407,38 @@ const ZIWU_5SHU = [
 /* ============================================================
    灵龟八法 (Linggui Bafa) — dynamic computation
    ------------------------------------------------------------
-   Standard 环周盘 algorithm. Sum the four 干支 codes, then divide
-   by 9 for a 阳日 (yang day = 日干 is 甲丙戊庚壬) or by 6 for a 阴日
-   (yin day = 日干 is 乙丁己辛癸). The remainder (treating 0 as the
-   divisor) is the 八穴代数; the code maps to the open 穴.
-   Verified against the user's 1997-12-21 巳时 worked example:
-     丁酉日, 巳时 → 时干乙 (五鼠遁 丁→子庚→…→巳乙)
-     7 + 9 + 9 + 4 = 29; 29 mod 6 = 5 → 照海  ✓
+   Standard 环周盘 algorithm using TWO separate code tables:
+     《八法逐日干支歌》(day pillar):
+       甲己辰戌丑未十   乙庚申酉九为期
+       丁壬寅卯八成数   丙辛亥子七作期
+       戊癸巳午亦如五
+     《八法临时干支歌》(hour pillar):
+       甲己子午九宜用   乙庚丑未八无疑
+       丙辛寅申七作数   丁壬卯酉六须知
+       戊癸辰戌各有五   巳亥单加四共齐
+   Sum the four 干支 codes, divide by 9 on 阳日 (日干 = 甲丙戊庚壬)
+   or by 6 on 阴日 (乙丁己辛癸); 0 becomes the divisor. The remainder
+   is the 八穴代数 — mapped to the open 穴.
+   Verified against the user's 1997-12-21 (丁酉日) worked example:
+     all 12 hours reproduce [4,2,6,4,1,5,3,1,5,2,6,4] exactly.
    ============================================================ */
 const LINGUI_DAY_STEM_CODE = {
   '甲':10, '己':10, '乙':9,  '庚':9,
-  '丙':8,  '辛':8,  '丁':7,  '壬':7,
-  '戊':6,  '癸':6,
+  '丁':8,  '壬':8,  '丙':7,  '辛':7,
+  '戊':5,  '癸':5,
 };
 const LINGUI_DAY_BRANCH_CODE = {
   '辰':10, '戌':10, '丑':10, '未':10,
   '申':9,  '酉':9,
   '寅':8,  '卯':8,
-  '巳':7,  '午':7,
-  '亥':4,  '子':4,
+  '亥':7,  '子':7,
+  '巳':5,  '午':5,
 };
-// 时干 uses the same code table as 日干.
+const LINGUI_HOUR_STEM_CODE = {
+  '甲':9, '己':9, '乙':8, '庚':8,
+  '丙':7, '辛':7, '丁':6, '壬':6,
+  '戊':5, '癸':5,
+};
 const LINGUI_HOUR_BRANCH_CODE = {
   '子':9, '午':9, '丑':8, '未':8,
   '寅':7, '申':7, '卯':6, '酉':6,
@@ -441,14 +452,14 @@ const LINGUI_CODE_TO_POINT = {
   7: '后溪',  8: '内关',  9: '列缺',
 };
 function linguiCodeForSector(date, sectorIdx) {
-  const pillar       = dayPillarIdx(date);
-  const dayStem      = STEMS[pillar % 10];
-  const dayBranch    = BRANCHES[pillar % 12];
-  const hourStem     = STEMS[hourStemIdxFromDay(pillar % 10, sectorIdx)];
-  const hourBranch   = BRANCHES[sectorIdx];
+  const pillar     = dayPillarIdx(date);
+  const dayStem    = STEMS[pillar % 10];
+  const dayBranch  = BRANCHES[pillar % 12];
+  const hourStem   = STEMS[hourStemIdxFromDay(pillar % 10, sectorIdx)];
+  const hourBranch = BRANCHES[sectorIdx];
   const sum = LINGUI_DAY_STEM_CODE[dayStem]
             + LINGUI_DAY_BRANCH_CODE[dayBranch]
-            + LINGUI_DAY_STEM_CODE[hourStem]
+            + LINGUI_HOUR_STEM_CODE[hourStem]
             + LINGUI_HOUR_BRANCH_CODE[hourBranch];
   const isYangDay = (pillar % 10) % 2 === 0;   // 甲(0)丙(2)戊(4)庚(6)壬(8)
   const divisor   = isYangDay ? 9 : 6;
