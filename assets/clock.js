@@ -404,42 +404,130 @@ const ZIWU_5SHU = [
   ['关冲','液门','中渚','支沟','天井'],         // 11 三焦 TE
 ];
 
-// 八脉交会穴 placeholder rings for 灵龟八法 / 飞腾八法. Both methods
-// derive the active 穴 from day-stem + day-branch + hour-stem +
-// hour-branch arithmetic (mod 9 for yang-day Linggui, mod 6 for yin-
-// day, plus the Feiteng stem table). Implementing the full algorithm
-// is a Phase-2 item — for now we show a static representative ring
-// from a 反时辰 chart so the layout, hover wiring, and active-cycle
-// can be evaluated visually. TODO: replace with a per-hour compute.
-const LINGUI_LABELS = [
-  '申脉',  // 0  子
-  '公孙',  // 1  丑
-  '内关',  // 2  寅
-  '外关',  // 3  卯
-  '后溪',  // 4  辰
-  '足临泣',// 5  巳
-  '列缺',  // 6  午
-  '照海',  // 7  未
-  '公孙',  // 8  申
-  '申脉',  // 9  酉
-  '后溪',  // 10 戌
-  '照海',  // 11 亥
-];
+/* ============================================================
+   灵龟八法 (Linggui Bafa) — dynamic computation
+   ------------------------------------------------------------
+   Standard 环周盘 algorithm. Sum the four 干支 codes, then divide
+   by 9 for a 阳日 (yang day = 日干 is 甲丙戊庚壬) or by 6 for a 阴日
+   (yin day = 日干 is 乙丁己辛癸). The remainder (treating 0 as the
+   divisor) is the 八穴代数; the code maps to the open 穴.
+   Verified against the user's 1997-12-21 巳时 worked example:
+     丁酉日, 巳时 → 时干乙 (五鼠遁 丁→子庚→…→巳乙)
+     7 + 9 + 9 + 4 = 29; 29 mod 6 = 5 → 照海  ✓
+   ============================================================ */
+const LINGUI_DAY_STEM_CODE = {
+  '甲':10, '己':10, '乙':9,  '庚':9,
+  '丙':8,  '辛':8,  '丁':7,  '壬':7,
+  '戊':6,  '癸':6,
+};
+const LINGUI_DAY_BRANCH_CODE = {
+  '辰':10, '戌':10, '丑':10, '未':10,
+  '申':9,  '酉':9,
+  '寅':8,  '卯':8,
+  '巳':7,  '午':7,
+  '亥':4,  '子':4,
+};
+// 时干 uses the same code table as 日干.
+const LINGUI_HOUR_BRANCH_CODE = {
+  '子':9, '午':9, '丑':8, '未':8,
+  '寅':7, '申':7, '卯':6, '酉':6,
+  '辰':5, '戌':5, '巳':4, '亥':4,
+};
+// 八穴代数 → 穴 (per 灵龟八法环周盘 第一盘).
+// 2 and 5 both map to 照海 — the 5中宫 borrows from 2坤宫.
+const LINGUI_CODE_TO_POINT = {
+  1: '申脉',  2: '照海',  3: '外关',
+  4: '足临泣', 5: '照海',  6: '公孙',
+  7: '后溪',  8: '内关',  9: '列缺',
+};
+function linguiCodeForSector(date, sectorIdx) {
+  const pillar       = dayPillarIdx(date);
+  const dayStem      = STEMS[pillar % 10];
+  const dayBranch    = BRANCHES[pillar % 12];
+  const hourStem     = STEMS[hourStemIdxFromDay(pillar % 10, sectorIdx)];
+  const hourBranch   = BRANCHES[sectorIdx];
+  const sum = LINGUI_DAY_STEM_CODE[dayStem]
+            + LINGUI_DAY_BRANCH_CODE[dayBranch]
+            + LINGUI_DAY_STEM_CODE[hourStem]
+            + LINGUI_HOUR_BRANCH_CODE[hourBranch];
+  const isYangDay = (pillar % 10) % 2 === 0;   // 甲(0)丙(2)戊(4)庚(6)壬(8)
+  const divisor   = isYangDay ? 9 : 6;
+  const r         = sum % divisor;
+  return r === 0 ? divisor : r;
+}
+function linguiPointsForToday(date) {
+  const out = new Array(12);
+  for (let i = 0; i < 12; i++) {
+    out[i] = LINGUI_CODE_TO_POINT[linguiCodeForSector(date, i)];
+  }
+  return out;
+}
 
-const FEITENG_LABELS = [
-  '列缺',  // 0  子
-  '照海',  // 1  丑
-  '外关',  // 2  寅
-  '照海',  // 3  卯
-  '列缺',  // 4  辰
-  '足临泣',// 5  巳
-  '内关',  // 6  午
-  '后溪',  // 7  未
-  '公孙',  // 8  申
-  '申脉',  // 9  酉
-  '后溪',  // 10 戌
-  '公孙',  // 11 亥
-];
+/* ============================================================
+   飞腾八法 (Feiteng Bafa) — dynamic computation
+   ------------------------------------------------------------
+   Source: 飞腾八法歌 + 五鼠遁 hour-stem tables (user-provided).
+       壬甲公孙即是乾    丙居艮上内关然
+       戊为临泣生坎水    庚属外关震相连
+       辛上后溪装巽卦    乙癸申脉到坤传
+       己土列缺南离上    丁居照海兑金全
+   At any moment the active 飞腾 point depends ONLY on the current
+   hour-stem (时干), which is derived from day-stem + hour-branch
+   via 五鼠遁 (the "five-rat escape" rule):
+       日干甲己 → 子时甲子   日干乙庚 → 子时丙子
+       日干丙辛 → 子时戊子   日干丁壬 → 子时庚子   日干戊癸 → 子时壬子
+   Each subsequent 时 advances the stem by 1 (mod 10), branch by 1.
+   ============================================================ */
+const STEMS    = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const BRANCHES = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+
+// 时干 → {穴, 卦}. Two stems share each yin/yang gua (e.g. 甲+壬→乾)
+const FEITENG_STEM_MAP = {
+  '甲': { point: '公孙',  gua: '乾' },
+  '乙': { point: '申脉',  gua: '坤' },
+  '丙': { point: '内关',  gua: '艮' },
+  '丁': { point: '照海',  gua: '兑' },
+  '戊': { point: '足临泣', gua: '坎' },
+  '己': { point: '列缺',  gua: '离' },
+  '庚': { point: '外关',  gua: '震' },
+  '辛': { point: '后溪',  gua: '巽' },
+  '壬': { point: '公孙',  gua: '乾' },
+  '癸': { point: '申脉',  gua: '坤' },
+};
+
+// 五鼠遁: day-stem index → hour-stem index of 子时.
+//   甲己→甲(0)子;  乙庚→丙(2)子;  丙辛→戊(4)子;  丁壬→庚(6)子;  戊癸→壬(8)子
+const WUSHU_DUN_BASE = [0, 2, 4, 6, 8, 0, 2, 4, 6, 8];
+
+function hourStemIdxFromDay(dayStemIdx, hourBranchIdx) {
+  return (WUSHU_DUN_BASE[dayStemIdx] + hourBranchIdx) % 10;
+}
+
+// Anchor for the sexagenary day-pillar cycle:
+//   2026-05-31 (Gregorian) = 乙巳日 = cycle index 41 (0-indexed; 甲子=0).
+// TCM days begin at 子时 (23:00), so a date whose Gregorian hour is
+// ≥23 rolls over to the NEXT day's pillar.
+function dayPillarIdx(date) {
+  let target = new Date(date.getTime());
+  if (target.getHours() >= 23) target.setDate(target.getDate() + 1);
+  // Use UTC-of-local-date to dodge DST drift.
+  const targetUTC = Date.UTC(target.getFullYear(), target.getMonth(), target.getDate());
+  const anchorUTC = Date.UTC(2026, 4, 31);
+  const daysDiff  = Math.round((targetUTC - anchorUTC) / 86400000);
+  return (((41 + daysDiff) % 60) + 60) % 60;
+}
+
+// Build the 12 飞腾 point names for the current day, indexed by sector
+// (sector i corresponds to hour-branch i, matching ORGANS).
+function feitengPointsForToday(date) {
+  const dayStemIdx = dayPillarIdx(date) % 10;
+  const out = new Array(12);
+  for (let i = 0; i < 12; i++) {
+    const hStem = hourStemIdxFromDay(dayStemIdx, i);
+    out[i] = FEITENG_STEM_MAP[STEMS[hStem]].point;
+  }
+  return out;
+}
 
 // Radii for the various mode rings. The ziwu stack runs distal (outer)
 // to proximal (inner) and tucks into the band between the sector outer
@@ -479,9 +567,11 @@ function renderModeLabels() {
       pts.forEach((pt, j) => addLabel(ZIWU_RADII_R[j], pt, i, 'mode-label-ziwu'));
     });
   } else if (_clockMode === 'lingui') {
-    LINGUI_LABELS.forEach((cn, i) => addLabel(R_MODE_SINGLE, cn, i, 'mode-label-lingui'));
+    const now = new Date();
+    linguiPointsForToday(now).forEach((cn, i) => addLabel(R_MODE_SINGLE, cn, i, 'mode-label-lingui'));
   } else if (_clockMode === 'feiteng') {
-    FEITENG_LABELS.forEach((cn, i) => addLabel(R_MODE_SINGLE, cn, i, 'mode-label-feiteng'));
+    const now = new Date();
+    feitengPointsForToday(now).forEach((cn, i) => addLabel(R_MODE_SINGLE, cn, i, 'mode-label-feiteng'));
   }
 }
 
@@ -983,6 +1073,14 @@ function updateClock() {
   if (idx !== lastOrganIdxClock) {
     lastOrganIdxClock = idx;
     highlightSectors(idx);
+    // Time-dependent modes (灵龟八法 / 飞腾八法) compute each sector's
+    // open 穴 from the current day-pillar + hour-branch. The day-pillar
+    // flips at 子时 (23:00), so re-render whenever the active hour
+    // changes — cheap (60 / 12 SVG text nodes) and guarantees the
+    // labels stay correct across midnight.
+    if (_clockMode === 'lingui' || _clockMode === 'feiteng') {
+      renderModeLabels();
+    }
     setActiveSector(idx);   // retarget the always-on 2× cycle
     document.dispatchEvent(new CustomEvent('hourchange', { detail: { idx } }));
   }
