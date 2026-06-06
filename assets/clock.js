@@ -29,6 +29,21 @@ const SIDEBAR_HTML = `
   <div class="clock-wrap">
     <svg class="clock-svg" id="clock-svg" viewBox="-360 -360 720 720"></svg>
   </div>
+  <!-- Per-tick info strip: day-pillar, hour-pillar, currently-open 穴
+       (mode-dependent), 卦, 配穴, 通脉. Updated by updateInfoStrip(). -->
+  <div class="info-strip" id="info-strip">
+    <div class="info-pillars">
+      <span class="info-pair"><span class="info-key">日柱</span><span class="info-val" id="info-day-pillar">—</span></span>
+      <span class="info-pair"><span class="info-key">时柱</span><span class="info-val" id="info-hour-pillar">—</span></span>
+    </div>
+    <div class="info-point" id="info-point">
+      <span class="info-key" id="info-mode-name">—</span>
+      <span class="info-main" id="info-main-point">—</span>
+      <span class="info-meta" id="info-gua"></span>
+      <span class="info-meta" id="info-pair-pt"></span>
+      <span class="info-meta" id="info-meridian"></span>
+    </div>
+  </div>
   <a href="index.html" class="now-strip" id="now-strip">
     <div class="now-strip-time" id="now-time">--:--<small>NOW</small></div>
     <div class="now-strip-organ">
@@ -356,6 +371,7 @@ function setClockMode(m) {
     t.classList.toggle('active', t.dataset.mode === m);
   });
   renderModeLabels();
+  updateInfoStrip();
   // Re-target the always-on cycle so it picks up the freshly-rendered
   // mode labels right away. Without this, there's a ~1.1 s gap after
   // mode switch where the active sector has no highlighted label.
@@ -472,6 +488,94 @@ function linguiPointsForToday(date) {
     out[i] = LINGUI_CODE_TO_POINT[linguiCodeForSector(date, i)];
   }
   return out;
+}
+
+/* ============================================================
+   八脉交会穴 reference — 配对穴 + 所通奇经.
+   These pairings are universal across both 灵龟 and 飞腾:
+     公孙   ↔ 内关    (冲脉  / 阴维脉)
+     后溪   ↔ 申脉    (督脉  / 阳跷脉)
+     足临泣 ↔ 外关    (带脉  / 阳维脉)
+     列缺   ↔ 照海    (任脉  / 阴跷脉)
+   The 卦 column DIFFERS between the two methods:
+     - 飞腾 (奇经纳干): 甲壬→乾  乙癸→坤  丙→艮  丁→兑
+                       戊→坎  己→离  庚→震  辛→巽
+     - 灵龟 (奇经纳卦): 1坎→申脉  2坤→照海  3震→外关  4巽→临泣
+                       5中宫→照海(借)  6乾→公孙  7兑→后溪  8艮→内关  9离→列缺
+   ============================================================ */
+const POINT_INFO = {
+  '公孙':   { pair: '内关',   meridian: '冲脉',   guaFei: '乾', guaLin: '乾' },
+  '内关':   { pair: '公孙',   meridian: '阴维脉', guaFei: '艮', guaLin: '艮' },
+  '后溪':   { pair: '申脉',   meridian: '督脉',   guaFei: '巽', guaLin: '兑' },
+  '申脉':   { pair: '后溪',   meridian: '阳跷脉', guaFei: '坤', guaLin: '坎' },
+  '足临泣': { pair: '外关',   meridian: '带脉',   guaFei: '坎', guaLin: '巽' },
+  '外关':   { pair: '足临泣', meridian: '阳维脉', guaFei: '震', guaLin: '震' },
+  '列缺':   { pair: '照海',   meridian: '任脉',   guaFei: '离', guaLin: '离' },
+  '照海':   { pair: '列缺',   meridian: '阴跷脉', guaFei: '兑', guaLin: '坤' },
+};
+
+function currentBranchIdx(date) {
+  // Convert clock-hour to TCM 时辰 branch index (0=子=23-01, ... 11=亥=21-23)
+  return Math.floor((date.getHours() + 1) / 2) % 12;
+}
+
+function updateInfoStrip() {
+  const dayEl    = document.getElementById('info-day-pillar');
+  const hourEl   = document.getElementById('info-hour-pillar');
+  const modeEl   = document.getElementById('info-mode-name');
+  const mainEl   = document.getElementById('info-main-point');
+  const guaEl    = document.getElementById('info-gua');
+  const pairEl   = document.getElementById('info-pair-pt');
+  const meridEl  = document.getElementById('info-meridian');
+  if (!dayEl) return;  // sidebar not yet built
+
+  const now      = new Date();
+  const pillar   = dayPillarIdx(now);
+  const dayStem  = STEMS[pillar % 10];
+  const dayBr    = BRANCHES[pillar % 12];
+  const hBrIdx   = currentBranchIdx(now);
+  const hStemIdx = hourStemIdxFromDay(pillar % 10, hBrIdx);
+  const hStem    = STEMS[hStemIdx];
+  const hBr      = BRANCHES[hBrIdx];
+
+  dayEl.textContent  = dayStem + dayBr;
+  hourEl.textContent = hStem + hBr;
+
+  let modeName = '', mainPoint = '', gua = '';
+  if (_clockMode === 'feiteng') {
+    const entry = FEITENG_STEM_MAP[hStem];
+    modeName  = '飞腾';
+    mainPoint = entry.point;
+    gua       = entry.gua;
+  } else if (_clockMode === 'lingui') {
+    const code = linguiCodeForSector(now, hBrIdx);
+    modeName  = '灵龟';
+    mainPoint = LINGUI_CODE_TO_POINT[code];
+    gua       = ({1:'坎',2:'坤',3:'震',4:'巽',5:'中',6:'乾',7:'兑',8:'艮',9:'离'})[code] || '';
+  } else if (_clockMode === 'ziwu') {
+    // Surface the 输 point (3rd in 井荥输经合) — the time-driven open
+    // point most commonly selected for needle-time charts.
+    modeName  = '子午';
+    mainPoint = (ZIWU_5SHU[hBrIdx] && ZIWU_5SHU[hBrIdx][2]) || '';
+  } else {
+    modeName  = '养生';
+    mainPoint = YANGSHENG_LABELS[hBrIdx] || '';
+  }
+
+  modeEl.textContent = modeName;
+  mainEl.textContent = mainPoint;
+
+  const info = POINT_INFO[mainPoint];
+  if (info && (_clockMode === 'feiteng' || _clockMode === 'lingui')) {
+    const guaLabel = _clockMode === 'feiteng' ? info.guaFei : info.guaLin;
+    guaEl.textContent   = guaLabel + '卦';
+    pairEl.textContent  = '配 ' + info.pair;
+    meridEl.textContent = '通 ' + info.meridian;
+  } else {
+    guaEl.textContent   = '';
+    pairEl.textContent  = '';
+    meridEl.textContent = '';
+  }
 }
 
 /* ============================================================
@@ -1093,6 +1197,7 @@ function updateClock() {
       renderModeLabels();
     }
     setActiveSector(idx);   // retarget the always-on 2× cycle
+    updateInfoStrip();      // pillars + open-穴 line under the clock
     document.dispatchEvent(new CustomEvent('hourchange', { detail: { idx } }));
   }
 }
@@ -1119,6 +1224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderModeLabels();
   bindSectorHoverCycle();
   updateClock();
+  updateInfoStrip();
   setInterval(updateClock, 1000);
   initSPANav();
 });

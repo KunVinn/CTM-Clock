@@ -205,6 +205,57 @@ a:hover { color: var(--gold-bright); }
 }
 .clock-svg { width: 100%; height: 100%; display: block; }
 
+/* ============================================================
+   INFO STRIP — small data panel between the clock and now-strip.
+   Shows current day-pillar, hour-pillar, mode-specific open 穴,
+   and the 卦 / 配穴 / 通脉 trio for 灵龟 and 飞腾.
+   ============================================================ */
+.info-strip {
+  font-family: var(--font-han);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  margin: 0.35rem 0.2rem 0.5rem;
+  padding: 0.35rem 0.55rem 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(212, 169, 106, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  line-height: 1.45;
+}
+.info-strip .info-pillars,
+.info-strip .info-point {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.7rem;
+  align-items: baseline;
+}
+.info-strip .info-pair { white-space: nowrap; }
+.info-strip .info-key {
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin-right: 0.25rem;
+  font-size: 0.66rem;
+  opacity: 0.85;
+}
+.info-strip .info-val {
+  color: var(--ink);
+  font-weight: 600;
+}
+.info-strip .info-main {
+  color: var(--gold-bright);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.info-strip .info-meta {
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+.info-strip .info-meta:empty { display: none; }
+
 .now-strip {
   background: var(--bg-card);
   border: 1px solid var(--line);
@@ -1690,7 +1741,16 @@ a:hover { color: var(--gold-bright); }
 
 .center-pivot { /* the small dot at exact center, drawn after the hands */ }
 .hand { stroke-linecap: round; }
-.hand-group { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.hand-group {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Dark halo around the hands so they stay readable across the yang
+     (cream / white) and yin (deep black) halves of the central taiji.
+     Stacked drop-shadows produce a tighter outline than a single one. */
+  filter:
+    drop-shadow(0 0 1.2px var(--bg-deep))
+    drop-shadow(0 0 1.2px var(--bg-deep))
+    drop-shadow(0 0 0.6px var(--bg-deep));
+}
 .hand-group.no-anim { transition: none; }
 .hand-hour    { stroke: var(--ink); stroke-width: 4; }
 .hand-minute  { stroke: var(--gold-bright); stroke-width: 2.5; }
