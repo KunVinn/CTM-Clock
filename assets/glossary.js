@@ -522,9 +522,10 @@ const TERMS = {
   },
   'chen-pi': {
     cn: '陳皮 / 陈皮 · Chén Pí', en: 'Aged tangerine peel',
-    def: 'Pungent, bitter, warm; regulates qi, harmonises the Stomach, transforms damp phlegm.',
-    defCn: '味苦辛，性温；入脾、肺经。理气健脾、燥湿化痰。',
-    url: 'https://en.wikipedia.org/wiki/Citrus_reticulata'
+    def: 'Pungent, bitter, warm; regulates qi, harmonises the Stomach, transforms damp phlegm. The longer aged the better — "an ounce of aged peel is worth an ounce of gold." Classic pairings: + 半夏 (Èr Chén Tāng core for damp-phlegm cough), + 茯苓 (Spleen damp / loose stool), + 生姜 (cold-stomach nausea, wind-cold cough), + 山楂 (meat-stagnation indigestion).',
+    defCn: '味辛苦，性温；入脾、肺经。理气健脾、燥湿化痰。"一两陈皮一两金，半年陈皮胜黄金"——愈陈愈良。经典配伍：① + 半夏 → 二陈汤（常加茯苓、甘草），治痰湿停滞、咳嗽痰多；② + 茯苓 → 健脾渗湿，治脾虚湿盛之腹胀便溏；③ + 生姜 → 温胃散寒、止呕止咳，治胃寒呕吐或风寒咳嗽；④ + 山楂 → 消食导滞，治肉食积滞之消化不良。',
+    url: 'https://en.wikipedia.org/wiki/Citrus_reticulata',
+    urlCn: 'https://baike.baidu.com/item/陈皮'
   },
 
   // ================== TONGUE & DIAGNOSIS ==================

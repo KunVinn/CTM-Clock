@@ -146,7 +146,8 @@ const ORGANS = [
       herbs: [
         { cn: '百合', py: 'Bǎi Hé', en: 'Lily bulb' },
         { cn: '杏仁', py: 'Xìng Rén', en: 'Bitter apricot kernel' },
-        { cn: '麥冬', py: 'Mài Dōng', en: 'Ophiopogon root' }
+        { cn: '麥冬', py: 'Mài Dōng', en: 'Ophiopogon root' },
+        { cn: '陈皮', py: 'Chén Pí', en: 'Aged tangerine peel' }
       ],
       syndrome: '肺氣虛 · Lung qi deficiency',
       tcmSymptoms: ['Shortness of breath', 'Weak voice', 'Spontaneous sweating'],
@@ -299,7 +300,8 @@ const ORGANS = [
       herbs: [
         { cn: '黄芪', py: 'Huáng Qí', en: 'Astragalus root' },
         { cn: '白术', py: 'Bái Zhú', en: 'Atractylodes' },
-        { cn: '山药', py: 'Shān Yào', en: 'Chinese yam' }
+        { cn: '山药', py: 'Shān Yào', en: 'Chinese yam' },
+        { cn: '陈皮', py: 'Chén Pí', en: 'Aged tangerine peel' }
       ],
       syndrome: '脾氣虛 · Spleen qi deficiency',
       tcmSymptoms: ['Fatigue', 'Loose stools', 'Heavy limbs', 'Loss of appetite'],
