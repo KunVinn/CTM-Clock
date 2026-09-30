@@ -567,6 +567,42 @@
       </section>
 
       <!-- ============================================================
+           PATIENT QUESTIONS — local MCP knowledge-base bridge
+           ============================================================ -->
+      <section class="patient-question-section" id="patient-question-section">
+        <h2><span class="cn" data-zh-auto>患者询问</span><span class="acu-en">Ask a TCM question</span></h2>
+        <p class="desc lang-en-only">Ask about a tongue sign, symptoms, photo-taking, or what to discuss with a practitioner. Answers come from the local educational knowledge base.</p>
+        <p class="desc lang-cn-only" data-zh-auto>可询问舌象、症状、拍照方法或就诊时应咨询之事。答案来自本机教育性中医知识库。</p>
+        <form class="patient-question-form" id="patient-question-form">
+          <label for="patient-question-input">
+            <span class="lang-en-only">Your question</span>
+            <span class="lang-cn-only" data-zh-auto>您的问题</span>
+          </label>
+          <textarea id="patient-question-input" rows="3" maxlength="2000"
+                    placeholder="例如：舌苔很厚怎么办？ / What might a thick tongue coating mean?"
+                    required></textarea>
+          <label for="patient-question-context">
+            <span class="lang-en-only">Symptoms, photo observations, or practitioner feedback <small>(optional)</small></span>
+            <span class="lang-cn-only" data-zh-auto>症状、照片观察或医师反馈（可选）</span>
+          </label>
+          <textarea id="patient-question-context" rows="2" maxlength="2000"
+                    placeholder="例如：口黏、腹胀；医师建议复核舌苔厚薄。 / Add symptoms or feedback."></textarea>
+          <div class="patient-question-actions">
+            <select id="patient-question-language" aria-label="Answer language">
+              <option value="auto">中文 + English</option>
+              <option value="zh">中文</option>
+              <option value="en">English</option>
+            </select>
+            <button class="photo-btn primary" type="submit" id="patient-question-submit">
+              <span>💬</span> <span class="lang-en-only">Ask</span><span class="lang-cn-only" data-zh-auto>询问</span>
+            </button>
+          </div>
+        </form>
+        <div class="patient-question-status" id="patient-question-status" role="status" aria-live="polite"></div>
+        <div class="patient-question-output" id="patient-question-output" hidden></div>
+      </section>
+
+      <!-- ============================================================
            DIAGNOSIS OUTPUT
            ============================================================ -->
       <section class="diagnosis-output">
@@ -1820,6 +1856,7 @@ const geminiForgetBtn = document.getElementById('gemini-forget');
 const geminiAnalyze   = document.getElementById('gemini-analyze');
 const aiStatus        = document.getElementById('ai-status');
 const aiOutput        = document.getElementById('ai-output');
+let lastAiResult      = null;
 const aiGetKeyLink    = document.getElementById('ai-getkey-link');
 const aiProviderRadios= document.querySelectorAll('input[name="ai-provider"]');
 
@@ -1911,6 +1948,7 @@ Use these exact keys and only these allowed values:
 If the photo does not show a tongue clearly, set every observation field to a short note saying so and confidence to "low".`;
 
 function renderAiResult(data) {
+  lastAiResult = data;
   const safe = (s) => String(s == null ? '' : s).replace(/[<>&]/g,
     c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
   const matchedColor   = TONGUE_COLORS.find(c   => c.key === data.body_color);
@@ -2862,5 +2900,91 @@ refreshForgetLinkVisibility();
 })();
 </script>
 
+<script>
+const patientQuestionForm = document.getElementById('patient-question-form');
+const patientQuestionInput = document.getElementById('patient-question-input');
+const patientQuestionContext = document.getElementById('patient-question-context');
+const patientQuestionLanguage = document.getElementById('patient-question-language');
+const patientQuestionSubmit = document.getElementById('patient-question-submit');
+const patientQuestionStatus = document.getElementById('patient-question-status');
+const patientQuestionOutput = document.getElementById('patient-question-output');
+
+function escapePatientHtml(value) {
+  return String(value == null ? '' : value).replace(/[<>&\"]/g,
+    character => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '\"': '&quot;' }[character]));
+}
+
+function answerParagraphs(text) {
+  return String(text || '').split(/\n\s*\n/).filter(Boolean)
+    .map(paragraph => `<p>${escapePatientHtml(paragraph).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`)
+    .join('');
+}
+
+function renderPatientAnswer(data) {
+  const parts = [];
+  if (data.urgent) {
+    parts.push('<div class="patient-answer-urgent">Please use local emergency services now if these symptoms are happening.</div>');
+  }
+  if (data.answer) {
+    parts.push(`<div class="patient-answer-block"><h4>Answer</h4>${answerParagraphs(data.answer)}</div>`);
+  }
+  if (data.answer_cn && data.answer_cn !== data.answer) {
+    parts.push(`<div class="patient-answer-block"><h4 data-zh-auto>中文答复</h4>${answerParagraphs(data.answer_cn)}</div>`);
+  }
+  if (data.web_links && data.web_links.length) {
+    parts.push(`<div class="patient-answer-block"><h4>Further reading</h4><ul class="patient-answer-links">${data.web_links.map(link =>
+      `<li><a href="${escapePatientHtml(link.url)}" target="_blank" rel="noopener">${escapePatientHtml(link.title)}</a> <small>${escapePatientHtml(link.why)}</small></li>`
+    ).join('')}</ul></div>`);
+  }
+  if (data.references && data.references.length) {
+    parts.push(`<div class="patient-answer-references">References: ${data.references.map(reference =>
+      reference.source_url
+        ? `<a href="${escapePatientHtml(reference.source_url)}" target="_blank" rel="noopener"><code>${escapePatientHtml(reference.id)}</code></a>`
+        : `<code>${escapePatientHtml(reference.id)}</code>`
+    ).join(' · ')}</div>`);
+  }
+  if (data.knowledge_sources && data.knowledge_sources.length) {
+    parts.push(`<div class="patient-answer-sources">Knowledge sources: ${data.knowledge_sources.map(escapePatientHtml).join(' · ')}</div>`);
+  }
+  parts.push(`<div class="patient-answer-disclaimer">${escapePatientHtml(data.disclaimer || 'Educational use only - not a medical diagnosis.')}</div>`);
+  patientQuestionOutput.innerHTML = parts.join('');
+  patientQuestionOutput.hidden = false;
+  if (window.tcmScript) window.tcmScript.set(window.tcmScript.get());
+}
+
+patientQuestionForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  const question = patientQuestionInput.value.trim();
+  if (!question) return;
+  patientQuestionSubmit.disabled = true;
+  patientQuestionStatus.className = 'patient-question-status';
+  patientQuestionStatus.textContent = 'Thinking...';
+  patientQuestionOutput.hidden = true;
+  try {
+    const response = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question,
+        language: patientQuestionLanguage.value,
+        context: {
+          signs: { ...state },
+          notes: patientQuestionContext.value.trim(),
+          ai_result: lastAiResult,
+        }
+      })
+    });
+    const data = await response.json();
+    if (!response.ok || data.error) throw new Error(data.error || `HTTP ${response.status}`);
+    renderPatientAnswer(data);
+    patientQuestionStatus.textContent = '';
+  } catch (error) {
+    patientQuestionStatus.className = 'patient-question-status error';
+    patientQuestionStatus.textContent = `Could not reach the local TCM question service: ${error.message}`;
+  } finally {
+    patientQuestionSubmit.disabled = false;
+  }
+});
+</script>
 </body>
 </html>
