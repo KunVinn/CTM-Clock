@@ -16,7 +16,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="assets/style.css?v=20260530k">
+<link rel="stylesheet" href="assets/style.css?v=20260930a">
 </head>
 <body data-page="tongue">
 
@@ -2974,6 +2974,10 @@ patientQuestionForm.addEventListener('submit', async event => {
         }
       })
     });
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error(`Question service returned ${contentType || 'HTML'} instead of JSON. Hosted deployments need TCM_ASK_API_URL configured.`);
+    }
     const data = await response.json();
     if (!response.ok || data.error) throw new Error(data.error || `HTTP ${response.status}`);
     renderPatientAnswer(data);

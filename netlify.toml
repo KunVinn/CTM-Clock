@@ -5,6 +5,11 @@
   publish = "."
   functions = "netlify/functions"
 
+[[redirects]]
+  from = "/api/ask"
+  to = "/.netlify/functions/ask"
+  status = 200
+
 # Security & privacy headers — applied to every response.
 # - CSP allows only same-origin assets; the only externally-fetched
 #   resource at runtime is the Gemini API (when the user opts in to
