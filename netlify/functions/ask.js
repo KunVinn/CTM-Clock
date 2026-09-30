@@ -65,14 +65,14 @@ const ENTRIES = [
   }
 ];
 
-function localAnswer(question) {
+function localAnswer(question, language) {
   const normalized = question.toLowerCase();
   const matches = ENTRIES.filter(entry => entry.terms.some(term => normalized.includes(term.toLowerCase()))).slice(0, 3);
   const selected = matches.length ? matches : [ENTRIES[0]];
   const bullets = selected.map(entry => `**${entry.title}**: ${entry.text}`).join('\n\n');
   const bulletsCn = selected.map(entry => `**${entry.titleCn}**：${entry.textCn}`).join('\n\n');
   const urgent = ['trouble breathing', 'chest pain', 'fainting', '急诊', '胸痛'].some(term => normalized.includes(term));
-  return {
+  const result = {
     question,
     answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${bullets}`,
     answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${bulletsCn}\n\n舌象只能作为整理问题的参考，不能单独用于确诊或自行调整治疗。请结合症状、病史并咨询合格医师。`,
@@ -82,6 +82,13 @@ function localAnswer(question) {
     urgent,
     disclaimer: 'Educational information only; not a diagnosis or a substitute for professional medical care.'
   };
+  if (language === 'zh') {
+    result.answer = result.answer_cn;
+    delete result.answer_cn;
+  } else if (language === 'en') {
+    delete result.answer_cn;
+  }
+  return result;
 }
 
 exports.handler = async event => {
@@ -101,7 +108,10 @@ exports.handler = async event => {
     return reply(400, { error: 'Please enter a question.' });
   }
 
-  if (!target) return reply(200, localAnswer(payload.question.trim()));
+  if (!['auto', 'en', 'zh'].includes(payload.language || 'auto')) {
+    return reply(400, { error: "language must be 'auto', 'en' or 'zh'." });
+  }
+  if (!target) return reply(200, localAnswer(payload.question.trim(), payload.language || 'auto'));
 
   try {
     const response = await fetch(`${target}/api/ask`, {
