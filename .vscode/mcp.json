@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "tcm-diagnosis": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/mcp/.venv/Scripts/python.exe",
+      "args": ["${workspaceFolder}/mcp/server.py"],
+      "env": {
+        "TCM_JOURNAL_DIR": "${userHome}/.tcm-journal"
+      }
+    }
+  }
+}
