@@ -2942,7 +2942,7 @@ function renderPatientAnswer(data) {
   const parts = [];
   const language = patientQuestionLanguage.value;
   if (data.urgent) {
-    parts.push('<div class="patient-answer-urgent">Please use local emergency services now if these symptoms are happening.</div>');
+    parts.push(`<div class="patient-answer-urgent">${language === 'zh' ? '如正在发生这些危险症状，请立即使用当地急救服务。' : 'Please use local emergency services now if these symptoms are happening.'}</div>`);
   }
   if (data.answer && language !== 'zh') {
     parts.push(`<div class="patient-answer-block"><h4>Answer</h4>${answerParagraphs(data.answer)}</div>`);
