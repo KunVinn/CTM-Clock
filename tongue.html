@@ -2922,13 +2922,16 @@ function answerParagraphs(text) {
 
 function renderPatientAnswer(data) {
   const parts = [];
+  const language = patientQuestionLanguage.value;
   if (data.urgent) {
     parts.push('<div class="patient-answer-urgent">Please use local emergency services now if these symptoms are happening.</div>');
   }
-  if (data.answer) {
+  if (data.answer && language !== 'zh') {
     parts.push(`<div class="patient-answer-block"><h4>Answer</h4>${answerParagraphs(data.answer)}</div>`);
   }
-  if (data.answer_cn && data.answer_cn !== data.answer) {
+  if (language === 'zh' && data.answer) {
+    parts.push(`<div class="patient-answer-block"><h4 data-zh-auto>中文答复</h4>${answerParagraphs(data.answer)}</div>`);
+  } else if (language !== 'en' && data.answer_cn && data.answer_cn !== data.answer) {
     parts.push(`<div class="patient-answer-block"><h4 data-zh-auto>中文答复</h4>${answerParagraphs(data.answer_cn)}</div>`);
   }
   if (data.web_links && data.web_links.length) {
