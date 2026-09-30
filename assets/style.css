@@ -3521,15 +3521,23 @@ a:hover { color: var(--gold-bright); }
   font-size: 0.88rem;
   margin: 0 0 0.9rem;
 }
+.patient-question-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.35rem;
+  width: 100%;
+  min-width: 0;
+}
 .patient-question-form label {
   display: block;
-  margin-bottom: 0.35rem;
+  margin: 0;
   color: var(--ink-soft);
   font-size: 0.82rem;
 }
 .patient-question-form textarea {
   display: block;
   width: 100%;
+  min-width: 0;
   min-height: 5.5rem;
   box-sizing: border-box;
   resize: vertical;
@@ -3548,7 +3556,7 @@ a:hover { color: var(--gold-bright); }
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin-top: 0.65rem;
+  margin-top: 0.3rem;
 }
 .patient-question-actions select {
   min-height: 2.25rem;
