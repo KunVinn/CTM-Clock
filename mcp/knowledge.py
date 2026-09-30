@@ -63,6 +63,12 @@ SIGN_ALIASES = {
     "cracked": ["裂纹舌", "舌裂", "cracked tongue"],
 }
 
+SIGN_CATEGORY_CN = {
+    "color": "舌色",
+    "shape": "舌形",
+    "coating": "舌苔",
+}
+
 FAQS: list[dict[str, Any]] = [
     {
         "id": "faq-what-tongue-shows",
@@ -173,7 +179,7 @@ def _build_entries() -> list[dict[str, Any]]:
                 {
                     "id": f"sign-{category}-{sign['key']}",
                     "title": f"{category.title()}: {sign['en']}",
-                    "title_cn": f"{category}：{sign['cn']}",
+                    "title_cn": f"{SIGN_CATEGORY_CN.get(category, category)}：{sign['cn']}",
                     "topics": [
                         category,
                         sign["key"],
