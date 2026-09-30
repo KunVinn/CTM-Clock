@@ -5169,6 +5169,48 @@ html[data-script="c"] .menu-btn { gap: 0; }
   color: var(--gold-bright);
 }
 
+.tongue-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 1.6rem;
+}
+.tongue-reference-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--gold);
+  border-radius: 4px;
+  padding: 1rem;
+}
+.tongue-reference-card h3 {
+  margin: 0 0 0.65rem;
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+}
+.tongue-reference-card h3 .cn {
+  font-family: var(--font-han);
+  margin-right: 0.45rem;
+}
+.tongue-reference-card p,
+.tongue-photo-steps {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+.tongue-reference-card p { margin: 0 0 0.65rem; }
+.tongue-photo-steps {
+  margin: 0;
+  padding-left: 1.35rem;
+}
+.tongue-photo-steps li { margin-bottom: 0.45rem; }
+.tongue-reference-note {
+  border-top: 1px dotted var(--line);
+  padding-top: 0.6rem;
+  font-size: 0.8rem !important;
+}
+.tongue-reference-note strong { color: var(--gold); }
+
 .tongue-overview-figure {
   margin: 0 0 1.5rem;
   background: var(--bg-card);
