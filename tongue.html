@@ -1252,6 +1252,7 @@ function selectZone(key) {
    ============================================================ */
 
 const state = { color: null, shape: null, coating: null };
+window.tcmTongueState = state;
 
 function buildSelector(items, containerId, kind, hasSwatch) {
   const wrap = document.getElementById(containerId);
@@ -1875,6 +1876,7 @@ const geminiAnalyze   = document.getElementById('gemini-analyze');
 const aiStatus        = document.getElementById('ai-status');
 const aiOutput        = document.getElementById('ai-output');
 let lastAiResult      = null;
+window.tcmLastAiResult = null;
 const aiGetKeyLink    = document.getElementById('ai-getkey-link');
 const aiProviderRadios= document.querySelectorAll('input[name="ai-provider"]');
 
@@ -1967,6 +1969,7 @@ If the photo does not show a tongue clearly, set every observation field to a sh
 
 function renderAiResult(data) {
   lastAiResult = data;
+  window.tcmLastAiResult = data;
   const safe = (s) => String(s == null ? '' : s).replace(/[<>&]/g,
     c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
   const matchedColor   = TONGUE_COLORS.find(c   => c.key === data.body_color);
@@ -2989,9 +2992,9 @@ patientQuestionForm.addEventListener('submit', async event => {
         question,
         language: patientQuestionLanguage.value,
         context: {
-          signs: { ...state },
+          signs: { ...(window.tcmTongueState || {}) },
           notes: patientQuestionContext.value.trim(),
-          ai_result: lastAiResult,
+          ai_result: window.tcmLastAiResult,
         }
       })
     });
