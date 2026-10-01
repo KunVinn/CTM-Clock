@@ -310,7 +310,7 @@
       keyStore: GEMINI_KEY_STORE,
       keyPlaceholder: 'AIza…',
       getKeyUrl: 'https://aistudio.google.com/apikey',
-      endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+      endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent',
       async translateBatch(key, chunk, variantName) {
         const prompt =
           `Translate the following English UI / content strings into ${variantName}. ` +
