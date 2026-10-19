@@ -9,6 +9,7 @@ Provides tools for:
 - Keeping a per-patient journal so change can be tracked over time
 - Rendering a practitioner-facing report and recording the practitioner's feedback
 - Answering patient questions from a transparent local TCM knowledge base
+- Providing a general-Q&A prompt for the host model
 
 Data is ported from ``tongue.html`` so the server and the web page agree on keys.
 Nothing here is a medical diagnosis.
@@ -822,6 +823,30 @@ Steps:
 6. Never recommend starting, stopping or changing medication from this answer.
 
 {DISCLAIMER}
+"""
+
+
+@mcp.prompt()
+def answer_general_question(question: str = "", language: str = "auto") -> str:
+    """Guide the host model through a source-aware answer to a general question."""
+    return f"""Answer this general question directly and in plain language:
+
+Question: {question or '<question>'}
+Language: {language}
+
+Guidance:
+1. Use available search or knowledge tools for current, disputed, or high-stakes facts.
+   Prefer primary sources and cite only sources actually retrieved. If no retrieval
+   tool is available, say when an answer may be incomplete or out of date.
+2. Do not invent citations, claim this MCP queried a database it could not access,
+   or present a knowledge-graph association as proof of causation or treatment effect.
+3. For TCM questions, use ask_tcm_question or search_tcm_knowledge for this server's
+   curated TCM material. The AI-HPC TCMM project is a separate data-processing
+   repository; its source datasets are not bundled or queried by this MCP server.
+4. For medical, legal, or financial topics, give general information, distinguish
+   uncertainty, and recommend a qualified professional when individual advice is needed.
+   For urgent medical danger, advise local emergency services.
+5. Do not request or send identifying personal information to external search tools.
 """
 
 

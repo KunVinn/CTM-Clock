@@ -252,8 +252,15 @@ TONGUE_COATINGS: list[dict[str, Any]] = [
         "cn": "厚白苔",
         "en": "Thick White",
         "swatch": "#dad0bc",
-        "meaning": "A heavy white film. Indicates cold or dampness — often digestive.",
-        "meaning_cn": "苔厚而白。主寒或湿——多在脾胃。",
+        "meaning": (
+            "In TCM, a thick white coating may be considered a cold/damp or digestive "
+            "clue. It is not a diagnosis: coating thickness alone cannot establish a "
+            "pattern or cause, and ordinary oral factors can also affect its appearance."
+        ),
+        "meaning_cn": (
+            "中医辨证中，厚白苔有时可作为寒湿或消化方面的线索，但这不是诊断；"
+            "单凭舌苔厚薄不能确定证型或病因，日常口腔因素也会影响外观。"
+        ),
         "patterns": ["cold", "damp"],
     },
     {

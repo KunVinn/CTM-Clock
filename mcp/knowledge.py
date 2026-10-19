@@ -383,18 +383,21 @@ def answer(question: str, limit: int = 3, context: dict[str, Any] | None = None)
         answer_cn = clarification_cn + ("\n\n" + answer_cn if answer_cn else "")
     if thick_white_coating:
         detail_en = (
-            "**How to make this more useful**: Check whether the coat is evenly thick or patchy, "
-            "moist/greasy or dry, and whether it scrapes away easily. Also note its location, "
-            "how long it has been present, recent illness or medicines, and symptoms such as "
-            "bloating, nausea, reflux, constipation or loose stools. In TCM, a thick white coat "
-            "may be discussed as a cold/damp or digestive clue, but those details and a clinical "
-            "assessment are needed; it does not identify a pattern or cause by itself."
+            "**What to check**: Note whether the coating is evenly thick or patchy, moist or dry, "
+            "and whether it comes away with gentle brushing. Also note how long it has been present, "
+            "recent illness or medicines, dry mouth, and any mouth discomfort or digestive symptoms. "
+            "A white-looking coating can have ordinary oral causes as well as health-related ones; "
+            "appearance alone cannot tell which. In TCM, a thick white coat may be considered a "
+            "cold/damp or digestive clue, not a diagnosis. Keep normal oral hygiene and avoid scraping "
+            "forcefully or starting treatment based only on the tongue. Seek dental or medical advice "
+            "if it persists, keeps returning, is painful or bleeds, or comes with sores or difficulty swallowing."
         )
         detail_cn = (
-            "**怎样补充才更有用**：请观察舌苔是否均匀或斑片状、湿润油腻还是干燥、能否轻易刮去，"
-            "并记录分布部位、出现多久、近期是否生病或用药，以及腹胀、恶心、反流、便秘或腹泻等症状。"
-            "在中医语境中，厚白苔有时可作为寒湿或消化方面的线索，但仍需结合这些细节和临床评估，"
-            "不能单凭它确定证型或病因。"
+            "**可以留意这些情况**：观察舌苔是否均匀或斑片状、湿润还是干燥，轻柔刷舌时是否容易脱落；"
+            "记录持续时间、近期疾病或用药、口干，以及口腔不适或消化道症状。舌面发白可能与日常口腔因素或健康状况有关，"
+            "仅凭外观无法判断原因。中医辨证中，厚白苔有时可作为寒湿或消化方面的线索，但不是诊断。"
+            "保持日常口腔清洁，不要用力刮舌，也不要只凭舌象自行开始治疗。若持续不退、反复出现、疼痛或出血，"
+            "或伴有口腔溃疡、吞咽困难，请咨询牙医或临床医师。"
         )
         answer_en = answer_en + "\n\n" + detail_en
         answer_cn = answer_cn + "\n\n" + detail_cn
