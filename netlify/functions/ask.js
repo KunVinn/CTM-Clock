@@ -21,7 +21,7 @@ const ENTRIES = [
     text: 'Tongue observation is one part of the traditional four examinations. Body colour, shape and coating may provide clues about patterns, but a tongue photo cannot establish a diagnosis by itself. A practitioner also needs symptoms, history, pulse and direct observation.',
     titleCn: '舌诊能看出什么？',
     textCn: '舌诊属于望闻问切四诊之一。舌色、舌形、舌苔可提示证候线索，但单凭舌照不能确诊；还需结合症状、病史、脉诊与面诊。',
-    terms: ['tongue', '舌', 'observation', 'diagnosis', '舌诊']
+    terms: ['tongue observation', 'tongue diagnosis', 'observation', 'diagnosis', '舌诊', '舌诊能看出什么']
   },
   {
     id: 'sign-white-coating',
@@ -29,7 +29,7 @@ const ENTRIES = [
     text: 'White alone cannot show whether the coating is thin, thick, greasy or partly peeled. Note its thickness, whether it is greasy or easy to scrape off, and any symptoms. A photo still needs practitioner assessment.',
     titleCn: '白苔需要进一步描述',
     textCn: '只说“白”不能判断是薄白苔、厚白苔、腻白苔，还是剥苔。请补充厚薄、是否油腻、能否轻易刮去及伴随症状；舌照仍需结合医师辨证。',
-    terms: ['white', 'coating', '苔', '白苔', 'tongue']
+    terms: ['white coating', 'white tongue coating', 'white coat', '白色舌苔', '舌苔白', '白苔']
   },
   {
     id: 'sign-thick-coating',
@@ -37,7 +37,23 @@ const ENTRIES = [
     text: 'A thick coating can be a descriptive clue in TCM, but it is not a diagnosis. Record whether it is white or yellow, greasy or dry, and what symptoms accompany it. Discuss persistent or changing findings with a qualified clinician.',
     titleCn: '厚舌苔',
     textCn: '厚苔在中医中可以作为描述性线索，但不是诊断。请记录苔色是白还是黄、是否油腻或干燥，以及伴随症状；若持续或发生变化，应咨询合格医师。',
-    terms: ['thick', 'coating', '厚', '舌苔']
+    terms: ['thick white', 'white thick', 'thick tongue coating', 'thick coating', 'thick coat', '舌苔厚白', '厚白苔', '舌苔很厚', '厚苔', '厚舌苔']
+  },
+  {
+    id: 'sign-gray-black-coating',
+    title: 'Gray or black tongue coating',
+    text: 'In TCM references, a gray or black coating is interpreted differently depending on whether it is moist or dry. Color alone cannot establish a diagnosis or cause. Note its moisture, duration, recent foods or medicines, and any mouth symptoms; seek dental or medical advice if it persists, is painful, or bleeds.',
+    titleCn: '灰黑舌苔',
+    textCn: '中医资料会结合舌苔的润燥讨论灰黑苔，但颜色本身不能确定诊断或病因。可留意润燥、持续时间、近期饮食或用药及口腔症状；若持续不退、疼痛或出血，请咨询牙医或临床医师。',
+    terms: ['gray-black coating', 'gray black coating', 'black tongue coating', 'dark tongue coating', '灰黑苔', '灰黑色', '灰黑', '黑苔']
+  },
+  {
+    id: 'sign-greasy-coating',
+    title: 'Thick or greasy tongue coating',
+    text: 'A greasy or sticky coating is a description, not a diagnosis. Its color, moisture, how easily it brushes away, duration, and associated symptoms matter; do not infer a cause from thickness alone.',
+    titleCn: '厚腻舌苔',
+    textCn: '腻苔是舌象描述，不是诊断。还需了解苔色、润燥、轻柔刷舌时是否容易脱落、持续时间及伴随症状；不能只凭厚腻判断病因。',
+    terms: ['greasy coating', 'sticky coating', 'greasy tongue coating', '厚腻', '腻苔', '腻']
   },
   {
     id: 'faq-photo-quality',
@@ -65,24 +81,53 @@ const ENTRIES = [
   }
 ];
 
-function localAnswer(question, language) {
-  const normalized = question.toLowerCase();
+function localAnswer(question, language, context = {}) {
+  const safeContext = context && typeof context === 'object' && !Array.isArray(context) ? context : {};
+  const notes = [...new Set([safeContext.symptoms, safeContext.notes]
+    .filter(value => typeof value === 'string' && value.trim())
+    .map(value => value.trim()))];
+  const additionalNotes = notes.filter(note => note.toLowerCase() !== question.trim().toLowerCase());
+  const signs = safeContext.signs && typeof safeContext.signs === 'object' && !Array.isArray(safeContext.signs)
+    ? Object.values(safeContext.signs).filter(value => typeof value === 'string')
+    : [];
+  const aiSigns = safeContext.ai_result && typeof safeContext.ai_result === 'object'
+    ? ['body_color', 'shape', 'coating'].map(key => safeContext.ai_result[key]).filter(value => typeof value === 'string')
+    : [];
+  const normalized = [question, ...notes, ...signs, ...aiSigns].join(' ').toLowerCase();
   const thickWhite = normalized.includes('thick white') || normalized.includes('white thick') || normalized.includes('舌苔厚白') || normalized.includes('厚白苔');
   const unspecifiedWhite = (normalized.includes('white coating') || normalized.includes('舌苔白') || normalized.includes('白苔')) &&
     !['thin', 'thick', 'greasy', 'sticky', 'peeled', '薄', '厚', '腻', '剥'].some(term => normalized.includes(term));
-  const matches = ENTRIES.filter(entry => entry.terms.some(term => normalized.includes(term.toLowerCase()))).slice(0, 3);
-  const focused = thickWhite ? ENTRIES.filter(entry => entry.id === 'sign-thick-coating') :
-    (unspecifiedWhite ? ENTRIES.filter(entry => entry.id === 'sign-white-coating') : matches);
-  const selected = focused.length ? focused : (matches.length ? matches : [ENTRIES[0]]);
+  const matches = ENTRIES.map(entry => ({
+    entry,
+    hits: entry.terms.filter(term => normalized.includes(term.toLowerCase()))
+  })).filter(match => match.hits.length);
+  const signMatches = matches.filter(match => match.entry.id.startsWith('sign-'));
+  const relevantMatches = signMatches.length ? signMatches : matches;
+  const focused = thickWhite ? relevantMatches.filter(match => match.entry.id === 'sign-thick-coating') :
+    (unspecifiedWhite ? relevantMatches.filter(match => match.entry.id === 'sign-white-coating') : relevantMatches);
+  const selected = focused.slice(0, 3).map(match => match.entry);
+  const noMatch = selected.length === 0;
   const bullets = selected.map(entry => `**${entry.title}**: ${entry.text}`).join('\n\n');
   const bulletsCn = selected.map(entry => `**${entry.titleCn}**：${entry.textCn}`).join('\n\n');
   const detail = thickWhite ? '\n\n**How to make this more useful**: Check whether the coat is evenly thick or patchy, moist/greasy or dry, and whether it scrapes away easily. Note its location, duration, recent illness or medicines, and symptoms such as bloating, nausea, reflux, constipation or loose stools. In TCM, thick white may be discussed as a cold/damp or digestive clue, but it cannot identify a pattern or cause by itself.' : '';
   const detailCn = thickWhite ? '\n\n**怎样补充才更有用**：请观察舌苔是否均匀或斑片状、湿润油腻还是干燥、能否轻易刮去，并记录分布部位、出现多久、近期是否生病或用药，以及腹胀、恶心、反流、便秘或腹泻等症状。在中医语境中，厚白苔有时可作为寒湿或消化方面的线索，但不能单凭它确定证型或病因。' : '';
+  const followUpEn = selected.some(entry => entry.id === 'sign-gray-black-coating')
+    ? '\n\nOne useful detail: does the coating look moist or dry?'
+    : selected.some(entry => entry.id === 'sign-greasy-coating')
+      ? '\n\nOne useful detail: what color is the coating?'
+      : '';
+  const followUpCn = selected.some(entry => entry.id === 'sign-gray-black-coating')
+    ? '\n\n可再补充一个关键观察：舌苔看起来湿润还是干燥？'
+    : selected.some(entry => entry.id === 'sign-greasy-coating')
+      ? '\n\n可再补充一个关键观察：舌苔是什么颜色？'
+      : '';
+  const notesEn = additionalNotes.length ? `\n\n**Details you provided:** ${additionalNotes.join('; ')}` : '';
+  const notesCn = additionalNotes.length ? `\n\n**你补充的信息：**${additionalNotes.join('；')}` : '';
   const urgent = ['trouble breathing', 'chest pain', 'fainting', '急诊', '胸痛'].some(term => normalized.includes(term));
   const result = {
     question,
-    answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${bullets}${detail}\n\n舌象只能作为整理问题的参考，不能单独用于确诊或自行调整治疗。请结合症状、病史并咨询合格医师。`,
-    answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${bulletsCn}${detailCn}\n\n舌象只能作为整理问题的参考，不能单独用于确诊或自行调整治疗。请结合症状、病史并咨询合格医师。`,
+    answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${noMatch ? 'I could not find a specific answer in this local TCM reference. Please consult a qualified clinician for guidance.' : bullets + detail + notesEn + followUpEn}\n\nTongue observations alone cannot establish a diagnosis or justify changing treatment.`,
+    answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${noMatch ? '本地中医参考库中没有找到针对这个问题的具体资料，请咨询合格临床医师。' : bulletsCn + detailCn + notesCn + followUpCn}\n\n单凭舌象不能确诊，也不能据此自行调整治疗。`,
     references: selected.map(entry => ({ id: entry.id, title: entry.title, matched_terms: entry.terms.filter(term => normalized.includes(term.toLowerCase())) })),
     knowledge_sources: ['CTM-Clock hosted patient reference'],
     needs_practitioner: true,
@@ -118,7 +163,7 @@ exports.handler = async event => {
   if (!['auto', 'en', 'zh'].includes(payload.language || 'auto')) {
     return reply(400, { error: "language must be 'auto', 'en' or 'zh'." });
   }
-  if (!target) return reply(200, localAnswer(payload.question.trim(), payload.language || 'auto'));
+  if (!target) return reply(200, localAnswer(payload.question.trim(), payload.language || 'auto', payload.context));
 
   try {
     const response = await fetch(`${target}/api/ask`, {
