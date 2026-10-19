@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const { after, before, test } = require('node:test');
-const { handler } = require('./ask.js');
+const { handler } = require('../netlify/functions/ask.js');
 
 let originalTarget;
 
