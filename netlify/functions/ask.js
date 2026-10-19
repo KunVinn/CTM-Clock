@@ -67,15 +67,22 @@ const ENTRIES = [
 
 function localAnswer(question, language) {
   const normalized = question.toLowerCase();
+  const thickWhite = normalized.includes('thick white') || normalized.includes('white thick') || normalized.includes('舌苔厚白') || normalized.includes('厚白苔');
+  const unspecifiedWhite = (normalized.includes('white coating') || normalized.includes('舌苔白') || normalized.includes('白苔')) &&
+    !['thin', 'thick', 'greasy', 'sticky', 'peeled', '薄', '厚', '腻', '剥'].some(term => normalized.includes(term));
   const matches = ENTRIES.filter(entry => entry.terms.some(term => normalized.includes(term.toLowerCase()))).slice(0, 3);
-  const selected = matches.length ? matches : [ENTRIES[0]];
+  const focused = thickWhite ? ENTRIES.filter(entry => entry.id === 'sign-thick-coating') :
+    (unspecifiedWhite ? ENTRIES.filter(entry => entry.id === 'sign-white-coating') : matches);
+  const selected = focused.length ? focused : (matches.length ? matches : [ENTRIES[0]]);
   const bullets = selected.map(entry => `**${entry.title}**: ${entry.text}`).join('\n\n');
   const bulletsCn = selected.map(entry => `**${entry.titleCn}**：${entry.textCn}`).join('\n\n');
+  const detail = thickWhite ? '\n\n**How to make this more useful**: Check whether the coat is evenly thick or patchy, moist/greasy or dry, and whether it scrapes away easily. Note its location, duration, recent illness or medicines, and symptoms such as bloating, nausea, reflux, constipation or loose stools. In TCM, thick white may be discussed as a cold/damp or digestive clue, but it cannot identify a pattern or cause by itself.' : '';
+  const detailCn = thickWhite ? '\n\n**怎样补充才更有用**：请观察舌苔是否均匀或斑片状、湿润油腻还是干燥、能否轻易刮去，并记录分布部位、出现多久、近期是否生病或用药，以及腹胀、恶心、反流、便秘或腹泻等症状。在中医语境中，厚白苔有时可作为寒湿或消化方面的线索，但不能单凭它确定证型或病因。' : '';
   const urgent = ['trouble breathing', 'chest pain', 'fainting', '急诊', '胸痛'].some(term => normalized.includes(term));
   const result = {
     question,
-    answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${bullets}`,
-    answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${bulletsCn}\n\n舌象只能作为整理问题的参考，不能单独用于确诊或自行调整治疗。请结合症状、病史并咨询合格医师。`,
+    answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${bullets}${detail}\n\n舌象只能作为整理问题的参考，不能单独用于确诊或自行调整治疗。请结合症状、病史并咨询合格医师。`,
+    answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${bulletsCn}${detailCn}\n\n舌象只能作为整理问题的参考，不能单独用于确诊或自行调整治疗。请结合症状、病史并咨询合格医师。`,
     references: selected.map(entry => ({ id: entry.id, title: entry.title, matched_terms: entry.terms.filter(term => normalized.includes(term.toLowerCase())) })),
     knowledge_sources: ['CTM-Clock hosted patient reference'],
     needs_practitioner: true,

@@ -285,12 +285,26 @@ def answer(question: str, limit: int = 3, context: dict[str, Any] | None = None)
     context = context or {}
     matches = search(question, limit)
     normalized_question = _norm(question)
-    unspecified_white_coating = (
-        ("舌苔白" in normalized_question or "白苔" in normalized_question)
-        and not any(term in normalized_question for term in ("薄", "厚", "腻", "腻苔", "薄苔", "厚苔"))
+    thick_white_coating = (
+        ("thick white" in normalized_question or "white thick" in normalized_question)
+        or "舌苔厚白" in normalized_question
+        or "厚白苔" in normalized_question
     )
+    unspecified_white_coating = (
+        ("舌苔白" in normalized_question or "白苔" in normalized_question or "white coating" in normalized_question)
+        and not any(term in normalized_question for term in ("薄", "厚", "腻", "腻苔", "薄苔", "厚苔"))
+        and not any(term in normalized_question for term in ("thin", "thick", "greasy", "sticky", "peeled"))
+    )
+    if thick_white_coating:
+        matches = [entry for entry in matches if entry.get("id") == "sign-coating-thick-white"] or matches
     if unspecified_white_coating:
         matches = [entry for entry in matches if entry.get("sign_category") != "coating"]
+        if not matches:
+            matches = [
+                {**entry, "matched_terms": []}
+                for entry in ENTRIES
+                if entry.get("id") == "faq-what-tongue-shows"
+            ]
     urgent_terms = {"呼吸困难", "胸痛", "晕厥", "急诊", "emergency", "trouble breathing", "chest pain", "fainting"}
     urgent = any(term in _norm(question) for term in urgent_terms)
     if not matches:
@@ -367,6 +381,26 @@ def answer(question: str, limit: int = 3, context: dict[str, Any] | None = None)
         )
         answer_en = clarification_en + ("\n\n" + answer_en if answer_en else "")
         answer_cn = clarification_cn + ("\n\n" + answer_cn if answer_cn else "")
+    if thick_white_coating:
+        detail_en = (
+            "**What to check**: Note whether the coating is evenly thick or patchy, moist or dry, "
+            "and whether it comes away with gentle brushing. Also note how long it has been present, "
+            "recent illness or medicines, dry mouth, and any mouth discomfort or digestive symptoms. "
+            "A white-looking coating can have ordinary oral causes as well as health-related ones; "
+            "appearance alone cannot tell which. In TCM, a thick white coat may be considered a "
+            "cold/damp or digestive clue, not a diagnosis. Keep normal oral hygiene and avoid scraping "
+            "forcefully or starting treatment based only on the tongue. Seek dental or medical advice "
+            "if it persists, keeps returning, is painful or bleeds, or comes with sores or difficulty swallowing."
+        )
+        detail_cn = (
+            "**可以留意这些情况**：观察舌苔是否均匀或斑片状、湿润还是干燥，轻柔刷舌时是否容易脱落；"
+            "记录持续时间、近期疾病或用药、口干，以及口腔不适或消化道症状。舌面发白可能与日常口腔因素或健康状况有关，"
+            "仅凭外观无法判断原因。中医辨证中，厚白苔有时可作为寒湿或消化方面的线索，但不是诊断。"
+            "保持日常口腔清洁，不要用力刮舌，也不要只凭舌象自行开始治疗。若持续不退、反复出现、疼痛或出血，"
+            "或伴有口腔溃疡、吞咽困难，请咨询牙医或临床医师。"
+        )
+        answer_en = answer_en + "\n\n" + detail_en
+        answer_cn = answer_cn + "\n\n" + detail_cn
     if urgent:
         answer_en = "**Urgent safety note:** use local emergency services now if this is happening.\n\n" + answer_en
         answer_cn = "**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n" + answer_cn

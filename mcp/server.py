@@ -9,6 +9,7 @@ Provides tools for:
 - Keeping a per-patient journal so change can be tracked over time
 - Rendering a practitioner-facing report and recording the practitioner's feedback
 - Answering patient questions from a transparent local TCM knowledge base
+- Providing a general-Q&A prompt for the host model
 
 Data is ported from ``tongue.html`` so the server and the web page agree on keys.
 Nothing here is a medical diagnosis.
@@ -806,22 +807,68 @@ Steps:
 
 @mcp.prompt()
 def answer_patient_question(question: str = "") -> str:
-    """Guide a safe, cited answer to a patient's TCM question."""
-    return f"""Answer this patient question using the local TCM knowledge base:
+    """Guide a specific, evidence-grounded TCM patient consultation."""
+    return f"""Respond to this patient's TCM-related question in plain language:
 
 Question: {question or '<patient question>'}
 
 Steps:
 1. Call ask_tcm_question with the patient's exact words and `language=auto`.
-2. Explain the matching reference entries in plain language; do not turn a
-   pattern description into a diagnosis.
-3. Include the returned reference IDs when handing the answer to a practitioner.
-4. If `urgent` is true, put the emergency-care instruction first.
-5. If `needs_practitioner` is true, invite the patient to share their symptoms,
-   photo ID and report with a qualified practitioner.
-6. Never recommend starting, stopping or changing medication from this answer.
+2. Answer the specific question first. Use the returned reference entries to
+   explain what they do and do not support; do not pad the answer with generic
+   TCM background or turn a pattern match into a diagnosis.
+3. If the patient describes their own symptoms, capture only what they have
+   actually said: main concern, onset and duration, frequency or triggers,
+   associated symptoms, and relevant tongue observations. Do not fill gaps by
+   guessing or ask for identifying details.
+4. If one missing detail would materially change the guidance, ask one focused
+   follow-up question instead of giving a broad list of questions. Otherwise,
+   answer without delaying for more information.
+5. When the patient provides confirmed tongue signs and symptoms, call
+   match_patterns and explain the specific signs or symptom keywords behind
+   each result. Its ranking is a heuristic, not diagnostic probability.
+6. Use analyze_tongue_photo only when an image filepath is actually supplied;
+   it estimates colour and coating only. Do not infer shape from it. Do not
+   save anything to the patient journal unless the patient asks to record it.
+7. Format a personal-case answer as: what you described; what the available
+   reference suggests; what remains uncertain; and a practical next step.
+   Include reference IDs for practitioner review and link any retrieved sources.
+8. If `urgent` is true, put emergency-care guidance first. Recommend a
+   qualified clinician for persistent, worsening, or concerning symptoms.
+   Never recommend starting, stopping, or changing medication or treatment.
+
+Keep the response proportional to the question: a simple factual question
+needs a concise answer; a personal case needs the specific evidence and limits.
 
 {DISCLAIMER}
+"""
+
+
+@mcp.prompt()
+def answer_general_question(question: str = "", language: str = "auto") -> str:
+    """Guide the host model through a source-aware answer to a general question."""
+    return f"""Answer this general question directly and in plain language:
+
+Question: {question or '<question>'}
+Language: {language}
+
+Guidance:
+1. Answer the exact question first, with specific facts, steps, or an example
+   when useful. Avoid generic preambles and boilerplate. Ask one focused
+   clarification only if ambiguity would materially change the answer.
+2. Use available search or knowledge tools for current, disputed, or high-stakes facts.
+   Prefer primary sources and cite only sources actually retrieved. If no retrieval
+   tool is available, say when an answer may be incomplete or out of date.
+3. Do not invent citations, claim this MCP queried a database it could not access,
+   or present a knowledge-graph association as proof of causation or treatment effect.
+4. For TCM or tongue-health questions, use answer_patient_question, ask_tcm_question,
+   or search_tcm_knowledge for this server's
+   curated TCM material. The AI-HPC TCMM project is a separate data-processing
+   repository; its source datasets are not bundled or queried by this MCP server.
+5. For medical, legal, or financial topics, give general information, distinguish
+   uncertainty, and recommend a qualified professional when individual advice is needed.
+   For urgent medical danger, advise local emergency services.
+6. Do not request or send identifying personal information to external search tools.
 """
 
 
