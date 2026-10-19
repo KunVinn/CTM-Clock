@@ -107,18 +107,24 @@ function localAnswer(question, language, context = {}) {
     (unspecifiedWhite ? relevantMatches.filter(match => match.entry.id === 'sign-white-coating') : relevantMatches);
   const selected = focused.slice(0, 3).map(match => match.entry);
   const noMatch = selected.length === 0;
+  const hasCoatingMoistureDetail = [
+    'moist', 'wet', 'dry', 'damp', '湿润', '干燥', '舌苔湿', '舌苔干',
+    '舌苔润', '舌苔燥', '苔湿', '苔干', '苔润', '苔燥', '湿苔', '干苔', '润苔', '燥苔'
+  ].some(term => normalized.includes(term));
+  const hasCoatingColor = selected.some(entry => entry.id === 'sign-gray-black-coating' || entry.id === 'sign-white-coating') ||
+    ['white', 'yellow', 'gray', 'grey', 'black', '白苔', '白色', '黄苔', '黄色', '灰黑', '黑苔'].some(term => normalized.includes(term));
   const bullets = selected.map(entry => `**${entry.title}**: ${entry.text}`).join('\n\n');
   const bulletsCn = selected.map(entry => `**${entry.titleCn}**：${entry.textCn}`).join('\n\n');
   const detail = thickWhite ? '\n\n**How to make this more useful**: Check whether the coat is evenly thick or patchy, moist/greasy or dry, and whether it scrapes away easily. Note its location, duration, recent illness or medicines, and symptoms such as bloating, nausea, reflux, constipation or loose stools. In TCM, thick white may be discussed as a cold/damp or digestive clue, but it cannot identify a pattern or cause by itself.' : '';
   const detailCn = thickWhite ? '\n\n**怎样补充才更有用**：请观察舌苔是否均匀或斑片状、湿润油腻还是干燥、能否轻易刮去，并记录分布部位、出现多久、近期是否生病或用药，以及腹胀、恶心、反流、便秘或腹泻等症状。在中医语境中，厚白苔有时可作为寒湿或消化方面的线索，但不能单凭它确定证型或病因。' : '';
-  const followUpEn = selected.some(entry => entry.id === 'sign-gray-black-coating')
+  const followUpEn = selected.some(entry => entry.id === 'sign-gray-black-coating') && !hasCoatingMoistureDetail
     ? '\n\nOne useful detail: does the coating look moist or dry?'
-    : selected.some(entry => entry.id === 'sign-greasy-coating')
+    : selected.some(entry => entry.id === 'sign-greasy-coating') && !hasCoatingColor
       ? '\n\nOne useful detail: what color is the coating?'
       : '';
-  const followUpCn = selected.some(entry => entry.id === 'sign-gray-black-coating')
+  const followUpCn = selected.some(entry => entry.id === 'sign-gray-black-coating') && !hasCoatingMoistureDetail
     ? '\n\n可再补充一个关键观察：舌苔看起来湿润还是干燥？'
-    : selected.some(entry => entry.id === 'sign-greasy-coating')
+    : selected.some(entry => entry.id === 'sign-greasy-coating') && !hasCoatingColor
       ? '\n\n可再补充一个关键观察：舌苔是什么颜色？'
       : '';
   const notesEn = additionalNotes.length ? `\n\n**Details you provided:** ${additionalNotes.join('; ')}` : '';

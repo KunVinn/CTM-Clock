@@ -56,6 +56,21 @@ test('uses supplied symptom notes and selected signs to ground the answer', asyn
   assert.ok(result.answer.includes('持续三天并伴恶心；舌苔灰黑而厚腻'));
 });
 
+test('does not repeat the moisture follow-up when the user already described it', async () => {
+  const response = await handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({
+      question: '舌苔灰黑且厚腻怎么办？',
+      language: 'zh',
+      context: { notes: '舌苔看起来湿润，已经三天' }
+    })
+  });
+  const result = JSON.parse(response.body);
+  assert.equal(response.statusCode, 200);
+  assert.match(result.answer, /灰黑舌苔/);
+  assert.doesNotMatch(result.answer, /湿润还是干燥/);
+});
+
 test('keeps thick-white questions focused on the thick-coating entry', async () => {
   const result = await ask('舌苔厚白怎么办');
   assert.match(result.answer, /厚舌苔/);
