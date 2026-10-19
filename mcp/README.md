@@ -4,6 +4,7 @@ This MCP server has two distinct answer paths:
 
 - `ask_tcm_question` and `search_tcm_knowledge` answer from the server's local, reviewable TCM reference entries and optional configured retrieval sources.
 - `answer_general_question` is an MCP prompt for the host model. The MCP server does not contain or call a general-purpose language model. The host model generates the answer and can use any search tools exposed by its client; it must cite only sources actually retrieved.
+- `answer_patient_question` guides a focused TCM consultation: it answers the question first, asks at most one useful follow-up when needed, and uses pattern matching only for signs and symptoms the patient actually reported.
 
 Keep the TCM path for TCM questions so its references, language handling and practitioner-safety guidance remain available. A general model must not present knowledge-graph associations as proven causes or treatment effects.
 
@@ -34,6 +35,8 @@ The [AI-HPC-Research-Team/TCM_knowledge_graph](https://github.com/AI-HPC-Researc
 The upstream datasets named by the project are [CPMCP](https://cpmcp.top), [TCMBank](https://tcmbank.cn), [SymMap](http://www.symmap.org/download/), [TCMID](http://www.megabionet.org/tcmid), [PharMeBINet](https://zenodo.org/records/7009457), and [PrimeKG](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/IXA7BM). Its README also references research describing these resources and graph integration, plus GLM, instruction tuning with human feedback, and Sentence-BERT for parts of its processing pipeline. Consult the [project README and references](https://github.com/AI-HPC-Research-Team/TCM_knowledge_graph#readme) for the cited papers, data access instructions, and conditions before using or redistributing upstream data.
 
 TCMM can support TCM knowledge retrieval once its data is obtained, processed, and served through a compatible backend. It is not by itself a general-purpose answer model or general medical authority. General answers come from the MCP client's host model; use source retrieval for current or high-stakes facts and keep evidence links with the response.
+
+The [invisible30 tongue-diagnosis project](https://github.com/invisible30/chinese-medicine-tongue-diagnosis) describes a more complete consultation flow: image observations, targeted multi-turn history, structured case summaries, task planning, and knowledge retrieval. Its setup guide explicitly says its current image classification, dialogue, and vector database are simulations/placeholders. This MCP borrows the workflow idea, not its unverified sample classifications or treatment suggestions: local photo analysis estimates colour/coating, and pattern ranking is a transparent symptom/sign heuristic.
 
 The related [TCMKD portal](https://cbcb.cdutcm.edu.cn/TCMKD/) and its [publication](https://doi.org/10.1016/j.jpha.2025.101297) are separate resources; the app does not scrape the portal or claim local text came from TCMKD.
 
