@@ -100,3 +100,12 @@ test('red tongue with yellow coating suggests lung heat via matchFn', () => {
 test('pale moist tongue with cold intolerance suggests kidney yang deficiency', () => {
   assert.ok(inferPatterns({ body_color: 'pale', coating_moisture: 'moist', cold_heat: 'cold' }).some(p => p.id === 'kidney-yang-deficiency'));
 });
+
+test('option-button answer phrases extract as facts', () => {
+  assert.equal(extractFactsFromTexts(['消化正常']).digestion, 'normal');
+  assert.equal(extractFactsFromTexts(['睡眠还好']).sleep, 'good');
+  assert.equal(extractFactsFromTexts(['有剥脱']).coating_texture, 'peeled');
+  assert.equal(extractFactsFromTexts(['大便干结']).stool, 'dry');
+  assert.equal(extractFactsFromTexts(['怕冷，手脚冰凉']).cold_heat, 'cold');
+  assert.equal(extractFactsFromTexts(['一个月以上']).duration, 'reported');
+});

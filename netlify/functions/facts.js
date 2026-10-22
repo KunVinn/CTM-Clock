@@ -30,7 +30,7 @@ const SLOT_PATTERNS = {
     ['thick', /厚|\bthick\b/i]
   ],
   coating_texture: [
-    ['peeled', /剥苔|地图舌|少苔|无苔|\bpeeled\b/i],
+    ['peeled', /剥苔|剥脱|地图舌|少苔|无苔|\bpeeled\b/i],
     ['curd', /腐苔|豆腐渣|腐|\bcurd/i],
     ['greasy', /腻|黏腻|油腻|\bgreasy\b|\bsticky\b|\bslimy\b/i]
   ],
@@ -57,16 +57,18 @@ const SLOT_PATTERNS = {
     ['bloating', /腹胀|肚胀|肚子胀|bloat/i],
     ['poor-appetite', /没胃口|食欲不振|食欲差|不欲食|appetite/i],
     ['reflux', /反酸|反流|吞酸|reflux/i],
-    ['nausea', /恶心|想吐|nausea/i]
+    ['nausea', /恶心|想吐|nausea/i],
+    ['normal', /消化正常|胃口正常|食欲正常/]
   ],
   stool: [
-    ['dry', /便秘|大便干|排便困难|constipat/i],
+    ['dry', /便秘|大便干|干结|排便困难|constipat/i],
     ['loose', /腹泻|拉肚子|便溏|稀|diarrh/i],
     ['sticky', /大便黏|大便粘|粘马桶|排便不爽/]
   ],
   sleep: [
     ['insomnia', /失眠|睡不着|入睡难|insomnia/i],
-    ['dreamful', /多梦|梦多|易醒|睡眠(差|不好)/i]
+    ['dreamful', /多梦|梦多|易醒|睡眠(差|不好)/i],
+    ['good', /睡眠(还好|不错|尚可)|睡得好/]
   ]
 };
 

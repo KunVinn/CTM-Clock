@@ -3499,6 +3499,10 @@ a:hover { color: var(--gold-bright); }
 }
 .inquiry-chip:hover, .inquiry-chip:focus-visible { background: rgba(212, 169, 106, 0.22); }
 .inquiry-chip.used { opacity: 0.55; }
+.inquiry-item { margin-bottom: 0.6rem; }
+.inquiry-item > .inquiry-chip { font-weight: 600; }
+.inquiry-options { margin: 0.3rem 0 0 0.8rem; }
+.inquiry-option { font-size: 0.76rem; padding: 0.2rem 0.6rem; }
 .ai-disclaim   { font-size: 0.74rem; color: var(--ink-mute); font-style: italic; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--line); }
 
 @media (max-width: 600px) {
