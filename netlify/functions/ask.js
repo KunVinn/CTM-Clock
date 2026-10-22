@@ -81,6 +81,32 @@ const ENTRIES = [
   }
 ];
 
+// Follow-up dimensions in priority order: tongue observations first, then symptom questions.
+const INQUIRY_DIMENSIONS = [
+  { key: 'coating_moisture', terms: ['moist', 'wet', 'dry', 'damp', '湿润', '干燥', '舌苔湿', '舌苔干', '舌苔润', '舌苔燥', '苔湿', '苔干', '苔润', '苔燥', '湿苔', '干苔', '润苔', '燥苔'],
+    en: 'Does the coating look moist or dry?', cn: '舌苔看起来湿润还是干燥？' },
+  { key: 'coating_color', terms: ['white', 'yellow', 'gray', 'grey', 'black', '白苔', '白色', '黄苔', '黄色', '灰黑', '黑苔'],
+    en: 'What colour is the coating?', cn: '舌苔是什么颜色？' },
+  { key: 'coating_thickness', terms: ['thin', 'thick', '薄', '厚'],
+    en: 'Is the coating thin (you can see the tongue body through it) or thick?', cn: '舌苔是薄（能透见舌体）还是厚？' },
+  { key: 'coating_texture', terms: ['greasy', 'curd', 'sticky', 'slimy', 'smooth', 'none', '腻', '腐', '光滑'],
+    en: 'Does the coating look greasy or curd-like, and does it scrape off easily?', cn: '舌苔是否油腻或像豆腐渣，能否轻易刮去？' },
+  { key: 'body_color', terms: ['pale', 'red', 'crimson', 'purple', 'bluish', '淡白', '淡红', '舌红', '红舌', '绛', '紫', '青'],
+    en: 'What colour is the tongue body itself, apart from the coating?', cn: '去掉舌苔后，舌体本身是什么颜色？' },
+  { key: 'duration', terms: ['day', 'week', 'month', 'since', '天', '周', '星期', '月', '一直'],
+    en: 'How long has this been present, and does it change through the day?', cn: '这种舌象持续多久了？一天中有变化吗？' },
+  { key: 'cold_heat', terms: ['cold', 'chill', 'feverish', 'hot flush', '怕冷', '畏寒', '怕热', '手脚冰', '发热', '潮热'],
+    en: 'Do you tend to feel cold (chilly hands and feet) or hot (feverish, night sweats)?', cn: '平时怕冷（手脚冰凉）还是怕热（潮热盗汗）？' },
+  { key: 'thirst', terms: ['thirst', 'dry mouth', '口渴', '口干', '口苦', '口黏', '口粘'],
+    en: 'Is your mouth dry, bitter or sticky, and do you want hot or cold drinks?', cn: '口干、口苦还是口黏？喜欢喝热饮还是冷饮？' },
+  { key: 'digestion', terms: ['appetite', 'bloat', 'nausea', 'reflux', '食欲', '腹胀', '恶心', '反酸', '反流', '消化'],
+    en: 'How are your appetite and digestion (bloating, nausea, reflux)?', cn: '食欲和消化如何（腹胀、恶心、反酸）？' },
+  { key: 'stool', terms: ['stool', 'constipat', 'diarrh', 'bowel', '大便', '便秘', '腹泻', '便溏'],
+    en: 'How are your bowel movements (dry, loose, sticky, irregular)?', cn: '大便情况如何（干结、偏稀、黏滞、不规律）？' },
+  { key: 'sleep', terms: ['sleep', 'insomnia', '睡眠', '失眠', '多梦', '易醒'],
+    en: 'How is your sleep, and do you wake up tired?', cn: '睡眠如何？醒后是否疲倦？' }
+];
+
 function localAnswer(question, language, context = {}) {
   const safeContext = context && typeof context === 'object' && !Array.isArray(context) ? context : {};
   const notes = [...new Set([safeContext.symptoms, safeContext.notes]
@@ -91,7 +117,7 @@ function localAnswer(question, language, context = {}) {
     ? Object.values(safeContext.signs).filter(value => typeof value === 'string')
     : [];
   const aiSigns = safeContext.ai_result && typeof safeContext.ai_result === 'object'
-    ? ['body_color', 'shape', 'coating'].map(key => safeContext.ai_result[key]).filter(value => typeof value === 'string')
+    ? ['body_color', 'shape', 'coating', 'coating_thickness', 'coating_moisture', 'coating_texture'].map(key => safeContext.ai_result[key]).filter(value => typeof value === 'string')
     : [];
   const normalized = [question, ...notes, ...signs, ...aiSigns].join(' ').toLowerCase();
   const thickWhite = normalized.includes('thick white') || normalized.includes('white thick') || normalized.includes('舌苔厚白') || normalized.includes('厚白苔');
@@ -107,26 +133,16 @@ function localAnswer(question, language, context = {}) {
     (unspecifiedWhite ? relevantMatches.filter(match => match.entry.id === 'sign-white-coating') : relevantMatches);
   const selected = focused.slice(0, 3).map(match => match.entry);
   const noMatch = selected.length === 0;
-  const hasCoatingMoistureDetail = [
-    'moist', 'wet', 'dry', 'damp', '湿润', '干燥', '舌苔湿', '舌苔干',
-    '舌苔润', '舌苔燥', '苔湿', '苔干', '苔润', '苔燥', '湿苔', '干苔', '润苔', '燥苔'
-  ].some(term => normalized.includes(term));
-  const hasCoatingColor = selected.some(entry => entry.id === 'sign-gray-black-coating' || entry.id === 'sign-white-coating') ||
-    ['white', 'yellow', 'gray', 'grey', 'black', '白苔', '白色', '黄苔', '黄色', '灰黑', '黑苔'].some(term => normalized.includes(term));
+  const missing = noMatch ? [] : INQUIRY_DIMENSIONS
+    .filter(dim => !dim.terms.some(term => normalized.includes(term)))
+    .filter(dim => dim.key !== 'coating_color' || !selected.some(entry => entry.id === 'sign-gray-black-coating' || entry.id === 'sign-white-coating'))
+    .slice(0, 2);
   const bullets = selected.map(entry => `**${entry.title}**: ${entry.text}`).join('\n\n');
   const bulletsCn = selected.map(entry => `**${entry.titleCn}**：${entry.textCn}`).join('\n\n');
   const detail = thickWhite ? '\n\n**How to make this more useful**: Check whether the coat is evenly thick or patchy, moist/greasy or dry, and whether it scrapes away easily. Note its location, duration, recent illness or medicines, and symptoms such as bloating, nausea, reflux, constipation or loose stools. In TCM, thick white may be discussed as a cold/damp or digestive clue, but it cannot identify a pattern or cause by itself.' : '';
   const detailCn = thickWhite ? '\n\n**怎样补充才更有用**：请观察舌苔是否均匀或斑片状、湿润油腻还是干燥、能否轻易刮去，并记录分布部位、出现多久、近期是否生病或用药，以及腹胀、恶心、反流、便秘或腹泻等症状。在中医语境中，厚白苔有时可作为寒湿或消化方面的线索，但不能单凭它确定证型或病因。' : '';
-  const followUpEn = selected.some(entry => entry.id === 'sign-gray-black-coating') && !hasCoatingMoistureDetail
-    ? '\n\nOne useful detail: does the coating look moist or dry?'
-    : selected.some(entry => entry.id === 'sign-greasy-coating') && !hasCoatingColor
-      ? '\n\nOne useful detail: what color is the coating?'
-      : '';
-  const followUpCn = selected.some(entry => entry.id === 'sign-gray-black-coating') && !hasCoatingMoistureDetail
-    ? '\n\n可再补充一个关键观察：舌苔看起来湿润还是干燥？'
-    : selected.some(entry => entry.id === 'sign-greasy-coating') && !hasCoatingColor
-      ? '\n\n可再补充一个关键观察：舌苔是什么颜色？'
-      : '';
+  const followUpEn = missing.length ? `\n\n**To narrow this down, please tell me:**\n${missing.map(dim => `- ${dim.en}`).join('\n')}` : '';
+  const followUpCn = missing.length ? `\n\n**为了更准确，请再补充：**\n${missing.map(dim => `- ${dim.cn}`).join('\n')}` : '';
   const notesEn = additionalNotes.length ? `\n\n**Details you provided:** ${additionalNotes.join('; ')}` : '';
   const notesCn = additionalNotes.length ? `\n\n**你补充的信息：**${additionalNotes.join('；')}` : '';
   const urgent = ['trouble breathing', 'chest pain', 'fainting', '急诊', '胸痛'].some(term => normalized.includes(term));
@@ -135,6 +151,7 @@ function localAnswer(question, language, context = {}) {
     answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${noMatch ? 'I could not find a specific answer in this local TCM reference. Please consult a qualified clinician for guidance.' : bullets + detail + notesEn + followUpEn}\n\nTongue observations alone cannot establish a diagnosis or justify changing treatment.`,
     answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${noMatch ? '本地中医参考库中没有找到针对这个问题的具体资料，请咨询合格临床医师。' : bulletsCn + detailCn + notesCn + followUpCn}\n\n单凭舌象不能确诊，也不能据此自行调整治疗。`,
     references: selected.map(entry => ({ id: entry.id, title: entry.title, matched_terms: entry.terms.filter(term => normalized.includes(term.toLowerCase())) })),
+    follow_up_questions: missing.map(dim => ({ key: dim.key, question: dim.en, question_cn: dim.cn })),
     knowledge_sources: ['CTM-Clock hosted patient reference'],
     needs_practitioner: true,
     urgent,

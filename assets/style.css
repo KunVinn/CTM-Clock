@@ -3485,6 +3485,20 @@ a:hover { color: var(--gold-bright); }
   color: var(--ink);
 }
 .ai-confidence { font-size: 0.78rem; color: var(--ink-mute); }
+.inquiry-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+.inquiry-chip {
+  padding: 0.3rem 0.7rem;
+  background: rgba(212, 169, 106, 0.1);
+  border: 1px solid rgba(212, 169, 106, 0.4);
+  border-radius: 999px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+}
+.inquiry-chip:hover, .inquiry-chip:focus-visible { background: rgba(212, 169, 106, 0.22); }
+.inquiry-chip.used { opacity: 0.55; }
 .ai-disclaim   { font-size: 0.74rem; color: var(--ink-mute); font-style: italic; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--line); }
 
 @media (max-width: 600px) {
