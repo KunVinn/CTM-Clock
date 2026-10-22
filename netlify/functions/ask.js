@@ -32,6 +32,14 @@ const ENTRIES = [
     terms: ['white coating', 'white tongue coating', 'white coat', '白色舌苔', '舌苔白', '白苔']
   },
   {
+    id: 'sign-tongue-generic',
+    title: 'Describing your tongue signs',
+    text: 'Tongue signs are clues, not a diagnosis by themselves. Along with colour, record the coating’s thickness, moisture and texture, the tongue body’s colour and shape, how long it has been present, and how you feel (cold or heat, thirst, digestion, stool, sleep). A practitioner integrates all of these with pulse and history.',
+    titleCn: '舌象描述要点',
+    textCn: '舌象是线索，单独不能确诊。除颜色外，请记录舌苔厚薄、润燥、腻腐，舌体的颜色与形态，持续时间，以及自身感受（怕冷怕热、口渴、食欲、大便、睡眠）。医师会结合脉象与病史综合判断。',
+    terms: ['舌']
+  },
+  {
     id: 'sign-thick-coating',
     title: 'Thick tongue coating',
     text: 'A thick coating can be a descriptive clue in TCM, but it is not a diagnosis. Record whether it is white or yellow, greasy or dry, and what symptoms accompany it. Discuss persistent or changing findings with a qualified clinician.',
@@ -85,13 +93,13 @@ const ENTRIES = [
 const INQUIRY_DIMENSIONS = [
   { key: 'coating_moisture', terms: ['moist', 'wet', 'dry', 'damp', '湿润', '干燥', '舌苔湿', '舌苔干', '舌苔润', '舌苔燥', '苔湿', '苔干', '苔润', '苔燥', '湿苔', '干苔', '润苔', '燥苔'],
     en: 'Does the coating look moist or dry?', cn: '舌苔看起来湿润还是干燥？' },
-  { key: 'coating_color', terms: ['white', 'yellow', 'gray', 'grey', 'black', '白苔', '白色', '黄苔', '黄色', '灰黑', '黑苔'],
+  { key: 'coating_color', ignore: ['淡白'], terms: ['white', 'yellow', 'gray', 'grey', 'black', '白', '黄', '灰', '黑'],
     en: 'What colour is the coating?', cn: '舌苔是什么颜色？' },
   { key: 'coating_thickness', terms: ['thin', 'thick', '薄', '厚'],
     en: 'Is the coating thin (you can see the tongue body through it) or thick?', cn: '舌苔是薄（能透见舌体）还是厚？' },
   { key: 'coating_texture', terms: ['greasy', 'curd', 'sticky', 'slimy', 'smooth', 'none', '腻', '腐', '光滑'],
     en: 'Does the coating look greasy or curd-like, and does it scrape off easily?', cn: '舌苔是否油腻或像豆腐渣，能否轻易刮去？' },
-  { key: 'body_color', terms: ['pale', 'red', 'crimson', 'purple', 'bluish', '淡白', '淡红', '舌红', '红舌', '绛', '紫', '青'],
+  { key: 'body_color', terms: ['pale', 'red', 'crimson', 'purple', 'bluish', '淡白', '红', '绛', '紫', '青'],
     en: 'What colour is the tongue body itself, apart from the coating?', cn: '去掉舌苔后，舌体本身是什么颜色？' },
   { key: 'duration', terms: ['day', 'week', 'month', 'since', '天', '周', '星期', '月', '一直'],
     en: 'How long has this been present, and does it change through the day?', cn: '这种舌象持续多久了？一天中有变化吗？' },
@@ -131,10 +139,16 @@ function localAnswer(question, language, context = {}) {
   const relevantMatches = signMatches.length ? signMatches : matches;
   const focused = thickWhite ? relevantMatches.filter(match => match.entry.id === 'sign-thick-coating') :
     (unspecifiedWhite ? relevantMatches.filter(match => match.entry.id === 'sign-white-coating') : relevantMatches);
-  const selected = focused.slice(0, 3).map(match => match.entry);
+  const selected = focused
+    .map(match => match.entry)
+    .sort((a, b) => (a.id === 'sign-tongue-generic') - (b.id === 'sign-tongue-generic'))
+    .slice(0, 3);
   const noMatch = selected.length === 0;
-  const missing = noMatch ? [] : INQUIRY_DIMENSIONS
-    .filter(dim => !dim.terms.some(term => normalized.includes(term)))
+  const missing = INQUIRY_DIMENSIONS
+    .filter(dim => {
+      const text = (dim.ignore || []).reduce((acc, word) => acc.split(word).join(' '), normalized);
+      return !dim.terms.some(term => text.includes(term));
+    })
     .filter(dim => dim.key !== 'coating_color' || !selected.some(entry => entry.id === 'sign-gray-black-coating' || entry.id === 'sign-white-coating'))
     .slice(0, 2);
   const bullets = selected.map(entry => `**${entry.title}**: ${entry.text}`).join('\n\n');
@@ -148,8 +162,8 @@ function localAnswer(question, language, context = {}) {
   const urgent = ['trouble breathing', 'chest pain', 'fainting', '急诊', '胸痛'].some(term => normalized.includes(term));
   const result = {
     question,
-    answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${noMatch ? 'I could not find a specific answer in this local TCM reference. Please consult a qualified clinician for guidance.' : bullets + detail + notesEn + followUpEn}\n\nTongue observations alone cannot establish a diagnosis or justify changing treatment.`,
-    answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${noMatch ? '本地中医参考库中没有找到针对这个问题的具体资料，请咨询合格临床医师。' : bulletsCn + detailCn + notesCn + followUpCn}\n\n单凭舌象不能确诊，也不能据此自行调整治疗。`,
+    answer: `${urgent ? '**Urgent safety note:** use local emergency services now if this is happening.\n\n' : ''}${noMatch ? 'I could not find a specific answer in this local TCM reference. Please consult a qualified clinician for guidance.' : bullets + detail + notesEn}${followUpEn}\n\nTongue observations alone cannot establish a diagnosis or justify changing treatment.`,
+    answer_cn: `${urgent ? '**紧急提示：**如正在发生这些危险症状，请立即使用当地急救服务。\n\n' : ''}${noMatch ? '本地中医参考库中没有找到针对这个问题的具体资料，请咨询合格临床医师。' : bulletsCn + detailCn + notesCn}${followUpCn}\n\n单凭舌象不能确诊，也不能据此自行调整治疗。`,
     references: selected.map(entry => ({ id: entry.id, title: entry.title, matched_terms: entry.terms.filter(term => normalized.includes(term.toLowerCase())) })),
     follow_up_questions: missing.map(dim => ({ key: dim.key, question: dim.en, question_cn: dim.cn })),
     knowledge_sources: ['CTM-Clock hosted patient reference'],
