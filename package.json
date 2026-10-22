@@ -1,0 +1,10 @@
+{
+  "name": "ctm-clock",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/ask.test.js tests/facts.test.js tests/narrate.test.js tests/session.test.js"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.0.0"
+  }
+}

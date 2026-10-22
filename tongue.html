@@ -805,6 +805,7 @@
 <script src="assets/tcm-script-toggle.js?v=20260503m"></script>
 <script src="assets/tcm-music.js?v=20260503m"></script>
 <script src="assets/tcm-link.js?v=20260503m"></script>
+<script src="assets/narrate.js?v=20261022a"></script>
 <script>
 /* ============================================================
    TONGUE DIAGNOSIS · DATA
@@ -2939,6 +2940,25 @@ const patientQuestionLanguage = document.getElementById('patient-question-langua
 const patientQuestionSubmit = document.getElementById('patient-question-submit');
 const patientQuestionStatus = document.getElementById('patient-question-status');
 const patientQuestionOutput = document.getElementById('patient-question-output');
+let askSessionFacts = {};
+let askSessionId = '';
+let lastPatientQuestion = '';
+try { askSessionId = localStorage.getItem('tcm-ask-session-id') || ''; } catch (_) {}
+
+// Fixed answers per follow-up slot; the submitted text is always the Chinese phrase the extractor knows.
+const FOLLOWUP_OPTIONS = {
+  coating_moisture: [{ zh: '湿润', en: 'Moist' }, { zh: '干燥', en: 'Dry' }],
+  coating_color: [{ zh: '白', en: 'White' }, { zh: '黄', en: 'Yellow' }, { zh: '灰黑', en: 'Gray-black' }],
+  coating_thickness: [{ zh: '薄', en: 'Thin' }, { zh: '厚', en: 'Thick' }],
+  coating_texture: [{ zh: '腻', en: 'Greasy' }, { zh: '腐如豆渣', en: 'Curd-like' }, { zh: '有剥脱', en: 'Peeled' }],
+  body_color: [{ zh: '淡白', en: 'Pale' }, { zh: '淡红', en: 'Pale red' }, { zh: '红', en: 'Red' }, { zh: '绛', en: 'Crimson' }, { zh: '紫', en: 'Purple' }],
+  duration: [{ zh: '今天刚出现', en: 'Started today' }, { zh: '几天了', en: 'A few days' }, { zh: '几周了', en: 'A few weeks' }, { zh: '一个月以上', en: 'Over a month' }],
+  cold_heat: [{ zh: '怕冷，手脚冰凉', en: 'Often cold, cold hands and feet' }, { zh: '怕热，潮热盗汗', en: 'Often hot, night sweats' }],
+  thirst: [{ zh: '口干', en: 'Dry mouth' }, { zh: '口苦', en: 'Bitter taste' }, { zh: '口黏', en: 'Sticky mouth' }],
+  digestion: [{ zh: '腹胀', en: 'Bloating' }, { zh: '食欲差', en: 'Poor appetite' }, { zh: '恶心反酸', en: 'Nausea / reflux' }, { zh: '消化正常', en: 'Normal' }],
+  stool: [{ zh: '大便干结', en: 'Dry / hard' }, { zh: '大便偏稀', en: 'Loose' }, { zh: '大便黏滞', en: 'Sticky' }],
+  sleep: [{ zh: '失眠睡不着', en: 'Insomnia' }, { zh: '多梦易醒', en: 'Dreamful, waking often' }, { zh: '睡眠还好', en: 'Fine' }]
+};
 
 function escapePatientHtml(value) {
   return String(value == null ? '' : value).replace(/[<>&\"]/g,
@@ -2949,6 +2969,49 @@ function answerParagraphs(text) {
   return String(text || '').split(/\n\s*\n/).filter(Boolean)
     .map(paragraph => `<p>${escapePatientHtml(paragraph).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`)
     .join('');
+}
+
+// Optional LLM narration of the rule answer, reusing the saved Gemini/Qwen key.
+async function callNarration(providerId, provider, key, prompt) {
+  if (providerId === 'qwen') {
+    const resp = await fetch(provider.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+      body: JSON.stringify({ model: provider.model, messages: [{ role: 'user', content: prompt }], temperature: 0.3 })
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    return (await resp.json()).choices?.[0]?.message?.content || '';
+  }
+  const resp = await fetch(`${provider.endpoint}?key=${encodeURIComponent(key)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.3 } })
+  });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return (await resp.json()).candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+async function maybeNarrate(data) {
+  if (!data.narration_prompt || !window.tcmNarrate) return;
+  if ((data.warnings || []).some(w => w.level === 'red')) return;
+  const providerId = getAiProvider();
+  const key = getAiKey(providerId);
+  if (!key) return;
+  const provider = AI_PROVIDERS[providerId];
+  const language = patientQuestionLanguage.value === 'en' ? 'en' : 'zh';
+  try {
+    const text = await callNarration(providerId, provider, key, data.narration_prompt);
+    const check = window.tcmNarrate.validateNarration(text, { language, patterns: data.patterns || [] });
+    if (!check.ok) { console.warn('Narration rejected:', check.reason); return; }
+    const block = document.createElement('div');
+    block.className = 'patient-answer-block';
+    block.innerHTML = `<h4>${language === 'zh' ? 'AI 表述（已通过规则校验）' : 'AI-narrated (rule-checked)'}</h4>${answerParagraphs(text)}`;
+    const first = patientQuestionOutput.children[data.urgent ? 1 : 0];
+    patientQuestionOutput.insertBefore(block, first || null);
+    if (window.tcmScript) window.tcmScript.set(window.tcmScript.get());
+  } catch (error) {
+    console.warn('Narration failed:', error);
+  }
 }
 
 function renderPatientAnswer(data) {
@@ -2967,9 +3030,11 @@ function renderPatientAnswer(data) {
   }
   if (data.follow_up_questions && data.follow_up_questions.length) {
     const label = item => language === 'zh' ? item.question_cn : (language === 'en' ? item.question : `${item.question_cn} / ${item.question}`);
-    parts.push(`<div class="patient-answer-block"><h4>${language === 'zh' ? '请继续补充（点击加入“症状”栏）' : 'Tell me more (click to add to the details box)'}</h4><div class="inquiry-chips">${data.follow_up_questions.map(item =>
-      `<button type="button" class="inquiry-chip" data-inquiry="${escapePatientHtml(language === 'zh' ? item.question_cn : item.question)}">${escapePatientHtml(label(item))}</button>`
-    ).join('')}</div></div>`);
+    parts.push(`<div class="patient-answer-block"><h4>${language === 'zh' ? '请继续补充（点选即可回答）' : 'Tell me more (tap to answer)'}</h4>${data.follow_up_questions.map(item => {
+      const options = (FOLLOWUP_OPTIONS[item.key] || []).map(opt =>
+        `<button type="button" class="inquiry-chip inquiry-option" data-answer="${escapePatientHtml(opt.zh)}">${escapePatientHtml(language === 'en' ? opt.en : opt.zh)}</button>`).join('');
+      return `<div class="inquiry-item"><button type="button" class="inquiry-chip" data-inquiry="${escapePatientHtml(language === 'zh' ? item.question_cn : item.question)}">${escapePatientHtml(label(item))}</button><div class="inquiry-chips inquiry-options">${options}</div></div>`;
+    }).join('')}</div>`);
   }
   if (data.web_links && data.web_links.length) {
     parts.push(`<div class="patient-answer-block"><h4>Further reading</h4><ul class="patient-answer-links">${data.web_links.map(link =>
@@ -3001,6 +3066,17 @@ function notesWithoutQuestions() {
 }
 
 document.addEventListener('click', event => {
+  const answerBtn = event.target.closest('[data-answer]');
+  if (answerBtn) {
+    const text = answerBtn.dataset.answer;
+    if (!patientQuestionInput.value.trim() && lastPatientQuestion) patientQuestionInput.value = lastPatientQuestion;
+    if (!patientQuestionContext.value.includes(text)) {
+      patientQuestionContext.value = `${patientQuestionContext.value.trim()}${patientQuestionContext.value.trim() ? '\n' : ''}${text}`;
+    }
+    answerBtn.classList.add('used');
+    patientQuestionForm.requestSubmit();
+    return;
+  }
   const chip = event.target.closest('[data-inquiry]');
   if (!chip) return;
   const text = chip.dataset.inquiry;
@@ -3018,6 +3094,7 @@ patientQuestionForm.addEventListener('submit', async event => {
   event.preventDefault();
   const question = patientQuestionInput.value.trim();
   if (!question) return;
+  lastPatientQuestion = question;
   patientQuestionSubmit.disabled = true;
   patientQuestionStatus.className = 'patient-question-status';
   patientQuestionStatus.textContent = 'Thinking...';
@@ -3029,6 +3106,8 @@ patientQuestionForm.addEventListener('submit', async event => {
       body: JSON.stringify({
         question,
         language: patientQuestionLanguage.value,
+        session_id: askSessionId || undefined,
+        session: askSessionId ? undefined : { facts: askSessionFacts },
         context: {
           signs: { ...(window.tcmTongueState || {}) },
           notes: notesWithoutQuestions(),
@@ -3042,7 +3121,13 @@ patientQuestionForm.addEventListener('submit', async event => {
     }
     const data = await response.json();
     if (!response.ok || data.error) throw new Error(data.error || `HTTP ${response.status}`);
+    if (data.session_id) {
+      askSessionId = data.session_id;
+      try { localStorage.setItem('tcm-ask-session-id', askSessionId); } catch (_) {}
+    }
+    if (data.session && data.session.facts) askSessionFacts = data.session.facts;
     renderPatientAnswer(data);
+    maybeNarrate(data);
     patientQuestionStatus.textContent = '';
   } catch (error) {
     patientQuestionStatus.className = 'patient-question-status error';

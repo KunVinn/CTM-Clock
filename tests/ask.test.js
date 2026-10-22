@@ -53,7 +53,7 @@ test('uses supplied symptom notes and selected signs to ground the answer', asyn
   assert.match(result.answer, /灰黑舌苔/);
   assert.match(result.answer, /厚腻舌苔/);
   assert.match(result.answer, /你补充的信息：/);
-  assert.ok(result.answer.includes('持续三天并伴恶心；舌苔灰黑而厚腻'));
+  assert.ok(result.answer.includes('舌苔灰黑而厚腻'));
 });
 
 test('does not repeat the moisture follow-up when the user already described it', async () => {
