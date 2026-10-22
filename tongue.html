@@ -1959,12 +1959,18 @@ Use these exact keys and only these allowed values:
   "shape_note":     short observation in English (≤25 words),
   "coating":        one of ["thin-white","thick-white","yellow","greasy","dry","peeled","gray-black"],
   "coating_note":   short observation in English (≤25 words),
+  "coating_thickness": one of ["thin","thick"],
+  "coating_moisture":  one of ["moist","dry","wet"],
+  "coating_texture":   one of ["none","greasy","curdy"],
   "patterns":       array of 1–3 strings from ["qi-deficiency","yang-deficiency","yin-deficiency","blood-deficiency","heat-excess","cold","damp","damp-heat","blood-stasis","qi-stagnation"],
   "advice":         1–2 sentence lifestyle suggestion in English,
+  "follow_up_questions": array of 1–3 short English questions (≤20 words each) a practitioner would ask next,
   "confidence":     "low" | "medium" | "high",
   "disclaimer":     "Educational use only — not a medical diagnosis."
 }
 
+For follow_up_questions, ask only about what the photo cannot show (cold/heat feeling, thirst, digestion, stool, sleep, duration) or what is unclear in the photo itself. Do not give a diagnosis.
+If the photo is blurry, has coloured lighting or heavy backlight, lower confidence and say so in the relevant note.
 If the photo does not show a tongue clearly, set every observation field to a short note saying so and confidence to "low".`;
 
 function renderAiResult(data) {
@@ -2001,13 +2007,17 @@ function renderAiResult(data) {
         <div class="ai-note">${safe(data.shape_note)}</div></div>
       <div class="ai-result-row"><strong>Coating:</strong>
         ${matchedCoating ? `<span data-zh-auto>${matchedCoating.cn}</span> <em>${matchedCoating.en}</em>` : safe(data.coating)}
-        <div class="ai-note">${safe(data.coating_note)}</div></div>
+        <div class="ai-note">${safe(data.coating_note)}</div>
+        <div class="ai-note">${[data.coating_thickness, data.coating_moisture, data.coating_texture].filter(Boolean).map(safe).join(' · ')}</div></div>
       <div class="ai-result-row"><strong>Likely patterns:</strong>
         ${(data.patterns || []).map(p => {
           const info = TONGUE_PATTERNS[p];
           return info ? `<span class="tag">${info.cn} · ${info.en}</span>` : `<span class="tag">${safe(p)}</span>`;
         }).join(' ')}</div>
       <div class="ai-result-row"><strong>Lifestyle advice:</strong> ${safe(data.advice)}</div>
+      ${Array.isArray(data.follow_up_questions) && data.follow_up_questions.length ? `<div class="ai-result-row"><strong>Questions to answer next:</strong>
+        <div class="inquiry-chips">${data.follow_up_questions.slice(0, 3).map(q =>
+          `<button type="button" class="inquiry-chip" data-inquiry="${safe(String(q).slice(0, 160)).replace(/"/g, '&quot;')}">${safe(String(q).slice(0, 160))}</button>`).join('')}</div></div>` : ''}
       <div class="ai-result-row ai-confidence"><strong>Model confidence:</strong> ${safe(data.confidence)}</div>
       <div class="ai-result-row ai-disclaim">${safe(data.disclaimer || 'Educational use only — not a medical diagnosis.')}</div>
     </div>`;
@@ -2955,6 +2965,12 @@ function renderPatientAnswer(data) {
   } else if (language !== 'en' && data.answer_cn && data.answer_cn !== data.answer) {
     parts.push(`<div class="patient-answer-block"><h4 data-zh-auto>中文答复</h4>${answerParagraphs(data.answer_cn)}</div>`);
   }
+  if (data.follow_up_questions && data.follow_up_questions.length) {
+    const label = item => language === 'zh' ? item.question_cn : (language === 'en' ? item.question : `${item.question_cn} / ${item.question}`);
+    parts.push(`<div class="patient-answer-block"><h4>${language === 'zh' ? '请继续补充（点击加入“症状”栏）' : 'Tell me more (click to add to the details box)'}</h4><div class="inquiry-chips">${data.follow_up_questions.map(item =>
+      `<button type="button" class="inquiry-chip" data-inquiry="${escapePatientHtml(language === 'zh' ? item.question_cn : item.question)}">${escapePatientHtml(label(item))}</button>`
+    ).join('')}</div></div>`);
+  }
   if (data.web_links && data.web_links.length) {
     parts.push(`<div class="patient-answer-block"><h4>Further reading</h4><ul class="patient-answer-links">${data.web_links.map(link =>
       `<li><a href="${escapePatientHtml(link.url)}" target="_blank" rel="noopener">${escapePatientHtml(link.title)}</a> <small>${escapePatientHtml(link.why)}</small></li>`
@@ -2976,6 +2992,28 @@ function renderPatientAnswer(data) {
   if (window.tcmScript) window.tcmScript.set(window.tcmScript.get());
 }
 
+// Question text is stripped before sending so it is not mistaken for an answer.
+const insertedInquiries = new Set();
+function notesWithoutQuestions() {
+  let notes = patientQuestionContext.value;
+  insertedInquiries.forEach(q => { notes = notes.split(q).join(''); });
+  return notes.trim();
+}
+
+document.addEventListener('click', event => {
+  const chip = event.target.closest('[data-inquiry]');
+  if (!chip) return;
+  const text = chip.dataset.inquiry;
+  insertedInquiries.add(text);
+  if (!patientQuestionContext.value.includes(text)) {
+    patientQuestionContext.value = `${patientQuestionContext.value.trim()}${patientQuestionContext.value.trim() ? '\n' : ''}${text} `;
+  }
+  chip.classList.add('used');
+  document.getElementById('patient-question-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  patientQuestionContext.focus();
+  patientQuestionContext.setSelectionRange(patientQuestionContext.value.length, patientQuestionContext.value.length);
+});
+
 patientQuestionForm.addEventListener('submit', async event => {
   event.preventDefault();
   const question = patientQuestionInput.value.trim();
@@ -2993,7 +3031,7 @@ patientQuestionForm.addEventListener('submit', async event => {
         language: patientQuestionLanguage.value,
         context: {
           signs: { ...(window.tcmTongueState || {}) },
-          notes: patientQuestionContext.value.trim(),
+          notes: notesWithoutQuestions(),
           ai_result: window.tcmLastAiResult,
         }
       })

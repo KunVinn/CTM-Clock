@@ -82,3 +82,20 @@ test('does not invent a generic FAQ answer when nothing matches', async () => {
   assert.match(result.answer, /没有找到针对这个问题的具体资料/);
   assert.deepEqual(result.references, []);
 });
+
+test('asks symptom questions once the tongue signs are already described', async () => {
+  const response = await handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({
+      question: '舌苔厚腻怎么办？',
+      language: 'zh',
+      context: {
+        notes: '舌苔灰黑湿润，舌体淡红，已经三天',
+        ai_result: { coating_thickness: 'thick', coating_moisture: 'moist', coating_texture: 'greasy' }
+      }
+    })
+  });
+  const result = JSON.parse(response.body);
+  assert.deepEqual(result.follow_up_questions.map(item => item.key), ['cold_heat', 'thirst']);
+  assert.match(result.answer, /怕冷/);
+});
