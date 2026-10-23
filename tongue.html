@@ -2943,7 +2943,8 @@ const patientQuestionOutput = document.getElementById('patient-question-output')
 let askSessionFacts = {};
 let askSessionId = '';
 let lastPatientQuestion = '';
-try { askSessionId = localStorage.getItem('tcm-ask-session-id') || ''; } catch (_) {}
+let followUpPending = false;
+try { localStorage.removeItem('tcm-ask-session-id'); } catch (_) {}
 
 // Fixed answers per follow-up slot; the submitted text is always the Chinese phrase the extractor knows.
 const FOLLOWUP_OPTIONS = {
@@ -3065,6 +3066,15 @@ function notesWithoutQuestions() {
   return notes.trim();
 }
 
+patientQuestionInput.addEventListener('input', () => {
+  if (lastPatientQuestion && patientQuestionInput.value.trim() !== lastPatientQuestion) {
+    patientQuestionContext.value = '';
+    askSessionFacts = {};
+    askSessionId = '';
+    lastPatientQuestion = '';
+  }
+});
+
 document.addEventListener('click', event => {
   const answerBtn = event.target.closest('[data-answer]');
   if (answerBtn) {
@@ -3074,6 +3084,7 @@ document.addEventListener('click', event => {
       patientQuestionContext.value = `${patientQuestionContext.value.trim()}${patientQuestionContext.value.trim() ? '\n' : ''}${text}`;
     }
     answerBtn.classList.add('used');
+    followUpPending = true;
     patientQuestionForm.requestSubmit();
     return;
   }
@@ -3081,6 +3092,7 @@ document.addEventListener('click', event => {
   if (!chip) return;
   const text = chip.dataset.inquiry;
   insertedInquiries.add(text);
+  followUpPending = true;
   if (!patientQuestionContext.value.includes(text)) {
     patientQuestionContext.value = `${patientQuestionContext.value.trim()}${patientQuestionContext.value.trim() ? '\n' : ''}${text} `;
   }
@@ -3094,6 +3106,12 @@ patientQuestionForm.addEventListener('submit', async event => {
   event.preventDefault();
   const question = patientQuestionInput.value.trim();
   if (!question) return;
+  if (lastPatientQuestion && !followUpPending) {
+    askSessionFacts = {};
+    askSessionId = '';
+    insertedInquiries.clear();
+  }
+  followUpPending = false;
   lastPatientQuestion = question;
   patientQuestionSubmit.disabled = true;
   patientQuestionStatus.className = 'patient-question-status';
@@ -3123,9 +3141,9 @@ patientQuestionForm.addEventListener('submit', async event => {
     if (!response.ok || data.error) throw new Error(data.error || `HTTP ${response.status}`);
     if (data.session_id) {
       askSessionId = data.session_id;
-      try { localStorage.setItem('tcm-ask-session-id', askSessionId); } catch (_) {}
     }
     if (data.session && data.session.facts) askSessionFacts = data.session.facts;
+    patientQuestionContext.value = '';
     renderPatientAnswer(data);
     maybeNarrate(data);
     patientQuestionStatus.textContent = '';
