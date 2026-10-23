@@ -5,6 +5,7 @@ const EMPTY_FACTS = {
   coating_color: null,
   coating_thickness: null,
   coating_texture: null,
+  coating_removability: null,
   coating_moisture: null,
   duration: null,
   cold_heat: null,
@@ -34,9 +35,13 @@ const SLOT_PATTERNS = {
     ['curd', /腐苔|豆腐渣|腐|\bcurd/i],
     ['greasy', /腻|黏腻|油腻|\bgreasy\b|\bsticky\b|\bslimy\b/i]
   ],
+  coating_removability: [
+    ['adherent', /去不掉|刮不掉|刷不掉|不易脱落|不容易脱落|不易刮除|难以刮除/],
+    ['removable', /容易刮掉|轻轻一刷就掉|容易脱落/]
+  ],
   body_color: [
     ['pale', /淡白|\bpale\b/i],
-    ['pale-red', /淡红/],
+    ['pale-red', /淡红|浅红/],
     ['crimson', /绛|\bcrimson\b/i],
     ['purple', /青紫|紫|\bpurple\b/i],
     ['red', /(?<!淡)红|\bred\b/i]
@@ -68,6 +73,8 @@ const SLOT_PATTERNS = {
   sleep: [
     ['insomnia', /失眠|睡不着|入睡难|insomnia/i],
     ['dreamful', /多梦|梦多|易醒|睡眠(差|不好)/i],
+    ['unrefreshed', /(?:醒后|醒来|睡醒|睡起来|早上醒来|起床后?)(?:仍然?|还是|就)?(?:很)?(?:疲倦|疲劳|累|没精神)/],
+    ['waking', /睡起来|睡醒|早上醒来|早上起来|醒来|起床|醒后/],
     ['good', /睡眠(还好|不错|尚可)|睡得好/]
   ]
 };
