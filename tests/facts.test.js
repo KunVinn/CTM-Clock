@@ -109,3 +109,51 @@ test('option-button answer phrases extract as facts', () => {
   assert.equal(extractFactsFromTexts(['怕冷，手脚冰凉']).cold_heat, 'cold');
   assert.equal(extractFactsFromTexts(['一个月以上']).duration, 'reported');
 });
+
+test('waking tired satisfies the sleep follow-up slot', () => {
+  assert.equal(extractFactsFromTexts(['醒后疲倦']).sleep, 'unrefreshed');
+});
+
+test('waking and getting-up mentions do not trigger a sleep follow-up', async () => {
+  for (const note of ['醒后疲倦', '睡起来', '睡起来很累', '早上醒来', '早上起来', '醒来', '睡醒', '起床']) {
+    const response = await handler({
+      httpMethod: 'POST',
+      body: JSON.stringify({
+        question: '舌苔厚怎么办？',
+        language: 'zh',
+        context: { notes: [note] }
+      })
+    });
+    const result = JSON.parse(response.body);
+    assert.ok(!result.follow_up_questions.some(item => item.key === 'sleep'), `unexpected sleep follow-up for: ${note}`);
+  }
+  assert.equal(extractFactsFromTexts(['睡起来很累']).sleep, 'unrefreshed');
+});
+
+test('complete patient report is recognized without repeating sleep questions', async () => {
+  const response = await handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({
+      question: '舌苔厚怎么办？',
+      language: 'zh',
+      context: {
+        notes: [
+          '舌苔看起来湿润',
+          '舌苔是黄颜色，怕冷，口干',
+          '舌苔去不掉',
+          '舌苔是油腻',
+          '去掉舌苔后，舌体本身是浅红色',
+          '这种舌象持续5天',
+          '食欲还好，腹胀',
+          '大便干结',
+          '醒后疲倦'
+        ]
+      }
+    })
+  });
+  const result = JSON.parse(response.body);
+  assert.equal(result.session.facts.sleep, 'unrefreshed');
+  assert.equal(result.session.facts.body_color, 'pale-red');
+  assert.equal(result.session.facts.coating_removability, 'adherent');
+  assert.ok(!result.follow_up_questions.some(item => item.key === 'sleep'));
+});
